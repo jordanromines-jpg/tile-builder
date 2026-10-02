@@ -5,6 +5,7 @@ import { setById } from "../engine/sets";
 import { addSet } from "../store/inventory";
 import type { Age } from "../engine/types";
 import { PROJECTS } from "./index";
+import { MORE } from "./more";
 
 const inv = (id: string) => {
   const s = setById(id)!;
@@ -14,8 +15,8 @@ const of = (age: Age) => PROJECTS.filter((p) => p.age === age);
 const buildable = (age: Age, set: string) => of(age).filter((p) => matchProject(p, inv(set)).state !== "need").map((p) => p.id);
 
 describe("the projects (plan keys 6h, 6j, 6l)", () => {
-  it("has 16, 21, 20 and 23 projects by age, with unique ids", () => {
-    expect([of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([16, 21, 20, 23]);
+  it("has 16, 21, 34 and 110 projects by age, with unique ids", () => {
+    expect([of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([16, 21, 34, 110]);
     expect(new Set(PROJECTS.map((p) => p.id)).size).toBe(PROJECTS.length);
   });
 
@@ -41,6 +42,19 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
       expect(of("d").filter((p) => matchProject(p, two(set)).state === "need").map((p) => p.id), set).toEqual([]);
     }
     expect(of("d").filter((p) => matchProject(p, inv("magna-100")).state === "need").length).toBeGreaterThan(15);
+  });
+
+  it("2.2: the 101 plans from the layout kit are 50 to 175 tiles and each builds from two 100-piece sets", () => {
+    const two = (id: string) => {
+      const s = setById(id)!;
+      return addSet(inventoryFromSet(s.pieces, s.brand, null), s);
+    };
+    expect(MORE).toHaveLength(101);
+    for (const p of MORE) {
+      expect(p.placed.length, p.id).toBeGreaterThanOrEqual(50);
+      expect(p.placed.length, p.id).toBeLessThanOrEqual(175);
+      for (const set of ["magna-100", "picasso-100"]) expect(matchProject(p, two(set)).state, `${p.id} from two ${set}`).not.toBe("need");
+    }
   });
 
   it("gives stars by size within the age: lower third 1, middle 2, upper 3", () => {
