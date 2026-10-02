@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-02
 
+- `2026-10-02-tile-builder.md`: D24, project pictures drawn as SVG at run time; a build-log row for PR 2.4. (#6)
 - `2026-10-02-tile-builder.md`: a build-log row for PR 2.3; 4a and 2n came forward into it. (#5)
 - `2026-10-02-tile-builder.md`: D22, Jordan asked to build end to end, so G2 no longer stops the build; D23, Playwright 1.56.1; a build-log row for PR 2.2. (#4)
 - `2026-10-02-tile-builder.md`: a build-log row for PR 2.1 (2a to 2d), with what changed from key 2a. (#3)

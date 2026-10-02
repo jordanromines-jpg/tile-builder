@@ -17,3 +17,5 @@ plans/roadmap/*.finalize*.json
 plans/roadmap/*.browser-check.json
 plans/roadmap/*.delivery.json
 .archify/
+web/.shot.mjs
+web/.crop.mjs
