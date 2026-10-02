@@ -27,6 +27,6 @@ describe("TileChip", () => {
     const spy = vi.spyOn(speech, "say").mockImplementation(() => {});
     render(<TileChip shape="tri-equilateral" colour="blue" count={2} speak />);
     fireEvent.click(screen.getByRole("button", { name: "2 blue triangles" }));
-    expect(spy).toHaveBeenCalledWith("2 blue triangles", { force: true });
+    expect(spy).toHaveBeenCalledWith("2 blue triangles");
   });
 });

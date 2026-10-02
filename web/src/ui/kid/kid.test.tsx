@@ -30,7 +30,7 @@ describe("kid components", () => {
     expect(screen.getByRole("button", { name: "Go" }).style.minHeight).toBe("104px");
     fireEvent.click(next);
     expect(press).toHaveBeenCalledOnce();
-    expect(say).toHaveBeenCalledWith("Next", { force: true });
+    expect(say).toHaveBeenCalledWith("Next");
   });
 
   it("AgePicker marks the chosen age and says the one tapped", () => {
@@ -40,7 +40,7 @@ describe("kid components", () => {
     expect(screen.getByRole("button", { name: "3 to 5" }).getAttribute("aria-pressed")).toBe("true");
     fireEvent.click(screen.getByRole("button", { name: "9 to 10" }));
     expect(change).toHaveBeenCalledWith("c");
-    expect(say).toHaveBeenCalledWith("9 to 10", { force: true });
+    expect(say).toHaveBeenCalledWith("9 to 10");
   });
 
   it("ThemeFilter has All and the eight themes", () => {
