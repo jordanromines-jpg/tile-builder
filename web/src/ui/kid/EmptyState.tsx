@@ -5,7 +5,7 @@ import { TilePicture } from "../TileChip";
 export function EmptyState({ text }: { text: string }) {
   return (
     <div className="flex flex-col items-center gap-4 py-10 text-center">
-      <button type="button" aria-label={text} onClick={() => say(text, { force: true })} className="kid flex min-h-[104px] items-center gap-2 rounded-lg p-4">
+      <button type="button" aria-label={text} onClick={() => say(text)} className="kid flex min-h-[104px] items-center gap-2 rounded-lg p-4">
         <TilePicture shape="square" px={64} />
         <TilePicture shape="tri-equilateral" px={64} />
       </button>

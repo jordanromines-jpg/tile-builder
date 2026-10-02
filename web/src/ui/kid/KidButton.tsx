@@ -37,7 +37,7 @@ export function KidButton({ label, icon, onPress, primary, showLabel = true, spe
       aria-pressed={pressed}
       disabled={disabled}
       onClick={() => {
-        if (speak) say(sayText ?? label, { force: true });
+        if (speak) say(sayText ?? label);
         onPress();
       }}
       className={`kid relative inline-flex flex-col items-center justify-center gap-1 rounded-lg px-4 py-2 font-kid font-bold transition-transform duration-100 ease-out active:scale-95 disabled:opacity-40 aria-pressed:ring-4 aria-pressed:ring-focus ${TONE[tone]} ${className}`}

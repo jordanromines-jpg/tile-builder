@@ -12,7 +12,7 @@ export function GrownUpsDoor() {
       type="button"
       aria-label={S.kid.doorLabel}
       onClick={() => {
-        say(S.kid.door, { force: true });
+        say(S.kid.door);
         void navigate({ to: "/grownups" });
       }}
       className="kid grid h-11 w-11 place-items-center rounded-full border border-line bg-surface-2 text-ink-2"

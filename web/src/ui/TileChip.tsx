@@ -95,7 +95,7 @@ export function TileChip({ shape, colour, count, size = "md", leg, speak, instea
   const cls = `inline-flex items-center gap-2 ${className}`;
   if (speak) {
     return (
-      <button type="button" className={`${cls} rounded-md p-1`} aria-label={label} onClick={() => say(label, { force: true })}>
+      <button type="button" className={`${cls} rounded-md p-1`} aria-label={label} onClick={() => say(label)}>
         {body}
       </button>
     );

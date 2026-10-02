@@ -55,7 +55,7 @@ test("V7: tiles, settings and a saved step survive a reload; a backup restores t
   await page.getByRole("button", { name: "Replace" }).click();
   await expect(page.getByTestId("summary")).toContainText("You have 100 tiles");
   await page.getByRole("navigation").getByRole("link", { name: "Settings" }).click();
-  await expect(page.getByRole("switch", { name: "Read steps aloud" })).toHaveAttribute("aria-checked", "false");
+  await expect(page.getByRole("switch", { name: "Read steps aloud" })).toHaveAttribute("aria-checked", "true");
   await page.goto("#/build/castle");
   await expect(page.getByRole("list", { name: "Step 6 of 25" })).toBeVisible();
 });

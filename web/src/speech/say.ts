@@ -7,7 +7,7 @@ export interface SayOptions {
   rate?: number;
 }
 
-let enabled = true;
+let enabled = false;
 let lang = "en-US";
 let last = "";
 const listeners = new Set<() => void>();

@@ -44,6 +44,7 @@ for (const [age, min] of [["a", 88], ["b", 80], ["c", 64]] as const) {
 for (const ground of ["light", "dark"] as const) {
   test(`the design page looks as it did in ${ground}`, async ({ page }) => {
     await open(page, ground);
+    await page.waitForLoadState("networkidle");
     await page.evaluate(() => document.fonts.ready);
     await expect(page).toHaveScreenshot(`design-${ground}.png`, { fullPage: true, mask: [page.locator("canvas")] });
   });

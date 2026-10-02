@@ -26,7 +26,7 @@ export function Done() {
   useEffect(() => {
     if (!project) return;
     void clearStep(project.id);
-    say(project.done, { force: true });
+    say(project.done);
     return () => stop();
   }, [project]);
 

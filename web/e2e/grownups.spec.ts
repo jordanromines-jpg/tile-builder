@@ -53,9 +53,9 @@ test("settings save and pass axe", async ({ page }) => {
   await page.goto("#/grownups/settings");
   await openGate(page);
   const voice = page.getByRole("switch", { name: "Read steps aloud" });
-  await expect(voice).toHaveAttribute("aria-checked", "true");
-  await voice.click();
   await expect(voice).toHaveAttribute("aria-checked", "false");
+  await voice.click();
+  await expect(voice).toHaveAttribute("aria-checked", "true");
   await page.getByText("Dark", { exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   expect(await axe(page)).toEqual([]);

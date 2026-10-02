@@ -13,7 +13,7 @@ export interface InventoryRow extends Inventory {
 
 export const DEFAULT_SETTINGS: Settings = {
   age: null,
-  voice: true,
+  voice: false,
   soundEffects: false,
   lang: "en-US",
   theme: "system",

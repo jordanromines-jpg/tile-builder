@@ -63,7 +63,7 @@ function BuildProject({ pid }: { pid: string }) {
   );
   const speak = useCallback(
     (s: number) => {
-      say(lineOf(s), age === "a" ? { force: true } : {});
+      say(lineOf(s));
       setHush((h) => h + 1);
     },
     [lineOf, age],

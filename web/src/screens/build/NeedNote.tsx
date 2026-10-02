@@ -10,7 +10,7 @@ import { ArrowLeft, Play } from "../../ui/icons";
 
 export function NeedNote({ missing, onStart, onPick }: { missing: Missing[]; onStart: () => void; onPick: () => void }) {
   const line = S.build.needTitle(missingTotal(missing));
-  useEffect(() => say(line, { force: true }), [line]);
+  useEffect(() => say(line), [line]);
   return (
     <div role="dialog" aria-modal="false" aria-labelledby="need-title" className="absolute inset-0 grid place-items-center bg-surface/70 p-4">
       <div className="flex max-w-xl flex-col items-center gap-5 rounded-lg bg-surface-2 p-6 text-center shadow-xl">
