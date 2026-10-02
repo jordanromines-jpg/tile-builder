@@ -6,6 +6,7 @@ import { useEffect, useId } from "react";
 import { COLOURS } from "../../engine/catalog";
 import { useStill } from "../motion";
 import { PATTERN_OF, TilePattern } from "../patterns";
+import { S } from "../../strings";
 
 const R = 1;
 const corner = (i: number): [number, number] => [R * Math.cos((Math.PI / 3) * i - Math.PI / 2), R * Math.sin((Math.PI / 3) * i - Math.PI / 2)];
@@ -43,7 +44,7 @@ export function Celebration({ onDone, size = 280 }: { onDone?: () => void; size?
     return () => clearTimeout(t);
   }, [onDone, still]);
   return (
-    <button type="button" aria-label="Well done" onClick={onDone} className="kid grid place-items-center" style={{ width: size, height: size }}>
+    <button type="button" aria-label={S.done.party} onClick={onDone} className="kid grid place-items-center" style={{ width: size, height: size }}>
       <motion.span
         className="block"
         initial={still ? false : { scale: 0.3, rotate: -120, opacity: 0 }}

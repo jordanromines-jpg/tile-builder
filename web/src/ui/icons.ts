@@ -15,6 +15,7 @@ export {
   Lock,
   Minus,
   PawPrint,
+  Play,
   Plus,
   Rocket,
   Sparkle,

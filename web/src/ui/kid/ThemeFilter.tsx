@@ -30,7 +30,7 @@ export function ThemeFilter({ value, onChange, themes = THEMES }: { value: Theme
     );
   };
   return (
-    <div role="group" aria-label="Themes" className="flex gap-3 overflow-x-auto px-1 py-2">
+    <div role="group" aria-label={S.kid.themes} className="flex gap-3 overflow-x-auto px-1 py-2">
       {chip(null)}
       {themes.map(chip)}
     </div>

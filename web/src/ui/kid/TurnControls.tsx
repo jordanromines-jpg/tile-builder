@@ -5,7 +5,7 @@ import { KidButton } from "./KidButton";
 
 export function TurnControls({ onTurn, onReset }: { onTurn: (dir: -1 | 1) => void; onReset: () => void }) {
   return (
-    <div className="flex items-center gap-3" role="group" aria-label="Turn the model">
+    <div className="flex items-center gap-3" role="group" aria-label={S.kid.turnGroup}>
       <KidButton label={S.kid.turnLeft} showLabel={false} icon={<ArrowLeft size={36} weight="bold" />} onPress={() => onTurn(-1)} />
       <KidButton label={S.kid.mySide} showLabel={false} icon={<ArrowCounterClockwise size={36} weight="bold" />} onPress={onReset} />
       <KidButton label={S.kid.turnRight} showLabel={false} icon={<ArrowRight size={36} weight="bold" />} onPress={() => onTurn(1)} />

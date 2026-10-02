@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-02
 
+- `2026-10-02-tile-builder.md`: D29, build mode and its end in one pull request; a build-log row for PRs 7.1 and 7.2. (#22)
 - `2026-10-02-tile-builder.md`: D28, the projects land with the Library; a build-log row for PRs 6.2 to 6.5; R6 allows walls raised from a floor tile and pyramids on the table. (#18)
 - `2026-10-02-tile-builder.md`: a build-log row for PR 6.1; the frame-time check moves to 7g. (#17)
 - `2026-10-02-tile-builder.md`: D26, phase 5 in one pull request and the mockup PRs folded into the screens; D27, Python kept to the design tooling; a build-log row for phase 5. (#14)
