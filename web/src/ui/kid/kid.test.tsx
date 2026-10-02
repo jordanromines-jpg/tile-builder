@@ -27,7 +27,7 @@ describe("kid components", () => {
     );
     const next = screen.getByRole("button", { name: "Next" });
     expect(next.style.minWidth).toBe("var(--target-kid-b)");
-    expect(screen.getByRole("button", { name: "Go" }).style.minHeight).toBe("104px");
+    expect(screen.getByRole("button", { name: "Go" }).style.minHeight).toBe("112px");
     fireEvent.click(next);
     expect(press).toHaveBeenCalledOnce();
     expect(say).toHaveBeenCalledWith("Next");

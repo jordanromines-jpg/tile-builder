@@ -72,7 +72,7 @@ export const S = {
     share: "Tap Share at the top of Safari.",
     add: "Tap Add to Home Screen, then open Tile Steps from there.",
     buildTitle: "Stand the iPad up beside the tiles and build together.",
-    buildBody: "Pick a project together. The app reads each step aloud; the building happens on the table.",
+    buildBody: "Pick a project together and follow the steps on the screen; the building happens on the table. Tap the speaker to hear a step.",
     ok: "Got it",
   },
 } as const;

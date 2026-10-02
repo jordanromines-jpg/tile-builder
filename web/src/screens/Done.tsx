@@ -1,10 +1,10 @@
-/* The end of a build (plan keys 3c, 7h): the finished model, one short celebration, the project's own line said
-   aloud, then "Put the iPad down and play with what you made." and one button back to the shelf. No next project, no
+/* The end of a build (plan keys 3c, 7h; sprint 2, change 9): the finished model while the view circles it once under a
+   shower of little tiles, then a photo card of it. The project's own line is said aloud when the voice is on; then "Put the iPad down and play with what you made." and one button back to the shelf. No next project, no
    "one more?". The saved step is cleared. */
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { matchProject } from "../engine/match";
-import { projectById } from "../projects";
+import { PROJECTS, projectById } from "../projects";
 import { say, stop } from "../speech/say";
 import { clearStep } from "../store/db";
 import { useInventory } from "../store/hooks";
@@ -13,7 +13,8 @@ import { S } from "../strings";
 import { Viewer } from "../three/Viewer";
 import { ArrowLeft } from "../ui/icons";
 import { AgeProvider } from "../ui/kid/AgeContext";
-import { Celebration } from "../ui/kid/Celebration";
+import { TileConfetti } from "../ui/kid/TileConfetti";
+import { useProjectSnapshot } from "../ui/useSnapshot";
 import { KidButton } from "../ui/kid/KidButton";
 
 export function Done() {
@@ -22,6 +23,8 @@ export function Done() {
   const navigate = useNavigate();
   const inv = useInventory();
   const [celebrating, setCelebrating] = useState(true);
+  // the photo is drawn once the celebration is over, so drawing it never holds up the shower
+  const photo = useProjectSnapshot(project ?? PROJECTS[0], 480, undefined, !celebrating);
 
   useEffect(() => {
     if (!project) return;
@@ -35,18 +38,39 @@ export function Done() {
 
   return (
     <AgeProvider age={project.age}>
-      <main className="kid flex h-dvh flex-col items-center gap-4 overflow-hidden px-4 pt-4" style={{ paddingBottom: "var(--edge-safe-kid)" }}>
-        <h1 className="text-center font-display text-[length:var(--fs-kid-display-c)] font-semibold text-ink-1">{project.done}</h1>
-        <div className="relative min-h-0 w-full max-w-5xl flex-1 overflow-hidden rounded-lg">
-          <Viewer project={project} shown={project.placed.length} settled={project.placed.length} leg={effectiveLeg(inv)} instead={instead} label={S.build.model(project.title)} />
-          {celebrating && (
-            <div className="absolute inset-0 grid place-items-center">
-              <Celebration onDone={() => setCelebrating(false)} size={240} />
-            </div>
-          )}
+      <main className="kid relative h-dvh overflow-hidden bg-stage">
+        <div className="absolute inset-0">
+          <Viewer
+            project={project}
+            shown={project.placed.length}
+            settled={project.placed.length}
+            leg={effectiveLeg(inv)}
+            instead={instead}
+            sweep={celebrating}
+            inset={{ top: 120, bottom: 230 }}
+            label={S.build.model(project.title)}
+          />
+          {celebrating && <TileConfetti onDone={() => setCelebrating(false)} />}
         </div>
-        <p className="text-center font-kid text-[length:var(--fs-kid-label-c)] font-bold text-ink-2">{S.done.putDown}</p>
-        <KidButton label={S.done.back} icon={<ArrowLeft size={36} weight="bold" />} tone="accent" onPress={() => void navigate({ to: "/" })} speak />
+        <div className="safe-top pointer-events-none absolute inset-x-0 top-0 flex justify-center px-4">
+          <h1 className="soft rounded-full bg-surface-2/90 px-8 py-3 text-center font-display text-[length:var(--fs-kid-display-c)] font-bold leading-tight text-ink-1 backdrop-blur">
+            {project.done}
+          </h1>
+        </div>
+        {!celebrating && (
+          <section
+            className="photo-in soft absolute inset-x-4 mx-auto flex max-w-4xl items-center gap-6 rounded-[32px] bg-surface-2/95 p-4 pr-6 backdrop-blur"
+            style={{ bottom: "max(env(safe-area-inset-bottom), 16px)" }}
+          >
+            {photo && (
+              <figure className="soft hidden shrink-0 -rotate-3 rounded-md bg-surface-2 p-2 pb-6 sm:block" aria-hidden="true">
+                <img src={photo} alt="" className="block h-[120px] w-[160px] rounded-sm object-cover" />
+              </figure>
+            )}
+            <p className="min-w-0 flex-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1">{S.done.putDown}</p>
+            <KidButton label={S.done.back} icon={<ArrowLeft size={36} weight="bold" />} tone="accent" primary onPress={() => void navigate({ to: "/" })} speak />
+          </section>
+        )}
       </main>
     </AgeProvider>
   );

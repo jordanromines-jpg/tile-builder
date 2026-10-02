@@ -123,16 +123,29 @@ function Counter() {
   return null;
 }
 
-/** The shape of the view this canvas gets, for framing. */
-function useAspect(el: React.RefObject<HTMLDivElement | null>): number {
-  const [aspect, setAspect] = useState(1.4);
+/** The size of the view this canvas gets, for framing. */
+function useSize(el: React.RefObject<HTMLDivElement | null>): { w: number; h: number } {
+  const [size, setSize] = useState({ w: 1120, h: 800 });
   useEffect(() => {
     if (!el.current || typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(([e]) => setAspect(Math.max(0.4, e.contentRect.width / Math.max(1, e.contentRect.height))));
+    const ro = new ResizeObserver(([e]) => setSize({ w: Math.max(1, e.contentRect.width), h: Math.max(1, e.contentRect.height) }));
     ro.observe(el.current);
     return () => ro.disconnect();
   }, [el]);
-  return aspect;
+  return size;
+}
+
+/** Shifts the picture up by `y` px, so the model sits in the part of a full-screen stage the panels leave clear. */
+function Offset({ y }: { y: number }) {
+  const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
+  const size = useThree((s) => s.size);
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    if (y) camera.setViewOffset(size.width, size.height, 0, y, size.width, size.height);
+    else camera.clearViewOffset();
+    invalidate();
+  }, [camera, y, size.width, size.height, invalidate]);
+  return null;
 }
 
 export interface ViewerProps {
@@ -150,15 +163,20 @@ export interface ViewerProps {
   hush?: number;
   /** circle the finished model once */
   sweep?: boolean;
+  /** px of the view covered by panels at the top and bottom: the model is framed in what is left */
+  inset?: { top: number; bottom: number };
   paint?: number;
   label: string;
 }
 
-export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, paint = 0, label }: ViewerProps) {
+export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, inset, paint = 0, label }: ViewerProps) {
   const age = project.age;
   const still = useStill();
   const wrap = useRef<HTMLDivElement>(null);
-  const aspect = useAspect(wrap);
+  const size = useSize(wrap);
+  const clear = Math.max(size.h * 0.4, size.h - (inset?.top ?? 0) - (inset?.bottom ?? 0));
+  const aspect = Math.max(0.4, size.w / size.h);
+  const offsetY = ((inset?.bottom ?? 0) - (inset?.top ?? 0)) / 2;
   const whole = useMemo(() => frameOf(project, leg), [project, leg]);
   const built = useMemo(() => {
     const upto = Array.from({ length: Math.max(1, Math.min(shown, project.placed.length)) }, (_, i) => i);
@@ -166,7 +184,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   }, [project, leg, shown]);
   // frame what is built so far (with room for the next tiles), pulling back as the build grows
   const span = Math.max(2.2, built.size * 1.1, Math.min(whole.size, built.size + 1.2));
-  const distance = fitDistance(span, aspect, Math.min(span, built.height + 0.6));
+  const distance = fitDistance(span, aspect, Math.min(span, built.height + 0.6), clear / size.h);
   const focus = useMemo(() => {
     const mid = built.middle.clone().sub(whole.center);
     mid.y = Math.min(built.height * 0.38, 2.4);
@@ -209,6 +227,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
           />
         )}
         <CameraRig target={focus} distance={distance} focusKey={stepKey} sweep={sweep} still={still} />
+        <Offset y={offsetY} />
         <Spin on={autoRotate} />
         <Counter />
       </Canvas>

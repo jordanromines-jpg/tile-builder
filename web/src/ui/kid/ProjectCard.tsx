@@ -19,10 +19,10 @@ export interface ProjectCardProps {
 
 export function Stars({ n }: { n: number }) {
   return (
-    <span className="flex gap-0.5" aria-hidden="true">
+    <span className="flex shrink-0 gap-0.5" aria-hidden="true">
       {[1, 2, 3].map((i) => (
         <span key={i} className={i <= n ? "" : "opacity-25"}>
-          <TilePicture shape="tri-equilateral" colour={i <= n ? "yellow" : undefined} px={22} />
+          <TilePicture shape="tri-equilateral" colour={i <= n ? "yellow" : undefined} px={26} />
         </span>
       ))}
     </span>
@@ -36,19 +36,19 @@ export function ProjectCard({ title, picture, stars, state, missing = [], resume
       type="button"
       aria-label={label}
       onClick={onPress}
-      className="kid group flex w-[260px] shrink-0 flex-col overflow-hidden rounded-lg border-2 border-line bg-surface-2 text-left transition-transform duration-100 active:scale-[0.97]"
+      className="kid lift soft group flex w-[300px] shrink-0 snap-start flex-col overflow-hidden rounded-[28px] border-2 border-line bg-surface-2 text-left"
     >
-      <span className="relative block aspect-[4/3] w-full bg-surface-3">
+      <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-t-[26px] bg-stage">
         {picture}
         {resume ? (
-          <span className="absolute left-2 top-2 rounded-full bg-accent px-3 py-0.5 font-kid text-[17px] font-bold text-accent-ink">
+          <span className="soft absolute left-3 top-3 rounded-full bg-accent px-4 py-1 font-kid text-[19px] font-bold text-accent-ink">
             {S.kid.step(resume, 0).split(" of")[0]}
           </span>
         ) : null}
       </span>
-      <span className="flex flex-col gap-2 p-3">
+      <span className="flex flex-1 flex-col gap-2 px-4 pb-4 pt-3">
         <span className="flex items-start justify-between gap-2">
-          <span className="font-display text-[26px] font-semibold leading-tight text-ink-1">{title}</span>
+          <span className="font-display text-[28px] font-bold leading-tight text-ink-1">{title}</span>
           <Stars n={stars} />
         </span>
         {state && <BuildBadge state={state} missing={missing} />}

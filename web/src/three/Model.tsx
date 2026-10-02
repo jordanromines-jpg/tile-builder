@@ -6,12 +6,12 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { ShapeId } from "../engine/catalog";
-import { asBuilt, rotOf, worldPolygon } from "../engine/geometry";
+import { worldPolygon } from "../engine/geometry";
 import type { Project } from "../engine/types";
 import { DROP_S, DROP_S_REDUCED, fade, GHOST_S, mulberry, snap, stepProgress } from "./anim";
-import { partsOf } from "./parts";
-import { BASE_OPACITY, makeTileMaterials, tileGroup, type TileMaterials } from "./TileMesh";
-import { buildGeometry, cssColour, tileQuaternion } from "./tile";
+import { placeTile } from "./buildScene";
+import { BASE_OPACITY, type TileMaterials } from "./TileMesh";
+import { buildGeometry, cssColour } from "./tile";
 
 const BLACK = new THREE.Color(0, 0, 0);
 
@@ -47,25 +47,15 @@ function buildTiles(project: Project, leg: number, instead: Record<number, Shape
   ghostMat ??= new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.3, depthWrite: false, side: THREE.DoubleSide });
   ghostMat.color.copy(accent);
   return project.placed.map((raw, i) => {
-    const p = asBuilt(raw, instead[i]);
-    const mats = makeTileMaterials(p.colour ?? "blue");
-    const group = new THREE.Group();
+    const { group, mats, pT, qT, parts } = placeTile(raw, leg, instead[i]);
     const ghost = new THREE.Group();
-    for (const part of partsOf(raw.shape, raw.role === "roof" ? undefined : instead[i])) {
-      const shape = raw.role === "roof" ? p.shape : part.shape;
-      const holder = tileGroup(shape, leg, mats);
-      holder.position.set(part.at[0], part.at[1], 0);
-      if (part.flip) holder.rotation.z = Math.PI;
-      group.add(holder);
-      const geo = buildGeometry(shape, leg);
+    for (const part of parts) {
+      const geo = buildGeometry(part.shape, leg);
       const g = new THREE.Mesh(geo.glass ?? geo.frame, ghostMat!);
-      g.position.copy(holder.position);
-      g.rotation.copy(holder.rotation);
+      g.position.set(part.at[0], part.at[1], 0);
+      if (part.flip) g.rotation.z = Math.PI;
       ghost.add(g);
     }
-    const [rx, ry] = rotOf(p, leg);
-    const qT = tileQuaternion(rx, ry);
-    const pT = new THREE.Vector3(...p.pos);
     // start just outside the tile's face and above, a little tilted: it glides in along an arc
     const n = new THREE.Vector3(0, 0, 1).applyQuaternion(qT);
     if (n.y < -0.5) n.negate();

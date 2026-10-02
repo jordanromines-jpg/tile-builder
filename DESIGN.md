@@ -30,7 +30,8 @@ in every state is the design page, `#/design` in the app. Shaped after `web-agen
 
 ### Light and dark
 
-Light is a warm table (`surface #FBF8F3`); dark is a night-time room (`surface #15181F`). The app follows the iPad's
+Light is a toy box (sprint 2): warm paper (`surface #FFF7EC`) over a wooden table; dark is an evening playroom
+(`surface #1C1A24`) over walnut. The app follows the iPad's
 setting until a grown-up picks one in Settings; the choice is stored per device and set before the first paint
 (`web/src/ground.ts`). Both themes pass every contrast pair.
 
@@ -40,9 +41,9 @@ setting until a grown-up picks one in Settings; the choice is stored per device 
 |---|---|---|
 | Surfaces | `surface`, `surface-2` (cards), `surface-3` (wells), `line` | Three steps, no more |
 | Ink | `ink-1`, `ink-2`, `ink-3` | `ink-1` 7:1 on every surface; `ink-2` 4.5:1; `ink-3` only on `surface` and `surface-2` |
-| Accent | `accent`, `accent-ink`, `accent-soft`, `focus` | One teal. The main action, the chosen chip, the focus ring. Never a tile colour |
+| Accent | `accent`, `accent-ink`, `accent-soft`, `focus` | One sunny burnt orange (`#BF5409` light, `#FF9B45` dark). The main action, the chosen chip, the focus ring. Never a tile colour |
 | Badges | `can-bg`/`can-ink`, `wait-bg`/`wait-ink` | "You can build it!" and "Need 2 more"; always with a shape (✓, the missing tiles) |
-| 3D | `stage`, `ground` | The sky and floor of the model |
+| 3D | `stage`, `ground` | The warm light behind the model and the wood of the table (shelf planks too) |
 | Tiles | `tile-{red,orange,yellow,green,blue,purple}`, each with `-rim` | Match the plastic. The rim is 3:1 on the surfaces |
 
 `python3 -m design.tokens check` fails the build when a pair misses its ratio. No red for errors on the kid side:
@@ -62,7 +63,7 @@ reading is never required. Fonts are subset to Latin and cached for offline use.
 ### Space, size and shape
 
 - Spacing `s-1`..`s-9`: 4, 8, 12, 16, 24, 32, 48, 64, 96 px.
-- Kid targets: 88 px (3–5), 80 (6–8), 64 (9–10); the one main action is 104; 24 px between kid targets; a 12 px
+- Kid targets: 88 px (3–5), 80 (6–8), 64 (9–10); the one main action is 112; 24 px between kid targets; a 12 px
   invisible hit slop; nothing a child needs within 32 px of the bottom edge or the safe-area insets. Grown-up targets
   44 px (`kids-and-ipad.md`; Apple HIG).
 - Radii: `r-tile` 6 (tile pictures), `r-sm` 12, `r-md` 20, `r-lg` 32 (cards, buttons), `r-full`.
@@ -100,16 +101,22 @@ The tiles are what a child matches on the table, so their pictures are the most 
 - **The name** is the third: every chip that a child can tap says "4 red squares".
 - A project asks for shapes, not colours. Colour is a preference, never a requirement: "any colour" chips are drawn in
   `surface-3` with an `ink-3` rim.
-- In 3D (`web/src/three/tile.ts`): a solid frame, a translucent face at 0.42, and a faint moulded ridge, from the
-  prototype in `docs/prototype/`.
+- In 3D (`web/src/three/tile.ts`, sprint 2): a thick glossy frame with rounded, bevelled corners (clear-coated
+  plastic), a clear tinted face at 0.62 with the moulded diamond texture as a bump map, and chrome rivets at the
+  corners. Lit by a room environment made on the device, on a wooden table with soft contact shadows.
+- **3D pictures** (`web/src/three/snapshots.ts`): tile chips and project cards show the same 3D tiles, drawn once each
+  by one shared offscreen renderer and kept in memory. The flat drawing above is the fallback while a picture is drawn,
+  and where WebGL is missing.
 
 ## Components
 
 Kid side first, then the grown-ups'. Every one is on `#/design` in every state, both themes, at each age.
 
 ### Kid button (`KidButton`)
-A picture first, the label under it in Andika. Sizes by age (88/80/64) or 104 for the main action. Tones: accent (the
-one main action), plain, soft. States: pressed (scale 0.95 within a frame), selected (a focus-coloured ring), off (40%).
+A picture first, the label under it in Andika. Sizes by age (88/80/64) or 112 for the main action. An icon-only button
+is round; a labelled one has radius 24 (32 for the main action); all have a soft shadow. Tones: accent (the one main
+action), plain, soft. States: pressed (down 2 px and scale 0.97 within a frame), selected (a focus-coloured ring), off
+(40%).
 With `speak`, a tap says its label.
 
 ### Kid bar (`KidBar`)
@@ -126,15 +133,17 @@ age on tap.
 Round picture chips, All and the eight themes, at the age's target size. Speaks the theme on tap.
 
 ### Project card (`ProjectCard`)
-The project's picture (drawn from its own tiles, D24), its title, 1–3 stars drawn as yellow triangle tiles, its build
-badge, and "Step 4" when half built. One tap target; it goes straight into build mode.
+The finished project in 3D on the table (its SVG drawing until that is ready, D24), its title, 1–3 stars drawn as
+yellow triangle tiles, its build badge, and "Step 4" when half built. 300 px wide, radius 28, a soft shadow; it lifts
+and tilts a little when pressed. One tap target; it goes straight into build mode.
 
 ### Build badge (`BuildBadge`)
 `can`: ✓ and "You can build it!" on `can-bg`. `swap`: ⇄ and "You can build it with a swap" on `accent-soft`. `need`:
 "Need 3 more" and the missing tiles drawn with counts, on `wait-bg`. Never a padlock (`kids-app-design.md`, section 2).
 
 ### Shelf (`Shelf`)
-A row of cards that scrolls by swipe, with a ▶ button at the age's target size for a child who taps.
+A row of cards standing on a wooden plank, scrolling by swipe with snap, and a round ▶ button at the age's target size
+for a child who taps.
 
 ### Step dots (`StepDots`)
 One dot a step: done ones filled, this one large and ringed, the rest hollow. Countable; never a progress bar. For 9–10
@@ -149,9 +158,10 @@ The tile you're short of → the one that stands in for it (marked ⇄), and the
 ### Empty state (`EmptyState`)
 Two "any colour" tiles and a line, which a tap on the picture says aloud.
 
-### Celebration (`Celebration`)
-A hexagon of six triangle tiles that turns into place: one moving element, 1.1 s, the same every time. A tap skips it;
-with reduced motion it is the still hexagon. No sound, no points.
+### Celebration (`TileConfetti`; `Celebration` stays on the design page)
+At the end of a build the view circles the finished model once while little tiles shower down, 3.6 s, the same every
+time; then a photo card of the model with "Put the iPad down…" and Back to the shelf. A tap skips it; with reduced
+motion nothing falls or turns. No sound, no points.
 
 ### Tile chip (`TileChip`)
 See Tile pictures. Sizes 48, 72, 104 px; a count beside it in Fredoka; ⇄ when it stands in for another.

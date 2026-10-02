@@ -1,4 +1,4 @@
-/* The kid button (plan key 2o): a picture first, the label under it, big enough for the age (88/80/64 px, or 104 for
+/* The kid button (plan key 2o): a picture first, the label under it, big enough for the age (88/80/64 px, or 112 for
    the one main action), a 12 px hit slop, pressed within a frame, and with `speak` it says its label on tap. */
 import type { ReactNode } from "react";
 import { say } from "../../speech/say";
@@ -21,8 +21,8 @@ export interface KidButtonProps {
 }
 
 const TONE = {
-  accent: "bg-accent text-accent-ink",
-  plain: "bg-surface-2 text-ink-1 border-2 border-line",
+  accent: "bg-accent text-accent-ink soft",
+  plain: "bg-surface-2 text-ink-1 border-2 border-line soft",
   soft: "bg-accent-soft text-ink-1",
 };
 
@@ -40,7 +40,7 @@ export function KidButton({ label, icon, onPress, primary, showLabel = true, spe
         if (speak) say(sayText ?? label);
         onPress();
       }}
-      className={`kid relative inline-flex flex-col items-center justify-center gap-1 rounded-lg px-4 py-2 font-kid font-bold transition-transform duration-100 ease-out active:scale-95 disabled:opacity-40 aria-pressed:ring-4 aria-pressed:ring-focus ${TONE[tone]} ${className}`}
+      className={`kid press relative inline-flex flex-col items-center justify-center gap-1 ${showLabel ? (primary ? "rounded-[32px]" : "rounded-[24px]") : "rounded-full"} px-4 py-2 font-kid font-bold disabled:opacity-40 aria-pressed:ring-4 aria-pressed:ring-focus ${TONE[tone]} ${className}`}
       style={{ minWidth: size, minHeight: size, fontSize: v.label, lineHeight: 1.1 }}
     >
       <span aria-hidden="true" className="absolute -inset-3" />

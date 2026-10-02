@@ -22,3 +22,4 @@ web/.crop.mjs
 web/.sheet.mjs
 web/.serve.sh
 web/.look.mjs
+web/.look-done.mjs

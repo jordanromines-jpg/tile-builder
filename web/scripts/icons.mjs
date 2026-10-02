@@ -1,4 +1,4 @@
-// The app's icons, drawn as SVG from the tile shapes in the accent colour and rasterised with sharp (a dev dependency).
+// The app's icons, drawn as SVG from the tile shapes in the tile colours on the toy-box paper and rasterised with sharp (a dev dependency).
 // Run once with `npm run icons`; the PNGs are committed. A house of three tiles: two squares and a triangle roof.
 import sharp from "sharp";
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -7,9 +7,10 @@ import { fileURLToPath } from "node:url";
 const out = fileURLToPath(new URL("../public/icons/", import.meta.url));
 mkdirSync(out, { recursive: true });
 
-const SURFACE = "#FBF8F3";
-const ACCENT = "#0B6E78";
-const SOFT = "#DCEFF0";
+const SURFACE = "#FFF7EC";
+const SOFT = "#D9B48A";
+const RED = "#E5322E";
+const BLUE = "#2A78DD";
 const YELLOW = "#F4C51B";
 
 // one tile: a translucent face and a solid rim, as the 3D tiles look
@@ -24,8 +25,8 @@ function svg({ round, inset }) {
   <rect width="512" height="512" rx="${round ? 112 : 0}" fill="${SURFACE}"/>
   <g transform="translate(${t} ${t}) scale(${s})">
     <rect x="40" y="430" width="432" height="18" rx="9" fill="${SOFT}"/>
-    ${tile("96,420 248,420 248,268 96,268", ACCENT)}
-    ${tile("264,420 416,420 416,268 264,268", ACCENT)}
+    ${tile("96,420 248,420 248,268 96,268", RED)}
+    ${tile("264,420 416,420 416,268 264,268", BLUE)}
     ${tile("88,252 424,252 256,72", YELLOW)}
   </g>
 </svg>`;

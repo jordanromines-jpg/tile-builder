@@ -7,11 +7,13 @@ export const ELEVATION = (26 * Math.PI) / 180;
 export const FOV = 32;
 
 /** How far back the camera stands to fit a model `size` across and `height` tall (its bounding sphere, with a margin)
-    in a view of `aspect`. */
-export function fitDistance(size: number, aspect: number, height = size): number {
+    in a view of `aspect` (width over full height). */
+export function fitDistance(size: number, aspect: number, height = size, clear = 1): number {
   const r = (Math.sqrt(2 * size * size + height * height) / 2) * 0.72 + 0.25;
-  const vfov = (FOV * Math.PI) / 180;
-  const hfov = 2 * Math.atan(Math.tan(vfov / 2) * aspect);
+  const t = Math.tan((FOV * Math.PI) / 360);
+  // `clear`: the share of the view's height left clear of panels
+  const vfov = 2 * Math.atan(t * clear);
+  const hfov = 2 * Math.atan(t * aspect);
   const fov = Math.min(vfov, hfov);
   return (r / Math.sin(fov / 2)) * 1.02;
 }

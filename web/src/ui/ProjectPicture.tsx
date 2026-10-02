@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { DEFAULT_LEG, type ShapeId } from "../engine/catalog";
 import { asBuilt, worldPolygon, type V3 } from "../engine/geometry";
 import type { Project } from "../engine/types";
+import { useProjectSnapshot } from "./useSnapshot";
 
 const AZ = 0.5;
 const EL = 0.55;
@@ -38,7 +39,15 @@ export function drawProject(project: Project, shown = project.placed.length, leg
   return { drawn, box };
 }
 
+/** The finished project as the build stage draws it (a 3D picture on the table), with the SVG until that is ready. */
 export function ProjectPicture({ project, shown, label }: { project: Project; shown?: number; label?: string }) {
+  const url = useProjectSnapshot(project);
+  if (url && shown === undefined)
+    return <img src={url} alt={label ?? ""} aria-hidden={label ? undefined : true} className="block h-full w-full object-cover" draggable={false} data-snapshot="" />;
+  return <ProjectDrawing project={project} shown={shown} label={label} />;
+}
+
+export function ProjectDrawing({ project, shown, label }: { project: Project; shown?: number; label?: string }) {
   const { drawn, box } = useMemo(() => drawProject(project, shown), [project, shown]);
   // fit a 4:3 frame round the model with a margin
   const pad = Math.max(box.w, box.h) * 0.12 + 0.3;
