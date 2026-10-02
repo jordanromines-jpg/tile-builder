@@ -11,6 +11,7 @@ import { GrownupRows } from "./design/GrownupRows";
 import { KidRows } from "./design/KidRows";
 import { Row } from "./design/Row";
 import { TileTurntable } from "./design/TileTurntable";
+import { ViewerRow } from "./design/ViewerRow";
 
 export function Design() {
   const [ground, setGround] = useState<Ground>(currentTheme());
@@ -75,6 +76,8 @@ export function Design() {
       <Row title="3D tiles" note="One tile of each shape, turning slowly; still under reduced motion.">
         <TileTurntable paint={paint} />
       </Row>
+
+      <ViewerRow paint={paint} />
 
       <KidRows />
 
