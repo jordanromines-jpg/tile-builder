@@ -2,6 +2,7 @@
    #/  the Library · #/build/:pid · #/done/:pid · #/grownups (+ /tiles, /settings) · #/design · #/thumb/:pid */
 import { createHashHistory, createRootRoute, createRoute, createRouter, Outlet } from "@tanstack/react-router";
 import { Placeholder } from "./screens/Placeholder";
+import { Design } from "./screens/Design";
 import { S } from "./strings";
 
 const root = createRootRoute({ component: () => <Outlet /> });
@@ -12,7 +13,7 @@ const done = createRoute({ getParentRoute: () => root, path: "/done/$pid", compo
 const grownups = createRoute({ getParentRoute: () => root, path: "/grownups", component: () => <Placeholder name={S.screens.grownups} /> });
 const tiles = createRoute({ getParentRoute: () => root, path: "/grownups/tiles", component: () => <Placeholder name={S.screens.tiles} /> });
 const settings = createRoute({ getParentRoute: () => root, path: "/grownups/settings", component: () => <Placeholder name={S.screens.settings} /> });
-const design = createRoute({ getParentRoute: () => root, path: "/design", component: () => <Placeholder name={S.screens.design} /> });
+const design = createRoute({ getParentRoute: () => root, path: "/design", component: Design });
 const thumb = createRoute({ getParentRoute: () => root, path: "/thumb/$pid", component: () => <Placeholder name={S.screens.thumb} /> });
 
 const tree = root.addChildren([library, build, done, grownups, tiles, settings, design, thumb]);

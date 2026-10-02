@@ -6,6 +6,8 @@ let show: (() => void) | null = null;
 let pending = false;
 
 export function showOfflineNote(): void {
+  // browser tests and their screenshots never see it
+  if (navigator.webdriver) return;
   if (show) show();
   else pending = true;
 }
