@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-02
 
+- `2026-10-02-tile-builder.md`: D22, Jordan asked to build end to end, so G2 no longer stops the build; D23, Playwright 1.56.1; a build-log row for PR 2.2. (#4)
 - `2026-10-02-tile-builder.md`: a build-log row for PR 2.1 (2a to 2d), with what changed from key 2a. (#3)
 - `2026-10-02-tile-builder.md`: G1 passed; D17, the name is Tile Steps (Jordan: "Tile Steps, keep going."); Q2 settled; a build-log row for PR 1.1. (#2)
 - `2026-10-02-tile-builder.md`: Q1 and key 4a take the Magna-Tiles tall triangle measured by an independent project (143 mm ± 5, 1.877 units; `docs/research/tiles.md` [15]); a start row for PR 1.1. (#2)

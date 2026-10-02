@@ -1,0 +1,53 @@
+# Every pull request and push: the tokens, the Python tests, the types, the unit tests, the projects, file sizes,
+# a scan for keys, the build and the browser tests.
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: npm ci
+      - name: tokens in step and every pair passes
+        run: python3 -m design.tokens check
+        working-directory: .
+      - name: python tests
+        run: pip install -r design/requirements.txt && python3 -m pytest -q tests
+        working-directory: .
+      - run: npm run check
+      - run: npm test
+      - run: npm run check:projects
+      - run: npm run size
+      - name: no keys in the repo
+        working-directory: .
+        run: |
+          if git grep -nE '21st_sk_|AKIA[0-9A-Z]{16}' -- . ':!.github/workflows/*'; then echo "a key is committed"; exit 1; fi
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: web/playwright-report
+          retention-days: 7
