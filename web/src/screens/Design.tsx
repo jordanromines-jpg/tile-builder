@@ -7,6 +7,7 @@ import { applyTheme, currentTheme, type Theme as Ground } from "../ground";
 import { ShapeIcon } from "../ui/ShapeIcon";
 import { ThemeIcon } from "../ui/ThemeIcon";
 import { TileChip } from "../ui/TileChip";
+import { GrownupRows } from "./design/GrownupRows";
 import { KidRows } from "./design/KidRows";
 import { Row } from "./design/Row";
 import { TileTurntable } from "./design/TileTurntable";
@@ -76,6 +77,8 @@ export function Design() {
       </Row>
 
       <KidRows />
+
+      <GrownupRows />
     </main>
   );
 }
