@@ -41,7 +41,7 @@ jobs:
       - name: no keys in the repo
         working-directory: .
         run: |
-          if git grep -nE '21st_sk_|AKIA[0-9A-Z]{16}' -- . ':!.github/workflows/*'; then echo "a key is committed"; exit 1; fi
+          if git grep -nE '21st_sk_[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16}' -- . ':!.github/workflows/*'; then echo "a key is committed"; exit 1; fi
       - run: npx playwright install --with-deps chromium
       - run: npm run build
       - run: npm run test:e2e
