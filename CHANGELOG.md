@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.2.0 · 2 Oct 2026
+
+101 more projects, 52 to 159 tiles (181 in all).
+
+- **Castles**: Fort Knock-Knock, Baron Von Burp's Fortress, the Castle That Ate Itself, the Tower of Terrible Jokes,
+  the Doughnut Fortress and more.
+- **Homes**: Grandma's Secret Disco Bungalow, the Hotel for Hiccupping Hippos, the Sock Drawer Skyscraper, the School
+  of No Homework and more.
+- **Things that go and space**: the Bus Station of Endless Waiting, the Rocket Ship Fuelled by Beans, the Lunar
+  Laundromat, the UFO Car Park and more.
+- **Animals and gardens**: the Giraffe Elevator (143 tiles), the Crocodile Dentist, the Sloth Speed Racing Club, the
+  Gnome Parliament and more.
+- **Towers, bridges and patterns**: the Tower of Absolutely Everything (159 tiles), the Rainbow Ziggurat of Zebras, the
+  Maze of Mild Confusion, Domino City and more.
+- Each is written as a plan of parts (blocks of storeys, towers, walls, bridge decks, platforms, roofs, battlements,
+  flags) for a layout kit (`web/src/projects/kit.ts`) that places the tiles and writes the steps layer by layer. Every
+  one passes the checker and builds from two 100-piece sets.
+
 ## 2.1.0 · 2 Oct 2026
 
 More to build.
