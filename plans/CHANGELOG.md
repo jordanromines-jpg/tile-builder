@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-02
 
+- `2026-10-02-tile-builder.md`: a build-log row for PR 6.1; the frame-time check moves to 7g. (#17)
 - `2026-10-02-tile-builder.md`: D26, phase 5 in one pull request and the mockup PRs folded into the screens; D27, Python kept to the design tooling; a build-log row for phase 5. (#14)
 - `2026-10-02-tile-builder.md`: D25, phase 4 in one pull request and before the screens; build-log rows for phase 4 and checkpoint C2. (#11)
 - `2026-10-02-tile-builder.md`: build-log rows for PR 2.6 and checkpoint C1; 2u moves to 8c. (#8)
