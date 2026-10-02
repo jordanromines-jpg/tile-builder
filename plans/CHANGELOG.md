@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-02
 
+- `2026-10-02-tile-builder.md`: build-log rows for PR 2.6 and checkpoint C1; 2u moves to 8c. (#8)
 - `2026-10-02-tile-builder.md`: a build-log row for PR 2.5. (#7)
 - `2026-10-02-tile-builder.md`: D24, project pictures drawn as SVG at run time; a build-log row for PR 2.4. (#6)
 - `2026-10-02-tile-builder.md`: a build-log row for PR 2.3; 4a and 2n came forward into it. (#5)
