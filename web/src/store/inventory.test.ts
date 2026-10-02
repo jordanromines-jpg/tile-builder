@@ -26,3 +26,15 @@ describe("changing the tiles", () => {
     expect(effectiveLeg(inv)).toBe(1.867);
   });
 });
+
+describe("two sets", () => {
+  it("adds a second set's pieces to the counts and joins the brands", async () => {
+    const { addSet, applySet } = await import("./inventory");
+    const { setById } = await import("../engine/sets");
+    const one = applySet({ brands: [], tallLeg: null, counts: {} }, setById("magna-100")!);
+    const both = addSet(one, setById("picasso-100")!);
+    expect(both.counts.square?.any).toBe(50 + 46);
+    expect(Object.values(both.counts).reduce((n, c) => n + (c?.any ?? 0), 0)).toBe(200);
+    expect(both.brands).toEqual(["magna", "picasso"]);
+  });
+});

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.1.0 · 2 Oct 2026
+
+More to build.
+
+- **50 new projects** with silly names: 6 for 3–5 (a silly snail in a hat, a burping frog), 9 for 6–8 (the burping
+  volcano, Captain Pickle's pirate ship), 12 for 9–10 (Sir Sneezealot's castle, the stinky cheese lighthouse) and 23
+  for the new 11–16 band.
+- **11–16**: big builds of 60 to 200 tiles, up to six tiles a step: the Grand Hotel for Retired Pirates (154 tiles),
+  the Ultimate Sock Monster Skyscraper, the Castle of Infinite Snacks, the Very Important Bridge to Nowhere and more.
+- **Two sets at once**: on the grown-ups' Tiles page, "Add this set too" adds a second set to the first, so two
+  100-piece sets count as 200. Every 11–16 project builds from two Magna-Tiles 100 or two PicassoTiles 100.
+
 ## 2.0.0 · 2 Oct 2026
 
 A new look and feel (plans/2026-10-02-sprint-2.md).

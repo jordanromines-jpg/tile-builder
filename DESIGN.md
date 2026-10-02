@@ -135,8 +135,8 @@ Along the top, never the bottom: Back to the shelf at the left, Hear again besid
 A small lock, 44 px: a grown-up's size on purpose. A tap says "This door is for grown-ups." and opens the gate.
 
 ### Age picker (`AgePicker`)
-Three picture buttons: stacks of one, two and three tiles with 3–5, 6–8, 9–10. Chosen: accent edge and ring. Speaks the
-age on tap.
+Four picture buttons: stacks of one to four tiles with 3–5, 6–8, 9–10 and 11–16 (2.1; it uses the 9–10 sizes and
+controls). Chosen: accent edge and ring. Speaks the age on tap when the voice is on.
 
 ### Theme filter (`ThemeFilter`)
 Round picture chips, All and the eight themes, at the age's target size. Speaks the theme on tap.

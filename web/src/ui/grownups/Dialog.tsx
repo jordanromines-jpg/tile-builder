@@ -37,6 +37,7 @@ export function ConfirmDialog({
   onConfirm,
   danger,
   typeWord,
+  also,
 }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
@@ -46,6 +47,8 @@ export function ConfirmDialog({
   onConfirm: () => void;
   danger?: boolean;
   typeWord?: string;
+  /** a second way to go on, beside the main one */
+  also?: { label: string; onClick: () => void };
 }) {
   const [typed, setTyped] = useState("");
   const ready = !typeWord || typed.trim().toUpperCase() === typeWord;
@@ -75,6 +78,17 @@ export function ConfirmDialog({
         <Button kind="line" onClick={() => onOpenChange(false)}>
           Cancel
         </Button>
+        {also && (
+          <Button
+            kind="line"
+            onClick={() => {
+              also.onClick();
+              onOpenChange(false);
+            }}
+          >
+            {also.label}
+          </Button>
+        )}
         <Button
           kind={danger ? "danger" : "lit"}
           disabled={!ready}
