@@ -1,5 +1,6 @@
-/* A project's picture (D24): drawn from its own tiles as SVG, from the front, a little to the right and above, far tiles
-   first so near ones sit on top. No build step, sharp at any size, and it follows the theme's colours. */
+/* A project's picture. Since sprint 2 it is the 3D picture drawn ahead of time (src/pictures.ts, superseding D24); the
+   SVG below stays for part-built projects and as the fallback: drawn from the project's own tiles, from the front, a
+   little to the right and above, far tiles first so near ones sit on top. */
 import { useMemo, useState } from "react";
 import { DEFAULT_LEG, type ShapeId } from "../engine/catalog";
 import { asBuilt, worldPolygon, type V3 } from "../engine/geometry";

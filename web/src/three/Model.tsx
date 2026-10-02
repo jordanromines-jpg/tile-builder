@@ -8,9 +8,10 @@ import * as THREE from "three";
 import type { ShapeId } from "../engine/catalog";
 import { worldPolygon } from "../engine/geometry";
 import type { Project } from "../engine/types";
-import { DROP_S, DROP_S_REDUCED, fade, GHOST_S, mulberry, snap, stepProgress } from "./anim";
+import { DROP_S, DROP_S_REDUCED, fade, GHOST_S, GLOW_S, mulberry, snap, stepProgress } from "./anim";
 import { placeTile } from "./buildScene";
-import { BASE_OPACITY, type TileMaterials } from "./TileMesh";
+import { BASE_OPACITY, releaseTiles, type TileMaterials } from "./TileMesh";
+import { releaseTextures } from "./textures";
 import { buildGeometry, cssColour } from "./tile";
 
 const BLACK = new THREE.Color(0, 0, 0);
@@ -44,7 +45,7 @@ let ghostMat: THREE.MeshBasicMaterial | null = null;
 
 function buildTiles(project: Project, leg: number, instead: Record<number, ShapeId>, accent: THREE.Color): TileObj[] {
   const rand = mulberry(7);
-  ghostMat ??= new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.3, depthWrite: false, side: THREE.DoubleSide });
+  ghostMat ??= new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.3, depthWrite: false, side: THREE.DoubleSide, forceSinglePass: true });
   ghostMat.color.copy(accent);
   return project.placed.map((raw, i) => {
     const { group, mats, pT, qT, parts } = placeTile(raw, leg, instead[i]);
@@ -86,7 +87,7 @@ export interface ModelProps {
 export function Model({ project, shown, leg, instead = {}, settled = 0, current = [], still = false, paint = 0 }: ModelProps) {
   const invalidate = useThree((s) => s.invalidate);
   const key = JSON.stringify(instead);
-  const accent = useMemo(() => new THREE.Color(cssColour("accent", "#F28C28")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
+  const accent = useMemo(() => new THREE.Color(cssColour("accent", "#BF5409")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const tiles = useMemo(() => buildTiles(project, leg, instead, accent), [project, leg, key, paint]);
   const frame = useMemo(() => frameOf(project, leg), [project, leg]);
@@ -122,13 +123,16 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
 
   useFrame((state, dt) => {
     const p = progress.current;
-    const waiting = !still && (performance.now() - since.current) / 1000 < GHOST_S;
+    const age = (performance.now() - since.current) / 1000;
+    const waiting = !still && age < GHOST_S;
+    // the new tiles' glow and the ghost pulse for a few seconds, then hold still, so an open step costs no frames
+    const pulsing = !still && age < GLOW_S;
     const startable = waiting ? Math.min(shown, Math.min(...[...lit.current, shown])) : shown;
     const moving = stepProgress(p, shown, Math.min(dt, 0.05), still ? DROP_S_REDUCED : DROP_S, startable);
     const t = state.clock.elapsedTime;
-    const pulse = still ? 0.28 : 0.2 + 0.12 * Math.sin(t * Math.PI * 2 * 0.7);
+    const pulse = pulsing ? 0.16 + 0.1 * Math.sin(t * Math.PI * 2 * 0.7) : 0.16;
     const quiet = lit.current.size > 0 && shown < tiles.length;
-    if (ghostMat) ghostMat.opacity = still ? 0.28 : 0.18 + 0.14 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2 * 1.1));
+    if (ghostMat) ghostMat.opacity = pulsing ? 0.18 + 0.14 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2 * 1.1)) : 0.28;
     tiles.forEach((tile, i) => {
       const k = p[i] ?? 0;
       const mine = lit.current.has(i);
@@ -141,14 +145,15 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
       tile.group.position.y += Math.sin(Math.min(1, k) * Math.PI) * 0.35;
       tile.group.quaternion.copy(tile.qS).slerp(tile.qT, Math.min(1, e));
       const f = fade(k);
+      // frames stay transparent (at opacity 1 it looks the same): flipping the flag would need a new shader
       tile.mats.frame.opacity = BASE_OPACITY.frame * f;
-      tile.mats.frame.transparent = f < 1;
       tile.mats.glass.opacity = BASE_OPACITY.glass * f * (quiet && !mine ? 0.7 : 1);
+      // the new tiles glow in their own colour (an orange glow would tint a blue tile purple)
       const glow = mine && k >= 1;
-      tile.mats.frame.emissive.copy(glow ? accent : BLACK);
+      tile.mats.frame.emissive.copy(glow ? tile.mats.frame.color : BLACK);
       tile.mats.frame.emissiveIntensity = glow ? pulse : 0;
     });
-    if (moving || waiting || (lit.current.size && !still)) invalidate();
+    if (moving || waiting || (lit.current.size && pulsing)) invalidate();
   });
 
   return (
@@ -156,4 +161,13 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
       <primitive object={root} />
     </group>
   );
+}
+
+/** Lets go of what every stage shares (the tile shapes, the ghost, the chrome and the textures); used again, three makes
+    them afresh. Called when a stage closes. */
+export function releaseShared() {
+  ghostMat?.dispose();
+  ghostMat = null;
+  releaseTiles();
+  releaseTextures();
 }

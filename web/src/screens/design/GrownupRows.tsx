@@ -14,7 +14,7 @@ import { Row } from "./Row";
 
 export function GrownupRows() {
   const [n, setN] = useState(14);
-  const [voice, setVoice] = useState(true);
+  const [voice, setVoice] = useState(false);
   const [theme, setTheme] = useState<"system" | "light" | "dark">("system");
   const [confirm, setConfirm] = useState(false);
   const [gate, setGate] = useState(0);
@@ -41,7 +41,7 @@ export function GrownupRows() {
           <Field label="A field" help="Help under it." defaultValue="Text" />
           <Field label="A field with a problem" error="Use a number from 0 to 999." defaultValue="lots" />
           <SettingsList title="Settings">
-            <Switch label="Read aloud" help="Steps are read aloud for 3 to 8." on={voice} onChange={setVoice} />
+            <Switch label="Read aloud" help="Off unless you turn it on. A child can always tap Hear again." on={voice} onChange={setVoice} />
             <div className="flex flex-col gap-2">
               <span className="font-bold">Theme</span>
               <Radios label="Theme" value={theme} onChange={setTheme} options={[{ value: "system", label: "Like the iPad" }, { value: "light", label: "Light" }, { value: "dark", label: "Dark" }]} />

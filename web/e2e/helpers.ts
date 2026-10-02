@@ -42,3 +42,29 @@ export async function dismissFirstRun(page: Page) {
     /* not shown */
   }
 }
+
+/** Wait until the app has saved `step` (0-based) for a project: Next saves without waiting, so a reload straight after
+    could otherwise come back one step short. Reads the app's own IndexedDB store. */
+export async function savedStep(page: Page, projectId: string, step: number) {
+  await expect
+    .poll(() =>
+      page.evaluate(
+        (id) =>
+          new Promise<number | null>((resolve) => {
+            const open = indexedDB.open("tile-steps");
+            open.onerror = () => resolve(null);
+            open.onsuccess = () => {
+              const db = open.result;
+              const get = db.transaction("progress").objectStore("progress").get(id);
+              get.onsuccess = () => {
+                resolve(get.result?.step ?? null);
+                db.close();
+              };
+              get.onerror = () => resolve(null);
+            };
+          }),
+        projectId,
+      ),
+    )
+    .toBe(step);
+}

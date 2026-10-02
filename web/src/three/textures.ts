@@ -2,6 +2,7 @@
    and a wooden tabletop. Each is made once and shared. */
 import * as THREE from "three";
 import { softwareGL } from "../gpu";
+import { cssColour } from "./tile";
 
 let face: THREE.CanvasTexture | null = null;
 const woods = new Map<string, THREE.CanvasTexture>();
@@ -43,16 +44,24 @@ export function faceBump(): THREE.Texture | null {
   return face;
 }
 
-/** A wooden tabletop: warm planks with grain, light maple by day and walnut in the dark theme. */
+/** A shade of the wood: the ground token made lighter or darker, as a CSS colour (alpha optional). */
+function shade(ground: THREE.Color, dl: number, alpha = 1): string {
+  const c = ground.clone().offsetHSL(0, 0, dl);
+  return `rgba(${Math.round(c.r * 255)},${Math.round(c.g * 255)},${Math.round(c.b * 255)},${alpha})`;
+}
+
+/** A wooden tabletop: planks with grain in shades of the `ground` token (maple by day, walnut in the dark theme). */
 export function woodTexture(dark: boolean): THREE.Texture | null {
-  const key = dark ? "dark" : "light";
+  const hex = cssColour("ground", dark ? "#4a3122" : "#d9b48a");
+  const key = `${dark ? "dark" : "light"}:${hex}`;
   const hit = woods.get(key);
   if (hit) return hit;
   const cg = canvas(1024, 1024);
   if (!cg) return null;
   const [c, g] = cg;
-  const base = dark ? ["#4a3122", "#553828", "#4f3424", "#5b3d2b"] : ["#e6c79a", "#ebcfa5", "#e1c092", "#efd6ae"];
-  const grain = dark ? "rgba(20,10,4,0.28)" : "rgba(120,80,40,0.16)";
+  const ground = new THREE.Color(hex);
+  const base = [0.04, 0.06, 0.02, 0.08].map((dl) => shade(ground, dark ? dl - 0.04 : dl));
+  const grain = shade(ground, dark ? -0.2 : -0.3, dark ? 0.3 : 0.18);
   const plank = 128;
   let seed = 11;
   const rnd = () => {
@@ -71,7 +80,7 @@ export function woodTexture(dark: boolean): THREE.Texture | null {
       for (let x = 0; x <= 1024; x += 64) g.lineTo(x, yy + Math.sin(x / (90 + rnd() * 60) + k) * (2 + rnd() * 5));
       g.stroke();
     }
-    g.fillStyle = dark ? "rgba(0,0,0,0.35)" : "rgba(90,60,30,0.25)";
+    g.fillStyle = shade(ground, -0.35, dark ? 0.35 : 0.25);
     g.fillRect(0, y, 1024, 3);
   }
   const t = new THREE.CanvasTexture(c);
@@ -81,4 +90,12 @@ export function woodTexture(dark: boolean): THREE.Texture | null {
   t.anisotropy = softwareGL() ? 1 : 8;
   woods.set(key, t);
   return t;
+}
+
+/** Lets the textures go (see releaseShared in Model.tsx); they are drawn again when next wanted. */
+export function releaseTextures() {
+  face?.dispose();
+  face = null;
+  woods.forEach((t) => t.dispose());
+  woods.clear();
 }

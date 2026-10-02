@@ -21,7 +21,7 @@ function Stack({ n }: { n: number }) {
 
 export function AgePicker({ value, onChange }: { value: Age | null; onChange: (a: Age) => void }) {
   return (
-    <div role="group" aria-label={S.kid.pickAge} className="flex flex-wrap gap-3">
+    <div role="group" aria-label={S.kid.pickAge} className="flex flex-wrap gap-6">
       {AGES.map((a, i) => (
         <button
           key={a}

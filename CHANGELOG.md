@@ -11,7 +11,8 @@ A new look and feel (plans/2026-10-02-sprint-2.md).
 - **3D pictures** on the shelf and on every tile chip.
 - **Full-screen build mode** with a step strip and a big Next.
 - **A new ending**: the view circles the model under a shower of tiles, then a photo card.
-- **The voice is off** by default; tap the speaker to hear a step.
+- **The voice is off** by default (and switched off once on iPads that had 1.0); tap the speaker to hear a step or
+  the end. A grown-up can turn reading on in Settings.
 
 ## 1.0.0 · 2 Oct 2026
 

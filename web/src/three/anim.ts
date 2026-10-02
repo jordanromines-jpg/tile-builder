@@ -29,6 +29,8 @@ export const DROP_S = 0.5;
 export const DROP_S_REDUCED = 0.15;
 /** How long a step's ghosts show before its tiles glide in. */
 export const GHOST_S = 0.45;
+/** How long a new step's tiles glow and its ghost pulses before they hold still (and the stage stops drawing). */
+export const GLOW_S = 2.5;
 /** The next tile starts when the one before is this far in. */
 export const STAGGER = 0.35;
 

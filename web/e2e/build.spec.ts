@@ -1,7 +1,7 @@
 /* Build mode and the end of a build (plan keys 7a to 7h). */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { useSet } from "./helpers";
+import { savedStep, useSet } from "./helpers";
 
 const next = (page: Page) => page.getByRole("button", { name: "Next", exact: true });
 
@@ -11,6 +11,7 @@ test("the castle steps to the end with Next; a reload mid-way returns to the sam
   await expect(page.getByRole("list", { name: "Step 1 of 25" })).toBeVisible();
   for (let i = 0; i < 10; i++) await next(page).click();
   await expect(page.getByRole("list", { name: "Step 11 of 25" })).toBeVisible();
+  await savedStep(page, "castle", 10);
   await page.reload();
   await expect(page.getByRole("list", { name: "Step 11 of 25" })).toBeVisible();
   await page.getByRole("button", { name: "Back", exact: true }).click();
@@ -42,7 +43,7 @@ test("with a Magna-Tiles 100 the castle's spires are equilateral, marked instead
   await page.getByRole("button", { name: "Start anyway" }).click();
   for (let i = 0; i < 23; i++) await next(page).click();
   await expect(page.getByRole("list", { name: "Step 24 of 25" })).toBeVisible();
-  await expect(page.getByRole("list", { name: "This step's tiles" }).getByRole("button", { name: "4 red triangles" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "This step's tiles" }).getByRole("img", { name: "4 red triangles" })).toBeVisible();
   await expect(page.getByText(/Four short triangles make a lower roof/).first()).toBeVisible();
 });
 
@@ -127,6 +128,9 @@ for (const [pid, ground] of [["fish", "light"], ["pitched-house", "light"], ["ca
     await useSet(page, "PicassoTiles PT100 Classic Starter");
     await page.goto(`#/build/${pid}`);
     await expect(next(page)).toBeVisible();
+    // a project this set is short for opens on its note: start, so the plate shows the model
+    const start = page.getByRole("button", { name: "Start anyway" });
+    if (await start.isVisible()) await start.click();
     await page.evaluate(() => document.fonts.ready);
     // the whole screen as a child sees it, 3D included: with motion reduced the model is still, and the runner's
     // software renderer draws it the same every time

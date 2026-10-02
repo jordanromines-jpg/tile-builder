@@ -33,7 +33,7 @@ Two taps from opening the app to the first step (D18). Everything else serves th
 
 | | What it does | Where we differ |
 |---|---|---|
-| EverPieces | 100+ guided 3D builds, any brand, no ads or account; 3 of its 4 "Worlds" cost money | It is led by a parent. We read every step aloud, so a 4-year-old can run it alone, and we check each project against the family's own tiles |
+| EverPieces | 100+ guided 3D builds, any brand, no ads or account; 3 of its 4 "Worlds" cost money | It is led by a parent. Every step is a picture first and can be read aloud with a tap, so a 4-year-old can run it alone, and we check each project against the family's own tiles |
 | Magniko | Keeps an inventory and shows only what you can build; community designs | It hides near misses. We show them as pictures of the missing tiles, and offer swaps (short triangles for tall ones) |
 | Tilbo (not out) | A daily build matched to age and the tiles at home; photos, stickers, streaks | It uses streaks and a daily nudge. We have none: no streaks, timers or rewards to collect |
 

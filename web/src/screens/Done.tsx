@@ -16,6 +16,7 @@ import { AgeProvider } from "../ui/kid/AgeContext";
 import { TileConfetti } from "../ui/kid/TileConfetti";
 import { ProjectPicture } from "../ui/ProjectPicture";
 import { KidButton } from "../ui/kid/KidButton";
+import { SpeakButton } from "../ui/kid/SpeakButton";
 
 export function Done() {
   const { pid } = useParams({ strict: false }) as { pid: string };
@@ -45,12 +46,16 @@ export function Done() {
             leg={effectiveLeg(inv)}
             instead={instead}
             sweep={celebrating}
+            spin={false}
             inset={{ top: 120, bottom: 230 }}
             label={S.build.model(project.title)}
           />
           {celebrating && <TileConfetti onDone={() => setCelebrating(false)} />}
         </div>
-        <div className="safe-top pointer-events-none absolute inset-x-0 top-0 flex justify-center px-4">
+        <div className="safe-top pointer-events-none absolute inset-x-0 top-0 flex items-start justify-center gap-4 px-4">
+          <span className="pointer-events-auto">
+            <SpeakButton text={`${project.done} ${S.done.putDown}`} />
+          </span>
           <h1 className="soft rounded-full bg-surface-2 px-8 py-3 text-center font-display text-[length:var(--fs-kid-display-c)] font-bold leading-tight text-ink-1">
             {project.done}
           </h1>

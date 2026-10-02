@@ -39,7 +39,7 @@ def test_every_token_says_what_it_is_for():
 def test_the_css_carries_the_theme_and_the_tailwind_names():
     css = T.tailwind(T.load())
     assert css.startswith(T.HEAD)
-    assert ':root[data-theme="dark"]{color-scheme:dark;--surface:#15181f' in css
+    assert ':root[data-theme="dark"]{color-scheme:dark;--surface:#1c1a24' in css
     assert '@media (prefers-color-scheme:dark){:root:not([data-theme="light"])' in css
     for name in ("--color-surface:var(--surface)", "--text-kid-label-a:var(--fs-kid-label-a)",
                  "--radius-md:var(--r-md)", "--font-kid:var(--kid)", "--ease-tile:var(--ease)"):
@@ -49,7 +49,7 @@ def test_the_css_carries_the_theme_and_the_tailwind_names():
 def test_kid_sizes_follow_the_brief():
     s = T.load()["scale"]
     assert [s[f"target-kid-{b}"]["value"] for b in "abc"] == ["88px", "80px", "64px"]
-    assert s["target-kid-primary"]["value"] == "104px" and s["target-parent"]["value"] == "44px"
+    assert s["target-kid-primary"]["value"] == "112px" and s["target-parent"]["value"] == "44px"
     assert s["fs-parent-small"]["value"] == "13px"
 
 

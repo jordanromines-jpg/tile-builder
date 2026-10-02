@@ -25,13 +25,13 @@ From the repo root:
 
 | Group | Tokens | Notes |
 |---|---|---|
-| Surfaces | `surface`, `surface-2`, `surface-3`, `line`, `stage`, `ground` | `stage` and `ground` are the 3D view's sky and floor |
+| Surfaces | `surface`, `surface-2`, `surface-3`, `line`, `stage`, `ground` | `stage` and `ground` are the light behind the 3D model and the wood of its table |
 | Ink | `ink-1`, `ink-2`, `ink-3` | `ink-1` is 7:1 on every surface; `ink-3` only on `surface` and `surface-2` |
-| Accent | `accent`, `accent-ink`, `accent-soft`, `focus` | One hue, teal |
+| Accent | `accent`, `accent-ink`, `accent-soft`, `focus` | One hue, a sunny burnt orange (`#BF5409`; `#FF9B45` dark) |
 | Badges | `can-bg`/`can-ink`, `wait-bg`/`wait-ink` | "You can build it!" and "Need 2 more"; each always with an icon shape too |
 | Tiles | `tile-{red,orange,yellow,green,blue,purple}` and `-rim` | The rim is 3:1 on the surfaces; each tile has a pattern and a spoken name, because colour alone never tells tiles apart |
 | Type | `fs-kid-display-{a,b,c}`, `fs-kid-label-{a,b,c}`, `fs-kid-count-{a,b,c}`, `fs-parent-*`; fonts `display`, `kid`, `parent` | `a`, `b`, `c` are the age bands 3–5, 6–8, 9–10 |
-| Touch | `target-kid-primary` 104, `target-kid-{a,b,c}` 88/80/64, `target-parent` 44, `gap-*`, `hit-slop-kid`, `edge-safe-kid` | In px |
+| Touch | `target-kid-primary` 112, `target-kid-{a,b,c}` 88/80/64, `target-parent` 44, `gap-*`, `hit-slop-kid`, `edge-safe-kid` | In px |
 | Space and shape | `s-1`..`s-9`, `r-tile`, `r-sm`, `r-md`, `r-lg`, `r-full`, `rim` | |
 | Motion | `t-press`, `t-ui`, `t-celebrate`, `turn-period`, `ease` | |
 

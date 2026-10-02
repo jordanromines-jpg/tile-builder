@@ -41,7 +41,7 @@ export function ProjectCard({ title, picture, stars, state, missing = [], resume
       <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-t-[26px] bg-stage">
         {picture}
         {resume ? (
-          <span className="soft absolute left-3 top-3 rounded-full bg-accent px-4 py-1 font-kid text-[19px] font-bold text-accent-ink">
+          <span className="soft absolute left-3 top-3 rounded-full bg-accent px-4 py-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-tight text-accent-ink">
             {S.kid.step(resume, 0).split(" of")[0]}
           </span>
         ) : null}

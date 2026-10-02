@@ -2,7 +2,7 @@
    optional count beside it. With `speak`, it is a button that says its name ("4 red squares") on tap. */
 import { useId, useState, type CSSProperties } from "react";
 import { DEFAULT_LEG, SHAPES, tileName, type Colour, type Pt, type ShapeId } from "../engine/catalog";
-import { say } from "../speech/say";
+import { say, useVoiceOn } from "../speech/say";
 import { PATTERN_OF, TilePattern } from "./patterns";
 import { pictureUrl, tileFile } from "../pictures";
 
@@ -98,6 +98,7 @@ export function TileDrawing({ shape, colour, leg = DEFAULT_LEG, px }: { shape: S
 export function TileChip({ shape, colour, count, size = "md", leg, speak, instead, className = "" }: TileChipProps) {
   const label = tileName(shape, colour, count);
   const px = CHIP_PX[size];
+  const voiceOn = useVoiceOn();
   const style: CSSProperties = { fontSize: COUNT_PX[size], lineHeight: 1 };
   const body = (
     <>
@@ -117,7 +118,8 @@ export function TileChip({ shape, colour, count, size = "md", leg, speak, instea
     </>
   );
   const cls = `inline-flex items-center gap-2 ${className}`;
-  if (speak) {
+  // with the voice off a tap would say nothing, so the chip is a picture, not a button
+  if (speak && voiceOn) {
     return (
       <button type="button" className={`${cls} rounded-md p-1`} aria-label={label} onClick={() => say(label)}>
         {body}

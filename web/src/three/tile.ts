@@ -93,6 +93,12 @@ export interface TileGeometry {
 
 const cache = new Map<string, TileGeometry>();
 
+/** Lets every cached tile shape go; three uploads a shape again when a mesh still uses it. */
+export function releaseGeometry() {
+  cache.forEach((g) => [g.frame, g.glass, g.rivets, g.outline].forEach((x) => x?.dispose()));
+  cache.clear();
+}
+
 function clean(g: THREE.BufferGeometry): THREE.BufferGeometry {
   const out = g.index ? g.toNonIndexed() : g;
   for (const k of Object.keys(out.attributes)) if (k !== "position" && k !== "normal") out.deleteAttribute(k);

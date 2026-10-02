@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { layerOf, worldPolygon } from "../engine/geometry";
 import { matchProject, type Match } from "../engine/match";
 import { projectById } from "../projects";
-import { say, stop } from "../speech/say";
+import { say, speechEnabled, stop } from "../speech/say";
 import { click } from "../speech/sound";
 import { getStep, saveStep } from "../store/db";
 import { useInventory, useSettings } from "../store/hooks";
@@ -66,7 +66,8 @@ function BuildProject({ pid }: { pid: string }) {
   const speak = useCallback(
     (s: number) => {
       say(lineOf(s));
-      setHush((h) => h + 1);
+      // a line was spoken: the 9–10 model stops turning by itself so the child can listen and look
+      if (speechEnabled()) setHush((h) => h + 1);
     },
     [lineOf, age],
   );
@@ -149,6 +150,7 @@ function BuildProject({ pid }: { pid: string }) {
             stepKey={step}
             hush={hush}
             inset={{ top: 112, bottom: strip }}
+            spin={!resting}
             label={S.build.model(project.title)}
           />
           {gate === "need" && match && (
@@ -175,7 +177,7 @@ function BuildProject({ pid }: { pid: string }) {
             />
           </div>
         </div>
-        <div className="absolute right-4 flex flex-col items-end gap-3" style={{ top: 120 }}>
+        <div className="absolute right-4 flex flex-col items-end gap-6" style={{ top: 120 }}>
           <TurnControls vertical onTurn={(d) => setTurns((t) => t + d)} onReset={() => setTurns(0)} />
           {age !== "c" && !project.flat && (
             <KidButton label={S.build.fellButton} onPress={() => {

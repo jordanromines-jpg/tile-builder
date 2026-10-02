@@ -36,7 +36,7 @@ build, so plates made in either place match. To update a plate: `npx playwright 
 | `src/store/` | Dexie: settings, inventory, progress; backup |
 | `src/speech/` | Read-aloud |
 | `e2e/` | Playwright specs; `e2e/plates/` their screenshots |
-| `scripts/` | Icons, thumbnails, the project checker, the size check |
+| `scripts/` | Icons, the 3D pictures (`npm run pictures`), the project checker, the size check |
 
 ## Rules
 

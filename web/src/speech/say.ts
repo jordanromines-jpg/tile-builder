@@ -1,5 +1,7 @@
-/* Read-aloud (plan key 2n). Web Speech only: nothing leaves the iPad. iOS speaks only in answer to a tap, so say() is
-   only ever called from a tap handler. Each call cancels what is being said, then speaks. */
+/* Read-aloud (plan key 2n). Web Speech only: nothing leaves the iPad. Off by default since 2.0: say() is silent unless a
+   grown-up turned the voice on in Settings, or `force` is passed (a child tapped Hear again). With the voice on, a
+   step's line and the end's line are also said when they appear (iOS may hold those back until the first tap). Each
+   call cancels what is being said, then speaks. */
 import { useSyncExternalStore } from "react";
 
 export interface SayOptions {
@@ -27,6 +29,7 @@ export function pickVoice(voices: SpeechSynthesisVoice[], want: string): SpeechS
 export function configureSpeech(opts: { enabled?: boolean; lang?: string }): void {
   if (opts.enabled !== undefined) enabled = opts.enabled;
   if (opts.lang) lang = opts.lang;
+  listeners.forEach((l) => l());
 }
 
 export function speechEnabled(): boolean {
@@ -57,14 +60,17 @@ export function lastLine(): string {
   return last;
 }
 
+function subscribe(l: () => void) {
+  listeners.add(l);
+  return () => void listeners.delete(l);
+}
+
 /** The last line said, for a "Hear again" button. */
 export function useLastLine(): string {
-  return useSyncExternalStore(
-    (l) => {
-      listeners.add(l);
-      return () => listeners.delete(l);
-    },
-    () => last,
-    () => last,
-  );
+  return useSyncExternalStore(subscribe, () => last, () => last);
+}
+
+/** Whether the voice is on: a tile chip only becomes a "say my name" button when it is. */
+export function useVoiceOn(): boolean {
+  return useSyncExternalStore(subscribe, () => enabled, () => enabled);
 }

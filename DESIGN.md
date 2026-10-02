@@ -71,17 +71,22 @@ reading is never required. Fonts are subset to Latin and cached for offline use.
 
 ### Motion
 
-- Durations: `t-press` 100 ms (a press shows within a frame), `t-ui` 240 ms, `t-celebrate` 1400 ms (the most anything
-  takes). Easing `ease` = cubic-bezier(0.2, 0.7, 0.2, 1).
-- One moving thing at a time. The model's tiles drop into place one after another; nothing else moves meanwhile.
-- With reduced motion, movement becomes a still or a short fade: the model appears, the celebration is a picture, the
-  9–10 model doesn't turn by itself (`web/src/ui/motion.ts`).
+- Durations: `t-press` 100 ms (a press shows within a frame), `t-ui` 240 ms, `t-celebrate` 3600 ms (the end of a
+  build, the longest anything takes; skippable with a tap). Easing `ease` = cubic-bezier(0.2, 0.7, 0.2, 1).
+- One moving thing at a time during a step: the new tiles glide in one after another, glow for 2.5 s, then everything
+  holds still (and the stage stops drawing). The one exception is the end: the view circles the model (3.4 s) while
+  little tiles shower down, then the photo card slides in.
+- With reduced motion, movement becomes a still or a short fade: the model appears, turns are instant, nothing falls or
+  circles at the end, the 9–10 model doesn't turn by itself (`web/src/ui/motion.ts`).
 - The 3–5 model never turns by itself during a step (D10).
 
 ### Sound
 
-The voice is the only sound by default (Web Speech, on the device, rate 0.9). It speaks only in answer to a tap, so it
-never starts on its own, and a muted iPad stays quiet. Sound effects are off by default (Q3).
+The voice (Web Speech, on the device, rate 0.9) is off by default since 2.0: **Hear again** (on the build screen and at
+the end) reads a line whenever a child taps it. A grown-up can turn reading on in Settings; then each step's line and
+the end's line are read as they appear, and tile chips and the empty state's picture say their names on a tap. With
+the voice off those are pictures, not buttons, so nothing invites a tap that does nothing. An iPad that had 1.0 is
+switched to off once. A muted iPad stays quiet. Sound effects are off by default (Q3).
 
 ### Icons
 
@@ -151,7 +156,8 @@ for a child who taps.
 
 ### Step dots (`StepDots`)
 One dot a step: done ones filled, this one large and ringed, the rest hollow. Countable; never a progress bar. For 9–10
-a dot is a button that jumps to its step.
+a dot is a button that jumps to its step. These are a shortcut for older children, smaller than the kid target (32 px,
+a 25-step build would not fit at 64): Back and Next stay the full-size way through a build.
 
 ### Turn controls (`TurnControls`)
 ◀, "back to my side", ▶. A quarter turn each.

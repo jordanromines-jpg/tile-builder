@@ -6,7 +6,7 @@ import * as THREE from "three";
 import type { Colour, ShapeId } from "../engine/catalog";
 import { softwareGL } from "../gpu";
 import { faceBump } from "./textures";
-import { buildGeometry, tileColour } from "./tile";
+import { buildGeometry, releaseGeometry, tileColour } from "./tile";
 
 export const BASE_OPACITY = { frame: 1, glass: 0.62 };
 
@@ -45,6 +45,8 @@ export function makeTileMaterials(colour: Colour): TileMaterials {
       opacity: BASE_OPACITY.glass,
       side: THREE.DoubleSide,
       depthWrite: false,
+      // one pass for both sides: three would otherwise draw every clear face twice a frame
+      forceSinglePass: true,
       ...(bump ? { bumpMap: bump, bumpScale: 0.9 } : {}),
     }),
     rivet: rivetMaterial(),
@@ -90,4 +92,11 @@ export function TileMesh({ shape, colour, leg = 1.867, position = [0, 0, 0], qua
   // paint is a dependency on purpose: a theme change reads the colours again
   const group = useMemo(() => tileGroup(shape, leg, makeTileMaterials(colour)), [shape, leg, colour, paint]); // eslint-disable-line react-hooks/exhaustive-deps
   return <primitive object={group} position={position} quaternion={quaternion} />;
+}
+
+/** Lets the shared tile shapes and the chrome go (see releaseShared in Model.tsx). */
+export function releaseTiles() {
+  chrome?.dispose();
+  chrome = null;
+  releaseGeometry();
 }
