@@ -5,14 +5,17 @@ import { applyTheme } from "./ground";
 import { router } from "./router";
 import { startPwa } from "./pwa";
 import { OfflineNote, showOfflineNote } from "./OfflineNote";
+import { ToastProvider } from "./ui/grownups/Toast";
 import "./app.css";
 
 applyTheme();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
-    <OfflineNote />
+    <ToastProvider>
+      <RouterProvider router={router} />
+      <OfflineNote />
+    </ToastProvider>
   </StrictMode>,
 );
 
