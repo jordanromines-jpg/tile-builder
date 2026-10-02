@@ -1,4 +1,6 @@
-# Tile Builder: the build plan
+# Tile Steps: the build plan
+
+(The repo and the research use the working name "Tile Builder".)
 
 Status: approved 2 Oct 2026 (Jordan, in plan mode, after the cut to the simple app: D18 to D21); in progress (PR 0.1, #1).
 
@@ -42,7 +44,7 @@ A child opens the app and sees the **Library**: shelves of project pictures, eac
 | D14 | Agents and workflows in the build | No Workflow tool (Jordan, 2 Oct 2026: "no workflows"; "you can use agents but no workflows"). Later: "no more agents after this." So the builder works alone, with no subagents |
 | D15 | The stack | React 19, TypeScript, Vite 7, Tailwind 4 fed by our token file, Radix primitives under our own components, TanStack Router with hash history, three.js through `@react-three/fiber`, Dexie, `vite-plugin-pwa`, zod, Motion, Phosphor, `@fontsource`, Vitest, Playwright with axe-core. Copied from `web-agent/web` where it fits (the same stack Jordan approved there as RQ1) |
 | D16 | Price | Free, nothing to unlock. The repo is public |
-| D17 | The name | "Tile Builder" until the brief proposes three names and Jordan picks one at G1 (Q2) |
+| D17 | The name | **Tile Steps** (Jordan, 2 Oct 2026, at G1: "Tile Steps, keep going."), from the three in `PRODUCT.md`. The repo, its folders and the research keep the working name "Tile Builder" |
 | D18 | How much app | "this is too complicated. no extra profile pics or project pages. Just select a project and do it. no camera." (Jordan, 2 Oct 2026). Cut: profiles and avatars, Who's playing, the project page, the camera, My Builds, photos, stickers. The kid side is the Library, Build mode and the celebration |
 | D19 | How the app knows a child's age | Three age pictures at the top of the Library (3–5, 6–8, 9–10), the last choice remembered on the iPad; each project's own age band sets its build mode (tiles per step, turn controls, read-aloud) (Jordan, 2 Oct 2026: "yes", to this proposal) |
 | D20 | Picking up where you left off | One saved step per project, not per child: opening a half-done build carries on from that step (Jordan, 2 Oct 2026: "yes") |
@@ -108,7 +110,7 @@ Total: 154 hours of builder time, of which 4 are reserved (the first draft was 1
 | **G1** | **Jordan reads `PRODUCT.md` and picks the name** | | gate | his words are in Decisions (D17 filled in) | |
 | 1d | Apply his words: the name everywhere it appears, any change he asks for; merge | `PRODUCT.md`, `README.md`, `plans/` | document | merged with his words quoted in the build log | 45 min |
 
-Phase 2 keys up to PR 2.5 do not wait for G1: they use "Tile Builder", and the name lives in one strings file (`web/src/strings.ts`), so renaming is one commit.
+Phase 2 keys up to PR 2.5 do not wait for G1: they use the name from one strings file (`web/src/strings.ts`), so renaming is one commit.
 
 ### Phase 2 · the design system
 
@@ -406,6 +408,7 @@ Live: `https://jordanromines-jpg.github.io/tile-builder/` opens and installs to 
 | 2 Oct 2026, 05:25 to 05:35 | PR 0.1 · the plan (no key yet) | none (scratchpad) | not estimated · 0.2 | A features map drawn with Archify from `web-agent`'s copy; Jordan: "this is too complicated. no extra profile pics or project pages. Just select a project and do it. no camera." The plan cut to the Library, Build mode and the celebration (D18 to D21): 173 h became 154 h | Jordan's approval; then 0a to 0h |
 | 2 Oct 2026, 05:35 to 05:45 | PR 0.1 · 0a to 0g | `5f63354`, then the commit that adds this row | 4.0 · 0.2. **Under half the estimate**: "Done when" re-read for each key and met; the keys were copying and writing, and neither the research file nor Archify needed changes. The times in the two rows above were first written as a guessed local clock and corrected here to UTC from the commit times | **0a** `kids-app-design.md` in, 81 sources. **0b** marked not run. **0c** Archify v3.0.1, 7.3 MB without its tests; its `examples/` kept because its skill reads them. **0d** the plans folder; the roadmap passes `finalize`; the plan's total corrected from 155 h to 154 h (the hours in its table add to 154). **0e** the features map for the simple app passes `finalize`, sent to Jordan. **0f** `PLAN.md` a pointer, README, tools row, prototype in `docs/prototype/`. **0g** 23 draft pull requests opened from `main` with one empty commit each: #2 to #24, numbers in the tables and headings | 0h: mark #1 ready and merge; then PR 1.1 (#2), 1a |
 | 2 Oct 2026, 05:50 | PR 1.1 · start | the branch `brief` rebased on `main` (84cde73) | 5.0 · started | The merged branch `plan/phase-0` could not be deleted: the session's git proxy refuses branch deletes; it stays | 1a |
+| 2 Oct 2026, 05:50 to 06:05 | PR 1.1 · 1a 1b 1c, G1, 1d | `039ad6b`, then the commit that adds this row | 5.0 · 0.3. **Under half the estimate**: "Done when" re-read; the brief drew on finished research, and the name search took six searches | **1a** `PRODUCT.md`, 127 lines, every claim cited. **1b** `docs/research/README.md`. **1c** the brief and three names sent. **G1** Jordan: "Tile Steps, keep going." (D17). **1d** the name in `PRODUCT.md`, `README.md`, `PLAN.md`, the plan, the maps' titles; the repo and research keep "Tile Builder". Found on the way: an MIT project that measured a Magna-Tiles tall triangle (143 mm ± 5), now in `tiles.md`, Q1 and key 4a | Merge #2; then PR 2.1 (#3), 2a |
 
 ## Results
 
@@ -416,5 +419,5 @@ None yet.
 | # | Question | Default if nobody answers |
 |---|---|---|
 | Q1 | The tall triangle's leg length for Connetix, and a second measure of Magna-Tiles' (found 2 Oct 2026: 143 mm ± 5, one project's photo measurement) | The grown-up picks from three pictures (1.5, 1.867, 2.2 units); the checker passes every project under all three and under each brand's known leg; T5 settles it |
-| Q2 | The app's name | Three proposals at G1; "Tile Builder" until then (D17) |
+| Q2 | The app's name | Settled at G1: Tile Steps (D17) |
 | Q3 | Sound effects beyond the voice | Off by default, a switch in settings; when on, through Web Audio in "ambient" mode so silent mode holds |

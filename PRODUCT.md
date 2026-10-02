@@ -1,8 +1,9 @@
-# The product brief: Tile Builder
+# The product brief: Tile Steps
 
 Read this before designing or building anything people see. It says who the app is for, its one job, and what it
 must never become. The rules for how things look are in `DESIGN.md` (from PR 2.6); the plan is
-`plans/2026-10-02-tile-builder.md`. "Tile Builder" is a working name until Jordan picks one (below).
+`plans/2026-10-02-tile-builder.md`. The name is Tile Steps (Jordan, 2 Oct 2026, at G1); the repo and the research keep
+the working name "Tile Builder".
 
 ## Who it is for
 
@@ -115,11 +116,11 @@ Jordan's testing after the build (the plan's T1 to T5):
 
 ## The name
 
-Three proposals, each searched on the web on 2 Oct 2026 for an existing product of the same name.
+Jordan picked **Tile Steps** at G1 (2 Oct 2026: "Tile Steps, keep going."). The three proposals, each searched on the web on 2 Oct 2026 for an existing product of the same name.
 
 | Name | Why | What the search found |
 |---|---|---|
-| **Tile Steps** (my pick) | Says what it does: your tiles, one step at a time. Easy for a 4-year-old to say | No app or product of that name |
+| **Tile Steps** (chosen) | Says what it does: your tiles, one step at a time. Easy for a 4-year-old to say | No app or product of that name |
 | Bright Builds | The light through coloured tiles; a happy word | No exact match; close to "Bright Kids" (a preschool app) and "Bright Bricks" (a brick-art company) |
 | Pane Builder | Tiles as panes of coloured glass | No app of that name; harder for a young child to say |
 
