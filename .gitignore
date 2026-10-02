@@ -20,3 +20,5 @@ plans/roadmap/*.delivery.json
 web/.shot.mjs
 web/.crop.mjs
 web/.sheet.mjs
+web/.serve.sh
+web/.look.mjs
