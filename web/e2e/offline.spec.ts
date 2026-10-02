@@ -1,8 +1,10 @@
 /* Wi-Fi off: once the app has loaded and its service worker has cached it, it opens again with the network off. */
 import { expect, test } from "@playwright/test";
+import { dismissFirstRun } from "./helpers";
 
 test("the app opens with the network off after the first load", async ({ page, context }) => {
   await page.goto("#/");
+  await dismissFirstRun(page);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page.evaluate(async () => {
     const reg = await navigator.serviceWorker.ready;
@@ -13,6 +15,7 @@ test("the app opens with the network off after the first load", async ({ page, c
   await page.waitForFunction(() => !!navigator.serviceWorker.controller);
   await context.setOffline(true);
   await page.reload();
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator("h1")).toHaveText("Tile Steps");
+  await expect(page.getByRole("button", { name: /^A fish,/ })).toBeVisible();
   await context.setOffline(false);
 });

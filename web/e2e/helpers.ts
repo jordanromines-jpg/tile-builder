@@ -31,3 +31,14 @@ export async function useSet(page: Page, name: string) {
   await page.getByRole("button", { name }).click();
   await page.getByRole("button", { name: "Use this set" }).click();
 }
+
+/** Close the one-time grown-ups card on the Library if it shows. */
+export async function dismissFirstRun(page: Page) {
+  const ok = page.getByRole("button", { name: "Got it" });
+  try {
+    await ok.waitFor({ state: "visible", timeout: 3000 });
+    await ok.click();
+  } catch {
+    /* not shown */
+  }
+}

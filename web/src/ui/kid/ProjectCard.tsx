@@ -9,7 +9,8 @@ export interface ProjectCardProps {
   title: string;
   picture: ReactNode;
   stars: 1 | 2 | 3;
-  state: BuildState;
+  /** left out when the family has not entered their tiles yet */
+  state?: BuildState;
   missing?: Missing[];
   /** a saved step: the build is half done */
   resume?: number;
@@ -29,7 +30,7 @@ export function Stars({ n }: { n: number }) {
 }
 
 export function ProjectCard({ title, picture, stars, state, missing = [], resume, onPress }: ProjectCardProps) {
-  const label = [title, S.kid.stars(stars), badgeText(state, missing), resume ? `Step ${resume}` : ""].filter(Boolean).join(", ");
+  const label = [title, S.kid.stars(stars), state ? badgeText(state, missing) : "", resume ? `Step ${resume}` : ""].filter(Boolean).join(", ");
   return (
     <button
       type="button"
@@ -50,7 +51,7 @@ export function ProjectCard({ title, picture, stars, state, missing = [], resume
           <span className="font-display text-[26px] font-semibold leading-tight text-ink-1">{title}</span>
           <Stars n={stars} />
         </span>
-        <BuildBadge state={state} missing={missing} />
+        {state && <BuildBadge state={state} missing={missing} />}
       </span>
     </button>
   );

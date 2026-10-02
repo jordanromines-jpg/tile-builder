@@ -27,6 +27,11 @@ export function roofTilt(shape: Placed["shape"], leg: number): number {
   return -Math.asin(0.5 / roofHeight(shape, leg));
 }
 
+/** The placed tile as it is built: a roof triangle swapped for another kind takes that shape (and so its own tilt). */
+export function asBuilt(p: Placed, instead?: Placed["shape"]): Placed {
+  return instead && p.role === "roof" ? { ...p, shape: instead } : p;
+}
+
 /** The rotation actually used: a roof's tilt is worked out from its legs. */
 export function rotOf(p: Placed, leg: number): [number, number] {
   return p.role === "roof" ? [roofTilt(p.shape, leg), p.rot[1]] : p.rot;

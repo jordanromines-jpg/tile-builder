@@ -5,8 +5,8 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { ShapeId } from "../engine/catalog";
-import { rotOf, worldPolygon } from "../engine/geometry";
-import type { Placed, Project } from "../engine/types";
+import { asBuilt, rotOf, worldPolygon } from "../engine/geometry";
+import type { Project } from "../engine/types";
 import { DROP_S, DROP_S_REDUCED, easeOutBack, fade, mulberry, stepProgress } from "./anim";
 import { partsOf } from "./parts";
 import { BASE_OPACITY, makeTileMaterials } from "./TileMesh";
@@ -21,11 +21,6 @@ interface TileObj {
   qT: THREE.Quaternion;
   pS: THREE.Vector3;
   qS: THREE.Quaternion;
-}
-
-/** The placed tile as it is built: a swapped roof triangle takes its new shape (and so its own tilt). */
-export function asBuilt(p: Placed, instead?: ShapeId): Placed {
-  return instead && p.role === "roof" ? { ...p, shape: instead } : p;
 }
 
 /** The middle of the model's footprint and how big it is, so the camera can frame it. */
