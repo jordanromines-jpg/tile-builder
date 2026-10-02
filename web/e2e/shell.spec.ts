@@ -6,9 +6,9 @@ const ROUTES: [string, string][] = [
   ["#/", "Library"],
   ["#/build/castle", "Build"],
   ["#/done/castle", "Well done"],
-  ["#/grownups", "Grown-ups"],
-  ["#/grownups/tiles", "Tiles"],
-  ["#/grownups/settings", "Settings"],
+  ["#/grownups", "For grown-ups"],
+  ["#/grownups/tiles", "For grown-ups"],
+  ["#/grownups/settings", "For grown-ups"],
   ["#/design", "The design page"],
 ];
 

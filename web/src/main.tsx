@@ -5,6 +5,7 @@ import { applyTheme } from "./ground";
 import { router } from "./router";
 import { startPwa } from "./pwa";
 import { OfflineNote, showOfflineNote } from "./OfflineNote";
+import { SettingsSync } from "./SettingsSync";
 import { ToastProvider } from "./ui/grownups/Toast";
 import "./app.css";
 
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")!).render(
     <ToastProvider>
       <RouterProvider router={router} />
       <OfflineNote />
+      <SettingsSync />
     </ToastProvider>
   </StrictMode>,
 );

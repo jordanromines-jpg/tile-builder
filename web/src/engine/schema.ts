@@ -58,12 +58,12 @@ export const ProjectZ = z
     );
   });
 
-const CountZ = z.object({ any: z.number().int().nonnegative(), byColour: z.record(ColourZ, z.number().int().nonnegative()).optional() });
+const CountZ = z.object({ any: z.number().int().nonnegative(), byColour: z.partialRecord(ColourZ, z.number().int().nonnegative()).optional() });
 
 export const InventoryZ = z.object({
   brands: z.array(BrandIdZ),
   tallLeg: z.number().positive().nullable(),
-  counts: z.record(ShapeIdZ, CountZ),
+  counts: z.partialRecord(ShapeIdZ, CountZ),
 });
 
 export const SettingsZ = z.object({
