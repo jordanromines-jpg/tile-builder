@@ -14,7 +14,7 @@ export default defineConfig({
   fullyParallel: true,
   retries: 0,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
-  use: { baseURL: "http://127.0.0.1:4173/tile-builder/", reducedMotion: "reduce" },
+  use: { baseURL: "http://127.0.0.1:4173/tile-builder/", contextOptions: { reducedMotion: "reduce" } },
   projects: [
     { name: "ipad-landscape", use: { ...ipad, viewport: { width: 1180, height: 820 } } },
     { name: "ipad-portrait", use: { ...ipad, viewport: { width: 820, height: 1180 } } },
