@@ -104,9 +104,13 @@ The tiles are what a child matches on the table, so their pictures are the most 
 - In 3D (`web/src/three/tile.ts`, sprint 2): a thick glossy frame with rounded, bevelled corners (clear-coated
   plastic), a clear tinted face at 0.62 with the moulded diamond texture as a bump map, and chrome rivets at the
   corners. Lit by a room environment made on the device, on a wooden table with soft contact shadows.
-- **3D pictures** (`web/src/three/snapshots.ts`): tile chips and project cards show the same 3D tiles, drawn once each
-  by one shared offscreen renderer and kept in memory. The flat drawing above is the fallback while a picture is drawn,
-  and where WebGL is missing.
+- **3D pictures** (`web/src/pictures.ts`): tile chips and project cards show the same 3D tiles as the stage. They are
+  drawn ahead of time by the stage's own code (`npm run pictures`, `web/scripts/pictures.mjs`), saved as WebP in
+  `web/public/pictures/` on a clear background (one picture for both themes) and cached offline with the app; the iPad
+  never draws them. A unit test fails when a project changes and its picture was not drawn again. "Any colour" tiles,
+  part-built projects and a missing picture use the flat drawing above.
+- **Without a GPU** (a software renderer: old devices, virtual machines, CI; `web/src/gpu.ts`) the stage is drawn
+  lighter: no clear coat, moulded texture, room reflections or contact shadows, at 0.75x.
 
 ## Components
 

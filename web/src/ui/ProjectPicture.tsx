@@ -1,10 +1,10 @@
 /* A project's picture (D24): drawn from its own tiles as SVG, from the front, a little to the right and above, far tiles
    first so near ones sit on top. No build step, sharp at any size, and it follows the theme's colours. */
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { DEFAULT_LEG, type ShapeId } from "../engine/catalog";
 import { asBuilt, worldPolygon, type V3 } from "../engine/geometry";
 import type { Project } from "../engine/types";
-import { useProjectSnapshot } from "./useSnapshot";
+import { pictureUrl, projectFile } from "../pictures";
 
 const AZ = 0.5;
 const EL = 0.55;
@@ -39,11 +39,24 @@ export function drawProject(project: Project, shown = project.placed.length, leg
   return { drawn, box };
 }
 
-/** The finished project as the build stage draws it (a 3D picture on the table), with the SVG until that is ready. */
+/** The finished project as the build stage draws it: its 3D picture (src/pictures.ts) on the stage colour, or the
+    drawing below for a part-built project and when the picture is missing. */
 export function ProjectPicture({ project, shown, label }: { project: Project; shown?: number; label?: string }) {
-  const url = useProjectSnapshot(project);
-  if (url && shown === undefined)
-    return <img src={url} alt={label ?? ""} aria-hidden={label ? undefined : true} className="block h-full w-full object-cover" draggable={false} data-snapshot="" />;
+  const file = projectFile(project.id);
+  const [failed, setFailed] = useState(false);
+  if (shown === undefined && !failed)
+    return (
+      <img
+        src={pictureUrl(file)}
+        alt={label ?? ""}
+        aria-hidden={label ? undefined : true}
+        draggable={false}
+        loading="lazy"
+        decoding="async"
+        className="block h-full w-full bg-stage object-contain"
+        onError={() => setFailed(true)}
+      />
+    );
   return <ProjectDrawing project={project} shown={shown} label={label} />;
 }
 

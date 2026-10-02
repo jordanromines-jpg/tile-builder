@@ -1,10 +1,10 @@
 /* A tile as a picture (plan key 2j; a 3D picture since sprint 2, the drawing below as its fallback): the shape, its colour at 45% over the surface, its pattern, a 3 px rim, and an
    optional count beside it. With `speak`, it is a button that says its name ("4 red squares") on tap. */
-import { useId, type CSSProperties } from "react";
+import { useId, useState, type CSSProperties } from "react";
 import { DEFAULT_LEG, SHAPES, tileName, type Colour, type Pt, type ShapeId } from "../engine/catalog";
 import { say } from "../speech/say";
 import { PATTERN_OF, TilePattern } from "./patterns";
-import { useTileSnapshot } from "./useSnapshot";
+import { pictureUrl, tileFile } from "../pictures";
 
 export type ChipSize = "sm" | "md" | "lg";
 export const CHIP_PX: Record<ChipSize, number> = { sm: 48, md: 72, lg: 104 };
@@ -34,10 +34,25 @@ function svgPoints(pts: Pt[], y1: number): string {
   return pts.map(([x, y]) => `${x},${y1 - y}`).join(" ");
 }
 
-/** The tile as the build stage draws it (a 3D picture), with the flat drawing until that is ready or without WebGL. */
+/** The tile as the build stage draws it: its 3D picture (src/pictures.ts), or the flat drawing for "any colour" and
+    when a picture is missing. */
 export function TilePicture({ shape, colour, leg = DEFAULT_LEG, px }: { shape: ShapeId; colour?: Colour; leg?: number; px: number }) {
-  const url = useTileSnapshot(shape, colour, px, leg);
-  if (url) return <img src={url} width={px} height={px} alt="" aria-hidden="true" draggable={false} className="block select-none" data-snapshot="" />;
+  const file = colour ? tileFile(shape, colour, leg) : null;
+  const [failed, setFailed] = useState<string | null>(null);
+  if (file && failed !== file)
+    return (
+      <img
+        src={pictureUrl(file)}
+        width={px}
+        height={px}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+        decoding="async"
+        className="block select-none"
+        onError={() => setFailed(file)}
+      />
+    );
   return <TileDrawing shape={shape} colour={colour} leg={leg} px={px} />;
 }
 

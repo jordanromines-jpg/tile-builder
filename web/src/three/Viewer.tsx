@@ -3,7 +3,7 @@
      b (6–8)  ◀ ▶ and one-finger drag to turn
      c (9–10) turn and zoom freely; a slow turn (one in 25 s) until touched, and never under reduced motion
    Each new step eases the view toward the tiles being placed. `sweep` circles the finished model once (the end of a
-   build). Performance: pixel ratio at most 2 (1.5 on smaller devices), frames drawn only when something moves. */
+   build). Performance: pixel ratio at most 2 (1.5 on smaller devices, 1 without a GPU), frames drawn only when something moves. */
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -11,6 +11,7 @@ import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { ShapeId } from "../engine/catalog";
 import type { Age, Project } from "../engine/types";
+import { softwareGL } from "../gpu";
 import { useStill } from "../ui/motion";
 import { easeInOut, fitDistance, FOV, viewFrom } from "./camera";
 import { frameOf, Model } from "./Model";
@@ -194,7 +195,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   }, [project, leg, current, shown, whole, built]);
   const [touched, setTouched] = useState(false);
   const autoRotate = age === "c" && !still && !touched && !sweep;
-  const dpr: [number, number] = [1, typeof navigator !== "undefined" && (navigator.hardwareConcurrency ?? 8) <= 4 ? 1.5 : 2];
+  const dpr: [number, number] = softwareGL() ? [0.75, 0.75] : [1, typeof navigator !== "undefined" && (navigator.hardwareConcurrency ?? 8) <= 4 ? 1.5 : 2];
 
   useEffect(() => setTouched(false), [project.id]);
   useEffect(() => {

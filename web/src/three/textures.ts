@@ -1,6 +1,7 @@
 /* Textures drawn on the device (no downloads, so the app stays offline): the moulded pattern on a tile's clear face,
    and a wooden tabletop. Each is made once and shared. */
 import * as THREE from "three";
+import { softwareGL } from "../gpu";
 
 let face: THREE.CanvasTexture | null = null;
 const woods = new Map<string, THREE.CanvasTexture>();
@@ -77,7 +78,7 @@ export function woodTexture(dark: boolean): THREE.Texture | null {
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   t.repeat.set(14, 14);
   t.colorSpace = THREE.SRGBColorSpace;
-  t.anisotropy = 8;
+  t.anisotropy = softwareGL() ? 1 : 8;
   woods.set(key, t);
   return t;
 }

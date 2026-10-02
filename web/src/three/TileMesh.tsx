@@ -4,6 +4,7 @@ import type {} from "@react-three/fiber";
 import { useMemo } from "react";
 import * as THREE from "three";
 import type { Colour, ShapeId } from "../engine/catalog";
+import { softwareGL } from "../gpu";
 import { faceBump } from "./textures";
 import { buildGeometry, tileColour } from "./tile";
 
@@ -16,13 +17,22 @@ export function rivetMaterial(): THREE.MeshStandardMaterial {
 }
 
 export interface TileMaterials {
-  frame: THREE.MeshPhysicalMaterial;
-  glass: THREE.MeshPhysicalMaterial;
+  frame: THREE.MeshStandardMaterial;
+  glass: THREE.MeshStandardMaterial;
   rivet: THREE.MeshStandardMaterial;
 }
 
 export function makeTileMaterials(colour: Colour): TileMaterials {
   const col = new THREE.Color(tileColour(colour));
+  // without a GPU: plain lit plastic (the standard shader, no clear coat or moulded texture) and the clear face drawn
+  // in one pass, so the stage keeps a usable frame rate
+  if (lite()) {
+    return {
+      frame: new THREE.MeshStandardMaterial({ color: col, roughness: 0.4, transparent: true, opacity: 1 }),
+      glass: new THREE.MeshStandardMaterial({ color: col, roughness: 0.3, transparent: true, opacity: BASE_OPACITY.glass, side: THREE.DoubleSide, depthWrite: false, forceSinglePass: true }),
+      rivet: rivetMaterial(),
+    };
+  }
   const bump = faceBump();
   return {
     frame: new THREE.MeshPhysicalMaterial({ color: col, roughness: 0.35, clearcoat: 0.6, clearcoatRoughness: 0.18, transparent: true, opacity: 1 }),
@@ -41,6 +51,11 @@ export function makeTileMaterials(colour: Colour): TileMaterials {
   };
 }
 
+/** The light version of the 3D, for devices without a GPU. */
+export function lite(): boolean {
+  return typeof document !== "undefined" && softwareGL();
+}
+
 /** One tile's meshes, built imperatively (Model.tsx uses this for every tile it animates). */
 export function tileGroup(shape: ShapeId, leg: number, m: TileMaterials): THREE.Group {
   const geo = buildGeometry(shape, leg);
@@ -55,7 +70,8 @@ export function tileGroup(shape: ShapeId, leg: number, m: TileMaterials): THREE.
     glass.renderOrder = 1;
     g.add(glass);
   }
-  g.add(new THREE.Mesh(geo.rivets, m.rivet));
+  // rivets are small: without a GPU they are left out (one draw call a tile saved)
+  if (!lite()) g.add(new THREE.Mesh(geo.rivets, m.rivet));
   return g;
 }
 

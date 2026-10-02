@@ -4,7 +4,7 @@
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { matchProject } from "../engine/match";
-import { PROJECTS, projectById } from "../projects";
+import { projectById } from "../projects";
 import { say, stop } from "../speech/say";
 import { clearStep } from "../store/db";
 import { useInventory } from "../store/hooks";
@@ -14,7 +14,7 @@ import { Viewer } from "../three/Viewer";
 import { ArrowLeft } from "../ui/icons";
 import { AgeProvider } from "../ui/kid/AgeContext";
 import { TileConfetti } from "../ui/kid/TileConfetti";
-import { useProjectSnapshot } from "../ui/useSnapshot";
+import { ProjectPicture } from "../ui/ProjectPicture";
 import { KidButton } from "../ui/kid/KidButton";
 
 export function Done() {
@@ -23,8 +23,6 @@ export function Done() {
   const navigate = useNavigate();
   const inv = useInventory();
   const [celebrating, setCelebrating] = useState(true);
-  // the photo is drawn once the celebration is over, so drawing it never holds up the shower
-  const photo = useProjectSnapshot(project ?? PROJECTS[0], 480, undefined, !celebrating);
 
   useEffect(() => {
     if (!project) return;
@@ -53,20 +51,20 @@ export function Done() {
           {celebrating && <TileConfetti onDone={() => setCelebrating(false)} />}
         </div>
         <div className="safe-top pointer-events-none absolute inset-x-0 top-0 flex justify-center px-4">
-          <h1 className="soft rounded-full bg-surface-2/90 px-8 py-3 text-center font-display text-[length:var(--fs-kid-display-c)] font-bold leading-tight text-ink-1 backdrop-blur">
+          <h1 className="soft rounded-full bg-surface-2 px-8 py-3 text-center font-display text-[length:var(--fs-kid-display-c)] font-bold leading-tight text-ink-1">
             {project.done}
           </h1>
         </div>
         {!celebrating && (
           <section
-            className="photo-in soft absolute inset-x-4 mx-auto flex max-w-4xl items-center gap-6 rounded-[32px] bg-surface-2/95 p-4 pr-6 backdrop-blur"
+            className="photo-in soft absolute inset-x-4 mx-auto flex max-w-4xl items-center gap-6 rounded-[32px] bg-surface-2 p-4 pr-6"
             style={{ bottom: "max(env(safe-area-inset-bottom), 16px)" }}
           >
-            {photo && (
-              <figure className="soft hidden shrink-0 -rotate-3 rounded-md bg-surface-2 p-2 pb-6 sm:block" aria-hidden="true">
-                <img src={photo} alt="" className="block h-[120px] w-[160px] rounded-sm object-cover" />
-              </figure>
-            )}
+            <figure className="soft hidden w-[176px] shrink-0 -rotate-3 rounded-md bg-surface-2 p-2 pb-6 sm:block" aria-hidden="true">
+              <span className="block h-[120px] w-[160px] overflow-hidden rounded-sm">
+                <ProjectPicture project={project} />
+              </span>
+            </figure>
             <p className="min-w-0 flex-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1">{S.done.putDown}</p>
             <KidButton label={S.done.back} icon={<ArrowLeft size={36} weight="bold" />} tone="accent" primary onPress={() => void navigate({ to: "/" })} speak />
           </section>

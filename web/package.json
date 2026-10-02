@@ -13,7 +13,8 @@
     "test:e2e": "playwright test",
     "check:projects": "vite-node scripts/check-projects.ts",
     "size": "node scripts/size.mjs",
-    "icons": "node scripts/icons.mjs"
+    "icons": "node scripts/icons.mjs",
+    "pictures": "node scripts/pictures.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fredoka": "5.3.0",

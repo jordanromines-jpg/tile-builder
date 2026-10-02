@@ -1,5 +1,5 @@
 /* A project's tiles as plain three.js objects, each at its place (sprint 2, change 8). Shared by the live model
-   (Model.tsx, which animates them) and the picture renderer (snapshots.ts, which draws them once). */
+   (Model.tsx, which animates them) and the picture maker (pictures.ts, which draws them once). */
 import * as THREE from "three";
 import type { ShapeId } from "../engine/catalog";
 import { asBuilt, rotOf } from "../engine/geometry";

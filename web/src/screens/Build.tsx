@@ -168,7 +168,7 @@ function BuildProject({ pid }: { pid: string }) {
               onBack={() => void navigate({ to: "/" })}
               hear={<SpeakButton text={lineOf(step)} />}
               title={
-                <h1 className="soft inline-block max-w-full truncate rounded-full bg-surface-2/90 px-6 py-2 font-display text-[length:var(--fs-kid-label-b)] font-bold text-ink-1 backdrop-blur">
+                <h1 className="soft inline-block max-w-full truncate rounded-full bg-surface-2 px-6 py-2 font-display text-[length:var(--fs-kid-label-b)] font-bold text-ink-1">
                   {project.title}
                 </h1>
               }
@@ -186,7 +186,7 @@ function BuildProject({ pid }: { pid: string }) {
         </div>
         <aside
           ref={stripRef}
-          className="soft absolute inset-x-4 flex flex-col gap-3 rounded-[32px] bg-surface-2/95 p-4 backdrop-blur"
+          className="soft absolute inset-x-4 flex flex-col gap-3 rounded-[32px] bg-surface-2 p-4"
           style={{ bottom: "max(env(safe-area-inset-bottom), 16px)" }}
           aria-label={S.kid.step(step + 1, last + 1)}
         >
@@ -202,7 +202,7 @@ function BuildProject({ pid }: { pid: string }) {
                     </li>
                   ))}
                 </ul>
-                <p className={showWords ? "max-h-[5.6em] min-w-0 overflow-y-auto font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1" : "sr-only"}>{lineOf(step)}</p>
+                <p className={showWords ? "min-w-0 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1" : "sr-only"}>{lineOf(step)}</p>
               </div>
               {(swapAt.get(step) ?? []).map((sw) => (
                 <SwapNote key={sw.from} from={sw.from} to={sw.to} text={sw.say} />
