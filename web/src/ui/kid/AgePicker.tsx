@@ -1,18 +1,18 @@
-/* The age picker (D19): three big pictures, 3–5, 6–8 and 9–10, drawn as stacks of one, two and three tiles. The
+/* The age picker (D19): four big pictures, 3–5, 6–8, 9–10 and 11–16, drawn as stacks of one to four tiles. The
    choice is remembered on the iPad and only sets which shelf comes first. */
 import { S } from "../../strings";
 import { TilePicture } from "../TileChip";
 import { AGES, type Age } from "./AgeContext";
 import { say } from "../../speech/say";
 
-const COLOURS = ["yellow", "green", "blue"] as const;
+const COLOURS = ["yellow", "green", "blue", "red"] as const;
 
 function Stack({ n }: { n: number }) {
   return (
     <span className="flex flex-col-reverse items-center" aria-hidden="true">
       {Array.from({ length: n }, (_, i) => (
         <span key={i} className="-mt-1">
-          <TilePicture shape="square" colour={COLOURS[i]} px={30} />
+          <TilePicture shape="square" colour={COLOURS[i]} px={n > 3 ? 24 : 30} />
         </span>
       ))}
     </span>

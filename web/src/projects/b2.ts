@@ -7,7 +7,7 @@ function burpingVolcano(): Project {
   b.room("orange", 0, 0, 2, 2, 0);
   b.chunk(3, ["Stand three squares in a row along the front and round the corner.", "Three more along the side and the back.", "Close the ring: eight squares."]);
   b.room("red", 0, 0, 2, 2, 1);
-  b.chunk(3, ["A second layer: stack squares on the top edges.", "Keep going round.", "Close it."]);
+  b.chunk(3, ["A second layer: stack squares on the top edges.", "Keep going round.", "Close the ring with the last squares."]);
   for (const [x, z] of [[0, 0], [1, 0], [0, 1], [1, 1]] as const) b.lid("square", "yellow", x, 2, z);
   b.chunk(3, ["Lay three squares flat on top.", "One more fills the top."]);
   b.roof("red", 0, 0, 2, "tri-equilateral");
@@ -37,7 +37,7 @@ function pickleShip(): Project {
   b.wallZ("tri-right", "green", 4, 0, 0);
   b.step("Close the back with a square and the front with a small triangle.");
   b.lids("yellow", 0, 0, 4, 1, 1);
-  b.chunk(3, ["Lay three squares flat on top: the deck.", "One more."]);
+  b.chunk(3, ["Lay three squares flat on top: the deck.", "One more square finishes it."]);
   b.wallX("tri-isosceles-tall", "purple", 1, 1, 1);
   b.wallX("tri-isosceles-tall", "purple", 2, 1, 1);
   b.step("Stand two tall triangles on the deck's front edge: the sails.");
@@ -113,7 +113,7 @@ function snackFort(): Project {
   b.room("orange", 0, 0, 2, 2, 0);
   b.chunk(3, ["Stand three squares along the front and round the corner.", "Three more along the side and the back.", "Close the fort: eight squares."]);
   b.room("orange", 0, 0, 2, 2, 1);
-  b.chunk(3, ["Stack a second layer.", "Keep going.", "Close it."]);
+  b.chunk(3, ["Stack a second layer.", "Keep going.", "Close the ring with the last squares."]);
   for (let x = 0; x < 2; x++) b.wallX("tri-equilateral", "yellow", x, 2, 2);
   for (let z = 1; z >= 0; z--) b.wallZ("tri-equilateral", "yellow", 2, 2, z);
   for (let x = 1; x >= 0; x--) b.wallX("tri-equilateral", "yellow", x, 2, 0);

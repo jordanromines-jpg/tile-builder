@@ -38,6 +38,17 @@ export function applySet(inv: Inventory, preset: SetPreset): Inventory {
   return { brands: [preset.brand], tallLeg: BRANDS[preset.brand].tallLeg ?? inv.tallLeg, counts };
 }
 
+/** Add a second set to what is there (two 100-piece sets make 200): counts add up, brands join. */
+export function addSet(inv: Inventory, preset: SetPreset): Inventory {
+  const counts: Inventory["counts"] = { ...inv.counts };
+  for (const [s, n] of Object.entries(preset.pieces)) {
+    const prev = counts[s as ShapeId];
+    counts[s as ShapeId] = { ...prev, any: (prev?.any ?? 0) + (n ?? 0) };
+  }
+  const brands = inv.brands.includes(preset.brand) ? inv.brands : [...inv.brands, preset.brand];
+  return { ...inv, brands, tallLeg: inv.tallLeg ?? BRANDS[preset.brand].tallLeg, counts };
+}
+
 export function toggleBrand(inv: Inventory, b: BrandId): Inventory {
   const brands = inv.brands.includes(b) ? inv.brands.filter((x) => x !== b) : [...inv.brands, b];
   return { ...inv, brands };

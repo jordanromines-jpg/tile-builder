@@ -8,7 +8,7 @@ import type { Inventory } from "../../engine/types";
 import { PROJECTS } from "../../projects";
 import { saveInventory } from "../../store/db";
 import { EMPTY_INVENTORY, useInventory } from "../../store/hooks";
-import { applySet, effectiveLeg, setColourCount, setCount, setTallLeg, toggleBrand } from "../../store/inventory";
+import { addSet, applySet, effectiveLeg, setColourCount, setCount, setTallLeg, toggleBrand } from "../../store/inventory";
 import { Button } from "../../ui/grownups/Button";
 import { ConfirmDialog } from "../../ui/grownups/Dialog";
 import { Stepper } from "../../ui/grownups/Stepper";
@@ -52,7 +52,7 @@ export function Tiles() {
 
       <section className="flex flex-col gap-3">
         <h2 className="font-display text-[length:var(--fs-parent-heading)] font-semibold">Start from a set</h2>
-        <p className="text-ink-2">Pick the set you have, then count up or down for the tiles that are lost or extra.</p>
+        <p className="text-ink-2">Pick the set you have, then count up or down for the tiles that are lost or extra. Two sets? Pick one, then the other, and add it.</p>
         <div className="flex flex-wrap gap-2">
           {SETS.map((s) => (
             <Button key={s.id} onClick={() => setPreset(s)}>
@@ -64,9 +64,14 @@ export function Tiles() {
           open={!!preset}
           onOpenChange={(o) => !o && setPreset(null)}
           title={`Use ${preset?.name ?? ""}?`}
-          description={inventoryTotal(inv) ? "This replaces the counts below." : `${preset?.total ?? ""} tiles.`}
+          description={
+            inventoryTotal(inv)
+              ? `This replaces the counts below. Have two sets? Add this one to the ${inventoryTotal(inv)} tiles you have instead.`
+              : `${preset?.total ?? ""} tiles.`
+          }
           confirm="Use this set"
           onConfirm={() => preset && save(applySet(inv, preset))}
+          also={inventoryTotal(inv) ? { label: "Add this set too", onClick: () => preset && save(addSet(inv, preset)) } : undefined}
         />
       </section>
 

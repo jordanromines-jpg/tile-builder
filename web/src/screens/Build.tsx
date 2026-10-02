@@ -14,7 +14,7 @@ import { effectiveLeg } from "../store/inventory";
 import { S } from "../strings";
 import { Viewer } from "../three/Viewer";
 import { ArrowLeft, Play } from "../ui/icons";
-import { AgeProvider } from "../ui/kid/AgeContext";
+import { AgeProvider, older } from "../ui/kid/AgeContext";
 import { fell, FellDown, layerStart, type FallState } from "../ui/kid/FellDown";
 import { KidBar } from "../ui/kid/KidBar";
 import { KidButton } from "../ui/kid/KidButton";
@@ -179,7 +179,7 @@ function BuildProject({ pid }: { pid: string }) {
         </div>
         <div className="absolute right-4 flex flex-col items-end gap-6" style={{ top: 120 }}>
           <TurnControls vertical onTurn={(d) => setTurns((t) => t + d)} onReset={() => setTurns(0)} />
-          {age !== "c" && !project.flat && (
+          {!older(age) && !project.flat && (
             <KidButton label={S.build.fellButton} onPress={() => {
               setFall((f) => fell(f, step));
               setFallOpen(true);
@@ -192,7 +192,7 @@ function BuildProject({ pid }: { pid: string }) {
           style={{ bottom: "max(env(safe-area-inset-bottom), 16px)" }}
           aria-label={S.kid.step(step + 1, last + 1)}
         >
-          <StepDots count={last + 1} current={step} onJump={age === "c" ? go : undefined} />
+          <StepDots count={last + 1} current={step} onJump={older(age) ? go : undefined} />
           <div className="flex items-center gap-5">
             <KidButton label={S.kid.stepBack} showLabel={false} icon={<ArrowLeft size={36} weight="bold" />} onPress={() => go(step - 1)} disabled={step === 0} />
             <div className="flex min-w-0 flex-1 flex-col gap-2">

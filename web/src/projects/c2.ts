@@ -8,7 +8,7 @@ function burritoBridge(): Project {
   const b = new Builder();
   const piers = [0, 3, 6];
   for (const y of [0, 1]) for (const x of piers) b.room("orange", x, 0, 1, 1, y);
-  b.chunk(4, ["Three piers in a row, two squares apart. Start with a ring of four.", "The second ring.", "The third.", "Stack a second ring on the first pier.", "And the second.", "And the third."]);
+  b.chunk(4, ["Three piers in a row, two squares apart. Start with a ring of four.", "The second ring.", "The third pier: another ring of four.", "Stack a second ring on the first pier.", "And the second.", "And the third."]);
   for (const g of [1, 4]) {
     b.lid("square", "yellow", g, 2, 0);
     b.lid("square", "yellow", g + 1, 2, 0);
@@ -30,7 +30,7 @@ function sneezealot(): Project {
   b.room("blue", 0, 0, 3, 3, 0);
   b.chunk(4, ["The keep: four squares along the front and round the corner.", "Keep going round.", "Close the ring: twelve squares round a three-by-three space."]);
   b.lids("purple", 0, 0, 3, 3, 1);
-  b.chunk(4, ["Lay a roof: four squares flat, from the back left.", "Four more.", "One more closes it."]);
+  b.chunk(4, ["Lay a roof: four squares flat, from the back left.", "Four more squares, flat on top.", "One more closes it."]);
   for (const x of [0, 2]) b.tower(["red", "red"], x, 0, 1);
   b.chunk(4, ["A tower on the back left corner of the roof: a ring of four.", "Stack another.", "A tower on the back right corner.", "Stack another."]);
   for (const x of [0, 2]) {
@@ -59,13 +59,13 @@ function cheeseLighthouse(): Project {
 function butlerMansion(): Project {
   const b = new Builder();
   b.room("blue", 0, 0, 3, 2, 0, [2]);
-  b.chunk(4, ["The ground floor: squares round a three-by-two space, with a doorway at the front right.", "Keep going round.", "Close it."]);
+  b.chunk(4, ["The ground floor: squares round a three-by-two space, with a doorway at the front right.", "Keep going round.", "Close the ring with the last squares."]);
   b.lids("yellow", 0, 0, 3, 2, 1);
-  b.chunk(4, ["The first floor: four squares flat on top.", "Two more."]);
+  b.chunk(4, ["The first floor: four squares flat on top.", "Two more squares finish it."]);
   b.room("green", 0, 0, 3, 2, 1);
   b.chunk(4, ["Upstairs walls: four squares round the corner.", "Keep going.", "Close upstairs."]);
   b.lids("orange", 0, 0, 3, 2, 2);
-  b.chunk(4, ["The roof: four squares.", "Two more."]);
+  b.chunk(4, ["The roof: four squares.", "Two more squares finish it."]);
   for (const x of [0, 1, 2]) {
     b.roof("red", x, 0, 2);
     b.step(x === 0 ? "A tall pyramid on the back left of the roof." : "Another, next along. Three in a parallel row.");
@@ -79,7 +79,7 @@ function wormTunnel(): Project {
     b.wallX("square", "green", x, 0, 1);
     b.wallX("square", "green", x, 0, 0);
   }
-  b.chunk(4, ["Two parallel rows of squares, one square apart: the start of the tunnel.", "Keep both rows going.", "Keep going.", "Keep going.", "Nine long."]);
+  b.chunk(4, ["Two parallel rows of squares, one square apart: the start of the tunnel.", "Keep both rows going.", "Keep going.", "Keep going.", "Keep going until it is nine squares long."]);
   for (let x = 0; x < 9; x++) b.lid("square", x % 2 ? "yellow" : "orange", x, 1, 0);
   b.chunk(4, ["Lay squares flat across the top: the tunnel roof.", "Keep going: stripes, like a worm.", "Finish the roof."]);
   b.roof("purple", 0, 0, 1, "tri-equilateral");
@@ -94,7 +94,7 @@ function spaceToilet(): Project {
   b.room("blue", 0, 0, 2, 2, 0);
   b.chunk(4, ["The cabin: four squares round a corner.", "Close it: eight squares."]);
   b.room("blue", 0, 0, 2, 2, 1);
-  b.chunk(4, ["Stack a second layer.", "Close it."]);
+  b.chunk(4, ["Stack a second layer.", "Close the ring with the last squares."]);
   b.lids("purple", 0, 0, 2, 2, 2);
   b.step("A roof of four squares.");
   b.tower(["green", "green"], 0, 0, 2);
@@ -111,9 +111,9 @@ function underpantsFactory(): Project {
   b.room("purple", 0, 0, 4, 2, 0);
   b.chunk(4, ["The factory: four squares along the front.", "Round the corner and along the back.", "Close it: twelve squares round a four-by-two space."]);
   b.lids("blue", 0, 0, 4, 2, 1);
-  b.chunk(4, ["The roof: four squares flat.", "Four more."]);
+  b.chunk(4, ["The roof: four squares flat.", "Four more squares, flat on top."]);
   for (const x of [0, 3]) b.tower(["red", "orange", "red"], x, 0, 1);
-  b.chunk(4, ["A chimney on the back left of the roof: a ring of four.", "Stack it.", "Three rings.", "Another chimney on the back right.", "Stack it.", "Three rings each."]);
+  b.chunk(4, ["A chimney on the back left of the roof: a ring of four.", "Stack another ring on top.", "Three rings.", "Another chimney on the back right.", "Stack another ring on top.", "Three rings each."]);
   for (const x of [1, 2]) b.wallX("tri-equilateral", "yellow", x, 1, 2);
   b.step("Two triangles on the front of the roof: the factory sign, shaped like pants.");
   return b.build({ id: "underpants-factory", title: "The underpants factory", theme: "homes", age: "c", stars: 1, done: "You built the underpants factory! It makes a million pants a day. Clean ones." });
@@ -145,7 +145,7 @@ function spaghettiTower(): Project {
   const b = new Builder();
   const c: Colour[] = ["red", "orange", "yellow", "green", "blue", "purple", "red", "orange"];
   b.tower(c, 0, 0, 0);
-  b.chunk(4, ["Stand four squares in a ring.", "Stack another ring: orange.", "Yellow.", "Green.", "Blue.", "Purple. Grown-up, hold the bottom.", "Red again.", "Orange: eight rings, a rainbow of spaghetti."]);
+  b.chunk(4, ["Stand four squares in a ring.", "Stack another ring: orange.", "A yellow ring next.", "A green ring.", "A blue ring.", "Purple. Grown-up, hold the bottom.", "Red again, on top.", "Orange: eight rings, a rainbow of spaghetti."]);
   b.roof("yellow", 0, 0, 8, "tri-equilateral");
   b.step("A meatball on top: four equilateral triangles meeting at one vertex.");
   return b.build({ id: "spaghetti-tower", title: "The spaghetti tower", theme: "patterns", age: "c", stars: 1, done: "You built the spaghetti tower! Thirty-six tiles of pasta. Don't slurp it." });
@@ -169,7 +169,7 @@ function notBouncyCastle(): Project {
   b.room("red", 0, 0, 3, 3, 0);
   b.chunk(4, ["Four squares along the front and round the corner.", "Keep going round.", "Close it: twelve squares."]);
   b.room("yellow", 0, 0, 3, 3, 1);
-  b.chunk(4, ["A second layer.", "Keep going.", "Close it."]);
+  b.chunk(4, ["A second layer.", "Keep going.", "Close the ring with the last squares."]);
   for (const [x, z] of [[0, 0], [2, 0], [0, 2], [2, 2]] as const) {
     b.lid("square", "blue", x, 2, z);
   }
@@ -184,11 +184,11 @@ function notBouncyCastle(): Project {
 function llamaTheatre(): Project {
   const b = new Builder();
   b.room("purple", 0, 0, 4, 2, 0);
-  b.chunk(4, ["The stage: four squares along the front.", "Round the corner and along the back.", "Close it."]);
+  b.chunk(4, ["The stage: four squares along the front.", "Round the corner and along the back.", "Close the ring with the last squares."]);
   b.lids("yellow", 0, 0, 4, 2, 1);
-  b.chunk(4, ["The stage floor: four squares flat.", "Four more."]);
+  b.chunk(4, ["The stage floor: four squares flat.", "Four more squares, flat on top."]);
   b.room("red", 0, 0, 4, 1, 1);
-  b.chunk(4, ["The back wall of the stage, standing on the back half of the floor.", "Keep going.", "Close it."]);
+  b.chunk(4, ["The back wall of the stage, standing on the back half of the floor.", "Keep going.", "Close the ring with the last squares."]);
   b.lids("red", 0, 0, 4, 1, 2);
   b.step("Four squares flat on the back wall: its top.");
   for (let x = 1; x < 4; x++) b.wallX("tri-equilateral", "orange", x, 2, 1);

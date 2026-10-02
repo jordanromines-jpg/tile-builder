@@ -12,6 +12,7 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { ShapeId } from "../engine/catalog";
 import type { Age, Project } from "../engine/types";
 import { softwareGL } from "../gpu";
+import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
 import { easeInOut, fitDistance, FOV, viewFrom } from "./camera";
 import { frameOf, Model, releaseShared } from "./Model";
@@ -238,7 +239,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
     return mid.lerp(new THREE.Vector3(step.x, Math.min(step.y, built.height * 0.6), step.z), 0.2);
   }, [project, leg, current, shown, whole, built]);
   const [touched, setTouched] = useState(false);
-  const autoRotate = age === "c" && spin && !still && !touched && !sweep;
+  const autoRotate = older(age) && spin && !still && !touched && !sweep;
   // the iPad's light or dark can change while a build is open: read the colours again
   const ground = useGround();
   const tint = paint + ground;
@@ -266,10 +267,10 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
         </Turntable>
         {age !== "a" && (
           <OrbitControls
-            enableZoom={age === "c"}
+            enableZoom={older(age)}
             enablePan={false}
-            minDistance={age === "c" ? distance * 0.45 : undefined}
-            maxDistance={age === "c" ? distance * 1.8 : undefined}
+            minDistance={older(age) ? distance * 0.45 : undefined}
+            maxDistance={older(age) ? distance * 1.8 : undefined}
             maxPolarAngle={Math.PI * 0.47}
             autoRotate={autoRotate}
             autoRotateSpeed={60 / 25}

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { AGE_RULES } from "../engine/ages";
 import { inventoryFromSet, matchProject } from "../engine/match";
 import { setById } from "../engine/sets";
+import { addSet } from "../store/inventory";
 import type { Age } from "../engine/types";
 import { PROJECTS } from "./index";
 
@@ -13,8 +14,8 @@ const of = (age: Age) => PROJECTS.filter((p) => p.age === age);
 const buildable = (age: Age, set: string) => of(age).filter((p) => matchProject(p, inv(set)).state !== "need").map((p) => p.id);
 
 describe("the projects (plan keys 6h, 6j, 6l)", () => {
-  it("has 10, 12 and 8 projects by age, with unique ids", () => {
-    expect([of("a").length, of("b").length, of("c").length]).toEqual([10, 12, 8]);
+  it("has 16, 21, 20 and 23 projects by age, with unique ids", () => {
+    expect([of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([16, 21, 20, 23]);
     expect(new Set(PROJECTS.map((p) => p.id)).size).toBe(PROJECTS.length);
   });
 
@@ -29,6 +30,17 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
 
   it("builds at least five 9–10 projects from a Magna-Tiles 100, with swaps", () => {
     expect(buildable("c", "magna-100").length).toBeGreaterThanOrEqual(5);
+  });
+
+  it("builds every 11–16 project from two Magna-Tiles 100 or two PicassoTiles 100 (with swaps), and most need both", () => {
+    const two = (id: string) => {
+      const s = setById(id)!;
+      return addSet(inventoryFromSet(s.pieces, s.brand, null), s);
+    };
+    for (const set of ["magna-100", "picasso-100"]) {
+      expect(of("d").filter((p) => matchProject(p, two(set)).state === "need").map((p) => p.id), set).toEqual([]);
+    }
+    expect(of("d").filter((p) => matchProject(p, inv("magna-100")).state === "need").length).toBeGreaterThan(15);
   });
 
   it("gives stars by size within the age: lower third 1, middle 2, upper 3", () => {
