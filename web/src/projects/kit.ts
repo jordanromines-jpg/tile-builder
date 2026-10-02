@@ -17,6 +17,8 @@ interface Group {
   add: (b: Builder) => number;
   say: Say;
   pyramid?: boolean;
+  /** tiles that must go on in the same step, in order: steps are packed from these, never splitting one */
+  atoms?: number[];
 }
 
 export interface Box {
@@ -46,8 +48,8 @@ export class Site {
   private groups: Group[] = [];
   private seq = 0;
 
-  private push(level: number, add: (b: Builder) => number, say: Say, pyramid = false) {
-    this.groups.push({ level, seq: this.seq++, add, say, pyramid });
+  protected push(level: number, add: (b: Builder) => number, say: Say, pyramid = false, atoms?: number[]) {
+    this.groups.push({ level, seq: this.seq++, add, say, pyramid, atoms });
   }
 
   /** A ring of walls at height y; `door` leaves the front-left square out (on the table) or starts the ring beside it. */
@@ -77,6 +79,37 @@ export class Site {
     );
   }
 
+  /** Walls inside a w × d room at height y, on every second grid line, so that every square of the floor or roof above
+      rests on two walls (R10): flat tiles side by side fold at their join, so a wide roof needs walls under it. */
+  private inner(name: string, colour: Colour, x: number, z: number, w: number, d: number, y: number) {
+    const xs: number[] = [];
+    const zs: number[] = [];
+    if (d >= 2 && w >= 3) for (let i = x + 2; i < x + w; i += 2) xs.push(i);
+    if (w >= 2 && d >= 3) for (let j = z + 2; j < z + d; j += 2) zs.push(j);
+    const n = (xs.length * d) + (zs.length * w);
+    if (!n) return;
+    this.push(
+      2 * y,
+      (b) => {
+        for (const i of xs) for (let j = z; j < z + d; j++) b.wallZ("square", colour, i, y, j);
+        for (const j of zs) for (let i = x; i < x + w; i++) b.wallX("square", colour, i, y, j);
+        return n;
+      },
+      (k, of) => (k === 0 ? `${cap(name)}: stand squares across the inside, from wall to wall. They hold the roof up.` : `${cap(name)}: ${k === of - 1 ? "finish the inside wall" : "keep going across"}.`),
+    );
+  }
+
+  private porch(name: string, colour: Colour, x: number, z: number) {
+    this.push(
+      0,
+      (b) => {
+        b.wallZ("square", colour, x, 0, z);
+        return 1;
+      },
+      () => `${cap(name)}: stand a square inside, beside the doorway, from the front wall in. The roof over the door rests on it.`,
+    );
+  }
+
   private floor(name: string, colour: Colour, x: number, z: number, w: number, d: number, y: number, what = "a floor") {
     this.push(
       2 * y - 1,
@@ -94,8 +127,12 @@ export class Site {
   /** A building: `storeys` layers of walls round w × d, colours by layer, a flat roof on top (unless `roof` is false). */
   block(name: string, x: number, z: number, w: number, d: number, storeys: number, colours: Colour[], o: { door?: boolean; roof?: Colour | false; floors?: Colour; base?: number } = {}): Box {
     const base = o.base ?? 0;
+    const lidded = o.roof !== false || !!o.floors;
     for (let i = 0; i < storeys; i++) {
       this.ring(name, colours[i % colours.length], x, z, w, d, base + i, !!o.door && base === 0, base);
+      if (lidded) this.inner(name, colours[i % colours.length], x, z, w, d, base + i);
+      // the square over the doorway needs a second wall under it: a short wall beside the door makes a porch
+      if (lidded && o.door && base === 0 && i === 0 && w > 1 && d > 1) this.porch(name, colours[0], x + 1, z + d - 1);
       if (o.floors && i < storeys - 1) this.floor(name, o.floors, x, z, w, d, base + i + 1, `the ${ORD[i + 1]} floor`);
     }
     if (o.roof !== false) this.floor(name, o.roof ?? colours[0], x, z, w, d, base + storeys, "the roof");
@@ -133,8 +170,8 @@ export class Site {
     cells.forEach(([x, z], i) => this.pyramid(name, x, z, y, kind === "mix" ? (i % 2 ? "low" : "tall") : kind, colour));
   }
 
-  /** A straight wall of squares on the table along x (from..to at line z) or z, `height` layers, with battlements. */
-  wall(name: string, axis: "x" | "z", from: number, to: number, line: number, height: number, colour: Colour, crenel?: Colour) {
+  /** A straight wall of squares on the table along x (from..to at line z) or z, `height` layers, joined to towers at both ends. */
+  wall(name: string, axis: "x" | "z", from: number, to: number, line: number, height: number, colour: Colour) {
     for (let y = 0; y < height; y++)
       this.push(
         2 * y,
@@ -144,23 +181,10 @@ export class Site {
         },
         (k, of) => (y === 0 ? (k === 0 ? `${cap(name)}: stand squares in a line, joined to the towers at each end.` : `${cap(name)}: keep going along.`) : k === 0 ? `${cap(name)}: stack another layer on top.` : `${cap(name)}: keep stacking${of > 1 && k === of - 1 ? " to the end" : ""}.`),
       );
-    if (crenel) this.standing(name, axis, from, to, line, height, "tri-equilateral", crenel, "battlements");
-  }
-
-  /** Triangles standing on a straight top edge at height y: battlements (short) or flags (tall). */
-  standing(name: string, axis: "x" | "z", from: number, to: number, line: number, y: number, shape: "tri-equilateral" | "tri-isosceles-tall", colour: Colour, what = "flags") {
-    this.push(
-      2 * y,
-      (b) => {
-        for (let t = from; t < to; t++) axis === "x" ? b.wallX(shape, colour, t, y, line) : b.wallZ(shape, colour, line, y, t);
-        return to - from;
-      },
-      (k, of) => (k === 0 ? `${cap(name)}: stand ${shape === "tri-equilateral" ? "short" : "tall"} triangles along the top edge: ${what}.` : `${cap(name)}: more ${what}${k === of - 1 ? " to finish" : ""}.`),
-    );
   }
 
   /** A bridge deck: squares flat across cells between two towers of the same height (y is their top). */
-  deck(name: string, axis: "x" | "z", from: number, to: number, line: number, y: number, colour: Colour, rail?: Colour) {
+  deck(name: string, axis: "x" | "z", from: number, to: number, line: number, y: number, colour: Colour) {
     this.push(
       2 * y - 1,
       (b) => {
@@ -169,10 +193,6 @@ export class Site {
       },
       () => `${cap(name)}: lay squares flat across the gap, tower to tower. Each one meets a tower or its neighbour. Grown-up, hold the towers.`,
     );
-    if (rail) {
-      this.standing(name, axis, from, to, axis === "x" ? line + 1 : line + 1, y, "tri-equilateral", rail, "railings");
-      this.standing(name, axis, from, to, line, y, "tri-equilateral", rail, "railings on the other side");
-    }
   }
 
   /** Squares flat across the tops of towers (or walls) at height y: a platform on legs. Returns it as a box to build on. */
@@ -205,7 +225,14 @@ export class Site {
     for (const g of order) {
       const n = g.add(b);
       if (g.pyramid) b.step(g.say(0, 1));
-      else {
+      else if (g.atoms) {
+        const sizes: number[] = [];
+        for (const a of g.atoms) {
+          if (sizes.length && sizes[sizes.length - 1] + a <= max) sizes[sizes.length - 1] += a;
+          else sizes.push(a);
+        }
+        b.chunkBy(sizes, sizes.map((_, k) => g.say(k, sizes.length)));
+      } else {
         const of = Math.ceil(n / max);
         b.chunk(max, Array.from({ length: of }, (_, k) => g.say(k, of)));
       }

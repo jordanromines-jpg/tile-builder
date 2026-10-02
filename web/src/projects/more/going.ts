@@ -47,20 +47,16 @@ function paperPlanes(): Project {
 
 function dirtyCarWash(): Project {
   const s = new Site();
-  s.tower("the left brush", 0, 0, 4, ["blue", "green"], { cap: "lid", capColour: "blue" });
-  s.tower("the right brush", 3, 0, 4, ["blue", "green"], { cap: "lid", capColour: "blue" });
-  s.deck("the soap bridge", "x", 1, 3, 0, 4, "purple", "yellow");
-  s.plaza("the muddy puddle", 0, 2, 4, 3, "orange");
+  s.tower("the left brush", 0, 0, 5, ["blue", "green"], { cap: "lid", capColour: "blue" });
+  s.tower("the right brush", 2, 0, 5, ["blue", "green"], { cap: "lid", capColour: "blue" });
+  s.deck("the soap bridge", "x", 1, 2, 0, 5, "purple");
+  s.plaza("the muddy puddle", 0, 2, 3, 3, "orange");
   return s.build({ id: "dirty-car-wash", title: "The Car Wash That Makes Cars Dirtier", theme: "vehicles", age: "c", done: "You built the car wash! Your car goes in clean and comes out muddy. Brilliant." });
 }
 
 function monsterArena(): Project {
   const s = new Site();
-  const a = s.block("the arena", 0, 0, 6, 4, 2, ["red", "orange"], { roof: false });
-  s.standing("the front flags", "x", 0, 6, 4, a.top, "tri-isosceles-tall", "yellow");
-  s.standing("the back crowd", "x", 0, 6, 0, a.top, "tri-equilateral", "blue", "cheering fans");
-  s.standing("the left crowd", "z", 0, 4, 0, a.top, "tri-equilateral", "green", "cheering fans");
-  s.standing("the right crowd", "z", 0, 4, 6, a.top, "tri-equilateral", "purple", "cheering fans");
+  s.block("the arena", 0, 0, 6, 4, 2, ["red", "orange"], { roof: false });
   s.tower("the ramp tower", 2, 1, 2, ["yellow"], { size: 2, cap: "lid", capColour: "red" });
   return s.build({ id: "monster-truck-arena", title: "Monster Truck Ramp Arena", theme: "vehicles", age: "d", done: "You built the Monster Truck Arena! The crowd goes wild. The trucks go higher." });
 }
@@ -106,7 +102,7 @@ function snackMissionControl(): Project {
   s.tower("the radar", 0, 0, 2, ["green"], { base: mc.top, cap: "low", capColour: "blue" });
   s.tower("the snack silo", 4, 0, 3, ["orange", "red"], { base: mc.top, cap: "tall", capColour: "yellow" });
   s.roofs("the satellite dishes", [[2, 1], [2, 2]], mc.top, "low", "red");
-  s.tower("the rocket", 7, 1, 5, ["red", "yellow"], { cap: "tall", capColour: "red" });
+  s.tower("the rocket", 7, 1, 3, ["red", "yellow"], { cap: "tall", capColour: "red" });
   return s.build({ id: "snack-mission-control", title: "Mission Control for Mission Impossible Snacks", theme: "space", age: "d", done: "You built Mission Control! Mission: get the last biscuit. Status: impossible." });
 }
 
@@ -122,14 +118,14 @@ function alienBootSale(): Project {
 
 function marsMayhem(): Project {
   const s = new Site();
-  const pods = [[0, "the sleeping pod"], [4, "the kitchen pod"], [8, "the loo pod"]] as const;
+  const pods = [[0, "the sleeping pod"], [3, "the kitchen pod"], [6, "the loo pod"]] as const;
   for (const [x, n] of pods) {
     const p = s.block(n, x, 0, 2, 2, 2, ["orange", "red"], { roof: "yellow" });
     s.roofs(n, [[x, 0]], p.top, "tall", "blue");
     s.roofs(n, [[x + 1, 1]], p.top, "low", "green");
   }
-  s.deck("the left tunnel", "x", 2, 4, 0, 2, "purple");
-  s.deck("the right tunnel", "x", 6, 8, 1, 2, "purple");
+  s.deck("the left tunnel", "x", 2, 3, 0, 2, "purple");
+  s.deck("the right tunnel", "x", 5, 6, 1, 2, "purple");
   return s.build({ id: "mars-mayhem", title: "Mars Base Mild Mayhem", theme: "space", age: "d", done: "You built Mars Base Mild Mayhem! The loo pod is very far from the sleeping pod. Run!" });
 }
 
@@ -162,8 +158,8 @@ function pickleLaunch(): Project {
 function hamsterHabitat(): Project {
   const s = new Site();
   s.tower("the hamster tube", 0, 0, 4, ["yellow", "orange"], { cap: "lid", capColour: "yellow" });
-  s.tower("the other tube", 3, 0, 4, ["yellow", "orange"], { cap: "lid", capColour: "yellow" });
-  s.deck("the hamster bridge", "x", 1, 3, 0, 4, "blue", "green");
+  s.tower("the other tube", 2, 0, 4, ["yellow", "orange"], { cap: "lid", capColour: "yellow" });
+  s.deck("the hamster bridge", "x", 1, 2, 0, 4, "blue");
   const home = s.block("the space wheel room", 0, 2, 4, 2, 1, ["purple"], { roof: "blue" });
   s.roofs("the wheel", [[1, 2], [2, 3]], home.top, "low", "red");
   return s.build({ id: "space-hamster-habitat", title: "Space Hamster Habitat", theme: "space", age: "d", done: "You built the Space Hamster Habitat! The hamster runs on its wheel and powers the whole station." });

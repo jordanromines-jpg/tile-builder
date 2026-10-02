@@ -70,7 +70,8 @@ Builder"; the evidence behind each number is there.
 | Smallest kid button | 88 px | 80 px | 64 px | 64 px |
 
 Project names are meant to make children laugh (the Burping Volcano, the Castle of Infinite Snacks); the engineering
-underneath is real, and every project passes the checker.
+underneath is real, and every project passes the checker, including its rule that every build holds up like real
+tiles (2.3): roofs rest on walls, nothing hangs by one edge, and no wall stands without something bracing it.
 
 ## The screens
 

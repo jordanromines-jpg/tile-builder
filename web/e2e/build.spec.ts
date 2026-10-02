@@ -8,22 +8,22 @@ const next = (page: Page) => page.getByRole("button", { name: "Next", exact: tru
 test("the castle steps to the end with Next; a reload mid-way returns to the same step; the end clears it", async ({ page }) => {
   await useSet(page, "PicassoTiles PT100 Classic Starter");
   await page.goto("#/build/castle");
-  await expect(page.getByRole("list", { name: "Step 1 of 25" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Step 1 of 21" })).toBeVisible();
   for (let i = 0; i < 10; i++) await next(page).click();
-  await expect(page.getByRole("list", { name: "Step 11 of 25" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Step 11 of 21" })).toBeVisible();
   await savedStep(page, "castle", 10);
   await page.reload();
-  await expect(page.getByRole("list", { name: "Step 11 of 25" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Step 11 of 21" })).toBeVisible();
   await page.getByRole("button", { name: "Back", exact: true }).click();
-  await expect(page.getByRole("list", { name: "Step 10 of 25" })).toBeVisible();
-  for (let i = 0; i < 16; i++) await next(page).click();
+  await expect(page.getByRole("list", { name: "Step 10 of 21" })).toBeVisible();
+  for (let i = 0; i < 12; i++) await next(page).click();
   await expect(page).toHaveURL(/#\/done\/castle$/);
   await expect(page.getByRole("heading", { level: 1, name: "You built the castle! Look how tall the keep is." })).toBeVisible();
   await expect(page.getByText("Put the iPad down and play with what you made.")).toBeVisible();
   await page.getByRole("button", { name: "Back to the shelf" }).click();
   await expect(page).toHaveURL(/#\/$/);
   await page.goto("#/build/castle");
-  await expect(page.getByRole("list", { name: "Step 1 of 25" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Step 1 of 21" })).toBeVisible();
 });
 
 test("short of tiles: the note comes first, with Start anyway and Pick another", async ({ page }) => {
@@ -41,8 +41,8 @@ test("with a Magna-Tiles 100 the castle's spires are equilateral, marked instead
   await useSet(page, "Magna-Tiles Clear Colors 100");
   await page.goto("#/build/castle");
   await page.getByRole("button", { name: "Start anyway" }).click();
-  for (let i = 0; i < 23; i++) await next(page).click();
-  await expect(page.getByRole("list", { name: "Step 24 of 25" })).toBeVisible();
+  for (let i = 0; i < 19; i++) await next(page).click();
+  await expect(page.getByRole("list", { name: "Step 20 of 21" })).toBeVisible();
   await expect(page.getByRole("list", { name: "This step's tiles" }).getByRole("img", { name: "4 red triangles" })).toBeVisible();
   await expect(page.getByText(/Four short triangles make a lower roof/).first()).toBeVisible();
 });
@@ -50,8 +50,8 @@ test("with a Magna-Tiles 100 the castle's spires are equilateral, marked instead
 test("9–10 can jump to any step by its dot", async ({ page }) => {
   await useSet(page, "PicassoTiles PT100 Classic Starter");
   await page.goto("#/build/castle");
-  await page.getByRole("button", { name: "Step 7 of 25" }).click();
-  await expect(page.getByRole("list", { name: "Step 7 of 25" })).toBeVisible();
+  await page.getByRole("button", { name: "Step 7 of 21" }).click();
+  await expect(page.getByRole("list", { name: "Step 7 of 21" })).toBeVisible();
 });
 
 test("it fell down: calm help, then a grown-up after two falls on one step", async ({ page }) => {
@@ -101,7 +101,7 @@ test.describe("with motion", () => {
     await page.goto("#/build/castle");
     // this set is 6 squares short: start anyway, so the model is shown
     await page.getByRole("button", { name: "Start anyway" }).click();
-    await page.getByRole("button", { name: "Step 25 of 25" }).click();
+    await page.getByRole("button", { name: "Step 21 of 21" }).click();
     // the first frames compile the shaders, a one-off cost (seconds in software): measure once drawing is under way
     const start = await page.evaluate(() => window.__viewer!.frames());
     await expect.poll(() => page.evaluate(() => window.__viewer!.frames()), { timeout: 30_000 }).toBeGreaterThan(start + 3);

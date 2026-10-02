@@ -9,8 +9,8 @@ type C = Colour;
 function corners(s: Site, w: number, d: number, h: number, tc: C[], wc: C, cren: C | undefined, cap: "tall" | "low" = "tall") {
   const spots: [number, number, string][] = [[0, 0, "the back left tower"], [w, 0, "the back right tower"], [0, d, "the front left tower"], [w, d, "the front right tower"]];
   for (const [x, z, n] of spots) s.tower(n, x, z, h, tc, { cap });
-  s.wall("the front wall", "x", 1, w, d + 1, 2, wc, cren);
-  s.wall("the back wall", "x", 1, w, 0, 2, wc, cren);
+  s.wall("the front wall", "x", 1, w, d + 1, 2, wc);
+  s.wall("the back wall", "x", 1, w, 0, 2, wc);
   s.wall("the left wall", "z", 1, d, 0, 2, wc);
   s.wall("the right wall", "z", 1, d, w + 1, 2, wc);
 }
@@ -69,7 +69,6 @@ function moatCastle(): Project {
   const keep = s.block("the castle", 1, 0, 4, 3, 2, ["yellow", "orange"], { door: true, roof: "orange" });
   s.tower("the cheese tower", 1, 0, 2, ["yellow"], { base: keep.top, cap: "low", capColour: "orange" });
   s.tower("the cracker tower", 4, 0, 2, ["orange"], { base: keep.top, cap: "low", capColour: "yellow" });
-  s.standing("the battlements", "x", 1, 5, 3, keep.top, "tri-equilateral", "red", "battlements");
   return s.build({ id: "moat-and-cheese", title: "The Moat-and-Cheese Castle", theme: "castles", age: "d", done: "You built the Moat-and-Cheese Castle! The moat is full of melted cheese. Don't fall in. Or do." });
 }
 
@@ -77,7 +76,6 @@ function snoreKeep(): Project {
   const s = new Site();
   const keep = s.block("the sleepy keep", 0, 0, 3, 3, 3, ["blue", "purple", "blue"], { roof: "purple" });
   s.roofs("the pillow roofs", [[0, 0], [1, 1], [2, 2], [2, 0]], keep.top, "mix", "yellow");
-  s.standing("the snore flags", "x", 1, 3, 0, keep.top, "tri-isosceles-tall", "red");
   return s.build({ id: "snore-keep", title: "Sir Snoresalot's Sleepover Keep", theme: "castles", age: "d", done: "You built the Sleepover Keep! ZZZZ. Sir Snoresalot is already asleep." });
 }
 
@@ -145,22 +143,18 @@ function chessCastle(): Project {
 
 function doughnutFort(): Project {
   const s = new Site();
-  const ring = s.block("the doughnut", 0, 0, 4, 4, 2, ["orange", "orange"], { roof: false });
-  s.standing("the sprinkles", "x", 0, 4, 4, ring.top, "tri-equilateral", "red", "sprinkles");
-  s.standing("the back sprinkles", "x", 0, 4, 0, ring.top, "tri-equilateral", "green", "sprinkles");
-  s.standing("the left sprinkles", "z", 0, 4, 0, ring.top, "tri-equilateral", "yellow", "sprinkles");
-  s.standing("the right sprinkles", "z", 0, 4, 4, ring.top, "tri-equilateral", "blue", "sprinkles");
+  s.block("the doughnut", 0, 0, 4, 4, 2, ["orange", "orange"], { roof: false });
   s.tower("the jam tower", 1, 1, 3, ["red", "purple"], { size: 2, cap: "lid", capColour: "red" });
   return s.build({ id: "doughnut-fort", title: "The Doughnut Fortress", theme: "castles", age: "d", done: "You built the Doughnut Fortress! It has a hole in the middle, filled with a jam tower." });
 }
 
 function gateCastle(): Project {
   const s = new Site();
-  s.tower("the left gate tower", 0, 0, 4, ["blue", "purple"], {});
-  s.tower("the right gate tower", 3, 0, 4, ["blue", "purple"], {});
-  s.deck("the gate bridge", "x", 1, 3, 0, 4, "yellow", "red");
-  s.wall("the left wall", "x", -3, 0, 1, 2, "blue", "yellow");
-  s.wall("the right wall", "x", 4, 7, 1, 2, "blue", "yellow");
+  s.tower("the left gate tower", 0, 0, 5, ["blue", "purple"], {});
+  s.tower("the right gate tower", 2, 0, 5, ["blue", "purple"], {});
+  s.deck("the gate bridge", "x", 1, 2, 0, 5, "yellow");
+  s.wall("the left wall", "x", -3, 0, 1, 2, "blue");
+  s.wall("the right wall", "x", 3, 6, 1, 2, "blue");
   return s.build({ id: "drawbridge-gate", title: "The Drawbridge That Never Closes", theme: "castles", age: "d", done: "You built the Drawbridge That Never Closes! Anyone can come in. Even the pizza delivery." });
 }
 

@@ -6,6 +6,7 @@ import { addSet } from "../store/inventory";
 import type { Age } from "../engine/types";
 import { PROJECTS } from "./index";
 import { MORE } from "./more";
+import { FRESH } from "./fresh";
 
 const inv = (id: string) => {
   const s = setById(id)!;
@@ -15,8 +16,8 @@ const of = (age: Age) => PROJECTS.filter((p) => p.age === age);
 const buildable = (age: Age, set: string) => of(age).filter((p) => matchProject(p, inv(set)).state !== "need").map((p) => p.id);
 
 describe("the projects (plan keys 6h, 6j, 6l)", () => {
-  it("has 16, 21, 34 and 110 projects by age, with unique ids", () => {
-    expect([of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([16, 21, 34, 110]);
+  it("has 16, 36, 64 and 165 projects by age, with unique ids", () => {
+    expect([of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([16, 36, 64, 165]);
     expect(new Set(PROJECTS.map((p) => p.id)).size).toBe(PROJECTS.length);
   });
 
@@ -55,6 +56,39 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
       expect(p.placed.length, p.id).toBeLessThanOrEqual(175);
       for (const set of ["magna-100", "picasso-100"]) expect(matchProject(p, two(set)).state, `${p.id} from two ${set}`).not.toBe("need");
     }
+  });
+
+  it("2.3: the 100 plans from the shape kit: 6–10 builds from one Magna-Tiles 100, 11–16 from two 100-piece sets", () => {
+    const two = (id: string) => {
+      const s = setById(id)!;
+      return addSet(inventoryFromSet(s.pieces, s.brand, null), s);
+    };
+    expect([FRESH.filter((p) => p.age === "b").length, FRESH.filter((p) => p.age === "c").length, FRESH.filter((p) => p.age === "d").length]).toEqual([15, 30, 55]);
+    for (const p of FRESH) {
+      if (p.age === "d") {
+        expect(p.placed.length, p.id).toBeLessThanOrEqual(175);
+        for (const set of ["magna-100", "picasso-100"]) expect(matchProject(p, two(set)).state, `${p.id} from two ${set}`).not.toBe("need");
+      } else expect(matchProject(p, inv("magna-100")).state, `${p.id} from one magna-100`).not.toBe("need");
+    }
+  });
+
+  it("2.3: no two of the 100 are the same build, and most use shapes off the square grid", () => {
+    const signature = (p: (typeof FRESH)[number]) => {
+      const n: Record<string, number> = {};
+      for (const t of p.placed) n[t.shape] = (n[t.shape] ?? 0) + 1;
+      const xs = p.placed.map((t) => t.pos[0]);
+      const zs = p.placed.map((t) => t.pos[2]);
+      return JSON.stringify([n, Math.round(Math.max(...xs) - Math.min(...xs)), Math.round(Math.max(...zs) - Math.min(...zs))]);
+    };
+    expect(new Set(FRESH.map(signature)).size).toBe(FRESH.length);
+    const QUARTER = Math.PI / 2;
+    const offGrid = (p: (typeof FRESH)[number]) =>
+      p.placed.some((t) => {
+        const turn = Math.abs(t.rot[1] / QUARTER - Math.round(t.rot[1] / QUARTER)) > 1e-6;
+        const leans = t.rot[0] !== 0 && t.rot[0] !== -QUARTER && t.role !== "roof";
+        return turn || leans || t.shape === "tri-right" || t.shape === "square-large" || (t.shape === "tri-equilateral" && t.rot[0] === -QUARTER);
+      });
+    expect(FRESH.filter(offGrid).length).toBeGreaterThanOrEqual(70);
   });
 
   it("gives stars by size within the age: lower third 1, middle 2, upper 3", () => {

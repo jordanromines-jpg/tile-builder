@@ -22,11 +22,13 @@ function garage(): Project {
   const b = new Builder();
   b.room("green", 0, 0, 2, 2, 0, [0, 1]);
   b.chunk(3, ["Stand two squares edge to edge for the right side, and one at the back.", "Finish the back and the left side. The front stays open for the car."]);
+  b.wallZ("square", "green", 1, 0, 0);
+  b.wallZ("square", "green", 1, 0, 1);
+  b.step("Stand two squares across the middle, from the back to the open front. Now there are two parking spaces, and the roof has a wall to rest on.");
   b.lids("blue", 0, 0, 2, 2, 1);
   b.chunk(3, ["Lay three squares flat on top. Each one rests on two edges.", "The last square closes the roof."]);
-  b.wallX("tri-equilateral", "yellow", 0, 1, 2);
-  b.wallX("tri-equilateral", "yellow", 1, 1, 2);
-  b.step("Stand two triangles on the front edge of the roof. That is the sign.");
+  b.lowRoof("yellow", 1, 1, 1);
+  b.step("Lean four triangles together on the roof until their tips meet. That is the sign.");
   return b.build({ id: "garage", title: "A garage", theme: "vehicles", age: "b", stars: 1, done: "You built a garage! Park a car inside." });
 }
 
@@ -34,18 +36,17 @@ function twinBridge(): Project {
   const b = new Builder();
   b.room("blue", 0, 0, 1, 1, 0);
   b.chunk(3, ["Stand three squares in a U. That is half of the first tower.", "One more square closes the tower: a ring of four."]);
-  b.room("blue", 3, 0, 1, 1, 0);
-  b.chunk(3, ["Leave a gap of two squares, then stand three squares in a U for the second tower.", "Close the second tower."]);
+  b.room("blue", 2, 0, 1, 1, 0);
+  b.chunk(3, ["Leave a gap of one square, then stand three squares in a U for the second tower.", "Close the second tower."]);
   b.lid("square", "yellow", 1, 1, 0);
-  b.lid("square", "yellow", 2, 1, 0);
-  b.step("Grown-up, hold the towers. Lay two squares flat between their tops: the bridge's deck.");
+  b.step("Lay a square flat between the tops of the towers: the bridge's deck. It rests on both towers.");
   b.room("purple", 0, 0, 1, 1, 1);
   b.chunk(3, ["Make the first tower one layer taller: three squares on the top edges.", "Close the new layer."]);
-  b.room("purple", 3, 0, 1, 1, 1);
+  b.room("purple", 2, 0, 1, 1, 1);
   b.chunk(3, ["Now the second tower: three squares on top.", "Close it. The towers are symmetrical."]);
   b.roof("red", 0, 0, 2);
   b.step("A pyramid of tall triangles on the first tower.");
-  b.roof("red", 3, 0, 2);
+  b.roof("red", 2, 0, 2);
   b.step("And one on the second tower.");
   return b.build({ id: "twin-bridge", title: "A bridge with two towers", theme: "bridges", age: "b", stars: 2, done: "You built a bridge! Can a car drive across the deck?", swaps: [TALL_TO_LOW] });
 }
@@ -79,10 +80,8 @@ function robot(): Project {
   b.room("purple", 0, 0, 1, 1, 1);
   b.room("green", 0, 0, 1, 1, 2);
   b.chunk(3, ["Stack three squares on the legs for the body.", "Close the body and start the head.", "Finish the head: a cube on top."]);
-  b.lid("square", "green", 0, 3, 0);
-  b.wallX("tri-equilateral", "yellow", 0, 3, 1);
-  b.wallX("tri-equilateral", "yellow", 0, 3, 0);
-  b.step("Lay a square flat on the head, then stand two triangles on opposite edges. Antennas.");
+  b.lowRoof("yellow", 0, 0, 3);
+  b.step("Lean four triangles together on the head until their tips meet. A pointy hat.");
   return b.build({ id: "robot", title: "A robot", theme: "space", age: "b", stars: 1, done: "You built a robot! What does it say?" });
 }
 
@@ -97,9 +96,8 @@ function boat(): Project {
   b.on("tri-equilateral", "yellow", [2, 0], [2, -1]);
   b.on("tri-equilateral", "yellow", [0, -1], [0, 0]);
   b.step("Lay a triangle flat at each end of the boat. A pointy front and back.");
-  b.wallZ("tri-isosceles-tall", "red", 1, 1, 0);
-  b.wallZ("tri-equilateral", "green", 2, 1, 0);
-  b.step("Stand a tall triangle on the middle square: the sail. A small triangle on the end is the flag.");
+  b.roof("red", 1, 0, 1);
+  b.step("Lean four tall triangles together over the back room until their tips meet: the sail.");
   return b.build({ id: "boat", title: "A sailing boat", theme: "vehicles", age: "b", stars: 1, done: "You built a boat! Which way is the wind blowing?" });
 }
 
@@ -120,12 +118,13 @@ function keep(): Project {
   const b = new Builder();
   b.room("blue", 0, 0, 2, 2, 0);
   b.chunk(3, ["Stand three squares in a row along the front and round the corner.", "Three more go along the side and the back.", "Close the walls: eight squares in a big ring."]);
-  for (let x = 0; x < 2; x++) b.wallX("tri-equilateral", "yellow", x, 1, 2);
-  for (let z = 1; z >= 0; z--) b.wallZ("tri-equilateral", "yellow", 2, 1, z);
-  for (let x = 1; x >= 0; x--) b.wallX("tri-equilateral", "yellow", x, 1, 0);
-  for (let z = 0; z < 2; z++) b.wallZ("tri-equilateral", "yellow", 0, 1, z);
-  b.chunk(3, ["Stand a triangle on top of each wall square. Start at the front.", "Keep going round the corner.", "Fill in the last ones. Eight battlements."]);
-  return b.build({ id: "keep", title: "A small keep", theme: "castles", age: "b", stars: 1, done: "You built a keep! Eight squares and eight triangles." });
+  b.lids("blue", 0, 0, 2, 2, 1);
+  b.chunk(3, ["Lay three squares flat on top. Each one rests on two walls.", "The last square closes the roof."]);
+  b.lowRoof("yellow", 0, 1, 1);
+  b.step("Lean four triangles together on a front corner of the roof. A lookout.");
+  b.lowRoof("yellow", 1, 0, 1);
+  b.step("And another on the opposite corner. The keep is symmetrical.");
+  return b.build({ id: "keep", title: "A small keep", theme: "castles", age: "b", stars: 1, done: "You built a keep! Eight walls, a roof and two lookouts." });
 }
 
 function bus(): Project {

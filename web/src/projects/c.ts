@@ -8,6 +8,9 @@ function barn(): Project {
   const b = new Builder();
   b.room("red", 0, 0, 3, 2, 0);
   b.chunk(4, ["Stand four squares edge to edge: three along the front, one round the corner.", "Four more along the right side and the back.", "Close the barn: ten squares, a rectangle three by two."]);
+  b.wallZ("square", "blue", 2, 0, 0);
+  b.wallZ("square", "blue", 2, 0, 1);
+  b.step("Stand two squares across the inside, from the front to the back. They hold the floor up.");
   b.lids("yellow", 0, 0, 3, 2, 1);
   b.chunk(4, ["Lay four squares flat on the walls. Each rests on two or more edges.", "Two more finish the floor of the hay loft."]);
   b.room("red", 0, 0, 2, 1, 1);
@@ -36,16 +39,13 @@ function lighthouse(): Project {
 
 function longBridge(): Project {
   const b = new Builder();
-  for (const x of [0, 3, 6]) b.room("purple", x, 0, 1, 1, 0);
-  b.chunk(4, ["Make a ring of four squares: the first pier.", "Leave a gap of two squares and make a second ring.", "Another gap, a third ring. Three piers in a row."]);
-  for (const x of [1, 2, 4, 5]) b.lid("square", "blue", x, 1, 0);
-  b.chunk(4, ["Grown-up, hold the piers. Lay four squares flat across the gaps: the deck runs from pier to pier."]);
-  for (const x of [1, 2, 4, 5]) b.wallX("tri-equilateral", "yellow", x, 1, 1);
-  for (const x of [1, 2, 4, 5]) b.wallX("tri-equilateral", "yellow", x, 1, 0);
-  b.chunk(4, ["Stand four equilateral triangles along the front edge of the deck: a railing.", "Four more along the back edge, parallel to the first."]);
-  for (const x of [0, 3, 6]) b.room("purple", x, 0, 1, 1, 1);
+  for (const x of [0, 2, 4]) b.room("purple", x, 0, 1, 1, 0);
+  b.chunk(4, ["Make a ring of four squares: the first pier.", "Leave a gap of one square and make a second ring.", "Another gap, a third ring. Three piers in a row."]);
+  for (const x of [1, 3]) b.lid("square", "blue", x, 1, 0);
+  b.step("Lay a square flat across each gap: the deck runs from pier to pier, resting on both.");
+  for (const x of [0, 2, 4]) b.room("purple", x, 0, 1, 1, 1);
   b.chunk(4, ["Make the first pier a layer taller.", "Now the middle pier.", "And the last one."]);
-  for (const x of [0, 3, 6]) b.lowRoof("red", x, 0, 2);
+  for (const x of [0, 2, 4]) b.lowRoof("red", x, 0, 2);
   b.chunk(4, ["Four equilateral triangles lean together on the first pier.", "The same on the middle pier.", "And on the last. Count the vertices at the top: three."]);
   return b.build({ id: "long-bridge", title: "A long bridge", theme: "bridges", age: "c", stars: 1, done: "You built a long bridge! How many cars fit on the deck?" });
 }
@@ -66,9 +66,10 @@ function station(): Project {
   b.wallX("square", "green", 2, 0, 0);
   b.lid("square", "green", 2, 1, 0);
   b.step("Join the modules with a tunnel: a floor, two parallel walls, and a lid.");
-  b.wallX("tri-equilateral", "red", 0, 1, 2);
-  b.wallX("tri-equilateral", "red", 4, 1, 2);
-  b.step("Stand a triangle on each module's top edge: antennas.");
+  b.lowRoof("red", 0, 1, 1);
+  b.step("Lean four triangles together on the first module's roof: an antenna.");
+  b.lowRoof("red", 4, 1, 1);
+  b.step("And an antenna on the second module.");
   return b.build({ id: "space-station", title: "A space station", theme: "space", age: "c", stars: 1, done: "You built a space station! Two modules and a tunnel between them." });
 }
 
@@ -78,11 +79,8 @@ function stadium(): Project {
   b.chunk(4, ["Stand four squares in a row: the front of the stadium.", "Turn the corner: four more.", "Four more along the back and round the corner.", "Close the ring. Fourteen squares round a four-by-three space."]);
   b.room("blue", 0, 0, 4, 3, 1);
   b.chunk(4, ["Start the second layer: four squares on the top edges.", "Keep going round.", "Keep going.", "Close the second layer."]);
-  b.wallX("tri-isosceles-tall", "red", 0, 2, 3);
-  b.wallX("tri-isosceles-tall", "red", 3, 2, 3);
-  b.wallX("tri-isosceles-tall", "red", 3, 2, 0);
-  b.wallX("tri-isosceles-tall", "red", 0, 2, 0);
-  b.step("Stand an isosceles triangle on each corner square's top edge. Flags.");
+  b.room("red", 0, 0, 4, 3, 2);
+  b.chunk(4, ["A third layer: the top row of seats.", "Keep going round.", "Keep going.", "Close the top layer."]);
   return b.build({ id: "stadium", title: "A race-car stadium", theme: "vehicles", age: "c", stars: 1, bigRing: true, done: "You built a stadium! Race your cars round the inside." });
 }
 
@@ -99,6 +97,9 @@ function townHall(): Project {
   b.wallZ("square", "blue", 0, 0, 0);
   b.wallZ("square", "blue", 0, 0, 1);
   b.chunk(4, ["Stand a window, the door, another window, and a square round the corner.", "A square, then three windows along the back.", "Close the ground floor with two squares."]);
+  b.wallZ("square", "blue", 2, 0, 0);
+  b.wallZ("square", "blue", 2, 0, 1);
+  b.step("Stand two squares across the inside, from the front to the back. They hold the floor up.");
   b.lids("yellow", 0, 0, 3, 2, 1);
   b.chunk(4, ["Lay four squares flat on the walls.", "Two more: the first floor."]);
   b.room("green", 0, 0, 3, 2, 1);
