@@ -65,6 +65,44 @@ export class Builder {
     return this.add(shape, colour, [x, 0, -y], [-Q, turn]);
   }
 
+  /** A flat tile in a picture on the table, laid by its base edge from a to b (picture coordinates: x right, y away
+      from the child); the tile lies on the left of a → b. */
+  on(shape: ShapeId, colour: Colour, a: [number, number], b: [number, number]) {
+    return this.add(shape, colour, [a[0], 0, -a[1]], [-Q, Math.atan2(b[1] - a[1], b[0] - a[0])]);
+  }
+
+  /** A standing tile whose base runs from a to b on the floor plan (x, z) at height y. */
+  stand(shape: ShapeId, colour: Colour, a: [number, number], b: [number, number], y = 0) {
+    return this.add(shape, colour, [a[0], y, a[1]], [0, Math.atan2(-(b[1] - a[1]), b[0] - a[0])]);
+  }
+
+  /** The walls round a w × d room from (x0, z0) at height y: front left to right, right side, back, left side.
+      `skip` leaves out walls by their index in that order (a doorway). */
+  room(colour: Colour, x0: number, z0: number, w: number, d: number, y: number, skip: number[] = [], shape: ShapeId = "square") {
+    const walls: (() => number)[] = [];
+    for (let x = x0; x < x0 + w; x++) walls.push(() => this.wallX(shape, colour, x, y, z0 + d));
+    for (let z = z0 + d - 1; z >= z0; z--) walls.push(() => this.wallZ(shape, colour, x0 + w, y, z));
+    for (let x = x0 + w - 1; x >= x0; x--) walls.push(() => this.wallX(shape, colour, x, y, z0));
+    for (let z = z0; z < z0 + d; z++) walls.push(() => this.wallZ(shape, colour, x0, y, z));
+    return walls.filter((_, i) => !skip.includes(i)).map((f) => f());
+  }
+
+  /** Flat lids over every cell of a w × d room at height y. */
+  lids(colour: Colour, x0: number, z0: number, w: number, d: number, y: number) {
+    for (let x = x0; x < x0 + w; x++) for (let z = z0; z < z0 + d; z++) this.lid("square", colour, x, y, z);
+  }
+
+  /** Close the tiles added since the last step into steps of `size`, each with the next line (the last repeats). */
+  chunk(size: number, says: string[]) {
+    const open = this.open;
+    this.open = [];
+    for (let i = 0, k = 0; i < open.length; i += size, k++) {
+      this.open = open.slice(i, i + size);
+      this.step(says[Math.min(k, says.length - 1)]);
+    }
+    return this;
+  }
+
   /** A flat lid over the cell (cx..cx+1, cz..cz+1) at height y. */
   lid(shape: ShapeId, colour: Colour, cx: number, y: number, cz: number) {
     return this.add(shape, colour, [cx, y, cz + 1], [-Q, 0]);

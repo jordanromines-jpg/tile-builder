@@ -40,4 +40,17 @@ export const S = {
     emptyShelf: "No projects here yet. Try another picture.",
     skip: "Tap to go on",
   },
+  library: {
+    ready: "You can build these",
+    more: "These need a few more tiles",
+    forAge: (ages: string) => `For ${ages}`,
+  },
+  firstRun: {
+    homeTitle: "Add this to your Home Screen first, so it keeps your tiles",
+    share: "Tap Share at the top of Safari.",
+    add: "Tap Add to Home Screen, then open Tile Steps from there.",
+    buildTitle: "Stand the iPad up beside the tiles and build together.",
+    buildBody: "Pick a project together. The app reads each step aloud; the building happens on the table.",
+    ok: "Got it",
+  },
 } as const;

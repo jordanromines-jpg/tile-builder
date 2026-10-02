@@ -1,9 +1,10 @@
 /* The shell: every route answers with its name, the page passes axe, and the keyboard reaches what it should. */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { dismissFirstRun } from "./helpers";
 
 const ROUTES: [string, string][] = [
-  ["#/", "Library"],
+  ["#/", "Tile Steps"],
   ["#/build/castle", "Build"],
   ["#/done/castle", "Well done"],
   ["#/grownups", "For grown-ups"],
@@ -17,6 +18,7 @@ for (const [hash, name] of ROUTES) {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto(hash);
+    if (hash === "#/") await dismissFirstRun(page);
     await expect(page.getByRole("heading", { level: 1, name })).toBeVisible();
     expect(errors).toEqual([]);
   });
@@ -24,6 +26,7 @@ for (const [hash, name] of ROUTES) {
 
 test("the Library passes axe", async ({ page }) => {
   await page.goto("#/");
+  await dismissFirstRun(page);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   const axe = await new AxeBuilder({ page }).analyze();
   expect(axe.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);

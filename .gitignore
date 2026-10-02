@@ -19,3 +19,4 @@ plans/roadmap/*.delivery.json
 .archify/
 web/.shot.mjs
 web/.crop.mjs
+web/.sheet.mjs

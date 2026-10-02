@@ -1,22 +1,36 @@
 /* The routes, on the URL's hash so GitHub Pages serves one page and a Home Screen app keeps its place:
-   #/  the Library · #/build/:pid · #/done/:pid · #/grownups (+ /tiles, /settings) · #/design */
+   #/  the Library · #/build/:pid · #/done/:pid · #/grownups (+ /tiles, /settings) · #/design
+   The screens with 3D load on first use, so the Library opens fast. */
 import { createHashHistory, createRootRoute, createRoute, createRouter, Outlet } from "@tanstack/react-router";
-import { Placeholder } from "./screens/Placeholder";
-import { Design } from "./screens/Design";
+import { lazy, Suspense, type ComponentType } from "react";
 import { GrownupsHome } from "./screens/grownups/Home";
 import { Settings } from "./screens/grownups/Settings";
 import { Tiles } from "./screens/grownups/Tiles";
+import { Library } from "./screens/Library";
+import { Placeholder } from "./screens/Placeholder";
 import { S } from "./strings";
+
+const Design = lazy(() => import("./screens/Design").then((m) => ({ default: m.Design })));
+
+function later(C: ComponentType) {
+  return function Later() {
+    return (
+      <Suspense fallback={<div className="min-h-dvh" />}>
+        <C />
+      </Suspense>
+    );
+  };
+}
 
 const root = createRootRoute({ component: () => <Outlet /> });
 
-const library = createRoute({ getParentRoute: () => root, path: "/", component: () => <Placeholder name={S.screens.library} /> });
+const library = createRoute({ getParentRoute: () => root, path: "/", component: Library });
 const build = createRoute({ getParentRoute: () => root, path: "/build/$pid", component: () => <Placeholder name={S.screens.build} /> });
 const done = createRoute({ getParentRoute: () => root, path: "/done/$pid", component: () => <Placeholder name={S.screens.done} /> });
 const grownups = createRoute({ getParentRoute: () => root, path: "/grownups", component: GrownupsHome });
 const tiles = createRoute({ getParentRoute: () => root, path: "/grownups/tiles", component: Tiles });
 const settings = createRoute({ getParentRoute: () => root, path: "/grownups/settings", component: Settings });
-const design = createRoute({ getParentRoute: () => root, path: "/design", component: Design });
+const design = createRoute({ getParentRoute: () => root, path: "/design", component: later(Design) });
 
 const tree = root.addChildren([library, build, done, grownups, tiles, settings, design]);
 

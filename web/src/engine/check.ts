@@ -113,13 +113,17 @@ function standsProblem(project: Project, a: Analysis, i: number, set: Set<number
     return met.size >= 2 ? null : "a flat tile above the table needs two edges to rest on";
   }
   if (o === "tilted") {
-    const base = [...a.meets[i].entries()].some(([j, es]) => set.has(j) && es.has(0) && a.orient[j] !== "tilted");
-    return base ? null : "a leaning tile's base edge must sit on a top edge below";
+    // its base on an upright or flat tile's edge, or on the table: a whole pyramid on the table holds itself up
+    const onTable = a.bottom[i].includes(0) && a.onTable[i];
+    const base = onTable || [...a.meets[i].entries()].some(([j, es]) => set.has(j) && es.has(0) && a.orient[j] !== "tilted");
+    return base ? null : "a leaning tile's base edge must sit on a top edge below, or on the table";
   }
   if (a.onTable[i]) {
     if (project.flat) return null;
     const sides = [...met].filter((e) => !a.bottom[i].includes(e));
-    return sides.length ? null : "a standing tile on the table needs a neighbour at its side";
+    // a wall raised from the edge of a floor tile is held by its magnets
+    const onFloor = [...a.meets[i].entries()].some(([j, es]) => set.has(j) && a.orient[j] === "flat" && [...es].some((e) => a.bottom[i].includes(e)));
+    return sides.length || onFloor ? null : "a standing tile on the table needs a neighbour at its side, or a floor tile under its edge";
   }
   if (a.bottom[i].some((e) => met.has(e))) return null;
   return met.size >= 2 ? null : "an upper tile must sit on an edge below, or span a gap between two neighbours";
