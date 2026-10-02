@@ -5,8 +5,8 @@ import { dismissFirstRun } from "./helpers";
 
 const ROUTES: [string, string][] = [
   ["#/", "Tile Steps"],
-  ["#/build/castle", "Build"],
-  ["#/done/castle", "Well done"],
+  ["#/build/castle", "The castle"],
+  ["#/done/castle", "You built the castle! Look how tall the keep is."],
   ["#/grownups", "For grown-ups"],
   ["#/grownups/tiles", "For grown-ups"],
   ["#/grownups/settings", "For grown-ups"],

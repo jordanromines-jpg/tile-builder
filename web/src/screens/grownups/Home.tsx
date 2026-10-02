@@ -72,6 +72,13 @@ export function GrownupsHome() {
           app is open.
         </p>
       </section>
+      <p className="text-ink-2">
+        More for grown-ups, including how the backup works:{" "}
+        <a className="font-bold text-ink-1 underline underline-offset-4" href="https://github.com/jordanromines-jpg/tile-builder/blob/main/docs/parents.md" target="_blank" rel="noreferrer">
+          the page for grown-ups
+        </a>
+        .
+      </p>
     </Frame>
   );
 }

@@ -41,6 +41,12 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
     expect(wrong.map((p) => `${p.id}: ${p.placed.length} tiles, ${p.stars} stars`)).toEqual([]);
   });
 
+  it("V10: 3–5 lines are short and use none of the older children's words (a cat's face is a face, not a geometry word)", () => {
+    const older = /\b(vertex|vertices|equilateral|isosceles|parallel|symmetrical|pyramid|edge|layer|net)\b/i;
+    const bad = of("a").flatMap((p) => p.steps.filter((s) => older.test(s.say.replace(/^Grown-up,.*?\. /, "")) || s.say.split(/\s+/).length > 22).map((s) => `${p.id}: ${s.say}`));
+    expect(bad).toEqual([]);
+  });
+
   it("every step says something, and every project ends with its own line", () => {
     for (const p of PROJECTS) {
       expect(p.steps.every((s) => s.say.length > 10), p.id).toBe(true);

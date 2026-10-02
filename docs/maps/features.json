@@ -3,7 +3,7 @@
  "diagram_type": "architecture",
  "meta": {
   "title": "Tile Steps: the features",
-  "subtitle": "The simple app: pick a project and build it. A child taps; a grown-up opens the door; nothing leaves the iPad.",
+  "subtitle": "As built, 2 Oct 2026: pick a project and build it. A child taps; a grown-up opens the door; nothing leaves the iPad.",
   "output": "features.html",
   "quality_profile": "standard",
   "visual_preset": "editorial",
@@ -345,7 +345,7 @@
    "id": "thumbs",
    "type": "cloud",
    "label": "Project pictures",
-   "sublabel": "drawn from the data",
+   "sublabel": "SVG from each project's tiles",
    "pos": [
     520,
     930
@@ -406,7 +406,8 @@
     "ages",
     "match",
     "swaps",
-    "catalog"
+    "catalog",
+    "thumbs"
    ]
   },
   {
@@ -435,7 +436,6 @@
    "label": "On GitHub, before it reaches the iPad",
    "wraps": [
     "ci",
-    "thumbs",
     "pages",
     "pwa"
    ]
