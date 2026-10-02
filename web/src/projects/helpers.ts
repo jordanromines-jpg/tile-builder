@@ -120,6 +120,19 @@ export class Builder {
     this.roof(colour, cx, cz, y, "tri-equilateral");
   }
 
+  /** Rings of walls stacked from height y0, one colour a layer: a tower (1 × 1) or a block of rooms. */
+  tower(colours: Colour[], cx: number, cz: number, y0 = 0, w = 1, d = 1) {
+    colours.forEach((c, i) => this.room(c, cx, cz, w, d, y0 + i));
+    return this;
+  }
+
+  /** Standing tiles along the front (z0 + d) and back (z0) top edges of a w × d block at height y: battlements. */
+  battlements(shape: ShapeId, colour: Colour, x0: number, z0: number, w: number, d: number, y: number) {
+    for (let x = x0; x < x0 + w; x++) this.wallX(shape, colour, x, y, z0 + d);
+    for (let x = x0; x < x0 + w; x++) this.wallX(shape, colour, x, y, z0);
+    return this;
+  }
+
   /** Close the tiles added since the last step into a step with its spoken line. */
   step(say: string) {
     if (!this.open.length) throw new Error(`step "${say}" has no tiles`);
