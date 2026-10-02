@@ -50,34 +50,34 @@ A child opens the app and sees the **Library**: shelves of project pictures, eac
 
 ## Phases, pull requests and keys
 
-Keys are grouped under the pull request that carries them, and pull requests under phases. Every pull request is one branch from `main`; the builder opens all of them as drafts with one empty commit when this plan is approved (key 0g), then fills the GitHub # column. Hours are the builder's estimates; the stop point is 1.5 times each.
+Keys are grouped under the pull request that carries them, and pull requests under phases. Every pull request is one branch from `main`; the builder opens all of them as drafts with one empty commit when this plan is approved (key 0g), then fills the GitHub # column. Opened 2 Oct 2026 as #2 to #24. Hours are the builder's estimates; the stop point is 1.5 times each.
 
 | PR | GitHub # | What | Waits on | Hours |
 |---|---|---|---|---|
 | 0.1 | #1 | The plan, the last research file, Archify, the plans folder, the features map | nothing | 4 |
-| 1.1 | to open | The brief, `PRODUCT.md` | 0.1 | 5 |
-| 2.1 | to open | Tokens and the token pipeline | 0.1 | 6 |
-| 2.2 | to open | The app scaffold, PWA shell, CI and Pages deploy | 2.1 | 8 |
-| 2.3 | to open | Tile pictures: 2D chips, shape icons, the 3D tile material | 2.2 | 7 |
-| 2.4 | to open | Kid-side components | 2.3 | 6 |
-| 2.5 | to open | Grown-ups components | 2.2 | 5 |
-| 2.6 | to open | `DESIGN.md`, the design page, the published Design System | 2.3 to 2.5, G1 | 5 |
-| 3.1 | to open | The four mockup screens | 2.6 | 6 |
-| 3.2 | to open | Changes Jordan asks for at G2 | G2 | 4 (reserved) |
-| 4.1 | to open | The tile catalog, brands, set presets, schemas | 2.2 | 5 |
-| 4.2 | to open | Geometry and the checker | 4.1 | 12 |
-| 4.3 | to open | Authoring helpers, the castle ported, matching and swaps | 4.2 | 8 |
-| 5.1 | to open | Storage: Dexie, persist, Home Screen detection, first-run cards | 2.5 | 4 |
-| 5.2 | to open | The grown-ups door, inventory, settings | 5.1, 4.1 | 6 |
-| 5.3 | to open | Backup and restore | 5.2 | 3 |
-| 6.1 | to open | The 3D viewer with the per-age controls | 4.3, 2.3 | 10 |
-| 6.2 | to open | Thumbnails at build time; the Library | 6.1, 4.3, 5.2, G2 | 6 |
-| 6.3 | to open | Projects for 3–5 (10) | 4.3 | 8 |
-| 6.4 | to open | Projects for 6–8 (12) | 4.3 | 10 |
-| 6.5 | to open | Projects for 9–10 (8, the castle among them) | 4.3 | 8 |
-| 7.1 | to open | Build mode: steps, voice, turn controls, swaps, the "it fell down" help | 6.1, 6.2 | 10 |
-| 7.2 | to open | The end of a build: celebration, back to the Library | 7.1 | 3 |
-| 8.1 | to open | Go live: Verification, the parents' page, the Pages link | everything | 5 |
+| 1.1 | #2 | The brief, `PRODUCT.md` | 0.1 | 5 |
+| 2.1 | #3 | Tokens and the token pipeline | 0.1 | 6 |
+| 2.2 | #4 | The app scaffold, PWA shell, CI and Pages deploy | 2.1 | 8 |
+| 2.3 | #5 | Tile pictures: 2D chips, shape icons, the 3D tile material | 2.2 | 7 |
+| 2.4 | #6 | Kid-side components | 2.3 | 6 |
+| 2.5 | #7 | Grown-ups components | 2.2 | 5 |
+| 2.6 | #8 | `DESIGN.md`, the design page, the published Design System | 2.3 to 2.5, G1 | 5 |
+| 3.1 | #9 | The four mockup screens | 2.6 | 6 |
+| 3.2 | #10 | Changes Jordan asks for at G2 | G2 | 4 (reserved) |
+| 4.1 | #11 | The tile catalog, brands, set presets, schemas | 2.2 | 5 |
+| 4.2 | #12 | Geometry and the checker | 4.1 | 12 |
+| 4.3 | #13 | Authoring helpers, the castle ported, matching and swaps | 4.2 | 8 |
+| 5.1 | #14 | Storage: Dexie, persist, Home Screen detection, first-run cards | 2.5 | 4 |
+| 5.2 | #15 | The grown-ups door, inventory, settings | 5.1, 4.1 | 6 |
+| 5.3 | #16 | Backup and restore | 5.2 | 3 |
+| 6.1 | #17 | The 3D viewer with the per-age controls | 4.3, 2.3 | 10 |
+| 6.2 | #18 | Thumbnails at build time; the Library | 6.1, 4.3, 5.2, G2 | 6 |
+| 6.3 | #19 | Projects for 3–5 (10) | 4.3 | 8 |
+| 6.4 | #20 | Projects for 6–8 (12) | 4.3 | 10 |
+| 6.5 | #21 | Projects for 9–10 (8, the castle among them) | 4.3 | 8 |
+| 7.1 | #22 | Build mode: steps, voice, turn controls, swaps, the "it fell down" help | 6.1, 6.2 | 10 |
+| 7.2 | #23 | The end of a build: celebration, back to the Library | 7.1 | 3 |
+| 8.1 | #24 | Go live: Verification, the parents' page, the Pages link | everything | 5 |
 
 Total: 154 hours of builder time, of which 4 are reserved (the first draft was 173; D18 took out 19). Checkpoints C1 to C3 are in Time bounds.
 
@@ -98,7 +98,7 @@ Total: 154 hours of builder time, of which 4 are reserved (the first draft was 1
 
 ### Phase 1 · the brief
 
-**PR 1.1 · the brief · branch `brief` · GitHub: to open**
+**PR 1.1 · the brief · branch `brief` · GitHub #2**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -112,7 +112,7 @@ Phase 2 keys up to PR 2.5 do not wait for G1: they use "Tile Builder", and the n
 
 ### Phase 2 · the design system
 
-**PR 2.1 · tokens and the token pipeline · branch `tokens` · GitHub: to open**
+**PR 2.1 · tokens and the token pipeline · branch `tokens` · GitHub #3**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -121,7 +121,7 @@ Phase 2 keys up to PR 2.5 do not wait for G1: they use "Tile Builder", and the n
 | 2c | `design/cvd.py`: with `coloraide` (pinned in `design/requirements.txt`), simulate protan, deutan and tritan vision for the six tile colours and print the smallest OKLCH distance between any two under each; a report, not a gate, because the second cue (pattern, rim, spoken name) is the rule; `design/README.md` says how to run both scripts | `design/cvd.py`, `design/requirements.txt`, `design/README.md` | check | the script prints the three tables | 1 h |
 | 2d | `tests/test_tokens.py` (pytest) in the shape of `web-agent/tests/test_design_tokens.py` lines 27–38: `tokens.css` equals `tailwind(load())`, every pair passes, the six tile tokens exist in both grounds | `tests/test_tokens.py` | check | `python3 -m pytest -q tests/test_tokens.py` passes | 45 min |
 
-**PR 2.2 · the app scaffold, PWA shell, CI and Pages deploy · branch `scaffold` · GitHub: to open**
+**PR 2.2 · the app scaffold, PWA shell, CI and Pages deploy · branch `scaffold` · GitHub #4**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -131,7 +131,7 @@ Phase 2 keys up to PR 2.5 do not wait for G1: they use "Tile Builder", and the n
 | 2h | `web/README.md`: the commands, the folder map, the rules (500 lines; text never under 13 px on the grown-ups side or 26 px on the kid side; no photos or real names of children anywhere in the repo) | `web/README.md` | document | a new session can run the app from the README alone | 30 min |
 | 2i | Playwright: `playwright.config.ts` from `web-agent/web/playwright.config.ts` with `snapshotPathTemplate: "{testDir}/plates/{arg}{ext}"`, `maxDiffPixelRatio: 0.01`, `reducedMotion: "reduce"`, two projects: `ipad-landscape` (1180×820, `isMobile`, `hasTouch`, `deviceScaleFactor:2`) and `ipad-portrait` (820×1180); plates are made on Linux (this container or CI) and committed; `e2e/shell.spec.ts` with the axe check from `web-agent/web/e2e/design.spec.ts` lines 18–19 and a tab-walk | `web/playwright.config.ts`, `web/e2e/` | check | `npm run test:e2e` passes locally and in CI with the same plates | 1 h |
 
-**PR 2.3 · tile pictures: 2D chips, shape icons, the 3D tile material · branch `tile-pictures` · GitHub: to open**
+**PR 2.3 · tile pictures: 2D chips, shape icons, the 3D tile material · branch `tile-pictures` · GitHub #5**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -140,7 +140,7 @@ Phase 2 keys up to PR 2.5 do not wait for G1: they use "Tile Builder", and the n
 | 2l | `src/three/tile.ts`: the tile geometry and material from the prototype, typed: `inset(pts, w)`, `buildGeometry(shape, leg)` returning `{frame, glass, ridge}` with `TH = 0.075`, `RIM = 0.085` (prototype lines 221–251); materials from lines 317–325 (frame roughness 0.35; glass opacity 0.42, `DoubleSide`, `depthWrite:false`; ridge colour × 0.75 at opacity 0.8, at z ±0.012); colours read from the tokens with `getComputedStyle` and a fallback map; a `TileMesh` fiber component | `web/src/three/tile.ts`, `web/src/three/TileMesh.tsx` | code | the design page shows one tile of each shape and colour turning slowly in light and dark | 2.5 h |
 | 2m | The Tile pictures chapter for `DESIGN.md` (merged with 2.6): colour never alone; the rim is the tile's frame; the pattern is the second cue; the voice says the colour name | `DESIGN.md` (draft section) | document | the chapter exists | 30 min |
 
-**PR 2.4 · kid-side components · branch `kid-components` · GitHub: to open**
+**PR 2.4 · kid-side components · branch `kid-components` · GitHub #6**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -148,14 +148,14 @@ Phase 2 keys up to PR 2.5 do not wait for G1: they use "Tile Builder", and the n
 | 2o | `KidButton` (sizes `primary` 104 px and `a/b/c` 88/80/64 from an `AgeContext`; picture first, label under it in `fs-kid-label`; speaks its label on tap when `speak` is set; pressed state within one frame; 12 px hit slop), `KidBar` (Back to the Library, Hear again, the grown-ups door at top right; fixed places, never along the bottom edge), `GrownUpsDoor` (a small lock; tapping it says "This door is for grown-ups" and opens the gate), `AgePicker` (three big picture chips for 3–5, 6–8, 9–10 with `aria-pressed`, speaks the age on tap), `ThemeFilter` (picture chips for the eight themes), `ProjectCard` (the project picture, its title, 1–3 stars drawn as tiles, a `BuildBadge`; the whole card is one tap target), `BuildBadge` (`can`: a check shape and "You can build it!"; `swap`: "You can build it with a swap"; `need`: the missing tiles as `TileChip`s with counts and "Need 2 more"), `Shelf` (a horizontal row of cards, scroll by swipe or a ▶ button), `StepDots` (one dot a step, countable, no progress bar), `TurnControls` (◀ ▶ and "back to my side"), `SwapNote`, `EmptyState` (a picture and a spoken line), `Celebration` (one moving element, under 1.4 s, tap to skip, a still picture under reduced motion) | `web/src/ui/kid/*.tsx`, `web/src/ui/AgeContext.tsx` | code | each component has a Vitest for roles and labels; the design page shows every state in both themes; axe passes; a Playwright check measures every target at its token size | 3.5 h |
 | 2p | Motion: `src/ui/motion.ts` with the springs and durations from the tokens; `prefers-reduced-motion` turns springs to fades; run the `design-motion-principles` audit on the design page and fix what it flags | `web/src/ui/motion.ts` | code | the audit has no open finding | 1 h |
 
-**PR 2.5 · grown-ups components · branch `grownups-components` · GitHub: to open**
+**PR 2.5 · grown-ups components · branch `grownups-components` · GitHub #7**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
 | 2q | Radix wrappers in the shape of `web-agent/web/src/ui/Floats.tsx` and `Field.tsx`: `Dialog`, `ConfirmDialog`, `Toast` with `useToast()`, `Switch`, `Field` with `useId` labels and `role="alert"` errors; `Button` (`kind: lit | line | quiet | danger`, 44 px) from `web-agent/web/src/ui/Button.tsx`; `Stepper` (− count +, long-press repeats, `aria-valuenow`); `SettingsList`; `BackupCard`; `StorageStatus` | `web/src/ui/grownups/*.tsx` | code | Vitests for roles, labels and the stepper's long-press; the design page shows every state; axe passes | 3.5 h |
 | 2r | `GateDialog`: "Hold to open" (a 3 s press with a filling ring; letting go early resets), then a sum in words with two-digit numbers ("forty-two plus seven?") and a number pad; three wrong answers close it; the voice says "This is for grown-ups" when opened from the kid side; no birth-year question | `web/src/ui/grownups/GateDialog.tsx` | code | a Vitest with fake timers passes hold, early release, right and wrong sums | 1.5 h |
 
-**PR 2.6 · `DESIGN.md`, the design page, the published Design System · branch `design-system` · GitHub: to open**
+**PR 2.6 · `DESIGN.md`, the design page, the published Design System · branch `design-system` · GitHub #8**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -165,7 +165,7 @@ Phase 2 keys up to PR 2.5 do not wait for G1: they use "Tile Builder", and the n
 
 ### Phase 3 · the mockups
 
-**PR 3.1 · the four mockup screens · branch `mockups` · GitHub: to open**
+**PR 3.1 · the four mockup screens · branch `mockups` · GitHub #9**
 
 The screens are built as real routes on fixture data, so the mockups become the app. The fixture (`src/fixture.ts`) is a Magna-Tiles Clear Colors 100 inventory plus 12 Connetix equilaterals, and eight placeholder projects, one a theme, until Phase 6 replaces them.
 
@@ -178,7 +178,7 @@ The screens are built as real routes on fixture data, so the mockups become the 
 | 3e | The board for Jordan: a Design artifact, or, if the Design type cannot take the plates, an HTML page in `docs/mockups/`, with the sixteen plates (four screens × two orientations × two themes), one line a screen on what it tests, and the Pages link to the live routes; sent to him | artifact or `docs/mockups/` | design | the message is sent and logged | 15 min |
 | **G2** | **Jordan approves the look of the four screens** | | gate | his words are in Decisions | |
 
-**PR 3.2 · changes from G2 (reserved) · branch `mockups-2` · GitHub: to open**
+**PR 3.2 · changes from G2 (reserved) · branch `mockups-2` · GitHub #10**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -186,7 +186,7 @@ The screens are built as real routes on fixture data, so the mockups become the 
 
 ### Phase 4 · the engine
 
-**PR 4.1 · the tile catalog, brands, set presets, schemas · branch `catalog` · GitHub: to open**
+**PR 4.1 · the tile catalog, brands, set presets, schemas · branch `catalog` · GitHub #11**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -195,7 +195,7 @@ The screens are built as real routes on fixture data, so the mockups become the 
 | 4c | `src/engine/schema.ts` with zod: `Placed = {shape, colour?, pos: [x,y,z], rot: [rx, ry], role?: "roof"}`; `Step = {say: string, tiles: number[]}`; `Project = {id, title, theme: Theme, age: "a"|"b"|"c", stars: 1|2|3, flat?: boolean, done: string, needs: {brandExtras?: ShapeId[]}, placed: Placed[], steps: Step[], swaps?: SwapRule[]}`; `Inventory = {brands: BrandId[], tallLeg: number | null, counts: Record<ShapeId, {any: number, byColour?: Partial<Record<Colour, number>>}>}`; `Backup v1`; `src/engine/types.ts` exports the inferred types | `web/src/engine/schema.ts`, `web/src/engine/types.ts` | code | Vitest: a valid castle parses; a step pointing past `placed` fails | 1.5 h |
 | 4d | `scripts/check-projects.ts` (run with `tsx`): loads every project from `src/projects/index.ts`, validates the schema, runs the checker (a stub until 4.2) under every tall-leg choice, prints one line a project, exits 1 on any failure; wired to `npm run check:projects` and already in CI | `web/scripts/check-projects.ts` | check | it runs in CI with zero projects | 45 min |
 
-**PR 4.2 · geometry and the checker · branch `checker` · GitHub: to open**
+**PR 4.2 · geometry and the checker · branch `checker` · GitHub #12**
 
 Definitions used below. A tile is a convex polygon (its shape's points) placed by `pos` and `rot`: world point = `pos + R(rot) · (px, py, 0)`, with `R` the rotation of Euler `(rx, ry, 0)` in order `YXZ` (tilt about the tile's own base edge first, then turn), exactly as the prototype's `new THREE.Euler(rx, t.ry, 0, 'YXZ')`. Tolerance `EPS = 1e-3` units. The table is the plane `y = 0`. An edge is a world segment between two consecutive points. Two edges **meet** when they are collinear within `EPS` and overlap by at least `0.98 × min(len)`. A tile is **on the table** when one of its edges, or its whole face, lies in `y = 0`. A tile's **layer** is `floor(min y + EPS)`. A tile is **standing** when its face normal has `|ny| < EPS`, **flat** when `|ny| > 1 − EPS`, else **tilted**.
 
@@ -206,7 +206,7 @@ Definitions used below. A tile is a convex polygon (its shape's points) placed b
 | 4g | `check-projects.ts` calls the real checker and prints each problem as `castle · step 3 · tile 29 · R6: a standing square with no neighbour`; CI fails on any | `web/scripts/check-projects.ts` | check | CI runs it green | 1 h |
 | 4h | The engine map: `docs/maps/engine.json` (Archify architecture: catalog, schema, geometry, the rules R1 to R9, matching, swaps, the projects, the checker script in CI), drawn locally, not committed as a page; `web/src/engine/README.md` with the rules in words | `docs/maps/engine.json`, `web/src/engine/README.md` | document | the map passes `finalize`; the README lists the rules | 1 h |
 
-**PR 4.3 · authoring helpers, the castle ported, matching and swaps · branch `authoring` · GitHub: to open**
+**PR 4.3 · authoring helpers, the castle ported, matching and swaps · branch `authoring` · GitHub #13**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -217,7 +217,7 @@ Definitions used below. A tile is a convex polygon (its shape's points) placed b
 
 ### Phase 5 · the grown-ups side
 
-**PR 5.1 · storage · branch `storage` · GitHub: to open**
+**PR 5.1 · storage · branch `storage` · GitHub #14**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -225,7 +225,7 @@ Definitions used below. A tile is a convex polygon (its shape's points) placed b
 | 5b | `src/store/storage.ts`: on first run call `navigator.storage.persist()` and keep the result; `isStandalone()` (`matchMedia("(display-mode: standalone)")` or `navigator.standalone`); `AddToHomeScreenCard` shown once in a Safari tab on iPadOS ("Add this to your Home Screen first, so it keeps your tiles", with pictures of Share then Add to Home Screen); the first-run card (D10) shown once in the Home Screen app | `web/src/store/storage.ts`, `web/src/ui/AddToHomeScreenCard.tsx` | code | Vitests with stubbed `matchMedia` and `navigator.storage`; Playwright shows each card in the right mode | 2 h |
 | 5c | `StorageStatus` wired: "Kept on this iPad: yes", or "The iPad may clear this if space runs low; a backup is safer", with the `persist()` result and the last backup date | `web/src/screens/grownups/Settings.tsx` | code | the text matches the stored state in a Vitest | 30 min |
 
-**PR 5.2 · the grown-ups door, inventory, settings · branch `grownups` · GitHub: to open**
+**PR 5.2 · the grown-ups door, inventory, settings · branch `grownups` · GitHub #15**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -234,7 +234,7 @@ Definitions used below. A tile is a convex polygon (its shape's points) placed b
 | 5f | Settings wired: voice, sound effects, language (the voices on the device, listed), theme, storage status, "Erase everything on this iPad" behind a `ConfirmDialog` that asks to type ERASE | `web/src/screens/grownups/Settings.tsx` | code | each switch round-trips through Dexie in a Vitest | 1 h |
 | 5g | Plates for the grown-ups screens in both orientations and themes; axe | `web/e2e/grownups.spec.ts`, plates | check | green in CI | 1 h |
 
-**PR 5.3 · backup and restore · branch `backup` · GitHub: to open**
+**PR 5.3 · backup and restore · branch `backup` · GitHub #16**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -244,7 +244,7 @@ Definitions used below. A tile is a convex polygon (its shape's points) placed b
 
 ### Phase 6 · the library
 
-**PR 6.1 · the 3D viewer with the per-age controls · branch `viewer` · GitHub: to open**
+**PR 6.1 · the 3D viewer with the per-age controls · branch `viewer` · GitHub #17**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -253,7 +253,7 @@ Definitions used below. A tile is a convex polygon (its shape's points) placed b
 | 6c | Performance: pixel ratio capped at 2, `frameloop="demand"` when nothing moves, geometry shared per shape, materials per colour; `perf.spec.ts` asserts a median frame under 120 ms on the castle in headless Chromium | `web/src/three/*`, `web/e2e/perf.spec.ts` | check | the spec passes in CI | 2 h |
 | 6d | The design page shows the viewer with an age switch | `web/src/screens/Design.tsx` | code | plate updated | 1 h |
 
-**PR 6.2 · thumbnails at build time; the Library · branch `library` · GitHub: to open**
+**PR 6.2 · thumbnails at build time; the Library · branch `library` · GitHub #18**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -261,7 +261,7 @@ Definitions used below. A tile is a convex polygon (its shape's points) placed b
 | 6f | The Library wired: the `AgePicker` saves `settings.age` (a first visit with no age shows all three shelves, smallest first); `ProjectCard`s from `src/projects/index.ts` with `matchProject` against the live inventory, sorted `can`, then `swap`, then `need`, then stars; the theme filter; a tap on any card goes straight to `#/build/:pid` (D18); an empty inventory shows an `EmptyState` sending a grown-up to the door | `web/src/screens/Library.tsx` | code | Playwright: with the Magna 32 preset and age `a`, at least 8 cards are `can`; the castle shows `need` with the right counts; one tap opens build mode | 2.5 h |
 | 6g | Plates for the Library in both orientations, both themes and each age; axe | `web/e2e/library.spec.ts`, plates | check | green in CI | 1 h |
 
-**PR 6.3 · projects for 3–5 · branch `projects-a` · GitHub: to open**
+**PR 6.3 · projects for 3–5 · branch `projects-a` · GitHub #19**
 
 Each project in 6.3 to 6.5 is written with the helpers, has a `say` line per step in its age's words, a `done` line, passes `check:projects` under every leg, and gets a thumbnail. Titles are the builder's own. Flat pictures use `flat()` and set `flat: true`. `stars` follow the tile count within the age (lower third 1, middle 2, upper 3).
 
@@ -270,14 +270,14 @@ Each project in 6.3 to 6.5 is written with the helpers, has a `say` line per ste
 | 6h | Ten age `a` projects, 3 to 12 tiles, one tile a step, all buildable from the Magna 32 preset: flat pictures (a fish, a house, a flower, a rocket, a cat face) and small 3D builds that stand (a box, a box with a lid, a tunnel for a car, a tower of two rings, a kennel with a low roof of four equilaterals), across the eight themes | `web/src/projects/a/*.ts` | code | all ten pass; a 32-piece set builds every one | 6 h |
 | 6i | Their `say` lines checked against the 3–5 word list, with grown-up lines where a step needs holding ("Grown-up, hold the wall while your builder adds the roof") | the same | document | every line uses only the age's words plus the project's nouns | 2 h |
 
-**PR 6.4 · projects for 6–8 · branch `projects-b` · GitHub: to open**
+**PR 6.4 · projects for 6–8 · branch `projects-b` · GitHub #20**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
 | 6j | Twelve age `b` projects, 12 to 40 tiles, up to 3 tiles a step: a house with a pitched roof, a garage, a bridge with two towers, a rocket with fins, a robot, a boat, a pyramid garden, a windmill, a small keep, a bus, a dinosaur (flat), a star pattern (flat) | `web/src/projects/b/*.ts` | code | all twelve pass; at least eight build from the Magna 100 preset; at least two from the Connetix 60 preset | 8 h |
 | 6k | `say` lines in the 6–8 words (edges, faces, layers, symmetry) | the same | document | checked as 6i | 2 h |
 
-**PR 6.5 · projects for 9–10 · branch `projects-c` · GitHub: to open**
+**PR 6.5 · projects for 9–10 · branch `projects-c` · GitHub #21**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -286,7 +286,7 @@ Each project in 6.3 to 6.5 is written with the helpers, has a `say` line per ste
 
 ### Phase 7 · build mode
 
-**PR 7.1 · steps, voice, turn controls, swaps, the "it fell down" help · branch `build-mode` · GitHub: to open**
+**PR 7.1 · steps, voice, turn controls, swaps, the "it fell down" help · branch `build-mode` · GitHub #22**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -298,7 +298,7 @@ Each project in 6.3 to 6.5 is written with the helpers, has a `say` line per ste
 | 7f | Rest state: after 90 s with no tap during a step, the panel dims to "keep building" with the step picture large; any tap brings it back; no sound, no nag | `web/src/screens/Build.tsx` | code | Playwright with a stubbed clock | 1 h |
 | 7g | Plates for build mode per age, both orientations, both themes; axe; the motion audit on the step change | `web/e2e/build.spec.ts`, plates | check | green in CI | 1 h |
 
-**PR 7.2 · the end of a build · branch `build-end` · GitHub: to open**
+**PR 7.2 · the end of a build · branch `build-end` · GitHub #23**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -307,7 +307,7 @@ Each project in 6.3 to 6.5 is written with the helpers, has a `say` line per ste
 
 ### Phase 8 · go live
 
-**PR 8.1 · Verification, the grown-ups' page, the Pages link · branch `go-live` · GitHub: to open**
+**PR 8.1 · Verification, the grown-ups' page, the Pages link · branch `go-live` · GitHub #24**
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
@@ -400,10 +400,11 @@ Live: `https://jordanromines-jpg.github.io/tile-builder/` opens and installs to 
 
 ## Build log (append, never rewrite)
 
-| When (Chicago clock) | PR · keys | Commit | Hours (est · used) | Result / re-evaluation | Next |
+| When (UTC) | PR · keys | Commit | Hours (est · used) | Result / re-evaluation | Next |
 |---|---|---|---|---|---|
-| 2 Oct 2026, 04:45 to 05:40 | PR 0.1 · the plan (no key yet) | `e026bc9`, `dead16d`, `7a7d541`, `10a748f`, `5d03a00`, `ff98461` on `plan/phase-0` (#1) | not estimated · 1.0 | The first `PLAN.md`, five research files, eight skills, `docs/design-tools.md` pushed; the four research agents' reports read; this plan drafted in plan mode | Jordan's approval |
-| 2 Oct 2026, 05:40 to 06:10 | PR 0.1 · the plan (no key yet) | none (scratchpad) | not estimated · 0.5 | A features map drawn with Archify from `web-agent`'s copy; Jordan: "this is too complicated. no extra profile pics or project pages. Just select a project and do it. no camera." The plan cut to the Library, Build mode and the celebration (D18 to D21): 173 h became 154 h | Jordan's approval; then 0a to 0h |
+| 2 Oct 2026, 04:45 to 05:25 | PR 0.1 · the plan (no key yet) | `e026bc9`, `dead16d`, `7a7d541`, `10a748f`, `5d03a00`, `ff98461` on `plan/phase-0` (#1) | not estimated · 0.7 | The first `PLAN.md`, five research files, eight skills, `docs/design-tools.md` pushed; the four research agents' reports read; this plan drafted in plan mode | Jordan's approval |
+| 2 Oct 2026, 05:25 to 05:35 | PR 0.1 · the plan (no key yet) | none (scratchpad) | not estimated · 0.2 | A features map drawn with Archify from `web-agent`'s copy; Jordan: "this is too complicated. no extra profile pics or project pages. Just select a project and do it. no camera." The plan cut to the Library, Build mode and the celebration (D18 to D21): 173 h became 154 h | Jordan's approval; then 0a to 0h |
+| 2 Oct 2026, 05:35 to 05:45 | PR 0.1 · 0a to 0g | `5f63354`, then the commit that adds this row | 4.0 · 0.2. **Under half the estimate**: "Done when" re-read for each key and met; the keys were copying and writing, and neither the research file nor Archify needed changes. The times in the two rows above were first written as a guessed local clock and corrected here to UTC from the commit times | **0a** `kids-app-design.md` in, 81 sources. **0b** marked not run. **0c** Archify v3.0.1, 7.3 MB without its tests; its `examples/` kept because its skill reads them. **0d** the plans folder; the roadmap passes `finalize`; the plan's total corrected from 155 h to 154 h (the hours in its table add to 154). **0e** the features map for the simple app passes `finalize`, sent to Jordan. **0f** `PLAN.md` a pointer, README, tools row, prototype in `docs/prototype/`. **0g** 23 draft pull requests opened from `main` with one empty commit each: #2 to #24, numbers in the tables and headings | 0h: mark #1 ready and merge; then PR 1.1 (#2), 1a |
 
 ## Results
 

@@ -81,7 +81,7 @@ Once, at the end.
 T1, T2, ...: what he looks at or runs himself, and when.
 
 ## Build log (append, never rewrite)
-| When (Chicago clock) | PR · keys | Commit | Hours (est · used) | Result / re-evaluation | Next |
+| When (UTC) | PR · keys | Commit | Hours (est · used) | Result / re-evaluation | Next |
 |---|---|---|---|---|---|
 
 ## Results
