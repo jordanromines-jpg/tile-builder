@@ -70,6 +70,13 @@ licence its author set [2], so every component has to be checked one by one.
 - Effects built on shaders and heavy animation need testing on older iPads, and many fail our motion rules for young
   children.
 
+**How we reach it.** Jordan connected 21st as a claude.ai connector on 2 Oct 2026, so its tools (search, get
+component, themes, bookmarks) are in every session without a key in the repo. The account is on the free tier: 2
+component retrievals a day, AI generation off. The Anthropic Directory also has a "21st" plugin with a `21st-ui` skill
+and the same MCP server; enabling it would add the skill. The cloud environment's network blocks 21st.dev, so the
+`21st` command line and `npx shadcn add https://21st.dev/r/...` don't work from cloud sessions. To install a component
+there, fetch its code through the connector and add it by hand.
+
 **Recommendation.**
 1. Use it as a reference library, and as an occasional source of one specific interaction we'd otherwise build by
    hand (a confetti burst, a sticker peel, a card carousel). Copy it in with the shadcn command, check its licence,
