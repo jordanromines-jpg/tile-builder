@@ -1,0 +1,53 @@
+/* Set presets (plan key 4b): a starting point for the grown-up, who then adjusts the counts. From
+   docs/research/tiles.md, "Set contents"; each sums to its set's total. */
+import type { BrandId, ShapeId } from "./catalog";
+
+export interface SetPreset {
+  id: string;
+  brand: BrandId;
+  name: string;
+  total: number;
+  pieces: Partial<Record<ShapeId, number>>;
+}
+
+export const SETS: SetPreset[] = [
+  {
+    id: "magna-32",
+    brand: "magna",
+    name: "Magna-Tiles Clear Colors 32",
+    total: 32,
+    pieces: { square: 14, "square-large": 2, "tri-equilateral": 8, "tri-right": 4, "tri-isosceles-tall": 4 },
+  },
+  {
+    id: "magna-100",
+    brand: "magna",
+    name: "Magna-Tiles Clear Colors 100",
+    total: 100,
+    pieces: { square: 50, "square-large": 4, "tri-equilateral": 20, "tri-right": 11, "tri-isosceles-tall": 15 },
+  },
+  {
+    id: "picasso-100",
+    brand: "picasso",
+    name: "PicassoTiles PT100 Classic Starter",
+    total: 100,
+    pieces: { square: 46, "square-large": 8, "tri-equilateral": 20, "tri-right": 12, "tri-isosceles-tall": 14 },
+  },
+  {
+    id: "connetix-60",
+    brand: "connetix",
+    name: "Connetix Rainbow Starter Pack 60",
+    total: 60,
+    pieces: { square: 24, "square-large": 6, "tri-equilateral": 6, "tri-right": 6, "tri-isosceles-tall": 6, window: 6, door: 6 },
+  },
+  {
+    id: "connetix-102",
+    brand: "connetix",
+    name: "Connetix Rainbow Creative Pack 102",
+    total: 102,
+    pieces: { square: 36, "square-large": 6, "tri-equilateral": 12, "tri-right": 12, "tri-isosceles-tall": 12, window: 6, door: 6, "rect-2x1": 6, fence: 6 },
+  },
+];
+
+export function setById(id: string): SetPreset | undefined {
+  return SETS.find((s) => s.id === id);
+}
