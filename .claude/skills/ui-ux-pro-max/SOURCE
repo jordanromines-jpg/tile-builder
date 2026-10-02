@@ -1,0 +1,7 @@
+Source: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+Commit: dcc40ff5133ef78276117db0cc34e7b83cc8aeba
+Path: .claude/skills/ui-ux-pro-max
+License: MIT (see LICENSE)
+Installed: 2026-09-25, pinned to the commit reviewed for this project. Update by re-copying from a newer reviewed commit.
+Local patch: every `python "..."` command in SKILL.md was changed to `python3` (stock macOS has no `python`), and the
+plugin path ${CLAUDE_PLUGIN_ROOT}/.claude/skills/ui-ux-pro-max/ to the project-relative .claude/skills/ui-ux-pro-max/.
