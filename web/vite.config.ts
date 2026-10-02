@@ -20,8 +20,8 @@ export default defineConfig({
         description: "Pick a magnet-tile project you can build with your tiles, and build it, step by step.",
         display: "standalone",
         orientation: "any",
-        background_color: "#FBF8F3",
-        theme_color: "#FBF8F3",
+        background_color: "#FFF7EC",
+        theme_color: "#FFF7EC",
         icons: [
           { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
           { src: "icons/icon-512.png", sizes: "512x512", type: "image/png" },

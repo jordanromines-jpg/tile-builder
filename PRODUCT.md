@@ -33,7 +33,7 @@ Two taps from opening the app to the first step (D18). Everything else serves th
 
 | | What it does | Where we differ |
 |---|---|---|
-| EverPieces | 100+ guided 3D builds, any brand, no ads or account; 3 of its 4 "Worlds" cost money | It is led by a parent. We read every step aloud, so a 4-year-old can run it alone, and we check each project against the family's own tiles |
+| EverPieces | 100+ guided 3D builds, any brand, no ads or account; 3 of its 4 "Worlds" cost money | It is led by a parent. Every step is a picture first and can be read aloud with a tap, so a 4-year-old can run it alone, and we check each project against the family's own tiles |
 | Magniko | Keeps an inventory and shows only what you can build; community designs | It hides near misses. We show them as pictures of the missing tiles, and offer swaps (short triangles for tall ones) |
 | Tilbo (not out) | A daily build matched to age and the tiles at home; photos, stickers, streaks | It uses streaks and a daily nudge. We have none: no streaks, timers or rewards to collect |
 
@@ -44,7 +44,7 @@ what I have". We win on a child running it alone, on near misses and swaps, and 
 ## What it should be
 
 1. **Two taps to building.** Open, tap a project, step 1. No sign-in, no setup for the child.
-2. **Usable by a child who cannot read.** Pictures first; every step read aloud; every control speaks its name on
+2. **Usable by a child who cannot read.** Pictures first; every step read aloud on a tap; every control speaks its name on
    tap (`kids-and-ipad.md`; `kids-app-design.md`, section 2).
 3. **Honest about the family's tiles.** "You can build it!", "You can build it with a swap", or "Need 2 more" drawn
    as the missing tiles. Near misses are shown, never hidden. Colour is a preference, never a requirement.
@@ -65,7 +65,7 @@ Builder"; the evidence behind each number is there.
 | New tiles a step | 1 | up to 3 | up to 4, or one ring of four |
 | Tiles in a project | 3 to 12 | 12 to 40 | 30 to 100 |
 | The 3D model | Still, from the child's side; ◀ ▶ turn it a quarter at a time; never turns by itself during a step (D10) | ◀ ▶ and drag to turn; back to the child's side on each new step | Turn and zoom freely; turns slowly on its own until touched |
-| Read aloud | Always | On unless the grown-up turns it off | On request, with the words shown |
+| Read aloud | Off by default (2.0): a tap on Hear again reads the step; a grown-up can turn reading on in Settings | The same | The same, with the words shown |
 | The grown-up | Builds beside the child; some steps speak to them ("Grown-up, hold the wall") | Nearby; helps if it falls | Optional |
 | Smallest kid button | 88 px | 80 px | 64 px |
 

@@ -13,7 +13,7 @@ export interface InventoryRow extends Inventory {
 
 export const DEFAULT_SETTINGS: Settings = {
   age: null,
-  voice: true,
+  voice: false,
   soundEffects: false,
   lang: "en-US",
   theme: "system",
@@ -33,6 +33,11 @@ class TileDB extends Dexie {
   constructor() {
     super("tile-steps");
     this.version(1).stores({ settings: "id", inventory: "id", progress: "projectId" });
+    // 2.0: the voice is off by default (Jordan's ask). An iPad that had 1.0 kept "on" from the old default: turn it off
+    // once; a grown-up can turn it back on in Settings and that choice stays
+    this.version(2)
+      .stores({ settings: "id", inventory: "id", progress: "projectId" })
+      .upgrade((tx) => tx.table("settings").toCollection().modify((r: SettingsRow) => void (r.voice = false)));
   }
 }
 

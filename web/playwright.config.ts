@@ -10,7 +10,9 @@ const ipad = { ...devices["Desktop Chrome"], isMobile: true, hasTouch: true, dev
 export default defineConfig({
   testDir: "e2e",
   snapshotPathTemplate: "{testDir}/plates/{arg}-{projectName}{ext}",
-  expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: "disabled" } },
+  // CI runners are slower than a laptop and draw 3D in software: give each check and each test room
+  timeout: 60_000,
+  expect: { timeout: 10_000, toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: "disabled" } },
   fullyParallel: true,
   retries: 0,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",

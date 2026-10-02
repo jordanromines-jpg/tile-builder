@@ -15,7 +15,7 @@ for (const ground of ["light", "dark"] as const) {
     page.on("pageerror", (e) => errors.push(e.message));
     await open(page, ground);
     await expect(page.getByRole("img", { name: "red square" }).first()).toBeVisible();
-    await expect(page.getByRole("img", { name: "purple tall triangle" })).toBeVisible();
+    await expect(page.getByRole("img", { name: "purple tall triangle", exact: true })).toBeVisible();
     await expect(page.locator("canvas").first()).toBeVisible();
     const axe = await new AxeBuilder({ page }).analyze();
     expect(axe.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);
@@ -44,6 +44,7 @@ for (const [age, min] of [["a", 88], ["b", 80], ["c", 64]] as const) {
 for (const ground of ["light", "dark"] as const) {
   test(`the design page looks as it did in ${ground}`, async ({ page }) => {
     await open(page, ground);
+    await page.waitForLoadState("networkidle");
     await page.evaluate(() => document.fonts.ready);
     await expect(page).toHaveScreenshot(`design-${ground}.png`, { fullPage: true, mask: [page.locator("canvas")] });
   });

@@ -1,9 +1,10 @@
-/* A tile as a picture (plan key 2j): the shape, its colour at 45% over the surface, its pattern, a 3 px rim, and an
+/* A tile as a picture (plan key 2j; a 3D picture since sprint 2, the drawing below as its fallback): the shape, its colour at 45% over the surface, its pattern, a 3 px rim, and an
    optional count beside it. With `speak`, it is a button that says its name ("4 red squares") on tap. */
-import { useId, type CSSProperties } from "react";
+import { useId, useState, type CSSProperties } from "react";
 import { DEFAULT_LEG, SHAPES, tileName, type Colour, type Pt, type ShapeId } from "../engine/catalog";
-import { say } from "../speech/say";
+import { say, useVoiceOn } from "../speech/say";
 import { PATTERN_OF, TilePattern } from "./patterns";
+import { pictureUrl, tileFile } from "../pictures";
 
 export type ChipSize = "sm" | "md" | "lg";
 export const CHIP_PX: Record<ChipSize, number> = { sm: 48, md: 72, lg: 104 };
@@ -33,7 +34,30 @@ function svgPoints(pts: Pt[], y1: number): string {
   return pts.map(([x, y]) => `${x},${y1 - y}`).join(" ");
 }
 
+/** The tile as the build stage draws it: its 3D picture (src/pictures.ts), or the flat drawing for "any colour" and
+    when a picture is missing. */
 export function TilePicture({ shape, colour, leg = DEFAULT_LEG, px }: { shape: ShapeId; colour?: Colour; leg?: number; px: number }) {
+  const file = colour ? tileFile(shape, colour, leg) : null;
+  const [failed, setFailed] = useState<string | null>(null);
+  if (file && failed !== file)
+    return (
+      <img
+        src={pictureUrl(file)}
+        width={px}
+        height={px}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+        decoding="async"
+        className="block select-none"
+        onError={() => setFailed(file)}
+      />
+    );
+  return <TileDrawing shape={shape} colour={colour} leg={leg} px={px} />;
+}
+
+/** The flat drawing: the shape, its colour at 45%, its pattern and a rim. */
+export function TileDrawing({ shape, colour, leg = DEFAULT_LEG, px }: { shape: ShapeId; colour?: Colour; leg?: number; px: number }) {
   const id = useId().replace(/:/g, "");
   const def = SHAPES[shape];
   const pts = def.points(leg);
@@ -74,6 +98,7 @@ export function TilePicture({ shape, colour, leg = DEFAULT_LEG, px }: { shape: S
 export function TileChip({ shape, colour, count, size = "md", leg, speak, instead, className = "" }: TileChipProps) {
   const label = tileName(shape, colour, count);
   const px = CHIP_PX[size];
+  const voiceOn = useVoiceOn();
   const style: CSSProperties = { fontSize: COUNT_PX[size], lineHeight: 1 };
   const body = (
     <>
@@ -93,9 +118,10 @@ export function TileChip({ shape, colour, count, size = "md", leg, speak, instea
     </>
   );
   const cls = `inline-flex items-center gap-2 ${className}`;
-  if (speak) {
+  // with the voice off a tap would say nothing, so the chip is a picture, not a button
+  if (speak && voiceOn) {
     return (
-      <button type="button" className={`${cls} rounded-md p-1`} aria-label={label} onClick={() => say(label, { force: true })}>
+      <button type="button" className={`${cls} rounded-md p-1`} aria-label={label} onClick={() => say(label)}>
         {body}
       </button>
     );

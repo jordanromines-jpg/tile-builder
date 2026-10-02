@@ -1,6 +1,6 @@
 /* Verification at go-live (plan key 8a): V6 offline, V7 storage and backup, V9 two taps, V11 nothing leaves. */
 import { expect, test } from "@playwright/test";
-import { dismissFirstRun, openGate, useSet } from "./helpers";
+import { dismissFirstRun, openGate, savedStep, useSet } from "./helpers";
 
 test("V6: after one load, with the network off, every route opens and the fish builds to the end", async ({ page, context }) => {
   await useSet(page, "Magna-Tiles Clear Colors 32");
@@ -34,6 +34,7 @@ test("V7: tiles, settings and a saved step survive a reload; a backup restores t
   await page.getByRole("switch", { name: "Read steps aloud" }).click();
   await page.goto("#/build/castle");
   for (let i = 0; i < 5; i++) await page.getByRole("button", { name: "Next", exact: true }).click();
+  await savedStep(page, "castle", 5);
   await page.reload();
   await expect(page.getByRole("list", { name: "Step 6 of 25" })).toBeVisible();
 
@@ -55,7 +56,7 @@ test("V7: tiles, settings and a saved step survive a reload; a backup restores t
   await page.getByRole("button", { name: "Replace" }).click();
   await expect(page.getByTestId("summary")).toContainText("You have 100 tiles");
   await page.getByRole("navigation").getByRole("link", { name: "Settings" }).click();
-  await expect(page.getByRole("switch", { name: "Read steps aloud" })).toHaveAttribute("aria-checked", "false");
+  await expect(page.getByRole("switch", { name: "Read steps aloud" })).toHaveAttribute("aria-checked", "true");
   await page.goto("#/build/castle");
   await expect(page.getByRole("list", { name: "Step 6 of 25" })).toBeVisible();
 });

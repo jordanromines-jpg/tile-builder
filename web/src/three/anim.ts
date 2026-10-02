@@ -1,5 +1,5 @@
-/* The drop-in animation (plan key 6a), from the prototype (lines 303–348): each tile starts above and a little to the
-   side of its place, tilted, and settles with a small overshoot. Tiles land one after another. */
+/* The building animation (sprint 2, change 4): a step's tiles show as ghosts for a moment, then each glides in along an
+   arc and settles with a small magnetic snap, one after another. Seeded, so it is the same every time. */
 export function mulberry(seed: number): () => number {
   let a = seed | 0;
   return () => {
@@ -10,10 +10,14 @@ export function mulberry(seed: number): () => number {
   };
 }
 
-export function easeOutBack(k: number): number {
-  const c1 = 1.4;
+export function easeOutBack(k: number, c1 = 1.4): number {
   const c3 = c1 + 1;
   return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2);
+}
+
+/** The glide's easing: fast in, a 4% overshoot as the magnets catch, then still. */
+export function snap(k: number): number {
+  return k >= 1 ? 1 : easeOutBack(k, 0.9);
 }
 
 /** How opaque a tile is part-way in: fully by a third of the way. */
@@ -21,13 +25,18 @@ export function fade(k: number): number {
   return Math.min(1, Math.max(0, k * 3));
 }
 
-export const DROP_S = 0.55;
+export const DROP_S = 0.5;
 export const DROP_S_REDUCED = 0.15;
+/** How long a step's ghosts show before its tiles glide in. */
+export const GHOST_S = 0.45;
+/** How long a new step's tiles glow and its ghost pulses before they hold still (and the stage stops drawing). */
+export const GLOW_S = 2.5;
 /** The next tile starts when the one before is this far in. */
 export const STAGGER = 0.35;
 
-/** One frame of progress for every tile: those up to `shown` move toward 1, one after another; the rest drop to 0. */
-export function stepProgress(progress: number[], shown: number, dt: number, duration: number): boolean {
+/** One frame of progress for every tile: those up to `shown` move toward 1, one after another; the rest drop to 0.
+    Tiles from `startable` on wait (their ghosts are showing). */
+export function stepProgress(progress: number[], shown: number, dt: number, duration: number, startable = shown): boolean {
   let moving = false;
   let gate = 1;
   for (let i = 0; i < progress.length; i++) {
@@ -40,8 +49,8 @@ export function stepProgress(progress: number[], shown: number, dt: number, dura
       gate = 1;
       continue;
     }
-    // waiting for the tile before to get far enough in
-    if (gate < STAGGER) {
+    // waiting for the ghost moment, or for the tile before to get far enough in
+    if (i >= startable || gate < STAGGER) {
       moving = true;
       gate = 0;
       continue;

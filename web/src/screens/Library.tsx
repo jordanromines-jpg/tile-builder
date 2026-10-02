@@ -9,7 +9,7 @@ import type { Age, Project } from "../engine/types";
 import { PROJECTS } from "../projects";
 import { saveSettings } from "../store/db";
 import { useInventory, useProgress, useSettings } from "../store/hooks";
-import { APP_NAME, S } from "../strings";
+import { S } from "../strings";
 import { AgeProvider, AGES } from "../ui/kid/AgeContext";
 import { AgePicker } from "../ui/kid/AgePicker";
 import { EmptyState } from "../ui/kid/EmptyState";
@@ -17,6 +17,7 @@ import { GrownUpsDoor } from "../ui/kid/GrownUpsDoor";
 import { ProjectCard } from "../ui/kid/ProjectCard";
 import { Shelf } from "../ui/kid/Shelf";
 import { ThemeFilter } from "../ui/kid/ThemeFilter";
+import { Wordmark } from "../ui/kid/Wordmark";
 import { ProjectPicture } from "../ui/ProjectPicture";
 import { FirstRunCard } from "./FirstRunCard";
 
@@ -76,15 +77,15 @@ export function Library() {
 
   return (
     <AgeProvider age={age ?? "a"}>
-      <main className="kid safe mx-auto flex min-h-dvh max-w-[1400px] flex-col gap-5">
-        <header className="flex flex-wrap items-center gap-4">
-          <h1 className="sr-only">{APP_NAME}</h1>
+      <main className="kid safe mx-auto flex min-h-dvh max-w-[1400px] flex-col gap-6">
+        <header className="flex flex-wrap items-center gap-x-6 gap-y-4">
+          <Wordmark />
           <AgePicker value={age} onChange={(a) => void saveSettings({ age: a })} />
           <span className="flex-1" />
           <GrownUpsDoor />
         </header>
         <ThemeFilter value={theme} onChange={setTheme} themes={themes} />
-        {!hasTiles && inv && <EmptyState text={S.kid.emptyTiles} />}
+        {!hasTiles && inv && <EmptyState text={S.kid.emptyTiles} banner />}
         {shown.length ? (
           shown.map((s) => (
             <Shelf key={s.title} title={s.title}>

@@ -1,6 +1,6 @@
 # Tile Steps: for grown-ups
 
-Tile Steps helps a child build with magnet tiles, one step at a time, from a picture read aloud. It is free, has no
+Tile Steps helps a child build with magnet tiles, one step at a time, from a 3D picture. It is free, has no
 ads or purchases, and keeps everything on your iPad.
 
 ## Put it on the iPad (two minutes)
@@ -25,8 +25,8 @@ ever says "buy".
 
 ## Building together
 
-Stand the iPad up beside the tiles. Your child picks an age picture (3–5, 6–8 or 9–10) and a project. Each step is
-read aloud; **Hear again** repeats it. For the youngest, some steps ask you to hold a wall.
+Stand the iPad up beside the tiles. Your child picks an age picture (3–5, 6–8 or 9–10) and a project. Tap **Hear
+again** (the speaker) to have a step read aloud, or turn reading on for every step in Settings. For the youngest, some steps ask you to hold a wall.
 
 ## Backups
 

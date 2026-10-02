@@ -19,7 +19,7 @@ export function ThemeFilter({ value, onChange, themes = THEMES }: { value: Theme
         aria-label={label}
         title={label}
         onClick={() => {
-          say(label, { force: true });
+          say(label);
           onChange(t);
         }}
         className="kid grid shrink-0 place-items-center rounded-full border-2 border-line bg-surface-2 text-ink-1 transition-transform duration-100 active:scale-95 aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-accent-ink"
@@ -30,7 +30,7 @@ export function ThemeFilter({ value, onChange, themes = THEMES }: { value: Theme
     );
   };
   return (
-    <div role="group" aria-label={S.kid.themes} className="flex gap-3 overflow-x-auto px-1 py-2">
+    <div role="group" aria-label={S.kid.themes} className="flex gap-6 overflow-x-auto px-1 py-2">
       {chip(null)}
       {themes.map(chip)}
     </div>

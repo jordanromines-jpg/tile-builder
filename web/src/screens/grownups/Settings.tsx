@@ -47,7 +47,7 @@ export function Settings() {
   return (
     <Frame title="Settings">
       <SettingsList title="Voice and sound">
-        <Switch label="Read steps aloud" help="For 3 to 5, steps are always read aloud. A child can always tap Hear again." on={s.voice} onChange={(v) => void saveSettings({ voice: v })} />
+        <Switch label="Read steps aloud" help="Off unless you turn it on. A child can always tap Hear again." on={s.voice} onChange={(v) => void saveSettings({ voice: v })} />
         <Switch label="Sound effects" help="A soft click on each new step. Silent when the iPad is on mute." on={s.soundEffects} onChange={(v) => void saveSettings({ soundEffects: v })} />
         <label className="flex flex-col gap-2">
           <span className="font-bold">The voice's language</span>

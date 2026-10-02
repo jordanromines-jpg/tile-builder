@@ -39,7 +39,7 @@ export function KidRows() {
   const noop = () => {};
   return (
     <AgeProvider age={age}>
-      <Row title="Age" note="The kid sizes below follow this age: 88, 80 or 64 px targets; 104 px for the main action.">
+      <Row title="Age" note="The kid sizes below follow this age: 88, 80 or 64 px targets; 112 px for the main action.">
         <div role="group" aria-label="Age for kid sizes" className="flex gap-2">
           {AGES.map((a) => (
             <button key={a} type="button" aria-pressed={age === a} onClick={() => setAge(a)} className="min-h-11 rounded-md border border-line px-4 aria-pressed:bg-accent aria-pressed:text-accent-ink">

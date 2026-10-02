@@ -2,8 +2,7 @@ node_modules/
 web/dist/
 web/test-results/
 web/playwright-report/
-web/public/thumbs/*
-!web/public/thumbs/manifest.json
+*.tsbuildinfo
 __pycache__/
 .pytest_cache/
 # Archify output is drawn on demand, never committed
@@ -20,3 +19,7 @@ plans/roadmap/*.delivery.json
 web/.shot.mjs
 web/.crop.mjs
 web/.sheet.mjs
+web/.serve.sh
+web/.look.mjs
+web/.look-done.mjs
+web/.prof.mjs

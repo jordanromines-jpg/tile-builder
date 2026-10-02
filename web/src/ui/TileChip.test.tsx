@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { COLOURS, SHAPE_IDS } from "../engine/catalog";
 import * as speech from "../speech/say";
@@ -23,10 +23,18 @@ describe("TileChip", () => {
     expect(screen.getByRole("img", { name: "4 red squares" }).textContent).toBe("4");
   });
 
-  it("says its name on tap when it speaks", () => {
+  it("says its name on tap when it speaks and the voice is on", () => {
     const spy = vi.spyOn(speech, "say").mockImplementation(() => {});
+    act(() => speech.configureSpeech({ enabled: true }));
     render(<TileChip shape="tri-equilateral" colour="blue" count={2} speak />);
     fireEvent.click(screen.getByRole("button", { name: "2 blue triangles" }));
-    expect(spy).toHaveBeenCalledWith("2 blue triangles", { force: true });
+    expect(spy).toHaveBeenCalledWith("2 blue triangles");
+    act(() => speech.configureSpeech({ enabled: false }));
+  });
+
+  it("is a picture, not a button, while the voice is off", () => {
+    render(<TileChip shape="tri-equilateral" colour="blue" count={2} speak />);
+    expect(screen.queryByRole("button")).toBeNull();
+    expect(screen.getByRole("img", { name: "2 blue triangles" })).toBeTruthy();
   });
 });

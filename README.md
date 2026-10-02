@@ -5,7 +5,7 @@
 **Live: https://jordanromines-jpg.github.io/tile-builder/** (open on an iPad, then Share → Add to Home Screen).
 
 A web app for children aged 3 to 10 who build with magnet tiles. A grown-up enters the family's tiles once. A child
-picks a project, sees whether it fits the tiles they have, and builds it one step at a time from a 3D model read aloud.
+picks a project, sees whether it fits the tiles they have, and builds it one step at a time from a 3D model (tap the speaker to hear a step).
 It works offline from the Home Screen and keeps everything on the iPad.
 
 - 30 hand-written projects: 10 for 3–5, 12 for 6–8, 8 for 9–10. Every one passes a checker that proves it can be built,

@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#FBF8F3"/>
+  <rect width="512" height="512" rx="112" fill="#FFF7EC"/>
   <g transform="translate(35.84 35.84) scale(0.86)">
-    <rect x="40" y="430" width="432" height="18" rx="9" fill="#DCEFF0"/>
-    <polygon points="96,420 248,420 248,268 96,268" fill="#0B6E78" fill-opacity="0.45" stroke="#0B6E78" stroke-width="14" stroke-linejoin="round"/>
-    <polygon points="264,420 416,420 416,268 264,268" fill="#0B6E78" fill-opacity="0.45" stroke="#0B6E78" stroke-width="14" stroke-linejoin="round"/>
+    <rect x="40" y="430" width="432" height="18" rx="9" fill="#D9B48A"/>
+    <polygon points="96,420 248,420 248,268 96,268" fill="#E5322E" fill-opacity="0.45" stroke="#E5322E" stroke-width="14" stroke-linejoin="round"/>
+    <polygon points="264,420 416,420 416,268 264,268" fill="#2A78DD" fill-opacity="0.45" stroke="#2A78DD" stroke-width="14" stroke-linejoin="round"/>
     <polygon points="88,252 424,252 256,72" fill="#F4C51B" fill-opacity="0.45" stroke="#F4C51B" stroke-width="14" stroke-linejoin="round"/>
   </g>
 </svg>

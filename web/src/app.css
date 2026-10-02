@@ -28,3 +28,37 @@ button { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
 }
+
+/* Sprint 2, "Toy box": a wooden shelf plank under each row of cards, soft layered shadows, and one press feel for
+   every kid button. Colours come from the tokens (ground is the wood). */
+@layer components {
+.plank {
+  height: 22px;
+  border-radius: 6px 6px 10px 10px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 140px, color-mix(in srgb, var(--ink-1) 6%, transparent) 140px 142px),
+    linear-gradient(180deg, color-mix(in srgb, var(--ground) 80%, white) 0 4px, var(--ground) 4px 70%, color-mix(in srgb, var(--ground) 70%, var(--ink-1)) 100%);
+  box-shadow: 0 10px 18px -8px color-mix(in srgb, var(--ink-1) 45%, transparent);
+}
+.soft {
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--ink-1) 10%, transparent),
+    0 8px 24px -6px color-mix(in srgb, var(--ink-1) 22%, transparent);
+}
+.press { transition: transform var(--t-press) var(--ease), box-shadow var(--t-press) var(--ease); }
+.press:active { transform: translateY(2px) scale(0.97); }
+.safe-top { padding-top: max(env(safe-area-inset-top), 16px); }
+.lift { transition: transform var(--t-ui) var(--ease), box-shadow var(--t-ui) var(--ease); }
+.lift:active { transform: translateY(-4px) rotate(-1deg) scale(0.98); }
+}
+
+/* The end's shower of little tiles (TileConfetti.tsx). */
+@keyframes confetti-fall {
+  0% { transform: translateY(-40px) rotate(0); opacity: 0; }
+  10% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(105dvh) rotate(var(--spin)); opacity: 0; }
+}
+.confetti { opacity: 0; animation: confetti-fall 2.6s cubic-bezier(.3, .1, .7, 1) both; }
+@keyframes photo-in { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.photo-in { animation: photo-in var(--t-ui) var(--ease) both; }

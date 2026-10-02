@@ -6,7 +6,7 @@ export type Age = "a" | "b" | "c";
 export const AGES: Age[] = ["a", "b", "c"];
 
 export const TARGET: Record<Age, number> = { a: 88, b: 80, c: 64 };
-export const PRIMARY = 104;
+export const PRIMARY = 112;
 
 const Ctx = createContext<Age>("a");
 
