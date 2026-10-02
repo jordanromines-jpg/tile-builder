@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "@fontsource-variable/fredoka/wght.css";
+@import "@fontsource/andika/latin-400.css";
+@import "@fontsource/andika/latin-700.css";
+@import "@fontsource/atkinson-hyperlegible-next/latin-400.css";
+@import "@fontsource/atkinson-hyperlegible-next/latin-700.css";
+
+/* The page: the table colour under everything, the grown-ups' face by default; kid screens set their own sizes. */
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink-1);
+  font: 400 17px/1.5 var(--parent);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+#root { min-height: 100dvh; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+/* The kid side: no text selection or long-press callouts on a 4-year-old's thumb. */
+.kid, .kid * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.safe { padding: max(env(safe-area-inset-top), 16px) max(env(safe-area-inset-right), 16px) max(env(safe-area-inset-bottom), 16px) max(env(safe-area-inset-left), 16px); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+}
