@@ -1,23 +1,15 @@
 /* #/design: every token-driven picture and component in every state, in light and dark (plan keys 2t, 2j, 2k, 2l).
    Made-up content only. Rows grow as each pull request adds components. */
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { COLOURS, SHAPE_IDS, SHAPES } from "../engine/catalog";
 import { THEMES, THEME_LABELS } from "../engine/themes";
 import { applyTheme, currentTheme, type Theme as Ground } from "../ground";
 import { ShapeIcon } from "../ui/ShapeIcon";
 import { ThemeIcon } from "../ui/ThemeIcon";
 import { TileChip } from "../ui/TileChip";
+import { KidRows } from "./design/KidRows";
+import { Row } from "./design/Row";
 import { TileTurntable } from "./design/TileTurntable";
-
-export function Row({ title, children, note }: { title: string; children: ReactNode; note?: string }) {
-  return (
-    <section className="border-t border-line py-6">
-      <h2 className="mb-1 font-display text-[length:var(--fs-parent-heading)] font-semibold">{title}</h2>
-      {note && <p className="mb-3 max-w-prose text-ink-2">{note}</p>}
-      <div className="flex flex-wrap items-end gap-4">{children}</div>
-    </section>
-  );
-}
 
 export function Design() {
   const [ground, setGround] = useState<Ground>(currentTheme());
@@ -82,6 +74,8 @@ export function Design() {
       <Row title="3D tiles" note="One tile of each shape, turning slowly; still under reduced motion.">
         <TileTurntable paint={paint} />
       </Row>
+
+      <KidRows />
     </main>
   );
 }
