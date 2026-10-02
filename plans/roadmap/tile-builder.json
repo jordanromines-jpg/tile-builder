@@ -2,7 +2,7 @@
  "schema_version": 2,
  "diagram_type": "workflow",
  "meta": {
-  "title": "Tile Builder: the build, pull request by pull request",
+  "title": "Tile Steps: the build, pull request by pull request",
   "subtitle": "plans/2026-10-02-tile-builder.md · 24 pull requests, 154 h · two gates for Jordan",
   "output": "tile-builder.html",
   "quality_profile": "standard",

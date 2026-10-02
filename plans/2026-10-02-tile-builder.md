@@ -1,4 +1,6 @@
-# Tile Builder: the build plan
+# Tile Steps: the build plan
+
+(The repo and the research use the working name "Tile Builder".)
 
 Status: approved 2 Oct 2026 (Jordan, in plan mode, after the cut to the simple app: D18 to D21); in progress (PR 0.1, #1).
 
@@ -16,7 +18,7 @@ What the evidence says about children: copying a model from a picture starts at 
 
 What was not measured: no study compares a rotatable 3D guide with pictures for ages 3 to 10; pieces per step was never tested directly; app-store reviews of the competitors were not read (the session's search budget ran out); the Magna-Tiles and Connetix tall-triangle leg lengths were not found; most research pages were read as search summaries, not the page (each file's first section says how far to trust it). Family sessions were skipped (D13), so the per-age rules are inferences from the literature until Jordan's testing (T2 to T4).
 
-The tile sizes the engine rests on: a standard square is 3 in (76.2 mm) for Magna-Tiles and PicassoTiles and about 75 mm for Connetix; the right triangle is half a square; the equilateral has 3 in sides; the tall isosceles triangle differs by brand (PicassoTiles: 7.5 cm base, 14 cm legs, so legs of 1.867 units; the others unknown). Set presets with their counts are in `docs/research/tiles.md`.
+The tile sizes the engine rests on: a standard square is 3 in (76.2 mm) for Magna-Tiles and PicassoTiles and about 75 mm for Connetix; the right triangle is half a square; the equilateral has 3 in sides; the tall isosceles triangle's legs are 1.87 units for PicassoTiles (7.5 cm base, 14 cm legs, listed) and 1.88 for Magna-Tiles (143 mm ± 5, measured by an independent project; found 2 Oct 2026 in PR 1.1); Connetix is unknown. Set presets with their counts are in `docs/research/tiles.md`.
 
 ## The app in one paragraph
 
@@ -42,7 +44,7 @@ A child opens the app and sees the **Library**: shelves of project pictures, eac
 | D14 | Agents and workflows in the build | No Workflow tool (Jordan, 2 Oct 2026: "no workflows"; "you can use agents but no workflows"). Later: "no more agents after this." So the builder works alone, with no subagents |
 | D15 | The stack | React 19, TypeScript, Vite 7, Tailwind 4 fed by our token file, Radix primitives under our own components, TanStack Router with hash history, three.js through `@react-three/fiber`, Dexie, `vite-plugin-pwa`, zod, Motion, Phosphor, `@fontsource`, Vitest, Playwright with axe-core. Copied from `web-agent/web` where it fits (the same stack Jordan approved there as RQ1) |
 | D16 | Price | Free, nothing to unlock. The repo is public |
-| D17 | The name | "Tile Builder" until the brief proposes three names and Jordan picks one at G1 (Q2) |
+| D17 | The name | **Tile Steps** (Jordan, 2 Oct 2026, at G1: "Tile Steps, keep going."), from the three in `PRODUCT.md`. The repo, its folders and the research keep the working name "Tile Builder" |
 | D18 | How much app | "this is too complicated. no extra profile pics or project pages. Just select a project and do it. no camera." (Jordan, 2 Oct 2026). Cut: profiles and avatars, Who's playing, the project page, the camera, My Builds, photos, stickers. The kid side is the Library, Build mode and the celebration |
 | D19 | How the app knows a child's age | Three age pictures at the top of the Library (3–5, 6–8, 9–10), the last choice remembered on the iPad; each project's own age band sets its build mode (tiles per step, turn controls, read-aloud) (Jordan, 2 Oct 2026: "yes", to this proposal) |
 | D20 | Picking up where you left off | One saved step per project, not per child: opening a half-done build carries on from that step (Jordan, 2 Oct 2026: "yes") |
@@ -108,7 +110,7 @@ Total: 154 hours of builder time, of which 4 are reserved (the first draft was 1
 | **G1** | **Jordan reads `PRODUCT.md` and picks the name** | | gate | his words are in Decisions (D17 filled in) | |
 | 1d | Apply his words: the name everywhere it appears, any change he asks for; merge | `PRODUCT.md`, `README.md`, `plans/` | document | merged with his words quoted in the build log | 45 min |
 
-Phase 2 keys up to PR 2.5 do not wait for G1: they use "Tile Builder", and the name lives in one strings file (`web/src/strings.ts`), so renaming is one commit.
+Phase 2 keys up to PR 2.5 do not wait for G1: they use the name from one strings file (`web/src/strings.ts`), so renaming is one commit.
 
 ### Phase 2 · the design system
 
@@ -190,7 +192,7 @@ The screens are built as real routes on fixture data, so the mockups become the 
 
 | # | What | Files | Kind | Done when | Time |
 |---|------|-------|------|-----------|------|
-| 4a | `src/engine/catalog.ts`: `ShapeId = "square" | "square-large" | "tri-equilateral" | "tri-right" | "tri-isosceles-tall" | "rect-2x1" | "window" | "door" | "fence"`; `SHAPES: Record<ShapeId, {label, points(leg?): [number,number][]}>` in units of one square edge, counter-clockwise, base from (0,0) to (1,0) as in the prototype (square `[[0,0],[1,0],[1,1],[0,1]]`, equilateral `[[0,0],[1,0],[0.5,√3/2]]`, right `[[0,0],[1,0],[0,1]]`, tall isosceles `[[0,0],[1,0],[0.5,h]]` with `h = √(leg² − 0.25)`, large square 2×2, rectangle 2×1, window and door as a square with `hole: true`, fence as 1×0.5 with `noFace: true`); `Colour = "red" | "orange" | "yellow" | "green" | "blue" | "purple"`; `BRANDS: Record<BrandId, {label, unitMm, tallLeg: number | null, extras: ShapeId[]}>`: `magna` 76.2 / null / none, `picasso` 76.2 / 1.867 / none, `connetix` 75 / null / `rect-2x1, window, door, fence`, `generic` 76.2 / null / none; `TALL_LEG_CHOICES = [1.5, 1.867, 2.2]` (Q1) | `web/src/engine/catalog.ts` | code | Vitest: every shape's points are counter-clockwise and convex (holes and fence aside); the height for leg 1.867 is 1.80 to two places | 1.5 h |
+| 4a | `src/engine/catalog.ts`: `ShapeId = "square" | "square-large" | "tri-equilateral" | "tri-right" | "tri-isosceles-tall" | "rect-2x1" | "window" | "door" | "fence"`; `SHAPES: Record<ShapeId, {label, points(leg?): [number,number][]}>` in units of one square edge, counter-clockwise, base from (0,0) to (1,0) as in the prototype (square `[[0,0],[1,0],[1,1],[0,1]]`, equilateral `[[0,0],[1,0],[0.5,√3/2]]`, right `[[0,0],[1,0],[0,1]]`, tall isosceles `[[0,0],[1,0],[0.5,h]]` with `h = √(leg² − 0.25)`, large square 2×2, rectangle 2×1, window and door as a square with `hole: true`, fence as 1×0.5 with `noFace: true`); `Colour = "red" | "orange" | "yellow" | "green" | "blue" | "purple"`; `BRANDS: Record<BrandId, {label, unitMm, tallLeg: number | null, extras: ShapeId[]}>`: `magna` 76.2 / 1.877 (143 mm measured, ±5 mm: `tiles.md` [15]) / none, `picasso` 76.2 / 1.867 / none, `connetix` 75 / null / `rect-2x1, window, door, fence`, `generic` 76.2 / null / none; `TALL_LEG_CHOICES = [1.5, 1.867, 2.2]` (Q1) | `web/src/engine/catalog.ts` | code | Vitest: every shape's points are counter-clockwise and convex (holes and fence aside); the height for leg 1.867 is 1.80 to two places | 1.5 h |
 | 4b | `src/engine/sets.ts`: the five presets from `docs/research/tiles.md` (Magna-Tiles Clear Colors 32 and 100, PicassoTiles PT100, Connetix Rainbow Starter 60 and Creative 102) as `{brand, name, pieces}`; a Vitest that each sums to its total | `web/src/engine/sets.ts` | code | the sums test passes | 45 min |
 | 4c | `src/engine/schema.ts` with zod: `Placed = {shape, colour?, pos: [x,y,z], rot: [rx, ry], role?: "roof"}`; `Step = {say: string, tiles: number[]}`; `Project = {id, title, theme: Theme, age: "a"|"b"|"c", stars: 1|2|3, flat?: boolean, done: string, needs: {brandExtras?: ShapeId[]}, placed: Placed[], steps: Step[], swaps?: SwapRule[]}`; `Inventory = {brands: BrandId[], tallLeg: number | null, counts: Record<ShapeId, {any: number, byColour?: Partial<Record<Colour, number>>}>}`; `Backup v1`; `src/engine/types.ts` exports the inferred types | `web/src/engine/schema.ts`, `web/src/engine/types.ts` | code | Vitest: a valid castle parses; a step pointing past `placed` fails | 1.5 h |
 | 4d | `scripts/check-projects.ts` (run with `tsx`): loads every project from `src/projects/index.ts`, validates the schema, runs the checker (a stub until 4.2) under every tall-leg choice, prints one line a project, exits 1 on any failure; wired to `npm run check:projects` and already in CI | `web/scripts/check-projects.ts` | check | it runs in CI with zero projects | 45 min |
@@ -405,6 +407,8 @@ Live: `https://jordanromines-jpg.github.io/tile-builder/` opens and installs to 
 | 2 Oct 2026, 04:45 to 05:25 | PR 0.1 · the plan (no key yet) | `e026bc9`, `dead16d`, `7a7d541`, `10a748f`, `5d03a00`, `ff98461` on `plan/phase-0` (#1) | not estimated · 0.7 | The first `PLAN.md`, five research files, eight skills, `docs/design-tools.md` pushed; the four research agents' reports read; this plan drafted in plan mode | Jordan's approval |
 | 2 Oct 2026, 05:25 to 05:35 | PR 0.1 · the plan (no key yet) | none (scratchpad) | not estimated · 0.2 | A features map drawn with Archify from `web-agent`'s copy; Jordan: "this is too complicated. no extra profile pics or project pages. Just select a project and do it. no camera." The plan cut to the Library, Build mode and the celebration (D18 to D21): 173 h became 154 h | Jordan's approval; then 0a to 0h |
 | 2 Oct 2026, 05:35 to 05:45 | PR 0.1 · 0a to 0g | `5f63354`, then the commit that adds this row | 4.0 · 0.2. **Under half the estimate**: "Done when" re-read for each key and met; the keys were copying and writing, and neither the research file nor Archify needed changes. The times in the two rows above were first written as a guessed local clock and corrected here to UTC from the commit times | **0a** `kids-app-design.md` in, 81 sources. **0b** marked not run. **0c** Archify v3.0.1, 7.3 MB without its tests; its `examples/` kept because its skill reads them. **0d** the plans folder; the roadmap passes `finalize`; the plan's total corrected from 155 h to 154 h (the hours in its table add to 154). **0e** the features map for the simple app passes `finalize`, sent to Jordan. **0f** `PLAN.md` a pointer, README, tools row, prototype in `docs/prototype/`. **0g** 23 draft pull requests opened from `main` with one empty commit each: #2 to #24, numbers in the tables and headings | 0h: mark #1 ready and merge; then PR 1.1 (#2), 1a |
+| 2 Oct 2026, 05:50 | PR 1.1 · start | the branch `brief` rebased on `main` (84cde73) | 5.0 · started | The merged branch `plan/phase-0` could not be deleted: the session's git proxy refuses branch deletes; it stays | 1a |
+| 2 Oct 2026, 05:50 to 06:05 | PR 1.1 · 1a 1b 1c, G1, 1d | `039ad6b`, then the commit that adds this row | 5.0 · 0.3. **Under half the estimate**: "Done when" re-read; the brief drew on finished research, and the name search took six searches | **1a** `PRODUCT.md`, 127 lines, every claim cited. **1b** `docs/research/README.md`. **1c** the brief and three names sent. **G1** Jordan: "Tile Steps, keep going." (D17). **1d** the name in `PRODUCT.md`, `README.md`, `PLAN.md`, the plan, the maps' titles; the repo and research keep "Tile Builder". Found on the way: an MIT project that measured a Magna-Tiles tall triangle (143 mm ± 5), now in `tiles.md`, Q1 and key 4a | Merge #2; then PR 2.1 (#3), 2a |
 
 ## Results
 
@@ -414,6 +418,6 @@ None yet.
 
 | # | Question | Default if nobody answers |
 |---|---|---|
-| Q1 | The tall triangle's leg length for Magna-Tiles and Connetix | The grown-up picks from three pictures (1.5, 1.867, 2.2 units); the checker passes every project under all three; T5 settles it |
-| Q2 | The app's name | Three proposals at G1; "Tile Builder" until then (D17) |
+| Q1 | The tall triangle's leg length for Connetix, and a second measure of Magna-Tiles' (found 2 Oct 2026: 143 mm ± 5, one project's photo measurement) | The grown-up picks from three pictures (1.5, 1.867, 2.2 units); the checker passes every project under all three and under each brand's known leg; T5 settles it |
+| Q2 | The app's name | Settled at G1: Tile Steps (D17) |
 | Q3 | Sound effects beyond the voice | Off by default, a switch in settings; when on, through Web Audio in "ambient" mode so silent mode holds |

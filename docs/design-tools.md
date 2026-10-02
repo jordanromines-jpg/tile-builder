@@ -1,6 +1,6 @@
 # Design tools
 
-The skills, repos and libraries Tile Builder is designed with, and what each one is for. Agreed with Jordan on
+The skills, repos and libraries Tile Steps (working name Tile Builder) is designed with, and what each one is for. Agreed with Jordan on
 2 Oct 2026: research first, then the brief, then the design system, and only then mockups.
 
 ## Skills in this repo (`.claude/skills/`)
@@ -63,7 +63,7 @@ generates new components from a prompt inside Claude Code; it calls 21st.dev's s
 $15 a month with AI generation [2][6]. The registry and the MCP server are MIT, but each component carries whatever
 licence its author set [2], so every component has to be checked one by one.
 
-**Fit for Tile Builder.**
+**Fit for Tile Steps.**
 - Most of the catalogue is built for SaaS and landing pages: heroes, pricing tables, dark "tech" effects such as the
   "grid pulse" in the ad. Little of it is made for children aged 3–10, so it won't supply our look.
 - It assumes the shadcn setup (Radix and Tailwind with tokens as CSS variables). That is the same base as our stack,

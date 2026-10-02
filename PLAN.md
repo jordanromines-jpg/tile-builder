@@ -1,4 +1,4 @@
-# Tile Builder
+# Tile Steps
 
 A web app for kids aged 3 to 10 who build with magnet tiles. A child opens it, picks a project from the Library (each
 marked "You can build it!" or "Need 2 more" against the family's tiles), and builds it step by step from a 3D model
