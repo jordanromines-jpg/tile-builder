@@ -17,6 +17,7 @@ Each folder has a `SOURCE` file with where it came from, the commit it was copie
 | `algorithmic-art` | Seeded, repeatable generated graphics: tile patterns for backgrounds, empty states, the loading screen | anthropics/skills | Apache 2.0 |
 | `canvas-design` | Static posters and images, e.g. a printable "idea card" or the social image | anthropics/skills | Apache 2.0; fonts OFL |
 | `webapp-testing` | Scripted Playwright checks and screenshots of the running app | anthropics/skills | Apache 2.0 |
+| `archify` | Diagrams from typed JSON: the plan's roadmap (`plans/roadmap/`), the features map and the engine map (`docs/maps/`). Run with `ARCHIFY_UPDATE_CHECK_DISABLED=1` | tt-a1i/archify v3.0.1 | MIT |
 
 `logo-design` stays on Jordan's Mac: its library of about 1,400 other companies' logos is kept out of git. The name
 mark and app icon are drawn there.

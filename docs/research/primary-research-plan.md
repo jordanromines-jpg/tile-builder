@@ -1,5 +1,7 @@
 # Primary research plan: talking to families
 
+Not run (D13, 2 Oct 2026). Kept as the method if family sessions are ever wanted.
+
 Desk research tells us what is known in general. These sessions answer what only real families can: will a parent
 really count their tiles, can a 4-year-old follow a picture of a build, and what makes a kid want to build something.
 The findings feed the brief before any design work starts.

@@ -1,0 +1,483 @@
+{
+ "schema_version": 2,
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "Tile Builder: the build, pull request by pull request",
+  "subtitle": "plans/2026-10-02-tile-builder.md · 24 pull requests, 154 h · two gates for Jordan",
+  "output": "tile-builder.html",
+  "quality_profile": "standard",
+  "visual_preset": "editorial",
+  "locale": "en",
+  "legend": {
+   "mode": "all",
+   "entries": {
+    "backend": {
+     "label": "a pull request of code or documents"
+    },
+    "frontend": {
+     "label": "a pull request of screens"
+    },
+    "database": {
+     "label": "a pull request of projects"
+    },
+    "cloud": {
+     "label": "going live"
+    },
+    "security": {
+     "label": "Jordan's word: a gate"
+    }
+   }
+  }
+ },
+ "lanes": [
+  {
+   "id": "j",
+   "label": "Jordan's word",
+   "variant": "exception"
+  },
+  {
+   "id": "d",
+   "label": "Plan, brief and design system"
+  },
+  {
+   "id": "e",
+   "label": "The engine and the projects"
+  },
+  {
+   "id": "a",
+   "label": "The app"
+  }
+ ],
+ "phases": [
+  {
+   "id": "c0",
+   "label": "Phases 0–1 · plan and brief · 9 h",
+   "fromCol": 0,
+   "toCol": 0
+  },
+  {
+   "id": "c1",
+   "label": "Phase 2 · tokens, scaffold, pictures · 26 h",
+   "fromCol": 1,
+   "toCol": 1
+  },
+  {
+   "id": "c2",
+   "label": "Phase 2 and 4 · components, checker · 36 h",
+   "fromCol": 2,
+   "toCol": 2,
+   "variant": "emphasis"
+  },
+  {
+   "id": "c3",
+   "label": "Phases 3 and 5 · mockups, grown-ups side · 23 h",
+   "fromCol": 3,
+   "toCol": 3
+  },
+  {
+   "id": "c4",
+   "label": "Phase 6 · the library · 42 h",
+   "fromCol": 4,
+   "toCol": 4,
+   "variant": "emphasis"
+  },
+  {
+   "id": "c5",
+   "label": "Phases 7–8 · build mode, go live · 18 h",
+   "fromCol": 5,
+   "toCol": 5
+  }
+ ],
+ "groups": [],
+ "nodes": [
+  {
+   "id": "g1",
+   "lane": "j",
+   "col": 1,
+   "type": "security",
+   "label": "G1: the brief and the name",
+   "width": 212,
+   "sublabel": "PRODUCT.md, under 150 lines"
+  },
+  {
+   "id": "g2",
+   "lane": "j",
+   "col": 3,
+   "type": "security",
+   "label": "G2: the four screens",
+   "width": 212,
+   "sublabel": "16 plates and the live routes"
+  },
+  {
+   "id": "p01",
+   "lane": "d",
+   "col": 0,
+   "type": "backend",
+   "label": "PR 0.1 the plan",
+   "width": 212,
+   "sublabel": "plans/, docs/maps, archify · 4 h",
+   "yOffset": -72
+  },
+  {
+   "id": "p11",
+   "lane": "d",
+   "col": 0,
+   "type": "backend",
+   "label": "PR 1.1 the brief",
+   "width": 212,
+   "sublabel": "PRODUCT.md · 5 h",
+   "yOffset": 72
+  },
+  {
+   "id": "p21",
+   "lane": "d",
+   "col": 1,
+   "type": "backend",
+   "label": "PR 2.1 tokens",
+   "width": 212,
+   "sublabel": "design/ · 6 h",
+   "yOffset": -144
+  },
+  {
+   "id": "p22",
+   "lane": "d",
+   "col": 1,
+   "type": "backend",
+   "label": "PR 2.2 scaffold, PWA, CI",
+   "width": 212,
+   "sublabel": "web/, .github/ · 8 h",
+   "yOffset": 0
+  },
+  {
+   "id": "p23",
+   "lane": "d",
+   "col": 1,
+   "type": "backend",
+   "label": "PR 2.3 tile pictures",
+   "width": 212,
+   "sublabel": "web/src/ui, three · 7 h",
+   "yOffset": 144
+  },
+  {
+   "id": "p24",
+   "lane": "d",
+   "col": 2,
+   "type": "backend",
+   "label": "PR 2.4 kid components",
+   "width": 212,
+   "sublabel": "web/src/ui/kid · 6 h",
+   "yOffset": -144
+  },
+  {
+   "id": "p25",
+   "lane": "d",
+   "col": 2,
+   "type": "backend",
+   "label": "PR 2.5 grown-ups components",
+   "width": 212,
+   "sublabel": "web/src/ui/grownups · 5 h",
+   "yOffset": 0
+  },
+  {
+   "id": "p26",
+   "lane": "d",
+   "col": 2,
+   "type": "backend",
+   "label": "PR 2.6 DESIGN.md, design page",
+   "width": 212,
+   "sublabel": "DESIGN.md, Design System · 5 h",
+   "yOffset": 144
+  },
+  {
+   "id": "p31",
+   "lane": "d",
+   "col": 3,
+   "type": "frontend",
+   "label": "PR 3.1 the four mockups",
+   "width": 212,
+   "sublabel": "web/src/screens · 6 h",
+   "yOffset": -72
+  },
+  {
+   "id": "p32",
+   "lane": "d",
+   "col": 3,
+   "type": "frontend",
+   "label": "PR 3.2 changes from G2",
+   "width": 212,
+   "sublabel": "reserved · 4 h",
+   "yOffset": 72
+  },
+  {
+   "id": "p41",
+   "lane": "e",
+   "col": 1,
+   "type": "backend",
+   "label": "PR 4.1 catalog and presets",
+   "width": 212,
+   "sublabel": "web/src/engine · 5 h"
+  },
+  {
+   "id": "p42",
+   "lane": "e",
+   "col": 2,
+   "type": "backend",
+   "label": "PR 4.2 geometry, checker",
+   "width": 212,
+   "sublabel": "web/src/engine · 12 h",
+   "yOffset": -72
+  },
+  {
+   "id": "p43",
+   "lane": "e",
+   "col": 2,
+   "type": "backend",
+   "label": "PR 4.3 helpers, castle, matching",
+   "width": 212,
+   "sublabel": "web/src/projects · 8 h",
+   "yOffset": 72
+  },
+  {
+   "id": "p63",
+   "lane": "e",
+   "col": 4,
+   "type": "database",
+   "label": "PR 6.3 projects 3–5",
+   "width": 212,
+   "sublabel": "10 projects · 8 h",
+   "yOffset": -144
+  },
+  {
+   "id": "p64",
+   "lane": "e",
+   "col": 4,
+   "type": "database",
+   "label": "PR 6.4 projects 6–8",
+   "width": 212,
+   "sublabel": "12 projects · 10 h",
+   "yOffset": 0
+  },
+  {
+   "id": "p65",
+   "lane": "e",
+   "col": 4,
+   "type": "database",
+   "label": "PR 6.5 projects 9–10",
+   "width": 212,
+   "sublabel": "8 projects · 8 h",
+   "yOffset": 144
+  },
+  {
+   "id": "p51",
+   "lane": "a",
+   "col": 3,
+   "type": "backend",
+   "label": "PR 5.1 storage",
+   "width": 212,
+   "sublabel": "web/src/store · 4 h",
+   "yOffset": -144
+  },
+  {
+   "id": "p52",
+   "lane": "a",
+   "col": 3,
+   "type": "backend",
+   "label": "PR 5.2 door, tiles, settings",
+   "width": 212,
+   "sublabel": "web/src/screens/grownups · 6 h",
+   "yOffset": 0
+  },
+  {
+   "id": "p53",
+   "lane": "a",
+   "col": 3,
+   "type": "backend",
+   "label": "PR 5.3 backup",
+   "width": 212,
+   "sublabel": "web/src/store · 3 h",
+   "yOffset": 144
+  },
+  {
+   "id": "p61",
+   "lane": "a",
+   "col": 4,
+   "type": "frontend",
+   "label": "PR 6.1 the 3D viewer",
+   "width": 212,
+   "sublabel": "web/src/three · 10 h",
+   "yOffset": -72
+  },
+  {
+   "id": "p62",
+   "lane": "a",
+   "col": 4,
+   "type": "frontend",
+   "label": "PR 6.2 thumbnails, Library",
+   "width": 212,
+   "sublabel": "web/src/screens · 6 h",
+   "yOffset": 72
+  },
+  {
+   "id": "p71",
+   "lane": "a",
+   "col": 5,
+   "type": "frontend",
+   "label": "PR 7.1 build mode",
+   "width": 212,
+   "sublabel": "web/src/screens · 10 h",
+   "yOffset": -144
+  },
+  {
+   "id": "p72",
+   "lane": "a",
+   "col": 5,
+   "type": "frontend",
+   "label": "PR 7.2 well done",
+   "width": 212,
+   "sublabel": "web/src/screens · 3 h",
+   "yOffset": 0
+  },
+  {
+   "id": "p81",
+   "lane": "a",
+   "col": 5,
+   "type": "cloud",
+   "label": "PR 8.1 go live",
+   "width": 212,
+   "sublabel": "Verification, Pages · 5 h",
+   "yOffset": 144
+  }
+ ],
+ "edges": [
+  {
+   "from": "p01",
+   "to": "p11"
+  },
+  {
+   "from": "p11",
+   "to": "g1"
+  },
+  {
+   "from": "g1",
+   "to": "p26",
+   "variant": "security"
+  },
+  {
+   "from": "p01",
+   "to": "p21"
+  },
+  {
+   "from": "p21",
+   "to": "p22"
+  },
+  {
+   "from": "p22",
+   "to": "p23"
+  },
+  {
+   "from": "p23",
+   "to": "p24"
+  },
+  {
+   "from": "p22",
+   "to": "p25"
+  },
+  {
+   "from": "p24",
+   "to": "p26"
+  },
+  {
+   "from": "p26",
+   "to": "p31"
+  },
+  {
+   "from": "p31",
+   "to": "g2"
+  },
+  {
+   "from": "g2",
+   "to": "p32",
+   "variant": "security"
+  },
+  {
+   "from": "g2",
+   "to": "p62",
+   "variant": "security"
+  },
+  {
+   "from": "p22",
+   "to": "p41"
+  },
+  {
+   "from": "p41",
+   "to": "p42"
+  },
+  {
+   "from": "p42",
+   "to": "p43"
+  },
+  {
+   "from": "p43",
+   "to": "p63"
+  },
+  {
+   "from": "p43",
+   "to": "p64"
+  },
+  {
+   "from": "p43",
+   "to": "p65"
+  },
+  {
+   "from": "p43",
+   "to": "p61"
+  },
+  {
+   "from": "p25",
+   "to": "p51"
+  },
+  {
+   "from": "p51",
+   "to": "p52"
+  },
+  {
+   "from": "p52",
+   "to": "p53"
+  },
+  {
+   "from": "p52",
+   "to": "p62"
+  },
+  {
+   "from": "p61",
+   "to": "p62"
+  },
+  {
+   "from": "p62",
+   "to": "p71"
+  },
+  {
+   "from": "p71",
+   "to": "p72"
+  },
+  {
+   "from": "p72",
+   "to": "p81"
+  },
+  {
+   "from": "p65",
+   "to": "p81"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "How it runs",
+   "items": [
+    "One builder session, one pull request at a time, merged when CI is green (D11)",
+    "Stops only at G1 (the brief) and G2 (the four screens) (D12)",
+    "Every project passes the checker before it ships"
+   ]
+  }
+ ]
+}

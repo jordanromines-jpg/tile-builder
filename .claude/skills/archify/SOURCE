@@ -1,0 +1,11 @@
+Source: https://github.com/tt-a1i/archify
+Tag: v3.0.1
+Commit: 2ab3cae7ac2c2a55d7386ca789d03c4fcd31816c
+Path: archify/ (the skill package)
+Licence: MIT (LICENSE); bundled notices in THIRD_PARTY_NOTICES.md
+Copied unchanged on 2 Oct 2026, without its test/ folder.
+
+Run it with ARCHIFY_UPDATE_CHECK_DISABLED=1 so it does not ask the network for a newer version.
+In cloud sessions its browser check needs Chromium:
+  ARCHIFY_CHROME=/opt/pw-browsers/chromium ARCHIFY_CHROME_NO_SANDBOX=1
+Update by re-copying from a newer reviewed release.

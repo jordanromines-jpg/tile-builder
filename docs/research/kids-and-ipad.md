@@ -2,6 +2,10 @@
 
 Research notes, 2 Oct 2026, found by web search. Each rule is followed by what the app does about it.
 
+Note: `kids-app-design.md` proposes larger targets than the 80 px below: 88 px for 3–5 and 104 px (about 2 cm) for the
+main kid buttons. The plan settles the sizes in the token file (PR 2.1). Since the plan's D18, there are no kid
+profiles; the age band belongs to each project and to the age picker on the Library.
+
 ## Kids
 
 | Finding | What we do |
