@@ -1,0 +1,19 @@
+node_modules/
+web/dist/
+web/test-results/
+web/playwright-report/
+web/public/thumbs/*
+!web/public/thumbs/manifest.json
+__pycache__/
+.pytest_cache/
+# Archify output is drawn on demand, never committed
+docs/maps/*.html
+docs/maps/*.json.bak
+docs/maps/*.finalize*.json
+docs/maps/*.browser-check.json
+docs/maps/*.delivery.json
+plans/roadmap/*.html
+plans/roadmap/*.finalize*.json
+plans/roadmap/*.browser-check.json
+plans/roadmap/*.delivery.json
+.archify/

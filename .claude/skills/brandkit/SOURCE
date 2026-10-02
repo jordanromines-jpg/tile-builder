@@ -1,0 +1,10 @@
+Source: https://github.com/Leonxlnx/taste-skill
+Commit: ce26fc25c0e5e8cab638f883de62d9a86ee5e45b (26 Sep 2026)
+Path: skills/brandkit
+Licence: MIT (LICENSE, copied from the repo root)
+Copied unchanged on 2 Oct 2026.
+
+Note for this project: the skill writes prompts for an image model, and its default style is dark,
+"premium" developer-tool branding. This session has no image model, and Tile Builder is a kids brand.
+Use it for its board structure (which panels a brand board needs and in what order); build the board
+as HTML from our own tokens.

@@ -1,0 +1,488 @@
+<title>Magnet Tile Castle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a 3D build stage on the left, the instruction sheet (steps + parts) on the right; stacks on phones. */
+:root {
+  --bg: #eef2f6;
+  --panel: #ffffff;
+  --ink: #18202c;
+  --muted: #5b6676;
+  --line: #d8dfe8;
+  --accent: #2a6fd6;
+  --accent-ink: #ffffff;
+  --stage: #cfe2f1;
+  --ground: #9fbcd4;
+  --chip: #f1f4f8;
+  --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141b; --panel: #171d26; --ink: #e8edf4; --muted: #95a1b2; --line: #273141;
+    --accent: #5b9bf0; --accent-ink: #0b1220; --stage: #1a2533; --ground: #223246; --chip: #1f2733;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141b; --panel: #171d26; --ink: #e8edf4; --muted: #95a1b2; --line: #273141;
+  --accent: #5b9bf0; --accent-ink: #0b1220; --stage: #1a2533; --ground: #223246; --chip: #1f2733;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+}
+.wrap { padding-inline: 16px; padding-block: 16px 24px; max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; min-height: 100%; box-sizing: border-box; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 4vw, 38px); letter-spacing: -0.02em; margin: 0; line-height: 1.05; text-wrap: balance; }
+.sub { color: var(--muted); margin: 0; font-size: 14px; }
+.sub b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; flex: 1; min-height: 0; }
+@media (max-width: 860px) { main { grid-template-columns: minmax(0, 1fr); } }
+
+.stage-col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.stage { position: relative; background: var(--stage); border-radius: 14px; overflow: hidden; min-height: 420px; flex: 1; }
+@media (max-width: 860px) { .stage { min-height: 0; flex: none; aspect-ratio: 1 / 1; max-height: 70vh; width: 100%; max-width: 100%; } }
+.stage canvas { display: block; width: 100%; height: 100%; position: absolute; inset: 0; touch-action: none; }
+.hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); pointer-events: none; }
+.now { position: absolute; left: 12px; top: 10px; right: 12px; display: flex; gap: 8px; align-items: baseline; pointer-events: none; }
+.now .num { font-family: var(--font-mono); font-size: 12px; background: var(--panel); color: var(--ink); padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+.now .what { font-family: var(--font-display); font-weight: 500; font-size: 17px; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: inherit; font-weight: 600; font-size: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 10px; padding: 8px 14px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); min-width: 128px; }
+.slider { flex: 1 1 180px; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.slider input { flex: 1; min-width: 0; accent-color: var(--accent); }
+.slider output { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+aside { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 18px; min-width: 0; overflow: auto; }
+@media (min-width: 861px) { aside { max-height: calc(100vh - 120px); } }
+h2 { font-family: var(--font-display); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px; color: var(--muted); }
+ol.steps { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+ol.steps li button { width: 100%; text-align: left; display: grid; grid-template-columns: 26px 1fr; gap: 2px 10px; border: 1px solid transparent; background: transparent; padding: 8px; border-radius: 10px; font-weight: 400; }
+ol.steps li button:hover { background: var(--chip); border-color: transparent; }
+ol.steps .n { grid-row: span 2; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+ol.steps .t { font-weight: 600; }
+ol.steps .d { font-size: 13px; color: var(--muted); }
+ol.steps li.done .n { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+ol.steps li.active button { background: var(--chip); }
+ol.steps li.active .n { border-color: var(--accent); color: var(--accent); }
+
+.parts { display: flex; flex-direction: column; gap: 12px; }
+.part { display: grid; grid-template-columns: 34px 1fr auto; gap: 4px 10px; align-items: center; }
+.part svg { grid-row: span 2; }
+.part .pn { font-weight: 600; }
+.part .pt { font-family: var(--font-mono); font-size: 14px; font-variant-numeric: tabular-nums; }
+.chips { grid-column: 2 / 4; display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; background: var(--chip); border-radius: 99px; padding: 1px 8px 1px 4px; font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.chip i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.total { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 10px; font-weight: 600; }
+.total span:last-child { font-family: var(--font-mono); }
+
+.toggle { display: flex; background: var(--chip); border-radius: 10px; padding: 3px; gap: 3px; }
+.toggle button { flex: 1; border: none; background: transparent; padding: 6px 8px; font-size: 13px; border-radius: 8px; }
+.toggle button[aria-pressed="true"] { background: var(--panel); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.note { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Magnet Tile Castle</h1>
+    <p class="sub">Built only from standard 3-inch tiles. About <b>38 cm</b> wide and <b id="height">32 cm</b> tall.</p>
+  </header>
+  <main>
+    <div class="stage-col">
+      <div class="stage" id="stage">
+        <div class="now"><span class="num" id="nowNum">Done</span><span class="what" id="nowWhat">Finished castle</span></div>
+        <div class="hint">Drag to orbit · scroll or pinch to zoom</div>
+      </div>
+      <div class="controls">
+        <button id="prev" type="button" aria-label="Previous step">◀ Step</button>
+        <button id="play" type="button" class="primary">Watch it build</button>
+        <button id="next" type="button" aria-label="Next step">Step ▶</button>
+        <div class="slider">
+          <input id="scrub" type="range" min="0" max="90" step="1" value="90" aria-label="Tiles placed">
+          <output id="scrubOut" for="scrub">90 / 90</output>
+        </div>
+      </div>
+    </div>
+    <aside>
+      <section>
+        <h2>Build steps</h2>
+        <ol class="steps" id="steps"></ol>
+      </section>
+      <section>
+        <h2>Spire style</h2>
+        <div class="toggle" role="group" aria-label="Spire style">
+          <button type="button" id="spTall" aria-pressed="true">Tall triangles</button>
+          <button type="button" id="spShort" aria-pressed="false">Equilateral</button>
+        </div>
+        <p class="note" id="spNote">Four tall isosceles triangles lean together over each tower to make a pointed spire.</p>
+      </section>
+      <section>
+        <h2>Parts list</h2>
+        <div class="parts" id="parts"></div>
+      </section>
+    </aside>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  // ---------- Tile catalog (1 unit = one 3-inch / 7.5 cm square edge) ----------
+  const ISO_H = 1.4;                 // face height of the tall isosceles triangle
+  const EQ_H = Math.sqrt(3) / 2;
+  const SHAPES = {
+    square: { label: 'Square', pts: [[0,0],[1,0],[1,1],[0,1]] },
+    equi:   { label: 'Equilateral triangle', pts: [[0,0],[1,0],[0.5,EQ_H]] },
+    iso:    { label: 'Tall isosceles triangle', pts: [[0,0],[1,0],[0.5,ISO_H]] }
+  };
+  const COLORS = {
+    red:    { label: 'Red',    hex: '#e5322e' },
+    orange: { label: 'Orange', hex: '#f5841f' },
+    yellow: { label: 'Yellow', hex: '#f4c51b' },
+    green:  { label: 'Green',  hex: '#39ad4a' },
+    blue:   { label: 'Blue',   hex: '#2a78dd' },
+    purple: { label: 'Purple', hex: '#8a4cc8' }
+  };
+  const TH = 0.075, RIM = 0.085;
+
+  // ---------- Castle plan ----------
+  // Footprint 5x5 cells. Front faces +z. Towers on the four corner cells, keep in the centre.
+  const STEPS = [
+    { t: 'Corner towers, ground floor', d: 'Four open boxes, one in each corner.' },
+    { t: 'Curtain walls', d: 'Three squares between each pair of towers. Leave the middle of the front open for the gate.' },
+    { t: 'Gatehouse', d: 'Three squares across the top of the front wall. The middle one bridges the gate.' },
+    { t: 'Towers, second floor', d: 'Stack another ring of squares on every tower.' },
+    { t: 'The keep', d: 'A three-storey tower in the courtyard.' },
+    { t: 'Battlements', d: 'Stand a triangle on top of every wall square.' },
+    { t: 'Spires', d: 'Lean four triangles together on top of each tower and the keep.' }
+  ];
+  const tiles = [];
+  const add = (step, shape, color, x, y, z, ry, rx, role) =>
+    tiles.push({ step, shape, color, x, y, z, ry: ry || 0, rx: rx || 0, role: role || '' });
+  const wallX = (s, sh, c, x, y, z) => add(s, sh, c, x, y, z, 0);            // runs along +x
+  const wallZ = (s, sh, c, x, y, z) => add(s, sh, c, x, y, z, -Math.PI / 2); // runs along +z
+  function ring(s, c, cx, cz, y) {
+    wallX(s, 'square', c, cx, y, cz + 1);
+    wallZ(s, 'square', c, cx + 1, y, cz);
+    wallX(s, 'square', c, cx, y, cz);
+    wallZ(s, 'square', c, cx, y, cz);
+  }
+  function roof(s, c, cx, cz, y) {
+    // rx is filled in at build time from the chosen spire shape
+    add(s, 'iso', c, cx, y, cz + 1, 0, 0, 'roof');
+    add(s, 'iso', c, cx + 1, y, cz + 1, Math.PI / 2, 0, 'roof');
+    add(s, 'iso', c, cx + 1, y, cz, Math.PI, 0, 'roof');
+    add(s, 'iso', c, cx, y, cz, -Math.PI / 2, 0, 'roof');
+  }
+  const TOWERS = [[0,4],[4,4],[4,0],[0,0]];
+  TOWERS.forEach(([cx, cz]) => ring(0, 'blue', cx, cz, 0));
+  // curtain walls
+  wallX(1, 'square', 'red', 1, 0, 5); wallX(1, 'square', 'red', 3, 0, 5);
+  for (let z = 1; z <= 3; z++) wallZ(1, 'square', 'red', 5, 0, z);
+  for (let x = 3; x >= 1; x--) wallX(1, 'square', 'red', x, 0, 0);
+  for (let z = 3; z >= 1; z--) wallZ(1, 'square', 'red', 0, 0, z);
+  // gatehouse
+  [1, 3, 2].forEach(x => wallX(2, 'square', 'orange', x, 1, 5));
+  TOWERS.forEach(([cx, cz]) => ring(3, 'purple', cx, cz, 1));
+  ['green', 'yellow', 'green'].forEach((c, y) => ring(4, c, 2, 2, y));
+  // battlements
+  [1, 2, 3].forEach(x => wallX(5, 'equi', 'yellow', x, 2, 5));
+  for (let z = 1; z <= 3; z++) wallZ(5, 'equi', 'yellow', 5, 1, z);
+  for (let x = 3; x >= 1; x--) wallX(5, 'equi', 'yellow', x, 1, 0);
+  for (let z = 3; z >= 1; z--) wallZ(5, 'equi', 'yellow', 0, 1, z);
+  TOWERS.forEach(([cx, cz]) => roof(6, 'red', cx, cz, 2));
+  roof(6, 'blue', 2, 2, 3);
+
+  const N = tiles.length;
+  const stepEnd = [];
+  tiles.forEach((t, i) => { stepEnd[t.step] = i + 1; });
+
+  let spire = 'tall';
+  const shapeOf = t => t.role === 'roof' ? (spire === 'tall' ? 'iso' : 'equi') : t.shape;
+  function roofTilt() {
+    const h = spire === 'tall' ? ISO_H : EQ_H;
+    return -Math.asin(0.5 / h); // lean inward until the four apexes meet
+  }
+
+  // ---------- Geometry ----------
+  function inset(pts, w) {
+    const n = pts.length, lines = [];
+    for (let i = 0; i < n; i++) {
+      const a = pts[i], b = pts[(i + 1) % n];
+      const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy);
+      const nx = -dy / len, ny = dx / len;
+      lines.push({ px: a[0] + nx * w, py: a[1] + ny * w, dx, dy });
+    }
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      const l1 = lines[(i - 1 + n) % n], l2 = lines[i];
+      const cr = l1.dx * l2.dy - l1.dy * l2.dx;
+      const t = ((l2.px - l1.px) * l2.dy - (l2.py - l1.py) * l2.dx) / cr;
+      out.push([l1.px + l1.dx * t, l1.py + l1.dy * t]);
+    }
+    return out;
+  }
+  const toShape = (pts, Cls) => { const s = new Cls(); s.moveTo(pts[0][0], pts[0][1]); pts.slice(1).forEach(p => s.lineTo(p[0], p[1])); s.closePath(); return s; };
+  const GEO = {};
+  Object.entries(SHAPES).forEach(([k, s]) => {
+    const outer = toShape(s.pts, THREE.Shape);
+    const innerPts = inset(s.pts, RIM);
+    outer.holes.push(toShape(innerPts.slice().reverse(), THREE.Path));
+    const frame = new THREE.ExtrudeGeometry(outer, { depth: TH, bevelEnabled: false });
+    frame.translate(0, 0, -TH / 2);
+    const glass = new THREE.ShapeGeometry(toShape(inset(s.pts, RIM * 0.5), THREE.Shape));
+    // a faint inner ring, like the moulded ridge on real tiles
+    const ridgePts = inset(s.pts, RIM * 2.2);
+    const ridge = new THREE.BufferGeometry().setFromPoints(ridgePts.concat([ridgePts[0]]).map(p => new THREE.Vector3(p[0], p[1], 0)));
+    GEO[k] = { frame, glass, ridge };
+  });
+
+  // ---------- Scene ----------
+  const stage = document.getElementById('stage');
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  stage.prepend(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
+  camera.position.set(8.5, 7.2, 10.5);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 1.4, 0);
+  controls.enableDamping = true;
+  controls.minDistance = 6; controls.maxDistance = 26;
+  controls.maxPolarAngle = Math.PI * 0.49;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  controls.autoRotate = !reduced;
+  controls.autoRotateSpeed = 0.6;
+  controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 0.75));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.75);
+  sun.position.set(6, 12, 7);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -7, right: 7, top: 7, bottom: -7, near: 1, far: 30 });
+  sun.shadow.bias = -0.0008;
+  scene.add(sun);
+
+  const groundMat = new THREE.MeshStandardMaterial({ roughness: 1 });
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(8, 64), groundMat);
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  const castle = new THREE.Group();
+  castle.position.set(-2.5, 0, -2.5);
+  scene.add(castle);
+
+  function applyTheme() {
+    const cs = getComputedStyle(document.documentElement);
+    scene.background = new THREE.Color(cs.getPropertyValue('--stage').trim() || '#cfe2f1');
+    groundMat.color.set(cs.getPropertyValue('--ground').trim() || '#9fbcd4');
+  }
+  applyTheme();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+  new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  // ---------- Tile meshes ----------
+  let rand = mulberry(7);
+  function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  tiles.forEach(t => { t.a = 1; });
+  function buildMeshes() {
+    while (castle.children.length) {
+      const g = castle.children.pop();
+      g.traverse(o => { if (o.material) o.material.dispose(); });
+    }
+    rand = mulberry(7);
+    const tilt = roofTilt();
+    tiles.forEach(t => {
+      const sh = shapeOf(t), geo = GEO[sh], col = new THREE.Color(COLORS[t.color].hex);
+      const g = new THREE.Group();
+      const frameMat = new THREE.MeshStandardMaterial({ color: col, roughness: 0.35, transparent: true, opacity: 1 });
+      const glassMat = new THREE.MeshStandardMaterial({ color: col, roughness: 0.1, transparent: true, opacity: 0.42, side: THREE.DoubleSide, depthWrite: false });
+      const ridgeMat = new THREE.LineBasicMaterial({ color: col.clone().multiplyScalar(0.75), transparent: true, opacity: 0.8 });
+      const f = new THREE.Mesh(geo.frame, frameMat); f.castShadow = true; f.receiveShadow = true;
+      const gl = new THREE.Mesh(geo.glass, glassMat); gl.castShadow = true;
+      const r1 = new THREE.Line(geo.ridge, ridgeMat); r1.position.z = 0.012;
+      const r2 = new THREE.Line(geo.ridge, ridgeMat); r2.position.z = -0.012;
+      g.add(f, gl, r1, r2);
+      g.userData = { mats: [frameMat, glassMat, ridgeMat], base: [1, 0.42, 0.8] };
+      const rx = t.role === 'roof' ? tilt : t.rx;
+      t.qT = new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, t.ry, 0, 'YXZ'));
+      t.pT = new THREE.Vector3(t.x, t.y, t.z);
+      t.qS = t.qT.clone().multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler((rand() - .5) * 1.2, (rand() - .5) * 1.6, (rand() - .5) * 0.8)));
+      t.pS = t.pT.clone().add(new THREE.Vector3((rand() - .5) * 2.2, 3.6 + rand() * 1.4, (rand() - .5) * 2.2));
+      t.g = g;
+      castle.add(g);
+    });
+    applyTiles();
+  }
+  const easeOutBack = k => { const c1 = 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+  function applyTiles() {
+    tiles.forEach(t => {
+      const g = t.g, k = t.a;
+      g.visible = k > 0.001;
+      if (!g.visible) return;
+      const e = easeOutBack(k);
+      g.position.lerpVectors(t.pS, t.pT, e);
+      g.quaternion.copy(t.qS).slerp(t.qT, Math.min(1, e));
+      const fade = Math.min(1, k * 3);
+      g.userData.mats.forEach((m, i) => { m.opacity = g.userData.base[i] * fade; });
+    });
+  }
+
+  // ---------- Playback ----------
+  let cTarget = N, cShown = N, speed = 10, playing = false;
+  const DUR = reduced ? 0.15 : 0.55;
+  const playBtn = document.getElementById('play');
+  const scrub = document.getElementById('scrub');
+  const scrubOut = document.getElementById('scrubOut');
+  scrub.max = N;
+
+  function setTarget(c, spd) { cTarget = Math.max(0, Math.min(N, c)); speed = spd; }
+  function stop() { playing = false; cTarget = Math.ceil(cShown); updatePlayLabel(); }
+  function updatePlayLabel() {
+    playBtn.textContent = playing ? 'Pause' : (Math.round(cShown) >= N ? 'Watch it build' : 'Resume');
+  }
+  playBtn.addEventListener('click', () => {
+    if (playing) { stop(); return; }
+    if (Math.round(cShown) >= N) { cShown = 0; tiles.forEach(t => { t.a = 0; }); }
+    playing = true; setTarget(N, reduced ? 40 : 5.5);
+    controls.autoRotate = !reduced;
+    updatePlayLabel();
+  });
+  document.getElementById('next').addEventListener('click', () => {
+    playing = false;
+    const cur = Math.round(cTarget);
+    const nxt = stepEnd.find(e => e > cur);
+    setTarget(nxt === undefined ? N : nxt, 14); updatePlayLabel();
+  });
+  document.getElementById('prev').addEventListener('click', () => {
+    playing = false;
+    const cur = Math.round(cTarget);
+    const prev = [0].concat(stepEnd).filter(e => e < cur).pop();
+    setTarget(prev === undefined ? 0 : prev, 30); updatePlayLabel();
+  });
+  scrub.addEventListener('input', () => { playing = false; setTarget(+scrub.value, 40); updatePlayLabel(); });
+
+  // ---------- Side panel ----------
+  const stepsEl = document.getElementById('steps');
+  STEPS.forEach((s, i) => {
+    const start = i === 0 ? 0 : stepEnd[i - 1];
+    const counts = {};
+    tiles.slice(start, stepEnd[i]).forEach(t => { const k = t.role === 'roof' ? 'roof' : t.shape; counts[k] = (counts[k] || 0) + 1; });
+    const li = document.createElement('li');
+    li.innerHTML = `<button type="button"><span class="n">${i + 1}</span><span class="t">${s.t}</span><span class="d">${s.d} <span class="cnt" data-step="${i}"></span></span></button>`;
+    li.querySelector('button').addEventListener('click', () => { playing = false; setTarget(stepEnd[i], Math.round(cTarget) > stepEnd[i] ? 30 : 14); updatePlayLabel(); });
+    stepsEl.appendChild(li);
+  });
+  function stepCountText(i) {
+    const start = i === 0 ? 0 : stepEnd[i - 1];
+    const c = {};
+    tiles.slice(start, stepEnd[i]).forEach(t => { const sh = shapeOf(t); c[sh] = (c[sh] || 0) + 1; });
+    const names = { square: ['square', 'squares'], equi: ['triangle', 'triangles'], iso: ['tall triangle', 'tall triangles'] };
+    return '(' + Object.entries(c).map(([k, n]) => `${n} ${names[k][n === 1 ? 0 : 1]}`).join(', ') + ')';
+  }
+
+  function shapeIcon(sh, hex) {
+    const pts = SHAPES[sh].pts, h = sh === 'iso' ? ISO_H : sh === 'equi' ? EQ_H : 1;
+    const sc = 26 / Math.max(1, h), ox = (34 - sc) / 2, oy = 30;
+    const p = pts.map(([x, y]) => `${(ox + x * sc).toFixed(1)},${(oy - y * sc).toFixed(1)}`).join(' ');
+    return `<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><polygon points="${p}" fill="${hex}" fill-opacity="0.45" stroke="${hex}" stroke-width="3" stroke-linejoin="round"/></svg>`;
+  }
+  function renderParts() {
+    const by = {};
+    tiles.forEach(t => { const sh = shapeOf(t); (by[sh] = by[sh] || {}); by[sh][t.color] = (by[sh][t.color] || 0) + 1; });
+    const order = ['square', 'equi', 'iso'].filter(k => by[k]);
+    const html = order.map(sh => {
+      const total = Object.values(by[sh]).reduce((a, b) => a + b, 0);
+      const top = Object.entries(by[sh]).sort((a, b) => b[1] - a[1])[0][0];
+      const chips = Object.keys(COLORS).filter(c => by[sh][c]).map(c => `<span class="chip"><i style="background:${COLORS[c].hex}"></i>${by[sh][c]} ${COLORS[c].label.toLowerCase()}</span>`).join('');
+      return `<div class="part">${shapeIcon(sh, COLORS[top].hex)}<span class="pn">${SHAPES[sh].label}</span><span class="pt">×${total}</span><div class="chips">${chips}</div></div>`;
+    }).join('');
+    document.getElementById('parts').innerHTML = html + `<div class="total"><span>Total tiles</span><span>${N}</span></div><p class="note">Colours are only a suggestion. Any colour of the same shape works.</p>`;
+    document.querySelectorAll('.cnt').forEach(el => { el.textContent = stepCountText(+el.dataset.step); });
+    const roofH = spire === 'tall' ? Math.sqrt(ISO_H * ISO_H - 0.25) : Math.sqrt(EQ_H * EQ_H - 0.25);
+    document.getElementById('height').textContent = Math.round((3 + roofH) * 7.5) + ' cm';
+  }
+
+  const spTall = document.getElementById('spTall'), spShort = document.getElementById('spShort'), spNote = document.getElementById('spNote');
+  function setSpire(v) {
+    spire = v;
+    spTall.setAttribute('aria-pressed', v === 'tall'); spShort.setAttribute('aria-pressed', v !== 'tall');
+    spNote.textContent = v === 'tall'
+      ? 'Four tall isosceles triangles lean together over each tower to make a pointed spire.'
+      : 'Short on tall triangles? Four equilateral triangles also close neatly over a square, making a lower, squatter roof.';
+    buildMeshes(); renderParts();
+  }
+  spTall.addEventListener('click', () => setSpire('tall'));
+  spShort.addEventListener('click', () => setSpire('short'));
+
+  const nowNum = document.getElementById('nowNum'), nowWhat = document.getElementById('nowWhat');
+  const stepItems = stepsEl.querySelectorAll('li');
+  let lastShown = -1;
+  function updateUI() {
+    const c = Math.round(cShown);
+    if (c === lastShown) return;
+    lastShown = c;
+    scrub.value = c; scrubOut.textContent = `${c} / ${N}`;
+    let cur = c === 0 ? -1 : tiles[c - 1].step;
+    if (c > 0 && c === stepEnd[cur] && c < N) { /* step just finished */ }
+    stepItems.forEach((li, i) => {
+      li.classList.toggle('done', c >= stepEnd[i]);
+      li.classList.toggle('active', i === cur && c < stepEnd[i] || (i === cur && c === stepEnd[i] && c < N));
+    });
+    if (c === 0) { nowNum.textContent = 'Start'; nowWhat.textContent = 'Clear the table'; }
+    else if (c >= N) { nowNum.textContent = 'Done'; nowWhat.textContent = 'Finished castle'; }
+    else { nowNum.textContent = `Step ${cur + 1} of ${STEPS.length}`; nowWhat.textContent = STEPS[cur].t; }
+    if (!playing) updatePlayLabel();
+  }
+
+  // ---------- Loop ----------
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.position.setLength(Math.max(14, 14 * (1.1 / Math.min(camera.aspect, 1.1))) );
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage);
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (cShown < cTarget) cShown = Math.min(cTarget, cShown + speed * dt);
+    else if (cShown > cTarget) cShown = Math.max(cTarget, cShown - speed * dt);
+    if (playing && cShown >= N) { playing = false; updatePlayLabel(); }
+    tiles.forEach((t, i) => {
+      const want = i < cShown ? 1 : 0;
+      if (t.a < want) t.a = Math.min(1, t.a + dt / DUR);
+      else if (t.a > want) t.a = Math.max(0, t.a - dt / (DUR * 0.6));
+    });
+    applyTiles();
+    updateUI();
+    controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  buildMeshes(); renderParts(); resize(); updateUI();
+  requestAnimationFrame(frame);
+})();
+</script>

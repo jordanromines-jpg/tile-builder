@@ -1,0 +1,579 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Tile Builder: the features",
+  "subtitle": "The simple app: pick a project and build it. A child taps; a grown-up opens the door; nothing leaves the iPad.",
+  "output": "features.html",
+  "quality_profile": "standard",
+  "visual_preset": "editorial",
+  "locale": "en",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "frontend": {
+     "label": "what a child sees"
+    },
+    "messagebus": {
+     "label": "the iPad's own voice"
+    },
+    "backend": {
+     "label": "the tile engine"
+    },
+    "database": {
+     "label": "kept on this iPad"
+    },
+    "security": {
+     "label": "behind the grown-ups door"
+    },
+    "cloud": {
+     "label": "built and checked on GitHub"
+    }
+   }
+  }
+ },
+ "components": [
+  {
+   "id": "library",
+   "type": "frontend",
+   "label": "Library",
+   "sublabel": "age picker · shelves · badges",
+   "pos": [
+    60,
+    80
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "build",
+   "type": "frontend",
+   "label": "Build mode",
+   "sublabel": "one step, one glance",
+   "pos": [
+    520,
+    80
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "done",
+   "type": "frontend",
+   "label": "Well done!",
+   "sublabel": "then back to the shelf",
+   "pos": [
+    980,
+    80
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "voice",
+   "type": "messagebus",
+   "label": "Read-aloud voice",
+   "sublabel": "every step, on tap",
+   "pos": [
+    290,
+    250
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "viewer",
+   "type": "frontend",
+   "label": "3D model",
+   "sublabel": "turn buttons by age",
+   "pos": [
+    520,
+    250
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "fell",
+   "type": "frontend",
+   "label": "It fell down",
+   "sublabel": "back a step · redo layer",
+   "pos": [
+    750,
+    250
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "projects",
+   "type": "backend",
+   "label": "30 projects",
+   "sublabel": "10 · 12 · 8 by age",
+   "pos": [
+    60,
+    420
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "checker",
+   "type": "backend",
+   "label": "The checker",
+   "sublabel": "edges meet · it stands",
+   "pos": [
+    290,
+    420
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "ages",
+   "type": "backend",
+   "label": "Age rules",
+   "sublabel": "tiles per step · turning",
+   "pos": [
+    520,
+    420
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "match",
+   "type": "backend",
+   "label": "Matching",
+   "sublabel": "can build · need 2 more",
+   "pos": [
+    750,
+    420
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "swaps",
+   "type": "backend",
+   "label": "Swaps",
+   "sublabel": "short triangles instead",
+   "pos": [
+    980,
+    420
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "catalog",
+   "type": "backend",
+   "label": "Tile catalog",
+   "sublabel": "4 brands · tall triangle",
+   "pos": [
+    1210,
+    420
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "s-counts",
+   "type": "database",
+   "label": "Tile counts",
+   "sublabel": "by shape, colour optional",
+   "pos": [
+    290,
+    590
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "s-settings",
+   "type": "database",
+   "label": "Age and settings",
+   "sublabel": "voice · sound · theme",
+   "pos": [
+    520,
+    590
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "s-step",
+   "type": "database",
+   "label": "Saved step",
+   "sublabel": "one per project",
+   "pos": [
+    750,
+    590
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "s-backup",
+   "type": "database",
+   "label": "Backup file",
+   "sublabel": "save · load · move iPads",
+   "pos": [
+    980,
+    590
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "gate",
+   "type": "security",
+   "label": "Grown-ups door",
+   "sublabel": "hold, then a sum in words",
+   "pos": [
+    60,
+    760
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "p-tiles",
+   "type": "security",
+   "label": "Tiles",
+   "sublabel": "start from a set · − and +",
+   "pos": [
+    290,
+    760
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "p-settings",
+   "type": "security",
+   "label": "Settings",
+   "sublabel": "voice · sound · storage",
+   "pos": [
+    520,
+    760
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "p-backup",
+   "type": "security",
+   "label": "Backup",
+   "sublabel": "save and restore",
+   "pos": [
+    980,
+    760
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "firstrun",
+   "type": "security",
+   "label": "First-run cards",
+   "sublabel": "Home Screen · stand it up",
+   "pos": [
+    1210,
+    760
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "ci",
+   "type": "cloud",
+   "label": "Checks on every change",
+   "sublabel": "tests · checker · axe",
+   "pos": [
+    290,
+    930
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "thumbs",
+   "type": "cloud",
+   "label": "Project pictures",
+   "sublabel": "drawn from the data",
+   "pos": [
+    520,
+    930
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "pages",
+   "type": "cloud",
+   "label": "GitHub Pages",
+   "sublabel": "the live link",
+   "pos": [
+    750,
+    930
+   ],
+   "size": [
+    170,
+    62
+   ]
+  },
+  {
+   "id": "pwa",
+   "type": "cloud",
+   "label": "Works offline",
+   "sublabel": "Home Screen app",
+   "pos": [
+    980,
+    930
+   ],
+   "size": [
+    170,
+    62
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Kid side: pick a project, build it",
+   "wraps": [
+    "library",
+    "build",
+    "done",
+    "voice",
+    "viewer",
+    "fell"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "The tile engine",
+   "wraps": [
+    "projects",
+    "checker",
+    "ages",
+    "match",
+    "swaps",
+    "catalog"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "On this iPad only",
+   "wraps": [
+    "s-counts",
+    "s-settings",
+    "s-step",
+    "s-backup"
+   ]
+  },
+  {
+   "kind": "security-group",
+   "label": "Grown-ups side",
+   "wraps": [
+    "gate",
+    "p-tiles",
+    "p-settings",
+    "p-backup",
+    "firstrun"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "On GitHub, before it reaches the iPad",
+   "wraps": [
+    "ci",
+    "thumbs",
+    "pages",
+    "pwa"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "from": "library",
+   "to": "build"
+  },
+  {
+   "from": "build",
+   "to": "done"
+  },
+  {
+   "from": "done",
+   "to": "library",
+   "variant": "dashed"
+  },
+  {
+   "from": "build",
+   "to": "viewer"
+  },
+  {
+   "from": "build",
+   "to": "voice",
+   "variant": "dashed"
+  },
+  {
+   "from": "build",
+   "to": "fell",
+   "variant": "dashed"
+  },
+  {
+   "from": "library",
+   "to": "match",
+   "variant": "emphasis"
+  },
+  {
+   "from": "match",
+   "to": "swaps"
+  },
+  {
+   "from": "match",
+   "to": "catalog"
+  },
+  {
+   "from": "checker",
+   "to": "projects"
+  },
+  {
+   "from": "checker",
+   "to": "ages"
+  },
+  {
+   "from": "match",
+   "to": "s-counts",
+   "variant": "dashed"
+  },
+  {
+   "from": "library",
+   "to": "s-settings",
+   "variant": "dashed"
+  },
+  {
+   "from": "build",
+   "to": "s-step",
+   "variant": "dashed"
+  },
+  {
+   "from": "gate",
+   "to": "p-tiles",
+   "variant": "security"
+  },
+  {
+   "from": "p-tiles",
+   "to": "s-counts"
+  },
+  {
+   "from": "p-settings",
+   "to": "s-settings"
+  },
+  {
+   "from": "p-backup",
+   "to": "s-backup"
+  },
+  {
+   "from": "ci",
+   "to": "checker"
+  },
+  {
+   "from": "thumbs",
+   "to": "library",
+   "variant": "dashed"
+  },
+  {
+   "from": "pages",
+   "to": "pwa"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Kid side",
+   "items": [
+    "Two taps: open the app, tap a project, you're on step 1",
+    "Pictures and voice first: a 3-year-old never has to read",
+    "Near misses shown as tiles (\"Need 2 more ▲\"), never \"buy more\"",
+    "1 / up to 3 / up to 4 tiles a step by age; the model stays still for 3–5"
+   ]
+  },
+  {
+   "dot": "emerald",
+   "title": "The tile engine",
+   "items": [
+    "Every project is hand-written and passes the checker under every brand's tall triangle",
+    "Edges meet, no overlaps, grounded, layer by layer, every in-between state stands",
+    "Matching counts by shape; colour is a preference, never a requirement"
+   ]
+  },
+  {
+   "dot": "violet",
+   "title": "Grown-ups side",
+   "items": [
+    "Start from one of 5 set presets, then adjust",
+    "Voice, sound and storage settings",
+    "A backup file to move iPads or recover"
+   ]
+  },
+  {
+   "dot": "slate",
+   "title": "Not in the app (D18)",
+   "items": [
+    "No profiles or avatars",
+    "No project pages: a tap goes straight to building",
+    "No camera, photos or stickers",
+    "No account, upload, ads, purchases, streaks or scores"
+   ]
+  }
+ ]
+}
