@@ -1,0 +1,307 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Tile Steps: the tile engine",
+  "subtitle": "How a hand-written project is proved buildable, and matched to a family's tiles.",
+  "output": "engine.html",
+  "quality_profile": "standard",
+  "visual_preset": "editorial",
+  "locale": "en",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "backend": {
+     "label": "engine code"
+    },
+    "frontend": {
+     "label": "projects and what uses them"
+    },
+    "database": {
+     "label": "data"
+    },
+    "security": {
+     "label": "the checker"
+    },
+    "cloud": {
+     "label": "runs in CI"
+    }
+   }
+  }
+ },
+ "components": [
+  {
+   "id": "catalog",
+   "type": "backend",
+   "label": "Catalog",
+   "sublabel": "9 shapes · 6 colours · 4 brands",
+   "pos": [
+    60,
+    80
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "sets",
+   "type": "database",
+   "label": "Set presets",
+   "sublabel": "5 sets from tiles.md",
+   "pos": [
+    60,
+    250
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "schema",
+   "type": "backend",
+   "label": "Schema (zod)",
+   "sublabel": "project · inventory · backup",
+   "pos": [
+    300,
+    80
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "helpers",
+   "type": "frontend",
+   "label": "Builder helpers",
+   "sublabel": "ring · roof · flat · step",
+   "pos": [
+    300,
+    250
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "projects",
+   "type": "frontend",
+   "label": "Projects",
+   "sublabel": "written by hand (D3)",
+   "pos": [
+    540,
+    250
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "geometry",
+   "type": "backend",
+   "label": "Geometry",
+   "sublabel": "world polygons · edges meet · overlap",
+   "pos": [
+    540,
+    80
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "checker",
+   "type": "security",
+   "label": "Checker",
+   "sublabel": "R1–R9, every step, every leg",
+   "pos": [
+    780,
+    80
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "ages",
+   "type": "backend",
+   "label": "Age rules",
+   "sublabel": "1 / 3 / 4 tiles a step",
+   "pos": [
+    780,
+    250
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "match",
+   "type": "backend",
+   "label": "Matching",
+   "sublabel": "count by shape; colour ignored",
+   "pos": [
+    1020,
+    80
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "swaps",
+   "type": "backend",
+   "label": "Swaps",
+   "sublabel": "low roof · corner triangles · …",
+   "pos": [
+    1020,
+    250
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "script",
+   "type": "cloud",
+   "label": "check:projects",
+   "sublabel": "CI fails on any problem",
+   "pos": [
+    780,
+    420
+   ],
+   "size": [
+    190,
+    62
+   ]
+  },
+  {
+   "id": "library",
+   "type": "frontend",
+   "label": "Library badges",
+   "sublabel": "can · swap · need 2 more",
+   "pos": [
+    1020,
+    420
+   ],
+   "size": [
+    190,
+    62
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Shapes and data",
+   "wraps": [
+    "catalog",
+    "sets",
+    "schema"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Proving a project",
+   "wraps": [
+    "geometry",
+    "checker",
+    "ages",
+    "script"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Matching a family's tiles",
+   "wraps": [
+    "match",
+    "swaps",
+    "library"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "from": "catalog",
+   "to": "schema"
+  },
+  {
+   "from": "catalog",
+   "to": "geometry"
+  },
+  {
+   "from": "sets",
+   "to": "match",
+   "variant": "dashed"
+  },
+  {
+   "from": "helpers",
+   "to": "projects"
+  },
+  {
+   "from": "schema",
+   "to": "projects",
+   "variant": "dashed"
+  },
+  {
+   "from": "projects",
+   "to": "checker",
+   "variant": "emphasis"
+  },
+  {
+   "from": "geometry",
+   "to": "checker"
+  },
+  {
+   "from": "ages",
+   "to": "checker"
+  },
+  {
+   "from": "checker",
+   "to": "script"
+  },
+  {
+   "from": "projects",
+   "to": "match"
+  },
+  {
+   "from": "match",
+   "to": "swaps"
+  },
+  {
+   "from": "match",
+   "to": "library",
+   "variant": "emphasis"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "The rules",
+   "items": [
+    "R1 edges meet, or on the table · R2 no overlap, nothing passes through",
+    "R3 joined to the table · R4 steps in order, each next to what is built",
+    "R5 one layer at a time · R6 everything stands after every step",
+    "R7 whole pyramids, one step · R8 every brand's tall triangle · R9 fits the age"
+   ]
+  },
+  {
+   "dot": "cyan",
+   "title": "Matching",
+   "items": [
+    "Counts by shape; colour is a preference",
+    "Swaps in order: the project's own, low roofs, corner triangles, two squares for a rectangle, four for a big square",
+    "What is still short is drawn as tiles: \"Need 2 more\""
+   ]
+  }
+ ]
+}
