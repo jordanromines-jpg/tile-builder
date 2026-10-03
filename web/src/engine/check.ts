@@ -19,6 +19,7 @@ import {
   type Orientation,
   type V3,
 } from "./geometry";
+import { holdsProblems } from "./hold";
 import type { Problem } from "./problems";
 import type { Project } from "./types";
 
@@ -33,6 +34,7 @@ export function legsToCheck(): number[] {
 
 export interface Analysis {
   polys: V3[][];
+  normals: V3[];
   orient: Orientation[];
   onTable: boolean[];
   layer: number[];
@@ -70,6 +72,7 @@ export function analyse(project: Project, leg: number): Analysis {
   }
   return {
     polys,
+    normals,
     orient: normals.map(orientationOf),
     onTable: polys.map(isOnTable),
     layer: polys.map(layerOf),
@@ -134,7 +137,8 @@ export function pyramids(project: Project, a: Analysis): number[][] {
   const groups = new Map<string, number[]>();
   project.placed.forEach((_, i) => {
     if (a.orient[i] !== "tilted") return;
-    const k = apexOf(a.polys[i]).map((v) => v.toFixed(2)).join(",");
+    // -0.00 and 0.00 are the same place
+    const k = apexOf(a.polys[i]).map((v) => (Math.abs(v) < 0.005 ? 0 : v).toFixed(2)).join(",");
     groups.set(k, [...(groups.get(k) ?? []), i]);
   });
   return [...groups.values()];
@@ -189,6 +193,9 @@ function checkWithLeg(project: Project, leg: number): Problem[] {
     else if (shapes.size > 1) out.push({ rule: "R7", tile: grp[0], message: "a pyramid's triangles must all be the same kind" });
     if (new Set(grp.map((i) => stepOf.get(i))).size > 1) out.push({ rule: "R7", tile: grp[0], message: "a pyramid must be finished in one step, or it falls in" });
   }
+
+  // R10: it holds up like real tiles
+  out.push(...holdsProblems(project, a));
 
   return out.map((p) => ({ ...p, leg }));
 }

@@ -39,14 +39,6 @@ KEEP.forEach((c, y) => {
   b.ring(c, 2, 2, y);
   b.step(y === 0 ? "In the middle of the courtyard, start the keep: a ring of four squares." : y === 1 ? "Add a second ring to the keep." : "A third ring makes the keep the tallest tower.");
 });
-for (const x of [1, 2, 3]) b.wallX("tri-equilateral", "yellow", x, 2, 5);
-b.step("Battlements: stand an equilateral triangle on top of each gatehouse square.");
-for (let z = 1; z <= 3; z++) b.wallZ("tri-equilateral", "yellow", 5, 1, z);
-b.step("Three more triangles stand along the right wall.");
-for (let x = 3; x >= 1; x--) b.wallX("tri-equilateral", "yellow", x, 1, 0);
-b.step("Three triangles along the back wall.");
-for (let z = 3; z >= 1; z--) b.wallZ("tri-equilateral", "yellow", 0, 1, z);
-b.step("And three along the left wall. Count them: twelve battlements.");
 for (const [cx, cz, where] of TOWERS) {
   b.roof("red", cx, cz, 2);
   b.step(`Spire on the ${where} tower: lean four tall triangles in until their vertices meet. Use four of the same kind.`);

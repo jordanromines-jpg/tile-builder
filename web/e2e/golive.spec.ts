@@ -36,7 +36,7 @@ test("V7: tiles, settings and a saved step survive a reload; a backup restores t
   for (let i = 0; i < 5; i++) await page.getByRole("button", { name: "Next", exact: true }).click();
   await savedStep(page, "castle", 5);
   await page.reload();
-  await expect(page.getByRole("list", { name: "Step 6 of 25" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Step 6 of 21" })).toBeVisible();
 
   await page.goto("#/grownups");
   await openGate(page);
@@ -58,7 +58,7 @@ test("V7: tiles, settings and a saved step survive a reload; a backup restores t
   await page.getByRole("navigation").getByRole("link", { name: "Settings" }).click();
   await expect(page.getByRole("switch", { name: "Read steps aloud" })).toHaveAttribute("aria-checked", "true");
   await page.goto("#/build/castle");
-  await expect(page.getByRole("list", { name: "Step 6 of 25" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Step 6 of 21" })).toBeVisible();
 });
 
 test("V9: from a cold start with tiles and an age, one tap on a card shows step 1", async ({ page, context }) => {

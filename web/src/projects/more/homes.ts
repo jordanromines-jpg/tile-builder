@@ -66,7 +66,6 @@ function overdueLibrary(): Project {
   const s = new Site();
   const lib = s.block("the library", 0, 0, 5, 3, 2, ["blue", "blue"], { door: true, floors: "yellow", roof: "purple" });
   s.roofs("the reading domes", [[1, 1], [3, 1]], lib.top, "low", "green");
-  s.standing("the bookends", "x", 0, 5, 3, lib.top, "tri-equilateral", "red", "bookends");
   return s.build({ id: "overdue-library", title: "The Library of Overdue Books", theme: "homes", age: "d", done: "You built the Library of Overdue Books! Some of these books are 300 years late. Shh." });
 }
 
@@ -100,7 +99,7 @@ function sockScraper(): Project {
   const s = new Site();
   const a = s.block("the sock drawer", 0, 0, 3, 3, 2, ["red", "orange"], { door: true, roof: "yellow" });
   const b = s.block("the second drawer", 0, 0, 3, 3, 2, ["green", "blue"], { base: a.top, roof: "purple" });
-  const c = s.block("the top drawer", 0, 0, 2, 2, 2, ["purple", "red"], { base: b.top, roof: "yellow" });
+  const c = s.block("the top drawer", 0, 0, 2, 2, 1, ["purple"], { base: b.top, roof: "yellow" });
   s.roofs("the knobs", [[2, 2], [2, 0]], b.top, "low", "orange");
   s.roofs("the very top", [[0, 0]], c.top, "tall", "green");
   return s.build({ id: "sock-drawer-scraper", title: "The Sock Drawer Skyscraper", theme: "homes", age: "d", done: "You built the Sock Drawer Skyscraper! Three drawers, one hundred socks, zero pairs." });
@@ -133,7 +132,6 @@ function bigHouse(): Project {
   s.roofs("the attic roof", [[1, 1], [3, 2]], up.top, "tall", "red");
   s.roofs("the attic roof", [[2, 1], [2, 2]], up.top, "low", "green");
   s.roofs("the corner roofs", [[0, 0], [4, 0], [0, 3], [4, 3]], h.top, "tall", "blue");
-  s.standing("the front gutter", "x", 1, 4, 4, h.top, "tri-equilateral", "yellow", "gutter spouts");
   return s.build({ id: "enormous-house", title: "The Enormous House of Mild Chaos", theme: "homes", age: "d", done: "You built the Enormous House! Over a hundred tiles, and someone still can't find their shoes." });
 }
 
@@ -158,17 +156,15 @@ function bakery(): Project {
 function lighthouseHotel(): Project {
   const s = new Site();
   const hotel = s.block("the hotel", 0, 0, 4, 3, 3, ["yellow", "orange", "yellow"], { door: true, roof: "red" });
-  s.tower("the lighthouse", 0, 0, 4, ["red", "yellow"], { base: hotel.top, size: 2, cap: "lid", capColour: "orange" });
-  s.roofs("the lamp", [[0, 0]], hotel.top + 4, "tall", "red");
+  s.tower("the lighthouse", 0, 0, 3, ["red", "yellow"], { base: hotel.top, size: 2, cap: "lid", capColour: "orange" });
+  s.roofs("the lamp", [[0, 0]], hotel.top + 3, "tall", "red");
   s.roofs("the beach umbrellas", [[3, 0], [2, 2], [3, 2]], hotel.top, "low", "blue");
   return s.build({ id: "lighthouse-hotel", title: "The Lighthouse Hotel for Lost Ducks", theme: "homes", age: "d", done: "You built the Lighthouse Hotel! Every lost duck finds its way here. Quack quack, check-in please." });
 }
 
 function cardboardCastle(): Project {
   const s = new Site();
-  const box = s.block("the big box", 0, 0, 4, 4, 2, ["orange", "orange"], { door: true, roof: false });
-  s.standing("the flaps", "x", 0, 4, 4, box.top, "tri-isosceles-tall", "yellow", "flaps");
-  s.standing("the back flaps", "x", 0, 4, 0, box.top, "tri-equilateral", "orange", "flaps");
+  s.block("the big box", 0, 0, 4, 4, 2, ["orange", "orange"], { door: true, roof: false });
   s.tower("the cardboard tube", 5, 0, 4, ["yellow", "orange"], { cap: "low", capColour: "red" });
   return s.build({ id: "box-house", title: "The Cardboard Box House", theme: "homes", age: "c", done: "You built the Cardboard Box House! Better than the toy that came in it." });
 }

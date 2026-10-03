@@ -19,6 +19,10 @@ function hamsterKennel(): Project {
   const b = new Builder();
   b.room("blue", 0, 0, 3, 2, 0, [0]);
   b.chunk(3, ["Leave a gap at the front left for the door. Stand two squares next to it, then one round the corner.", "Three more along the side and the back.", "Close the walls."]);
+  b.wallZ("square", "blue", 1, 0, 1);
+  b.wallZ("square", "blue", 2, 0, 0);
+  b.wallZ("square", "blue", 2, 0, 1);
+  b.step("Inside, stand a square beside the door, and two across the middle. They hold the roof up.");
   b.lids("yellow", 0, 0, 3, 2, 1);
   b.chunk(3, ["Lay three squares flat on top: the roof.", "Three more close the roof."]);
   b.roof("red", 0, 0, 1);
@@ -38,12 +42,13 @@ function pickleShip(): Project {
   b.step("Close the back with a square and the front with a small triangle.");
   b.lids("yellow", 0, 0, 4, 1, 1);
   b.chunk(3, ["Lay three squares flat on top: the deck.", "One more square finishes it."]);
-  b.wallX("tri-isosceles-tall", "purple", 1, 1, 1);
-  b.wallX("tri-isosceles-tall", "purple", 2, 1, 1);
-  b.step("Stand two tall triangles on the deck's front edge: the sails.");
-  b.wallX("tri-equilateral", "red", 0, 1, 0);
-  b.step("A triangle at the back: the pickle flag.");
-  return b.build({ id: "pickle-ship", title: "Captain Pickle's pirate ship", theme: "vehicles", age: "b", stars: 1, done: "You built Captain Pickle's ship! Arrr. It smells a bit of vinegar." });
+  b.roof("purple", 1, 0, 1);
+  b.step("Lean four tall triangles together on the deck until their tips meet: a sail.");
+  b.roof("purple", 2, 0, 1);
+  b.step("Another one beside it: the second sail.");
+  b.lowRoof("red", 0, 0, 1);
+  b.step("Four short triangles at the back: the pickle flag.");
+  return b.build({ id: "pickle-ship", title: "Captain Pickle's pirate ship", theme: "vehicles", age: "b", stars: 2, done: "You built Captain Pickle's ship! Arrr. It smells a bit of vinegar." });
 }
 
 function sockRocket(): Project {
@@ -114,11 +119,12 @@ function snackFort(): Project {
   b.chunk(3, ["Stand three squares along the front and round the corner.", "Three more along the side and the back.", "Close the fort: eight squares."]);
   b.room("orange", 0, 0, 2, 2, 1);
   b.chunk(3, ["Stack a second layer.", "Keep going.", "Close the ring with the last squares."]);
-  for (let x = 0; x < 2; x++) b.wallX("tri-equilateral", "yellow", x, 2, 2);
-  for (let z = 1; z >= 0; z--) b.wallZ("tri-equilateral", "yellow", 2, 2, z);
-  for (let x = 1; x >= 0; x--) b.wallX("tri-equilateral", "yellow", x, 2, 0);
-  for (let z = 0; z < 2; z++) b.wallZ("tri-equilateral", "yellow", 0, 2, z);
-  b.chunk(3, ["Battlements: a triangle on each top edge, starting at the front.", "Keep going round.", "Fill in the last ones. Now hide the snacks inside."]);
+  b.lids("yellow", 0, 0, 2, 2, 2);
+  b.chunk(3, ["Lay three squares flat on top. Each one rests on two walls.", "The last square closes the roof. Hide the snacks inside first!"]);
+  b.lowRoof("red", 0, 1, 2);
+  b.step("Lean four triangles together on a front corner of the roof: a lookout.");
+  b.lowRoof("red", 1, 0, 2);
+  b.step("And a lookout on the opposite corner.");
   return b.build({ id: "snack-fort", title: "The secret snack fort", theme: "castles", age: "b", stars: 2, done: "You built the secret snack fort! Password: crisps." });
 }
 

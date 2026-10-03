@@ -11,7 +11,7 @@ const inv = (id: string) => {
 
 describe("matching", () => {
   it("counts the castle's needs by shape", () => {
-    expect(needsOf(castle)).toEqual({ square: 58, "tri-equilateral": 12, "tri-isosceles-tall": 20 });
+    expect(needsOf(castle)).toEqual({ square: 58, "tri-isosceles-tall": 20 });
   });
 
   it("the castle with a Magna-Tiles 100: low roofs, corner triangles, and still 3 squares short", () => {

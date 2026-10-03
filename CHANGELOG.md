@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.3.0 · 2 Oct 2026
+
+Every build now holds up like real tiles, and there are 100 more to build (281 in all: 16 for 3–5, 36 for 6–8, 64
+for 9–10, 165 for 11–16).
+
+- **Real-tile physics (checker rule R10).** Magnet joints are hinges, so the checker now asks three more things of
+  every build: a flat tile above the table rests on two walls below it, not just on other flat tiles (a hexagon of six
+  triangles counts, because it locks); every tile is held along two of its edges, so nothing hangs from one edge; and
+  every wall is braced by a tile at an angle, so no straight wall folds over.
+- **Builds that changed.** Wide roofs and floors now have walls inside to rest on (a step says so), and doors get a
+  short wall beside them. Bridges span one square, pier to pier. Flags, battlements, railings and other loose pieces
+  on top edges became pyramids or came off. Picture walls have a square going back at each end. A few builds grew a
+  storey to keep their size, and a few lost one to stay within two 100-piece sets.
+- **100 new projects**, built with a new shape kit (`web/src/projects/studio.ts`): hexagons and honeycombs, octagons,
+  six-point stars, three-triangle pyramids, triangle truss bridges, zigzags and picture walls. 15 for 6–8 (Sssssid the
+  Zigzag Snake, the Traffic Cone Factory), 30 for 9–10 (the Bee Block of Flats, Saturn's Spare Ring, the Bridge Made
+  Entirely of Triangles) and 55 for 11–16 (the Grand Hexagon Palace of Queen Hexabella, the Space Station of Absolutely
+  Everything, the Chess Set Where the Pawns Won, the Wall That Says HI). Builds for 6–10 need only one 100-piece set.
+
 ## 2.2.0 · 2 Oct 2026
 
 101 more projects, 52 to 159 tiles (181 in all).

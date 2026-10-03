@@ -87,6 +87,15 @@ export class Builder {
     return walls.filter((_, i) => !skip.includes(i)).map((f) => f());
   }
 
+  /** Walls inside a w × d room at height y, on every second grid line, so every square of a floor or roof laid on
+      top rests on two walls (R10). Returns how many squares it stood. */
+  inside(colour: Colour, x0: number, z0: number, w: number, d: number, y: number) {
+    let n = 0;
+    if (d >= 2 && w >= 3) for (let x = x0 + 2; x < x0 + w; x += 2) for (let z = z0; z < z0 + d; z++, n++) this.wallZ("square", colour, x, y, z);
+    if (w >= 2 && d >= 3) for (let z = z0 + 2; z < z0 + d; z += 2) for (let x = x0; x < x0 + w; x++, n++) this.wallX("square", colour, x, y, z);
+    return n;
+  }
+
   /** Flat lids over every cell of a w × d room at height y. */
   lids(colour: Colour, x0: number, z0: number, w: number, d: number, y: number) {
     for (let x = x0; x < x0 + w; x++) for (let z = z0; z < z0 + d; z++) this.lid("square", colour, x, y, z);
@@ -100,6 +109,19 @@ export class Builder {
       this.open = open.slice(i, i + size);
       this.step(says[Math.min(k, says.length - 1)]);
     }
+    return this;
+  }
+
+  /** Like `chunk`, but in steps of the given sizes, one after another. */
+  chunkBy(sizes: number[], says: string[]) {
+    const open = this.open;
+    this.open = [];
+    let i = 0;
+    sizes.forEach((n, k) => {
+      this.open = open.slice(i, i + n);
+      i += n;
+      this.step(says[Math.min(k, says.length - 1)]);
+    });
     return this;
   }
 

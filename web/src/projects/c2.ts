@@ -6,18 +6,11 @@ import { Builder, TALL_TO_LOW } from "./helpers";
 
 function burritoBridge(): Project {
   const b = new Builder();
-  const piers = [0, 3, 6];
+  const piers = [0, 2, 4];
   for (const y of [0, 1]) for (const x of piers) b.room("orange", x, 0, 1, 1, y);
-  b.chunk(4, ["Three piers in a row, two squares apart. Start with a ring of four.", "The second ring.", "The third pier: another ring of four.", "Stack a second ring on the first pier.", "And the second.", "And the third."]);
-  for (const g of [1, 4]) {
-    b.lid("square", "yellow", g, 2, 0);
-    b.lid("square", "yellow", g + 1, 2, 0);
-  }
-  b.chunk(4, ["Lay the deck: two squares across each gap. Each one meets a pier and its neighbour. Grown-up, hold the piers."]);
-  for (const g of [1, 2, 4, 5]) b.wallX("tri-equilateral", "green", g, 2, 1);
-  b.step("Lettuce railings: equilateral triangles standing along the front edge of the deck.");
-  for (const g of [1, 2, 4, 5]) b.wallX("tri-equilateral", "red", g, 2, 0);
-  b.step("Salsa railings along the back edge, parallel.");
+  b.chunk(4, ["Three piers in a row, one square apart. Start with a ring of four.", "The second ring.", "The third pier: another ring of four.", "Stack a second ring on the first pier.", "And the second.", "And the third."]);
+  for (const g of [1, 3]) b.lid("square", "yellow", g, 2, 0);
+  b.step("Lay the deck: a square flat across each gap, resting on a pier at each end.");
   for (const x of piers) {
     b.lowRoof("yellow", x, 0, 2);
     b.step(x === 0 ? "A cheesy pyramid on the first pier." : "And on the next pier.");
@@ -29,6 +22,9 @@ function sneezealot(): Project {
   const b = new Builder();
   b.room("blue", 0, 0, 3, 3, 0);
   b.chunk(4, ["The keep: four squares along the front and round the corner.", "Keep going round.", "Close the ring: twelve squares round a three-by-three space."]);
+  for (let z = 0; z < 3; z++) b.wallZ("square", "purple", 2, 0, z);
+  for (let x = 0; x < 3; x++) b.wallX("square", "purple", x, 0, 2);
+  b.chunk(3, ["Inside, stand three squares in a line from the back to the front. They will hold the roof up.", "Three more across, from left to right. Every roof square will rest on two walls."]);
   b.lids("purple", 0, 0, 3, 3, 1);
   b.chunk(4, ["Lay a roof: four squares flat, from the back left.", "Four more squares, flat on top.", "One more closes it."]);
   for (const x of [0, 2]) b.tower(["red", "red"], x, 0, 1);
@@ -37,8 +33,7 @@ function sneezealot(): Project {
     b.roof("yellow", x, 0, 3);
     b.step(x === 0 ? "Tall triangles lean together on the left tower. Their vertices meet." : "The same on the right tower.");
   }
-  for (let x = 0; x < 3; x++) b.wallX("tri-equilateral", "yellow", x, 1, 3);
-  b.step("Battlements: three equilateral triangles standing along the front edge of the roof. AH... AH... CHOO!");
+
   return b.build({ id: "sneezealot-castle", title: "Sir Sneezealot's castle", theme: "castles", age: "c", stars: 1, done: "You built Sir Sneezealot's castle! He is allergic to dragons. Bless him.", swaps: [TALL_TO_LOW] });
 }
 
@@ -60,10 +55,14 @@ function butlerMansion(): Project {
   const b = new Builder();
   b.room("blue", 0, 0, 3, 2, 0, [2]);
   b.chunk(4, ["The ground floor: squares round a three-by-two space, with a doorway at the front right.", "Keep going round.", "Close the ring with the last squares."]);
+  for (let z = 0; z < 2; z++) b.wallZ("square", "blue", 2, 0, z);
+  b.step("Two squares across the inside, from the back to the front. They hold the floor up.");
   b.lids("yellow", 0, 0, 3, 2, 1);
   b.chunk(4, ["The first floor: four squares flat on top.", "Two more squares finish it."]);
   b.room("green", 0, 0, 3, 2, 1);
   b.chunk(4, ["Upstairs walls: four squares round the corner.", "Keep going.", "Close upstairs."]);
+  for (let z = 0; z < 2; z++) b.wallZ("square", "green", 2, 1, z);
+  b.step("Two squares across the inside again, on the line below. They hold the roof up.");
   b.lids("orange", 0, 0, 3, 2, 2);
   b.chunk(4, ["The roof: four squares.", "Two more squares finish it."]);
   for (const x of [0, 1, 2]) {
@@ -110,12 +109,13 @@ function underpantsFactory(): Project {
   const b = new Builder();
   b.room("purple", 0, 0, 4, 2, 0);
   b.chunk(4, ["The factory: four squares along the front.", "Round the corner and along the back.", "Close it: twelve squares round a four-by-two space."]);
+  for (let z = 0; z < 2; z++) b.wallZ("square", "purple", 2, 0, z);
+  b.step("Two squares across the middle, from the back to the front. They hold the roof up.");
   b.lids("blue", 0, 0, 4, 2, 1);
   b.chunk(4, ["The roof: four squares flat.", "Four more squares, flat on top."]);
   for (const x of [0, 3]) b.tower(["red", "orange", "red"], x, 0, 1);
   b.chunk(4, ["A chimney on the back left of the roof: a ring of four.", "Stack another ring on top.", "Three rings.", "Another chimney on the back right.", "Stack another ring on top.", "Three rings each."]);
-  for (const x of [1, 2]) b.wallX("tri-equilateral", "yellow", x, 1, 2);
-  b.step("Two triangles on the front of the roof: the factory sign, shaped like pants.");
+
   return b.build({ id: "underpants-factory", title: "The underpants factory", theme: "homes", age: "c", stars: 1, done: "You built the underpants factory! It makes a million pants a day. Clean ones." });
 }
 
@@ -155,12 +155,11 @@ function dragonDaycare(): Project {
   const b = new Builder();
   b.room("green", 0, 0, 4, 3, 0, [0]);
   b.chunk(4, ["The pen: squares round a four-by-three space, with a gate gap at the front left.", "Keep going round.", "Keep going.", "Close the pen."]);
-  b.tower(["red", "red", "red"], 5, 0, 0);
-  b.chunk(4, ["One square to the right of the pen, the nap tower: a ring of four.", "Stack another.", "And a third."]);
-  b.roof("orange", 5, 0, 3);
+  b.tower(["red", "red", "red", "red"], 5, 0, 0);
+  b.chunk(4, ["One square to the right of the pen, the nap tower: a ring of four.", "Stack another.", "And a third.", "And a fourth."]);
+  b.roof("orange", 5, 0, 4);
   b.step("A tall roof: dragon babies nap under it.");
-  for (const [x, z] of [[1, 3], [3, 3]] as const) b.wallX("tri-isosceles-tall", "yellow", x, 1, z);
-  b.step("Two tall triangles standing on the front wall of the pen: warning signs. NO FIRE INDOORS.");
+
   return b.build({ id: "dragon-daycare", title: "Dragon daycare", theme: "animals", age: "c", stars: 1, done: "You built dragon daycare! Naptime is at two. Snack time is a whole sheep.", swaps: [TALL_TO_LOW] });
 }
 
@@ -185,14 +184,15 @@ function llamaTheatre(): Project {
   const b = new Builder();
   b.room("purple", 0, 0, 4, 2, 0);
   b.chunk(4, ["The stage: four squares along the front.", "Round the corner and along the back.", "Close the ring with the last squares."]);
+  for (let z = 0; z < 2; z++) b.wallZ("square", "purple", 2, 0, z);
+  b.step("Two squares across the middle, from the back to the front. They hold the stage floor up.");
   b.lids("yellow", 0, 0, 4, 2, 1);
   b.chunk(4, ["The stage floor: four squares flat.", "Four more squares, flat on top."]);
   b.room("red", 0, 0, 4, 1, 1);
   b.chunk(4, ["The back wall of the stage, standing on the back half of the floor.", "Keep going.", "Close the ring with the last squares."]);
   b.lids("red", 0, 0, 4, 1, 2);
   b.step("Four squares flat on the back wall: its top.");
-  for (let x = 1; x < 4; x++) b.wallX("tri-equilateral", "orange", x, 2, 1);
-  b.step("Curtains: three triangles standing along its front edge, leaving the left end free.");
+
   b.lowRoof("green", 0, 0, 2);
   b.step("A pyramid on the left end: the llama's dressing room.");
   return b.build({ id: "llama-theatre", title: "The llama drama theatre", theme: "homes", age: "c", stars: 1, done: "You built the llama drama theatre! Tonight's show: Romeo and Juli-llama." });

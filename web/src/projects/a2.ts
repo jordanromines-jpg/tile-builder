@@ -76,10 +76,8 @@ function wobblyJelly(): Project {
     "Stand a square up on the back side.",
     "Stand the last square up. Wobble, wobble!",
   ]);
-  b.lid("square", "green", 0, 1, 0);
-  b.step("Put a square flat on top. The jelly has a lid.");
-  b.wallX("tri-equilateral", "red", 0, 1, 1);
-  b.step("Stand a red triangle up on top, at the front. A cherry!");
+  b.lowRoof("red", 0, 0, 1);
+  b.step("Lean four red triangles together on top until their points meet. A cherry!");
   return b.build({ id: "wobbly-jelly", title: "A wobbly jelly", theme: "patterns", age: "a", stars: 1, done: "You made a wobbly jelly! Give the table a tiny shake. Does it wobble?" });
 }
 

@@ -18,7 +18,7 @@ function terrace(s: Site, w: number, d: number, y: number, tall: Colour, low: Co
 function giraffeElevator(): Project {
   const s = new Site();
   const base = s.block("the giraffe house", 0, 0, 4, 4, 2, ["yellow", "orange"], { door: true, roof: "yellow" });
-  const neck = s.tower("the giraffe elevator", 1, 1, 5, ["yellow", "orange"], { base: base.top, size: 2, cap: "lid", capColour: "orange" });
+  const neck = s.tower("the giraffe elevator", 1, 1, 4, ["yellow", "orange"], { base: base.top, size: 2, cap: "lid", capColour: "orange" });
   s.roofs("the giraffe's head", [[1, 1]], neck.top, "tall", "orange");
   terrace(s, 4, 4, base.top, "red", "green", () => false);
   return s.build({ id: "giraffe-elevator", title: "The Giraffe Elevator", theme: "animals", age: "d", done: "You built the Giraffe Elevator! It only goes up. Giraffes don't like going down." });
@@ -44,7 +44,6 @@ function hedgehogHotel(): Project {
   const s = new Site();
   const h = s.block("Hotel Hedgehog", 0, 0, 5, 2, 2, ["orange", "red"], { door: true, roof: "yellow" });
   s.roofs("the prickles", [[0, 0], [1, 1], [2, 0], [3, 1], [4, 0], [2, 1]], h.top, "low", "orange");
-  s.standing("the no-hugs sign", "x", 0, 1, 2, h.top, "tri-isosceles-tall", "red", "a sign");
   return s.build({ id: "hedgehog-hotel", title: "Hotel Hedgehog (No Hugs)", theme: "animals", age: "d", done: "You built Hotel Hedgehog! No hugs, please. Ouch." });
 }
 
@@ -77,17 +76,14 @@ function cowSpa(): Project {
 
 function crocDentist(): Project {
   const s = new Site();
-  const den = s.block("the dentist", 0, 0, 5, 2, 2, ["green", "green"], { door: true, roof: "yellow" });
-  for (let x = 0; x < 5; x++) s.standing("the crocodile's teeth", "x", x, x + 1, 2, den.top, x % 2 ? "tri-equilateral" : "tri-isosceles-tall", "yellow", "teeth");
-  s.standing("the back teeth", "x", 0, 5, 0, den.top, "tri-equilateral", "yellow", "teeth");
+  s.block("the dentist", 0, 0, 5, 2, 2, ["green", "green"], { door: true, roof: "yellow" });
   s.plaza("the waiting room", 0, 3, 5, 1, "blue");
   return s.build({ id: "croc-dentist", title: "The Crocodile Dentist", theme: "animals", age: "c", done: "You built the Crocodile Dentist! Open wide. Wider. Wider! ...Maybe not that wide." });
 }
 
 function slothRacing(): Project {
   const s = new Site();
-  const track = s.block("the sloth race track", 0, 0, 6, 4, 2, ["green", "yellow"], { roof: false });
-  s.standing("the finishing flags", "x", 0, 2, 4, track.top, "tri-isosceles-tall", "red");
+  s.block("the sloth race track", 0, 0, 6, 4, 2, ["green", "yellow"], { roof: false });
   s.tower("the grandstand", 7, 0, 3, ["yellow", "orange"], { size: 2, cap: "lid", capColour: "blue" });
   s.roofs("the grandstand roof", [[7, 0]], 3, "low", "red");
   return s.build({ id: "sloth-racing", title: "The Sloth Speed Racing Club", theme: "animals", age: "d", done: "You built the Sloth Racing Club! The race started last Tuesday. Nobody has finished yet." });
@@ -112,11 +108,11 @@ function frogOpera(): Project {
 
 function pigPalace(): Project {
   const s = new Site();
-  s.plaza("the big muddy puddle", 0, 4, 6, 2, "orange");
+  s.plaza("the big muddy puddle", 0, 4, 6, 1, "orange");
   const p = s.block("the pig palace", 0, 0, 6, 3, 2, ["red", "orange"], { door: true, roof: "yellow" });
-  s.tower("the snout tower", 2, 1, 3, ["red", "orange"], { base: p.top, size: 2, cap: "lid", capColour: "red" });
+  s.tower("the snout tower", 2, 1, 2, ["red", "orange"], { base: p.top, size: 2, cap: "lid", capColour: "red" });
   s.roofs("the curly tails", [[0, 0], [5, 0], [0, 2], [5, 2]], p.top, "tall", "red");
-  s.roofs("the ears", [[2, 1], [3, 2]], p.top + 3, "low", "orange");
+  s.roofs("the ears", [[2, 1], [3, 2]], p.top + 2, "low", "orange");
   return s.build({ id: "pig-palace", title: "The Pig Palace of Puddles", theme: "animals", age: "d", done: "You built the Pig Palace of Puddles! The pigs are delighted. Oink." });
 }
 
@@ -147,11 +143,7 @@ function gnomeParliament(): Project {
 
 function snailStadium(): Project {
   const s = new Site();
-  const st = s.block("the snail stadium", 0, 0, 6, 5, 2, ["green", "yellow"], { roof: false });
-  s.standing("the front crowd", "x", 0, 6, 5, st.top, "tri-equilateral", "red", "cheering snails");
-  s.standing("the back crowd", "x", 0, 6, 0, st.top, "tri-equilateral", "orange", "cheering snails");
-  s.standing("the side flags", "z", 0, 5, 0, st.top, "tri-isosceles-tall", "blue");
-  s.standing("the other side flags", "z", 0, 5, 6, st.top, "tri-isosceles-tall", "purple");
+  s.block("the snail stadium", 0, 0, 6, 5, 3, ["green", "yellow", "green"], { roof: false });
   return s.build({ id: "snail-stadium", title: "The Snail Racing Stadium", theme: "gardens", age: "d", done: "You built the Snail Stadium! The race will finish sometime next month." });
 }
 

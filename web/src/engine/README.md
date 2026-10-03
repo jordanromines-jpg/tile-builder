@@ -37,6 +37,7 @@ A project ships only when `npm run check:projects` passes it under every tall-tr
 | R7 pyramids | Leaning tiles are triangles in whole pyramids: four of one kind (three over a triangle) whose apexes meet, all placed in one step |
 | R8 brands | R1 to R7 hold for every leg; a project using rectangles, windows, doors or fences lists them in `needs.brandExtras` |
 | R9 age | Steps hold at most 1, 3 or 4 tiles for 3–5, 6–8, 9–10 (a whole pyramid counts as one group); a project has 3–12, 12–40 or 30–100 tiles; a 3–5 project is flat or two layers at most |
+| R10 holds up | On the finished build: a flat tile above the table rests on at least two top edges of standing or leaning tiles below it (not on other flat tiles; a fan of six triangles round a point whose outer edges are held is locked and counts); every tile except one flat on the table is held along at least two of its edges (the table counts for a tile standing on it); every row of standing tiles in one plane and layer touches a tile at an angle along a side or top edge (code: `hold.ts`) |
 
 ## Matching
 

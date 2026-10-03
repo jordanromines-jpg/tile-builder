@@ -14,20 +14,20 @@ function ring(s: Site, name: string, w: number, d: number, y: number, inner: [nu
 
 function longWayBridge(): Project {
   const s = new Site();
-  for (const [x, z, n] of [[0, 0, "the start tower"], [3, 0, "the corner tower"], [3, 3, "the end tower"]] as const) s.tower(n, x, z, 4, ["purple", "blue"], { cap: "lid", capColour: "yellow" });
-  s.deck("the first bridge", "x", 1, 3, 0, 4, "green", "red");
-  s.deck("the second bridge", "z", 1, 3, 3, 4, "green", "red");
+  for (const [x, z, n] of [[0, 0, "the start tower"], [2, 0, "the corner tower"], [2, 2, "the end tower"]] as const) s.tower(n, x, z, 5, ["purple", "blue"], { cap: "lid", capColour: "yellow" });
+  s.deck("the first bridge", "x", 1, 2, 0, 5, "green");
+  s.deck("the second bridge", "z", 1, 2, 2, 5, "green");
   return s.build({ id: "long-way-bridge", title: "The Bridge That Goes the Long Way Round", theme: "bridges", age: "d", done: "You built the Bridge That Goes the Long Way Round! It's slower. But the view is lovely." });
 }
 
 function tripleTrouble(): Project {
   const s = new Site();
-  const xs = [0, 3, 6, 9];
+  const xs = [0, 2, 4, 6];
   xs.forEach((x, i) => s.tower(`pier number ${i + 1}`, x, 0, 3, ["red", "orange"], { cap: "tall", capColour: "yellow" }));
-  s.deck("the first span", "x", 1, 3, 0, 3, "blue", "green");
-  s.deck("the second span", "x", 4, 6, 0, 3, "blue");
-  s.deck("the third span", "x", 7, 9, 0, 3, "blue", "purple");
-  s.plaza("the river", 0, 2, 10, 1, "blue");
+  s.deck("the first span", "x", 1, 2, 0, 3, "blue");
+  s.deck("the second span", "x", 3, 4, 0, 3, "blue");
+  s.deck("the third span", "x", 5, 6, 0, 3, "blue");
+  s.plaza("the river", 0, 2, 7, 1, "blue");
   return s.build({ id: "triple-trouble-bridge", title: "The Triple Bridge of Triple Trouble", theme: "bridges", age: "d", done: "You built the Triple Bridge of Triple Trouble! Three spans, three trolls, three times the trouble." });
 }
 
@@ -43,10 +43,10 @@ function lateClock(): Project {
 
 function toastTowers(): Project {
   const s = new Site();
-  s.tower("the white toast tower", 0, 0, 4, ["yellow", "orange"], { cap: "tall", capColour: "orange" });
-  s.tower("the brown toast tower", 3, 0, 4, ["orange", "yellow"], { cap: "tall", capColour: "orange" });
-  s.deck("the butter bridge", "x", 1, 3, 0, 4, "yellow", "green");
-  s.plaza("the jam river", 0, 2, 4, 2, "red");
+  s.tower("the white toast tower", 0, 0, 5, ["yellow", "orange"], { cap: "tall", capColour: "orange" });
+  s.tower("the brown toast tower", 2, 0, 5, ["orange", "yellow"], { cap: "tall", capColour: "orange" });
+  s.deck("the butter bridge", "x", 1, 2, 0, 5, "yellow");
+  s.plaza("the jam river", 0, 2, 3, 2, "red");
   return s.build({ id: "toast-towers", title: "The Twin Towers of Toast", theme: "bridges", age: "c", done: "You built the Twin Towers of Toast! Butter side up, always." });
 }
 
@@ -69,8 +69,8 @@ function appleAqueduct(): Project {
 
 function lemonadeTower(): Project {
   const s = new Site();
-  for (const [x, z] of [[0, 0], [2, 0], [0, 2], [2, 2]] as const) s.tower("a leg", x, z, 3, ["blue", "blue"], { cap: "none" });
-  const p = s.platform("the platform", 0, 0, 3, 3, 3, "yellow");
+  for (const [x, z] of [[0, 0], [2, 0], [0, 2], [2, 2], [1, 1]] as const) s.tower("a leg", x, z, 2, ["blue", "blue"], { cap: "none" });
+  const p = s.platform("the platform", 0, 0, 3, 3, 2, "yellow");
   const tank = s.block("the lemonade tank", 0, 0, 3, 3, 2, ["yellow", "orange"], { base: p.top, roof: "yellow" });
   s.roofs("the lid", [[1, 1]], tank.top, "tall", "green");
   s.roofs("the lemon slices", [[0, 0], [2, 2]], tank.top, "low", "yellow");
@@ -86,10 +86,10 @@ function tallestTower(): Project {
 
 function hamsterRopeBridge(): Project {
   const s = new Site();
-  s.tower("the left hamster tower", 0, 0, 6, ["orange", "yellow"], { cap: "lid", capColour: "orange" });
-  s.tower("the right hamster tower", 4, 0, 6, ["orange", "yellow"], { cap: "lid", capColour: "orange" });
-  s.deck("the rope bridge", "x", 1, 4, 0, 6, "green", "red");
-  s.plaza("the hamster ball pit", 0, 2, 5, 2, "purple");
+  s.tower("the left hamster tower", 0, 0, 7, ["orange", "yellow"], { cap: "lid", capColour: "orange" });
+  s.tower("the right hamster tower", 2, 0, 7, ["orange", "yellow"], { cap: "lid", capColour: "orange" });
+  s.deck("the rope bridge", "x", 1, 2, 0, 7, "green");
+  s.plaza("the hamster ball pit", 0, 2, 3, 2, "purple");
   return s.build({ id: "hamster-rope-bridge", title: "The Rope Bridge of Raging Hamsters", theme: "bridges", age: "d", done: "You built the Rope Bridge! The hamsters are racing across. They are VERY angry. Nobody knows why." });
 }
 
@@ -138,8 +138,8 @@ function wigglyWall(): Project {
   const s = new Site();
   const xs = [0, 4, 8];
   xs.forEach((x, i) => s.tower(`watchtower ${i + 1}`, x, 0, 3, ["red", "orange"], { cap: "tall", capColour: "yellow" }));
-  s.wall("the first stretch", "x", 1, 4, 1, 2, "green", "blue");
-  s.wall("the second stretch", "x", 5, 8, 1, 2, "purple", "yellow");
+  s.wall("the first stretch", "x", 1, 4, 1, 2, "green");
+  s.wall("the second stretch", "x", 5, 8, 1, 2, "purple");
   return s.build({ id: "wiggly-wall", title: "The Great Wall of Wiggly Colours", theme: "patterns", age: "d", done: "You built the Great Wall of Wiggly Colours! Visible from space. Well, from the sofa." });
 }
 
@@ -191,7 +191,7 @@ function secretShed(): Project {
 function everythingTower(): Project {
   const s = new Site();
   const base = s.block("the everything base", 0, 0, 5, 4, 2, ["blue", "purple"], { door: true, roof: "yellow" });
-  const t = s.tower("the everything tower", 1, 1, 4, ["red", "orange"], { base: base.top, size: 2, cap: "lid", capColour: "green" });
+  const t = s.tower("the everything tower", 1, 1, 2, ["red", "orange"], { base: base.top, size: 2, cap: "lid", capColour: "green" });
   s.roofs("the very top", [[1, 1]], t.top, "tall", "purple");
   ring(s, "the everything terrace", 5, 4, base.top, [1, 1, 2, 2], "mix", "green");
   return s.build({ id: "everything-tower", title: "The Tower of Absolutely Everything", theme: "bridges", age: "d", done: "You built the Tower of Absolutely Everything! It uses nearly every tile you own. Count them!" });
