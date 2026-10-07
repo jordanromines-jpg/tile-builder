@@ -70,10 +70,10 @@ const whale = () =>
     g(String.raw`
       . . . . . B . B .
       . . . . . . B . .
-      B . .B/ B B B B B.\ .
-      B.\ .B/ B B B B Y B B.\
+      . . .B/ B B B B B.\ .
+      . .B/ B B B B Y B B.\
       .B/ B B B B B B B B
-      . .B\ B B B B B B B./
+      .B\ B B B B B B B B./
       . . .B\ B B B B B./ .`),
   );
 
@@ -109,19 +109,6 @@ const bee = () =>
       .Y/ Y P Y P Y Y.\ .
       Y B P Y P Y Y O
       .Y\ Y P Y P Y Y./ .`),
-  );
-
-const chick = () =>
-  flat(
-    { id: "baby-chick", title: "A fluffy chick", theme: "animals", done: "Cheep, cheep! A fluffy yellow chick." },
-    g(String.raw`
-      . .Y/ Y Y.\ . .
-      . Y B Y O .
-      .Y/ Y Y Y Y.\ .
-      Y Y Y Y Y Y
-      Y Y Y Y Y Y
-      .Y\ Y Y Y Y Y./
-      . O . . O .`),
   );
 
 const frog = () =>
@@ -162,55 +149,7 @@ const iceCream = () =>
       . . O . .`),
   );
 
-const watermelon = () =>
-  flat(
-    { id: "baby-watermelon", title: "A slice of watermelon", theme: "gardens", done: "A big slice of watermelon. Spit out the seeds!" },
-    g(String.raw`
-      R R P R R R R P R R
-      G R R R R P R R R G
-      .G\ G R R R R R R G G./
-      . .G\ G G R R G G G./ .
-      . . .G\ G G G G G./ . .`),
-  );
-
-const cupcake = () =>
-  flat(
-    { id: "baby-cupcake", title: "A cupcake", theme: "gardens", done: "A purple cupcake with sprinkles and a cherry. Happy birthday!" },
-    g(String.raw`
-      . . .R/ R.\ . .
-      . .P/ P P P.\ .
-      .P/ Y P P Y P.\
-      P P P P P P
-      O B O B O B
-      . O B O B .`),
-  );
-
-const lollipop = () =>
-  flat(
-    { id: "baby-lollipop", title: "A swirly lollipop", theme: "gardens", done: "A big swirly lollipop, red and yellow." },
-    g(String.raw`
-      .R/ R R R R.\
-      R Y Y Y R
-      R Y R Y R
-      R Y Y R R
-      .R\ R R R R./
-      . . G . .
-      . . G . .`),
-  );
-
 /* ---------- things ---------- */
-
-const umbrella = () =>
-  flat(
-    { id: "baby-umbrella", title: "A stripy umbrella", theme: "patterns", done: "Pitter, patter. A red and yellow umbrella for the rain." },
-    g(String.raw`
-      . .R/ R Y R R.\ .
-      .R/ Y R Y R Y R.\
-      R Y R Y R Y R
-      . . . B . . .
-      . B . B . . .
-      . B B B . . .`),
-  );
 
 const balloons = () =>
   flat(
@@ -238,17 +177,6 @@ const kite = () =>
       . . . O . .`),
   );
 
-const crown = () =>
-  flat(
-    { id: "baby-crown", title: "A golden crown", theme: "castles", done: "A crown for a king or a queen, with three shiny jewels." },
-    g(`
-      Y . . Y . . Y
-      Y Y . Y . Y Y
-      Y Y Y Y Y Y Y
-      Y R Y B Y G Y
-      Y Y Y Y Y Y Y`),
-  );
-
 const present = () =>
   flat(
     { id: "baby-present", title: "A present", theme: "patterns", done: "A blue present with a red ribbon. What's inside?" },
@@ -273,43 +201,6 @@ const car = () =>
       . P P . . P P .`),
   );
 
-const train = () =>
-  flat(
-    { id: "baby-train", title: "A choo-choo train", theme: "vehicles", done: "Choo, choo! A train with two carriages, off on an adventure." },
-    g(`
-      . O . . . . . . . .
-      R R B B . Y Y . G G
-      R R R R P Y Y P G G
-      . B B . . B . . B .`),
-  );
-
-const cloud = () =>
-  flat(
-    { id: "baby-rain-cloud", title: "A rain cloud", theme: "space", done: "A blue cloud, and drip, drip, drop, here comes the rain." },
-    g(String.raw`
-      . . .B/ B B B.\ . .
-      . .B/ B B B B B B.\
-      .B/ B B B B B B B.\
-      B B B B B B B B
-      . . . . . . . .
-      . B . . B . . B
-      . . . B . . B .`),
-  );
-
-const trafficLights = () =>
-  flat(
-    { id: "baby-traffic-lights", title: "Traffic lights", theme: "vehicles", done: "Red means stop, yellow means wait, green means go!" },
-    g(`
-      B B B
-      B R B
-      B B B
-      B Y B
-      B B B
-      B G B
-      B B B
-      . B .`),
-  );
-
 /* ---------- triangle pictures ---------- */
 
 const sunflower = () =>
@@ -320,42 +211,6 @@ const sunflower = () =>
       const dy = y - 2 * H;
       const r = Math.abs(dy) <= 2 * H ? Math.abs(dx) + Math.abs(dy) / Math.sqrt(3) : 9;
       return r <= 1 && Math.abs(dy) <= H ? "O" : r <= 2 ? "Y" : ".";
-    }),
-  );
-
-const rainbowZigzag = () =>
-  tris(
-    { id: "baby-rainbow-zigzag", title: "A rainbow zigzag", theme: "patterns", done: "Up, down, up, down, all the colours of the rainbow." },
-    ["ROYGBPROYGB"],
-  );
-
-const waves = () =>
-  tris(
-    { id: "baby-waves", title: "Blue and green waves", theme: "patterns", done: "Whoosh, whoosh. Waves rolling in to the beach." },
-    triangleRows(2, 10, (_x, y) => (y > H ? "B" : "G")),
-  );
-
-/** Is (x, y) inside the triangle a, b, c? */
-function inTri(x: number, y: number, a: [number, number], b: [number, number], c: [number, number]) {
-  const s = (p: [number, number], q: [number, number]) => (q[0] - p[0]) * (y - p[1]) - (q[1] - p[1]) * (x - p[0]);
-  const d1 = s(a, b);
-  const d2 = s(b, c);
-  const d3 = s(c, a);
-  return !((d1 < 0 || d2 < 0 || d3 < 0) && (d1 > 0 || d2 > 0 || d3 > 0));
-}
-
-const threeStars = () =>
-  tris(
-    { id: "baby-three-stars", title: "Three stars in a row", theme: "space", done: "One, two, three stars, twinkling all in a row." },
-    triangleRows(4, 19, (x, y) => {
-      const cols = ["Y", "O", "Y"];
-      for (const [i, cx] of [2, 5, 8].entries()) {
-        const cy = 2 * H;
-        const up = inTri(x, y, [cx - 1.5, cy - H], [cx + 1.5, cy - H], [cx, cy + 2 * H]);
-        const down = inTri(x, y, [cx - 1.5, cy + H], [cx + 1.5, cy + H], [cx, cy - 2 * H]);
-        if (up || down) return cols[i];
-      }
-      return ".";
     }),
   );
 
@@ -429,26 +284,14 @@ export const AGE_T2: Project[] = [
   snail(),
   turtle(),
   bee(),
-  chick(),
   frog(),
   strawberry(),
   iceCream(),
-  watermelon(),
-  cupcake(),
-  lollipop(),
-  umbrella(),
   balloons(),
   kite(),
-  crown(),
   present(),
   car(),
-  train(),
-  cloud(),
-  trafficLights(),
   sunflower(),
-  rainbowZigzag(),
-  waves(),
-  threeStars(),
   cubeOnCube(),
   threePyramids(),
   colourStairs(),

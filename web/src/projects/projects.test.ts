@@ -3,10 +3,12 @@ import { AGE_RULES } from "../engine/ages";
 import { inventoryFromSet, matchProject } from "../engine/match";
 import { setById } from "../engine/sets";
 import { addSet } from "../store/inventory";
-import type { Age } from "../engine/types";
+import type { Age, Project } from "../engine/types";
 import { PROJECTS } from "./index";
 import { MORE } from "./more";
 import { FRESH } from "./fresh";
+import { AGE_T2 } from "./tots2";
+import { AGE_T_BIG } from "./tots-big";
 
 const inv = (id: string) => {
   const s = setById(id)!;
@@ -16,8 +18,8 @@ const of = (age: Age) => PROJECTS.filter((p) => p.age === age);
 const buildable = (age: Age, set: string) => of(age).filter((p) => matchProject(p, inv(set)).state !== "need").map((p) => p.id);
 
 describe("the projects (plan keys 6h, 6j, 6l)", () => {
-  it("has 32, 16, 36, 64 and 165 projects by age, with unique ids and titles", () => {
-    expect([of("t").length, of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([32, 16, 36, 64, 165]);
+  it("has 64, 16, 36, 64 and 165 projects by age, with unique ids and titles", () => {
+    expect([of("t").length, of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([64, 16, 36, 64, 165]);
     expect(new Set(PROJECTS.map((p) => p.id)).size).toBe(PROJECTS.length);
     expect(new Set(PROJECTS.map((p) => p.title.toLowerCase())).size).toBe(PROJECTS.length);
   });
@@ -28,8 +30,17 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
       return addSet(inventoryFromSet(s.pieces, s.brand, null), s);
     })();
     expect(of("t").filter((p) => matchProject(p, two).state === "need").map((p) => p.id)).toEqual([]);
-    expect(buildable("t", "magna-100").length).toBeGreaterThanOrEqual(20);
-    expect(of("t").filter((p) => p.flat).length).toBeGreaterThanOrEqual(24);
+    expect(buildable("t", "magna-100").length).toBeGreaterThanOrEqual(40);
+    expect(of("t").filter((p) => p.flat).length).toBeGreaterThanOrEqual(48);
+  });
+
+  it("2.6: the second 32 use the shapes: big squares in 12, triangles beside squares in 10, and 6 stand up", () => {
+    const batch = [...AGE_T2, ...AGE_T_BIG];
+    const uses = (p: Project, s: string) => p.placed.some((t) => t.shape === s);
+    expect(batch.length).toBe(32);
+    expect(batch.filter((p) => uses(p, "square-large")).length).toBeGreaterThanOrEqual(12);
+    expect(batch.filter((p) => p.flat && (uses(p, "square") || uses(p, "square-large")) && (uses(p, "tri-equilateral") || uses(p, "tri-isosceles-tall"))).length).toBeGreaterThanOrEqual(10);
+    expect(batch.filter((p) => !p.flat).length).toBeGreaterThanOrEqual(6);
   });
 
   it("builds every 3–5 project from a Magna-Tiles 32", () => {

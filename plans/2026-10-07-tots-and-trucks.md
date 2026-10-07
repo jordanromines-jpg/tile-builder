@@ -352,3 +352,4 @@ The last row says what is next. Update it in the same commit as the work.
 | Date | Step | Branch / commit | Next |
 |---|---|---|---|
 | 2026-10-07 | Plan approved. 2.5 (0–3, 32 builds) is live at `684acb4`. Part A started: `tots2.ts` has 32 builds that all pass the checker, but have no pictures yet. | `tile-steps-2-6` | A2: edge points and big-square helpers in `tots-kit.ts`, then A3 |
+| 2026-10-07 | Part A done: 32 more 0–3 builds (`tots2.ts` 20, `tots-big.ts` 12) using big squares (14) and edge triangles (10), with 6 that stand up. The kit gained `points`, `bigCells`, `bigFlat`, `bigRing`, `bigCube` and `bigTunnel`. R5 counts how high a tile reaches. All checks green; 106 e2e. | `tile-steps-2-6` (PR #31) | Merge #31, then Part B: start B1 (engine: ramps, R11, crash role, section) on `tile-steps-2-7` |

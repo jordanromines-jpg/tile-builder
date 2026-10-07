@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.6.0 · 7 Oct 2026
+
+32 more builds for 0–3 (64 in the band, 345 in all), and much more use of the big squares and the triangles.
+
+- **Big squares as big shapes.** A big-block robot, a house with a zigzag roof, a big cube beside a little one, a tunnel
+  for a toy car over a two-lane road, a quilt of four big squares with bunting, a big sun with sixteen rays, a fish, a
+  train, a rocket, a hedgehog and a crown. 14 of the 32 use big squares.
+- **Triangles off the edges.** A new step lays triangles flat against the outside of a picture's squares, pointing out:
+  roofs, rays, petals, fins, spikes, crown points and bunting, in equilateral and tall triangles.
+- **More animals and treats.** A cat, a bunny, an owl, a penguin, a whale, a snail, a turtle, a bee, a frog, a
+  strawberry, an ice cream, balloons, a kite, a present, a little car and a sunflower; and shapes that stand up: a cube
+  on a cube, three pyramids, colour stairs, a house with a garden.
+- **Checker.** R5 counts how high a tile reaches, so a big square standing up is two layers tall, and a roof can go on
+  in the same step as the walls it rests on.
+- The plan for what comes next, Monster trucks, is in `plans/2026-10-07-tots-and-trucks.md`.
+
 ## 2.5.0 · 7 Oct 2026
 
 A new age band, 0–3, for grown-ups who build for babies and toddlers (313 projects in all).

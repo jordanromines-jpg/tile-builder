@@ -71,7 +71,8 @@ Builder"; the evidence behind each number is there.
 
 0–3 (2.5) is for grown-ups who build for babies and toddlers: mosaics in bright colours (a rainbow, a heart, a happy
 face, a duck, a colour wheel) and simple shapes (a cube, a pyramid, a rainbow tower). Its shelf comes last unless it is
-the band picked.
+the band picked. 2.6 doubles it to 64 and leans on the big squares (a whole robot's head, a sun, a big cube, a tunnel
+for a toy car) and on triangles laid against the squares' edges for roofs, rays, petals, fins and spikes.
 
 Project names are meant to make children laugh (the Burping Volcano, the Castle of Infinite Snacks); the engineering
 underneath is real, and every project passes the checker, including its rule that every build holds up like real

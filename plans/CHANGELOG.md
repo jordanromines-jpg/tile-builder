@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-07
 
+- `2026-10-07-tots-and-trucks.md`: build log, Part A done (#31).
 - `2026-10-07-tots-and-trucks.md`: new plan. 2.6 adds 32 more 0–3 builds and uses the big squares well; 2.7 and 2.8 add Monster trucks for 1:64 trucks (about 50 builds, ramps, big air, drops 7–8 high and crashables, shown as a Library shelf plus a filter).
 
 ## 2026-10-02

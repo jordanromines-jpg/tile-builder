@@ -173,6 +173,9 @@ function checkWithLeg(project: Project, leg: number): Problem[] {
       const next = a.onTable[t] || [...a.meets[t].keys()].some((j) => built.has(j));
       if (!next) out.push({ rule: "R4", step: k, tile: t, message: "this tile meets nothing built so far" });
       if (a.layer[t] > top + 1) out.push({ rule: "R5", step: k, tile: t, message: `this tile is on layer ${a.layer[t]}, but the top so far is layer ${top}` });
+      // the top so far is the highest layer a placed tile reaches, counted tile by tile in the step's order (2.6):
+      // a big square standing up is two layers tall, and a roof laid across walls placed in the same step is fine
+      top = Math.max(top, a.layer[t], Math.ceil(Math.max(...a.polys[t].map((v) => v[1])) - 1e-3) - 1);
     }
     const gk = grounded(a, built);
     for (const t of built) if (!gk.has(t) && all.has(t) && g.has(t)) out.push({ rule: "R3", step: k, tile: t, message: "after this step, this tile is not joined to the table" });
@@ -180,7 +183,6 @@ function checkWithLeg(project: Project, leg: number): Problem[] {
       const why = standsProblem(project, a, t, built);
       if (why) out.push({ rule: "R6", step: k, tile: t, message: why });
     }
-    top = Math.max(top, ...step.tiles.filter((t) => t < n).map((t) => a.layer[t]));
   });
 
   // R7: whole pyramids, one step each

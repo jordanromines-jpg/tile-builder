@@ -235,3 +235,79 @@ export function rowsCheck(rows: string[]) {
   });
   return rows;
 }
+
+/* ---------- 2.6: points, big-square pictures and big-square shapes ---------- */
+
+export type Edge = "top" | "right" | "bottom" | "left";
+
+export interface Point {
+  /** the square-grid cell the triangle sits against, [column, row], rows counted from the top */
+  cell: [number, number];
+  edge: Edge;
+  colour: string;
+  shape?: "tri-equilateral" | "tri-isosceles-tall";
+}
+
+/** Triangles laid flat against the outside edge of a picture's cells, pointing away from them: roofs, rays, petals,
+    fins, spikes, crown points and bunting. `rows` is the picture's height in cells, as for `squareMosaic`. One step;
+    the words are the author's. */
+export function points(b: Builder, rows: number, pts: Point[], say: string, x0 = 0, y0 = 0) {
+  if (pts.length > MAX_STEP) throw new Error(`${pts.length} points in one step`);
+  for (const p of pts) {
+    const x = x0 + p.cell[0];
+    const y = y0 + rows - 1 - p.cell[1];
+    const c = colourOf(p.colour);
+    const s = p.shape ?? "tri-equilateral";
+    // each pair runs so that the outside of the cell is on its left
+    const [a, z]: [[number, number], [number, number]] =
+      p.edge === "top" ? [[x, y + 1], [x + 1, y + 1]] : p.edge === "right" ? [[x + 1, y + 1], [x + 1, y]] : p.edge === "bottom" ? [[x + 1, y], [x, y]] : [[x, y], [x, y + 1]];
+    b.on(s, c, a, z);
+  }
+  b.step(say);
+}
+
+/** A picture drawn in big squares: each token of `rows` is a big square (R O Y G B P) or "." for none, and becomes the
+    2 × 2 cells `squareMosaic` reads. Mix in small squares by editing the result. */
+export function bigCells(rows: string[]): string[] {
+  const out: string[] = [];
+  for (const r of rows) {
+    const t = r.trim().split(/\s+/);
+    out.push(t.map((k) => (k === "." ? ". ." : `${k}+ -`)).join(" "));
+    out.push(t.map((k) => (k === "." ? ". ." : "- -")).join(" "));
+  }
+  return out;
+}
+
+const Q = Math.PI / 2;
+
+/** A big square lying flat with its corner at (x, y, z), covering x..x+2 and z..z+2. */
+export function bigFlat(b: Builder, colour: Colour, x: number, y: number, z: number) {
+  return b.add("square-large", colour, [x, y, z + 2], [-Q, 0]);
+}
+
+/** Four big squares standing round the 2 × 2 cell at (x, z), at height y: front, right, back, left. */
+export function bigRing(b: Builder, colour: Colour, x: number, z: number, y: number) {
+  b.wallX("square-large", colour, x, y, z + 2);
+  b.wallZ("square-large", colour, x + 2, y, z);
+  b.wallX("square-large", colour, x, y, z);
+  b.wallZ("square-large", colour, x, y, z);
+}
+
+/** A big cube: a big square flat, four standing round it, one on top. Three steps, six big squares. */
+export function bigCube(b: Builder, colour: Colour, x: number, z: number, says: [string, string, string]) {
+  bigFlat(b, colour, x, 0, z);
+  b.step(says[0]);
+  bigRing(b, colour, x, z, 0);
+  b.step(says[1]);
+  bigFlat(b, colour, x, 2, z);
+  b.step(says[2]);
+}
+
+/** A tunnel along x: two big squares standing face to face, two apart, and one across the top, in one step. */
+export function bigTunnel(b: Builder, colour: Colour, roof: Colour, x: number, z: number, say: string) {
+  // one step: the two walls only stand once the roof joins them
+  b.wallX("square-large", colour, x, 0, z + 2);
+  b.wallX("square-large", colour, x, 0, z);
+  bigFlat(b, roof, x, 2, z);
+  b.step(say);
+}
