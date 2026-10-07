@@ -93,8 +93,10 @@ export function ramp(b: Builder, colour: Colour, at: At, dir: Dir, rise: number,
     const join = move(at, up, (h * per) * run, h);
     const r = rect(join, up, 1, right, lanes);
     const c = o.support ?? "blue";
-    for (let k = 0; k < at.y + h; k++) b.room(c, r.x0, r.z0, r.w, r.d, k);
-    b.step(at.y + h === 1 ? `Stand a ring of squares where the ramp will rest, one square high.` : `Build a tower of rings ${at.y + h} squares high where the ramp will rest.`);
+    for (let k = 0; k < at.y + h; k++) {
+      b.room(c, r.x0, r.z0, r.w, r.d, k);
+      b.step(k === 0 ? `Stand a ring of ${2 * (r.w + r.d)} squares where the ramp will rest${at.y + h > 1 ? `: the first of ${at.y + h}` : ""}.` : `Another ring on top: ${k + 1} high.`);
+    }
   }
   for (let k = 0; k < rise * per; k++) {
     const base = move(at, up, k * run, k * lift);
@@ -153,12 +155,24 @@ export function fence(b: Builder, colour: Colour, x0: number, z0: number, w: num
   const sides = [w, d, w, d];
   const order = [1, 2, 3, 0];
   const starts = [0, w, w + d, 2 * w + d];
+  const all = Array.from({ length: 2 * (w + d) }, (_, i) => i);
   for (const s of order) {
     const keep = Array.from({ length: sides[s] }, (_, i) => starts[s] + i).filter((i) => !skip.includes(i));
-    if (!keep.length) continue;
-    const all = Array.from({ length: 2 * (w + d) }, (_, i) => i);
-    b.room(colour, x0, z0, w, d, 0, all.filter((i) => !keep.includes(i)));
-    b.step(`Stand squares edge to edge along the ${["front", "right", "back", "left"][s]} of the arena.`);
+    // unbroken runs either side of a gate, eight at a time at most, so every wall stands beside another
+    const runs: number[][] = [];
+    for (const i of keep) {
+      const last = runs.at(-1);
+      if (last && last.at(-1) === i - 1) last.push(i);
+      else runs.push([i]);
+    }
+    let first = true;
+    for (const run of runs)
+      for (let c = 0; c < run.length; c += 8) {
+        const part = run.slice(c, c + 8);
+        b.room(colour, x0, z0, w, d, 0, all.filter((i) => !part.includes(i)));
+        b.step(first ? `Stand squares edge to edge along the ${["front", "right", "back", "left"][s]} of the arena.` : "Carry on along the same side, edge to edge.");
+        first = false;
+      }
   }
 }
 

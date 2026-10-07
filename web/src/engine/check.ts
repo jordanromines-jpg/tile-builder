@@ -210,7 +210,7 @@ function checkWithLeg(project: Project, leg: number): Problem[] {
 }
 
 /** R9: the steps and size fit the project's age. A whole pyramid in one step counts as one group at every age; in a
-    Monster trucks build (2.7), so do a whole ring of four walls, a whole run of ramp tiles and a step of big squares (a
+    Monster trucks build (2.7), so do a whole ring of walls, a whole run of ramp tiles and a step of big squares (a
     tunnel or a tower section, which only stand together). */
 function checkAge(project: Project, legs: number[]): Problem[] {
   const out: Problem[] = [];
@@ -224,10 +224,12 @@ function checkAge(project: Project, legs: number[]): Problem[] {
     const trucks = project.theme === "trucks";
     const isRamp = trucks && s.tiles.every((t) => project.placed[t]?.role === "ramp");
     const isBig = trucks && s.tiles.every((t) => project.placed[t]?.shape === "square-large");
-    const isRing = trucks && s.tiles.length === 4 && s.tiles.every((t) => a.orient[t] === "standing" && s.tiles.filter((u) => a.meets[t]?.has(u)).length >= 2);
+    const isRing = trucks && s.tiles.length >= 4 && s.tiles.every((t) => a.orient[t] === "standing" && s.tiles.filter((u) => a.meets[t]?.has(u)).length >= 2);
     if (s.tiles.length > rule.maxTilesPerStep && !isPyramid && !isRamp && !isRing && !isBig) out.push({ rule: "R9", step: k, message: `${s.tiles.length} tiles in one step; age ${rule.label} takes at most ${rule.maxTilesPerStep}` });
   });
-  if (project.age === "a" && !project.flat && Math.max(...a.layer) > 1) out.push({ rule: "R9", message: "a 3–5 project lies flat or has at most two layers" });
+  // a 3–5 Monster trucks build may have a big-square tunnel or a crush car on a ring: three layers (2.7)
+  const most = project.theme === "trucks" ? 2 : 1;
+  if (project.age === "a" && !project.flat && Math.max(...a.layer) > most) out.push({ rule: "R9", message: `a 3–5 project lies flat or has at most ${most + 1} layers` });
   return out;
 }
 

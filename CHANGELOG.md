@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.7.0 · 7 Oct 2026
+
+Monster trucks: a section of the site for 1:64 Monster Jam trucks, for every age (360 builds in all).
+
+- **A Monster trucks shelf and filter.** The Library has a Monster trucks shelf after the chosen age's shelves, and a
+  truck chip on the theme filter that shows only truck builds, by age.
+- **15 builds to start**, three for each age: a little ramp and road, a knock-down tower and a big-square garage for
+  0–3; a first jump, a crush-car jump and a tunnel for 3–5; big air on two lanes, the crush-car row and a ramp to the
+  roof for 6–8; a mega ramp four high, a five-high tower drop and crash-test city for 9–10; and for 11–16 the 8-high
+  drop tower, a mega ramp from eight high with a kicker and a gap, and the Monster stadium (16 × 12 squares, more than
+  a square metre, with a tunnel gate, a big-square jump, crush cars, a wall to smash and dominoes).
+- **Ramps that hold a truck.** A new checker rule, R11: ramps are 30°, rest on the table, a support or the next ramp
+  at both ends, and never run more than two tiles without a support underneath. Crash obstacles (crush cars, walls,
+  dominoes) may wobble: they skip R10, but must stand while they are built.
+- **A track kit** (`web/src/projects/track-kit.ts`): ramps with their support towers, kickers, towers and the 8-high
+  big-square tower, lanes, crush cars, fences, dominoes, walls to smash, arena walls and tunnels.
+- Truck builds are bigger than the other builds of their age (11–16: 100 to 420 tiles, up to four 100-piece sets);
+  a whole ring of walls, a whole ramp or a step of big squares counts as one group.
+
 ## 2.6.0 · 7 Oct 2026
 
 32 more builds for 0–3 (64 in the band, 345 in all), and much more use of the big squares and the triangles.

@@ -74,6 +74,21 @@ face, a duck, a colour wheel) and simple shapes (a cube, a pyramid, a rainbow to
 the band picked. 2.6 doubles it to 64 and leans on the big squares (a whole robot's head, a sun, a big cube, a tunnel
 for a toy car) and on triangles laid against the squares' edges for roofs, rays, petals, fins and spikes.
 
+## Monster trucks (2.7)
+
+A section of its own, a Monster trucks shelf on the Library and a filter chip, for every age: arenas, ramps, jumps,
+drops and crashes for 1:64 Monster Jam trucks (about 7–8 cm long). One small square is one lane, a big square two.
+
+- **Ramps work.** Every ramp is 30°: a square rises half a square, a big square a whole one. A ramp rests on a ring
+  of walls at every whole height, so a chain of tiles never sags under a truck (checker rule R11).
+- **Big air and drops.** Kickers launch a truck over a gap onto a landing ramp; mega ramps and drop towers start eight
+  squares up.
+- **Things to crash.** Crush cars, walls of doom, dominoes and skittles are built to be knocked down; the checker lets
+  them wobble (they skip R10) but they must stand while they are built.
+- **Big.** The biggest builds are wider than a metre and take up to four 100-piece sets.
+- **Safety.** Crashing is the point, but trucks are driven, not thrown. 0–3 builds are for a grown-up to build and
+  drive, as for the rest of that band.
+
 Project names are meant to make children laugh (the Burping Volcano, the Castle of Infinite Snacks); the engineering
 underneath is real, and every project passes the checker, including its rule that every build holds up like real
 tiles (2.3): roofs rest on walls, nothing hangs by one edge, and no wall stands without something bracing it.

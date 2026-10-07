@@ -410,7 +410,22 @@
   "projects/baby-big-rocket.webp",
   "projects/baby-hedgehog.webp",
   "projects/baby-pointy-crown.webp",
-  "projects/baby-petal-flower.webp"
+  "projects/baby-petal-flower.webp",
+  "projects/truck-little-ramp.webp",
+  "projects/truck-knock-down-tower.webp",
+  "projects/truck-big-square-garage.webp",
+  "projects/truck-first-jump.webp",
+  "projects/truck-crush-car-jump.webp",
+  "projects/truck-tunnel.webp",
+  "projects/truck-big-air-two-lanes.webp",
+  "projects/truck-crush-car-row.webp",
+  "projects/truck-ramp-to-the-roof.webp",
+  "projects/truck-mega-ramp-four.webp",
+  "projects/truck-tower-drop-five.webp",
+  "projects/truck-crash-test-city.webp",
+  "projects/truck-drop-tower-eight.webp",
+  "projects/truck-mega-ramp-eight.webp",
+  "projects/truck-monster-stadium.webp"
  ],
  "projects": {
   "fish": "376e48b7",
@@ -757,6 +772,21 @@
   "baby-big-rocket": "8b57b137",
   "baby-hedgehog": "3d731aa5",
   "baby-pointy-crown": "b72c496d",
-  "baby-petal-flower": "162273a7"
+  "baby-petal-flower": "162273a7",
+  "truck-little-ramp": "71ff042c",
+  "truck-knock-down-tower": "c6ff3380",
+  "truck-big-square-garage": "3bbeb69b",
+  "truck-first-jump": "488ae1e2",
+  "truck-crush-car-jump": "5bd993ec",
+  "truck-tunnel": "5c3ba3b2",
+  "truck-big-air-two-lanes": "2e98c23b",
+  "truck-crush-car-row": "f9251b87",
+  "truck-ramp-to-the-roof": "29325a03",
+  "truck-mega-ramp-four": "16de9682",
+  "truck-tower-drop-five": "a2c1685c",
+  "truck-crash-test-city": "703bcb6a",
+  "truck-drop-tower-eight": "aa518fc1",
+  "truck-mega-ramp-eight": "ee411922",
+  "truck-monster-stadium": "95f416e2"
  }
 }
