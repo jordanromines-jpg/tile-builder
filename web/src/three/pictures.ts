@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { SHAPES, type Colour, type ShapeId } from "../engine/catalog";
 import type { Project } from "../engine/types";
 import { projectGroup } from "./buildScene";
-import { fitDistance, viewFrom } from "./camera";
+import { fitDistance, lookOf, viewFrom } from "./camera";
 import { frameOf } from "./Model";
 import { lightScene } from "./Stage";
 import { makeTileMaterials, tileGroup } from "./TileMesh";
@@ -96,7 +96,7 @@ export function drawProject(r: THREE.WebGLRenderer, project: Project, leg: numbe
   const aspect = w / h;
   const camera = new THREE.PerspectiveCamera(32, aspect, 0.1, 200);
   const target = new THREE.Vector3(0, Math.min(f.height * 0.38, 2.4), 0);
-  camera.position.copy(viewFrom(target, fitDistance(f.size, aspect, f.height) * 1.08));
+  camera.position.copy(viewFrom(target, fitDistance(f.size, aspect, f.height) * 1.08, 0, lookOf(project)));
   camera.lookAt(target);
   const url = shoot(r, scene, camera, w, h);
   dispose();

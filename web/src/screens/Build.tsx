@@ -212,6 +212,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
                 <SwapNote key={sw.from} from={sw.from} to={sw.to} text={sw.say} />
               ))}
               {match?.note === "best-with-one-brand" && step === 0 && <p className="text-ink-2">{S.build.bestWithOneBrand}</p>}
+              {age === "t" && step === 0 && <p className="text-ink-2">{S.build.forBaby}</p>}
             </div>
             <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} className="min-w-[148px]" />
           </div>

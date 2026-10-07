@@ -11,5 +11,6 @@ import { FRESH } from "./fresh";
 import { AGE_A2 } from "./a2";
 import { AGE_B2 } from "./b2";
 import { AGE_C2 } from "./c2";
+import { AGE_T } from "./tots";
 
-export const PROJECTS: Project[] = [...AGE_A, ...AGE_A2, ...AGE_B, ...AGE_B2, castle, ...AGE_C, ...AGE_C2, ...AGE_D, ...AGE_D_BIG, ...MORE, ...FRESH];
+export const PROJECTS: Project[] = [...AGE_A, ...AGE_A2, ...AGE_B, ...AGE_B2, castle, ...AGE_C, ...AGE_C2, ...AGE_D, ...AGE_D_BIG, ...MORE, ...FRESH, ...AGE_T];

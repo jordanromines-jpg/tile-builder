@@ -60,14 +60,18 @@ A project belongs to one age band. The age picker on the Library chooses which s
 the project's band sets how its build mode behaves. From `child-development.md`, the table "What this means for Tile
 Builder"; the evidence behind each number is there.
 
-| | 3–5 | 6–8 | 9–10 | 11–16 (2.1) |
-|---|---|---|---|---|
-| New tiles a step | 1 | up to 3 | up to 4, or one ring of four | up to 6, or one pyramid |
-| Tiles in a project | 3 to 12 | 12 to 40 | 30 to 100 | 60 to 200: most need two 100-piece sets |
-| The 3D model | Still, from the child's side; ◀ ▶ turn it a quarter at a time; never turns by itself during a step (D10) | ◀ ▶ and drag to turn; back to the child's side on each new step | Turn and zoom freely; turns slowly on its own until touched | As 9–10 |
-| Read aloud | Off by default (2.0): a tap on Hear again reads the step; a grown-up can turn reading on in Settings | The same | The same, with the words shown | As 9–10 |
-| The grown-up | Builds beside the child; some steps speak to them ("Grown-up, hold the wall") | Nearby; helps if it falls | Optional | Optional; a second pair of hands for tall towers |
-| Smallest kid button | 88 px | 80 px | 64 px | 64 px |
+| | 0–3 (2.5) | 3–5 | 6–8 | 9–10 | 11–16 (2.1) |
+|---|---|---|---|---|---|
+| New tiles a step | up to 12: a row of a mosaic, or one cube or pyramid | 1 | up to 3 | up to 4, or one ring of four | up to 6, or one pyramid |
+| Tiles in a project | 9 to 200: most from one 100-piece set, the biggest pictures from two | 3 to 12 | 12 to 40 | 30 to 100 | 60 to 200: most need two 100-piece sets |
+| The 3D model | Turn and zoom freely; a flat mosaic is seen from the front and well above, the right way up, like a picture | Still, from the child's side; ◀ ▶ turn it a quarter at a time; never turns by itself during a step (D10) | ◀ ▶ and drag to turn; back to the child's side on each new step | Turn and zoom freely; turns slowly on its own until touched | As 9–10 |
+| Read aloud | As 3–5, with the words shown: they are for the grown-up | Off by default (2.0): a tap on Hear again reads the step; a grown-up can turn reading on in Settings | The same | The same, with the words shown | As 9–10 |
+| The grown-up | Builds it, for the baby to look at; the first step says magnet tiles are made for 3 and up: stay close, and put away any cracked tile | Builds beside the child; some steps speak to them ("Grown-up, hold the wall") | Nearby; helps if it falls | Optional | Optional; a second pair of hands for tall towers |
+| Smallest kid button | 64 px | 88 px | 80 px | 64 px | 64 px |
+
+0–3 (2.5) is for grown-ups who build for babies and toddlers: mosaics in bright colours (a rainbow, a heart, a happy
+face, a duck, a colour wheel) and simple shapes (a cube, a pyramid, a rainbow tower). Its shelf comes last unless it is
+the band picked.
 
 Project names are meant to make children laugh (the Burping Volcano, the Castle of Infinite Snacks); the engineering
 underneath is real, and every project passes the checker, including its rule that every build holds up like real

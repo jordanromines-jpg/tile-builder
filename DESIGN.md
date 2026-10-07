@@ -135,8 +135,8 @@ Along the top, never the bottom: Back to the shelf at the left, Hear again besid
 A small lock, 44 px: a grown-up's size on purpose. A tap says "This door is for grown-ups." and opens the gate.
 
 ### Age picker (`AgePicker`)
-Four picture buttons: stacks of one to four tiles with 3–5, 6–8, 9–10 and 11–16 (2.1; it uses the 9–10 sizes and
-controls). Chosen: accent edge and ring. Speaks the age on tap when the voice is on.
+Five picture buttons: one small triangle with 0–3 (2.5), then stacks of one to four tiles with 3–5, 6–8, 9–10 and
+11–16 (2.1). 11–16 and 0–3 use the 9–10 sizes and controls (0–3 is built by a grown-up). Chosen: accent edge and ring. Speaks the age on tap when the voice is on.
 
 ### Theme filter (`ThemeFilter`)
 Round picture chips, All and the eight themes, at the age's target size. Speaks the theme on tap.
@@ -242,6 +242,8 @@ The iPad is the target, so the app does as little as it can while a child waits 
   (`skeleton`), which give the same answer as the full project.
 - **Merged tiles.** In 3D, landed tiles are merged into one mesh per colour and part (frame, glass, rivets); only the
   current step's tiles are separate. A finished model is about 13 draw calls.
+- **Mosaic view (2.5).** Flat 0–3 mosaics use their own camera (`MOSAIC` in `three/camera.ts`): from the front and 60°
+  above, in build mode and in their pictures, so they read the right way up.
 - **Adaptive sharpness.** `PerformanceMonitor` lowers the pixel ratio when frames drop and raises it again after.
 - **Offline.** The app shell, tile chips, fonts and project data are precached; project pictures are cached as they
   are seen and warmed when the iPad is idle.

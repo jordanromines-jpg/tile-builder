@@ -11,7 +11,7 @@ import type { ProjectInfo } from "../projects/serialize";
 import { saveSettings } from "../store/db";
 import { useInventory, useProgress, useSettings } from "../store/hooks";
 import { S } from "../strings";
-import { AgeProvider, AGES } from "../ui/kid/AgeContext";
+import { AgeProvider, SHELF_ORDER } from "../ui/kid/AgeContext";
 import { AgePicker } from "../ui/kid/AgePicker";
 import { EmptyState } from "../ui/kid/EmptyState";
 import { GrownUpsDoor } from "../ui/kid/GrownUpsDoor";
@@ -96,9 +96,9 @@ export function Library() {
       shelves.push({ title: S.library.ready, items: mine.filter((i) => i.match?.state !== "need") });
       shelves.push({ title: S.library.more, items: mine.filter((i) => i.match?.state === "need") });
     } else shelves.push({ title: S.library.forAge(S.kid.ages[age]), items: mine });
-    for (const a of AGES.filter((x) => x !== age)) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
+    for (const a of SHELF_ORDER.filter((x) => x !== age)) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
   } else {
-    for (const a of AGES) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
+    for (const a of SHELF_ORDER) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
   }
   const shown = shelves.filter((s) => s.items.length);
 
