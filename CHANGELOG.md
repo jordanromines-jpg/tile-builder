@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.5.0 · 7 Oct 2026
+
+A new age band, 0–3, for grown-ups who build for babies and toddlers (313 projects in all).
+
+- **32 builds for 0–3.** Mosaics that lie flat on the table, in bright colours: rainbow stripes, a big heart, a happy
+  face, sunshine, a duck, a fish, a ladybird, a butterfly, a colour wheel, a twinkly star, a rainbow triangle, and the
+  Picnic Blanket (140 tiles, with triangle bunting all round). And simple shapes that stand up: a cube and a pyramid,
+  three colour cubes, a rainbow tower, a little house. 9 to 140 tiles; 24 build from one Magna-Tiles 100, and all
+  from two.
+- **A row a step.** A mosaic goes down a row at a time, with the colours read left to right for the grown-up ("10
+  squares, red then yellow, and round again"); triangle rows say which way the first one points.
+- **Seen like a picture.** Flat 0–3 mosaics are shown from the front and well above, in build mode and on their cards,
+  so they read the right way up.
+- **For the grown-up.** Step words always show, the model turns and zooms freely, and the first step says: "For a
+  grown-up to build, for a baby to look at. Magnet tiles are made for ages 3 and up: stay close, and put away any
+  cracked tile."
+- The age picker has five pictures (0–3 is one small triangle); the 0–3 shelf comes last unless it is the band picked.
+
 ## 2.4.0 · 7 Oct 2026
 
 The same app, quicker: it opens faster, the big builds turn smoothly, and the first install downloads far less.

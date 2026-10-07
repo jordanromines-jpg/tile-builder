@@ -16,9 +16,20 @@ const of = (age: Age) => PROJECTS.filter((p) => p.age === age);
 const buildable = (age: Age, set: string) => of(age).filter((p) => matchProject(p, inv(set)).state !== "need").map((p) => p.id);
 
 describe("the projects (plan keys 6h, 6j, 6l)", () => {
-  it("has 16, 36, 64 and 165 projects by age, with unique ids", () => {
-    expect([of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([16, 36, 64, 165]);
+  it("has 32, 16, 36, 64 and 165 projects by age, with unique ids and titles", () => {
+    expect([of("t").length, of("a").length, of("b").length, of("c").length, of("d").length]).toEqual([32, 16, 36, 64, 165]);
     expect(new Set(PROJECTS.map((p) => p.id)).size).toBe(PROJECTS.length);
+    expect(new Set(PROJECTS.map((p) => p.title.toLowerCase())).size).toBe(PROJECTS.length);
+  });
+
+  it("2.5: builds every 0–3 project from two Magna-Tiles 100, and most from one; most lie flat", () => {
+    const two = (() => {
+      const s = setById("magna-100")!;
+      return addSet(inventoryFromSet(s.pieces, s.brand, null), s);
+    })();
+    expect(of("t").filter((p) => matchProject(p, two).state === "need").map((p) => p.id)).toEqual([]);
+    expect(buildable("t", "magna-100").length).toBeGreaterThanOrEqual(20);
+    expect(of("t").filter((p) => p.flat).length).toBeGreaterThanOrEqual(24);
   });
 
   it("builds every 3–5 project from a Magna-Tiles 32", () => {

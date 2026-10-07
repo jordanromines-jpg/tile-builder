@@ -18,13 +18,29 @@ export function fitDistance(size: number, aspect: number, height = size, clear =
   return (r / Math.sin(fov / 2)) * 1.02;
 }
 
-/** The camera position for looking at `target` from `distance` at the three-quarter angle, turned by `yaw`. */
-export function viewFrom(target: THREE.Vector3, distance: number, yaw = 0): THREE.Vector3 {
-  const az = AZIMUTH + yaw;
+export interface Look {
+  azimuth: number;
+  elevation: number;
+}
+
+export const THREE_QUARTER: Look = { azimuth: AZIMUTH, elevation: ELEVATION };
+
+/** 0–3 mosaics (2.5) are pictures lying on the table: seen from the front and well above, so they read the right way
+    up, as a picture does. */
+export const MOSAIC: Look = { azimuth: 0, elevation: (60 * Math.PI) / 180 };
+
+export function lookOf(project: { age: string; flat?: boolean }): Look {
+  return project.age === "t" && project.flat ? MOSAIC : THREE_QUARTER;
+}
+
+/** The camera position for looking at `target` from `distance` at the three-quarter angle (or `look`), turned by
+    `yaw`. */
+export function viewFrom(target: THREE.Vector3, distance: number, yaw = 0, look: Look = THREE_QUARTER): THREE.Vector3 {
+  const az = look.azimuth + yaw;
   return new THREE.Vector3(
-    target.x + distance * Math.cos(ELEVATION) * Math.sin(az),
-    target.y + distance * Math.sin(ELEVATION),
-    target.z + distance * Math.cos(ELEVATION) * Math.cos(az),
+    target.x + distance * Math.cos(look.elevation) * Math.sin(az),
+    target.y + distance * Math.sin(look.elevation),
+    target.z + distance * Math.cos(look.elevation) * Math.cos(az),
   );
 }
 

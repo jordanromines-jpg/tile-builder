@@ -12,6 +12,9 @@ export interface AgeRule {
 }
 
 export const AGE_RULES: Record<Age, AgeRule> = {
+  // 2.5: mosaics and simple shapes for babies and toddlers, built by a grown-up for the baby to look at; a row of a
+  // mosaic is one step, and the bigger pictures take up to two 100-piece sets
+  t: { label: "0–3", maxTilesPerStep: 12, minTiles: 9, maxTiles: 200, view: "free", target: 64 },
   a: { label: "3–5", maxTilesPerStep: 1, minTiles: 3, maxTiles: 12, view: "fixed", target: 88 },
   b: { label: "6–8", maxTilesPerStep: 3, minTiles: 12, maxTiles: 40, view: "buttons", target: 80 },
   c: { label: "9–10", maxTilesPerStep: 4, minTiles: 30, maxTiles: 100, view: "free", target: 64 },

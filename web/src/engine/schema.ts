@@ -7,7 +7,7 @@ import { THEMES } from "./themes";
 export const ShapeIdZ = z.enum(SHAPE_IDS as [string, ...string[]]);
 export const ColourZ = z.enum(COLOURS as [string, ...string[]]);
 export const BrandIdZ = z.enum(BRAND_IDS as [string, ...string[]]);
-export const AgeZ = z.enum(["a", "b", "c", "d"]);
+export const AgeZ = z.enum(["t", "a", "b", "c", "d"]);
 export type Age = z.infer<typeof AgeZ>;
 
 const Vec3 = z.tuple([z.number(), z.number(), z.number()]);

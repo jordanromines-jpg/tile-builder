@@ -14,7 +14,7 @@ import type { Age, Project } from "../engine/types";
 import { softwareGL } from "../gpu";
 import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
-import { easeInOut, fitDistance, FOV, viewFrom } from "./camera";
+import { easeInOut, fitDistance, FOV, lookOf, viewFrom, type Look } from "./camera";
 import { frameOf, Model, releaseShared } from "./Model";
 import { Stage } from "./Stage";
 
@@ -55,7 +55,7 @@ function Turntable({ yaw, still, children }: { yaw: number; still: boolean; chil
 
 /** Eases the camera and where it looks (`target`, from `distance`) to each new view, from wherever it is now; `sweep`
     circles the model once and, ended early or not, eases back to the view. It owns the orbit controls' target. */
-function CameraRig({ target, distance, focusKey, sweep, still }: { target: THREE.Vector3; distance: number; focusKey: number; sweep: boolean; still: boolean }) {
+function CameraRig({ target, distance, focusKey, sweep, still, look }: { target: THREE.Vector3; distance: number; focusKey: number; sweep: boolean; still: boolean; look: Look }) {
   const camera = useThree((s) => s.camera);
   const controls = useThree((s) => s.controls) as OrbitControlsImpl | null;
   const invalidate = useThree((s) => s.invalidate);
@@ -75,7 +75,7 @@ function CameraRig({ target, distance, focusKey, sweep, still }: { target: THREE
 
   useEffect(() => {
     const a = anim.current;
-    const toP = viewFrom(target, distance);
+    const toP = viewFrom(target, distance, 0, look);
     a.fromT.copy(first.current ? target : a.curT);
     a.fromP.copy(first.current ? toP : camera.position);
     a.toT.copy(target);
@@ -110,7 +110,7 @@ function CameraRig({ target, distance, focusKey, sweep, still }: { target: THREE
     let p = a.fromP.clone().lerp(a.toP, e);
     if (a.sweepStart) {
       const s = Math.min(1, (performance.now() - a.sweepStart) / SWEEP_MS);
-      p = viewFrom(t, a.toP.distanceTo(a.toT) * (1 - 0.12 * Math.sin(s * Math.PI)), easeInOut(s) * Math.PI * 2);
+      p = viewFrom(t, a.toP.distanceTo(a.toT) * (1 - 0.12 * Math.sin(s * Math.PI)), easeInOut(s) * Math.PI * 2, look);
       if (s >= 1) {
         a.sweepStart = 0;
         a.dirty = true;
@@ -264,7 +264,8 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
     window.__viewer = { yaw: () => stats.yaw, age, autoRotate: () => autoRotate, frames: () => stats.frames, calls: () => stats.calls };
   }, [age, autoRotate]);
 
-  const start = viewFrom(aim, distance);
+  const look = lookOf(project);
+  const start = viewFrom(aim, distance, 0, look);
   return (
     <div ref={wrap} className="h-full w-full" role="img" aria-label={label} style={{ touchAction: age === "a" ? "pan-y" : "none" }}>
       <Canvas dpr={dpr} frameloop="demand" camera={{ position: start.toArray(), fov: FOV, near: 0.1, far: 200 }} gl={{ antialias: true }}>
@@ -286,7 +287,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
             makeDefault
           />
         )}
-        <CameraRig target={aim} distance={distance} focusKey={stepKey} sweep={sweep} still={still} />
+        <CameraRig target={aim} distance={distance} focusKey={stepKey} sweep={sweep} still={still} look={look} />
         <Offset y={offsetY} />
         <Spin on={autoRotate} />
         <Counter />

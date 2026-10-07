@@ -30,6 +30,16 @@ test("with no tiles yet, the shelves still open and a line sends a grown-up to t
   await expect(page.getByRole("button", { name: /^A fish, 1 star$/ })).toBeVisible();
 });
 
+test("2.5: 0 to 3 puts the mosaics first; one opens with the grown-up's line and a row a step", async ({ page }) => {
+  await ready(page, "Magna-Tiles Clear Colors 100");
+  await page.getByRole("button", { name: "0 to 3" }).click();
+  await (await swipeTo(page, "You can build these", /^Rainbow stripes, 1 star, You can build it!/)).click();
+  await expect(page).toHaveURL(/#\/build\/baby-rainbow-stripes$/);
+  await expect(page.getByText("For a grown-up to build, for a baby to look at.")).toBeVisible();
+  await expect(page.getByText("Top row, left to right: 6 red squares.")).toBeVisible();
+  await expect(page.getByRole("list", { name: "Step 1 of 6" })).toBeVisible();
+});
+
 test("the theme filter shows one theme", async ({ page }) => {
   await ready(page);
   await page.getByRole("button", { name: "Space", exact: true }).click();

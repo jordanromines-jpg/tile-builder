@@ -2,17 +2,21 @@
    It sets the smallest target and the label size (PRODUCT.md, "The age bands"). */
 import { createContext, useContext, type ReactNode } from "react";
 
-export type Age = "a" | "b" | "c" | "d";
-export const AGES: Age[] = ["a", "b", "c", "d"];
+export type Age = "t" | "a" | "b" | "c" | "d";
+export const AGES: Age[] = ["t", "a", "b", "c", "d"];
 
-export const TARGET: Record<Age, number> = { a: 88, b: 80, c: 64, d: 64 };
+/** The Library's shelves after the chosen one: 0–3 (2.5), built by grown-ups, comes last. */
+export const SHELF_ORDER: Age[] = ["a", "b", "c", "d", "t"];
 
-/** 11–16 (2.1) uses the 9–10 sizes and controls: free orbit, zoom, step jumps. */
-const SIZES: Record<Age, "a" | "b" | "c"> = { a: "a", b: "b", c: "c", d: "c" };
+export const TARGET: Record<Age, number> = { t: 64, a: 88, b: 80, c: 64, d: 64 };
 
-/** 9 and up: the model turns and zooms freely, and the step dots jump. */
+/** 11–16 (2.1) uses the 9–10 sizes and controls: free orbit, zoom, step jumps. So does 0–3 (2.5): a grown-up builds
+    those, for a baby to look at. */
+const SIZES: Record<Age, "a" | "b" | "c"> = { t: "c", a: "a", b: "b", c: "c", d: "c" };
+
+/** 9 and up, and 0–3 (built by a grown-up): the model turns and zooms freely, and the step dots jump. */
 export function older(age: Age): boolean {
-  return age === "c" || age === "d";
+  return age === "c" || age === "d" || age === "t";
 }
 export const PRIMARY = 112;
 
