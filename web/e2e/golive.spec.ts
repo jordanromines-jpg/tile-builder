@@ -1,6 +1,6 @@
 /* Verification at go-live (plan key 8a): V6 offline, V7 storage and backup, V9 two taps, V11 nothing leaves. */
 import { expect, test } from "@playwright/test";
-import { dismissFirstRun, openGate, savedStep, useSet } from "./helpers";
+import { dismissFirstRun, openGate, savedStep, swipeTo, useSet } from "./helpers";
 
 test("V6: after one load, with the network off, every route opens and the fish builds to the end", async ({ page, context }) => {
   await useSet(page, "Magna-Tiles Clear Colors 32");
@@ -68,7 +68,7 @@ test("V9: from a cold start with tiles and an age, one tap on a card shows step 
   await page.getByRole("button", { name: "3 to 5" }).click();
   const cold = await context.newPage();
   await cold.goto("#/");
-  await cold.getByRole("button", { name: /^A flower,/ }).click();
+  await (await swipeTo(cold, "You can build these", /^A flower,/)).click();
   await expect(cold.getByRole("list", { name: "Step 1 of 6" })).toBeVisible();
 });
 

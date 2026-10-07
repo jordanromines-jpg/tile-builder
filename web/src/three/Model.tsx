@@ -5,18 +5,20 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
-import type { ShapeId } from "../engine/catalog";
+import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+import type { Colour, ShapeId } from "../engine/catalog";
 import { worldPolygon } from "../engine/geometry";
 import type { Project } from "../engine/types";
 import { DROP_S, DROP_S_REDUCED, fade, GHOST_S, GLOW_S, mulberry, snap, stepProgress } from "./anim";
 import { placeTile } from "./buildScene";
-import { BASE_OPACITY, releaseTiles, type TileMaterials } from "./TileMesh";
+import { BASE_OPACITY, makeTileMaterials, releaseTiles, rivetMaterial, type TileMaterials } from "./TileMesh";
 import { releaseTextures } from "./textures";
 import { buildGeometry, cssColour } from "./tile";
 
 const BLACK = new THREE.Color(0, 0, 0);
 
 interface TileObj {
+  colour: Colour;
   group: THREE.Group;
   ghost: THREE.Group;
   mats: TileMaterials;
@@ -66,8 +68,76 @@ function buildTiles(project: Project, leg: number, instead: Record<number, Shape
     ghost.position.copy(pT);
     ghost.quaternion.copy(qT);
     ghost.visible = false;
-    return { group, ghost, mats, pT, qT, pS, qS };
+    return { colour: raw.colour ?? "blue", group, ghost, mats, pT, qT, pS, qS };
   });
+}
+
+/** The tiles that have landed, drawn as one mesh a colour and part (2.4): a 150-tile build is a handful of draw calls
+    instead of hundreds. Only this step's tiles, still moving or glowing, are drawn one by one. */
+class Settled {
+  readonly group = new THREE.Group();
+  count = 0;
+  private mats = new Map<Colour, TileMaterials>();
+  glass: THREE.Material[] = [];
+
+  materials(colour: Colour): TileMaterials {
+    let m = this.mats.get(colour);
+    if (!m) this.mats.set(colour, (m = makeTileMaterials(colour)));
+    return m;
+  }
+
+  /** Merge tiles 0 to n − 1, each where it lands. */
+  rebuild(tiles: TileObj[], n: number, root: THREE.Group) {
+    this.clearMeshes();
+    this.count = n;
+    const buckets = new Map<string, { geos: THREE.BufferGeometry[]; material: THREE.Material; part: "frame" | "glass" | "rivet" }>();
+    root.updateMatrixWorld(true);
+    const toRoot = root.matrixWorld.clone().invert();
+    for (const tile of tiles.slice(0, n)) {
+      tile.group.position.copy(tile.pT);
+      tile.group.quaternion.copy(tile.qT);
+      tile.group.updateMatrixWorld(true);
+      const shared = this.materials(tile.colour);
+      tile.group.traverse((o) => {
+        if (!(o instanceof THREE.Mesh)) return;
+        const part = o.material === tile.mats.frame ? "frame" : o.material === tile.mats.glass ? "glass" : "rivet";
+        const key = part === "rivet" ? "rivet" : `${part}:${tile.colour}`;
+        let b = buckets.get(key);
+        if (!b) buckets.set(key, (b = { geos: [], material: part === "rivet" ? rivetMaterial() : shared[part], part }));
+        b.geos.push((o.geometry as THREE.BufferGeometry).clone().applyMatrix4(new THREE.Matrix4().multiplyMatrices(toRoot, o.matrixWorld)));
+      });
+    }
+    this.glass = [];
+    buckets.forEach((b) => {
+      const merged = mergeGeometries(b.geos);
+      b.geos.forEach((g) => g.dispose());
+      if (!merged) return;
+      const mesh = new THREE.Mesh(merged, b.material);
+      mesh.castShadow = b.part !== "rivet";
+      mesh.receiveShadow = b.part === "frame";
+      if (b.part === "glass") {
+        mesh.renderOrder = 1;
+        this.glass.push(b.material);
+      }
+      this.group.add(mesh);
+    });
+  }
+
+  private clearMeshes() {
+    for (const m of [...this.group.children] as THREE.Mesh[]) {
+      m.geometry.dispose();
+      this.group.remove(m);
+    }
+  }
+
+  dispose() {
+    this.clearMeshes();
+    this.mats.forEach((m) => {
+      m.frame.dispose();
+      m.glass.dispose();
+    });
+    this.mats.clear();
+  }
 }
 
 export interface ModelProps {
@@ -93,11 +163,14 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
   const frame = useMemo(() => frameOf(project, leg), [project, leg]);
   const progress = useRef<number[]>([]);
   const root = useMemo(() => new THREE.Group(), []);
+  const settledMesh = useMemo(() => new Settled(), []);
   const lit = useRef(new Set<number>());
   const since = useRef(0);
 
   useEffect(() => {
     root.clear();
+    root.add(settledMesh.group);
+    settledMesh.rebuild(tiles, 0, root);
     tiles.forEach((t) => {
       root.add(t.group);
       root.add(t.ghost);
@@ -109,10 +182,11 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
         t.mats.frame.dispose();
         t.mats.glass.dispose();
       });
+      settledMesh.dispose();
     };
     // settled is read only when the tiles are built
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tiles, root, invalidate]);
+  }, [tiles, root, settledMesh, invalidate]);
 
   useEffect(() => {
     lit.current = new Set(current.filter((t) => t < shown));
@@ -133,7 +207,17 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
     const pulse = pulsing ? 0.16 + 0.1 * Math.sin(t * Math.PI * 2 * 0.7) : 0.16;
     const quiet = lit.current.size > 0 && shown < tiles.length;
     if (ghostMat) ghostMat.opacity = pulsing ? 0.18 + 0.14 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2 * 1.1)) : 0.28;
+    // the tiles that have landed and are not this step's: merged, and drawn in one go
+    let cut = 0;
+    while (cut < shown && cut < tiles.length && (p[cut] ?? 0) >= 1 && !lit.current.has(cut)) cut++;
+    if (cut !== settledMesh.count) settledMesh.rebuild(tiles, cut, root);
+    for (const g of settledMesh.glass) g.opacity = BASE_OPACITY.glass * (quiet ? 0.7 : 1);
     tiles.forEach((tile, i) => {
+      if (i < cut) {
+        tile.group.visible = false;
+        tile.ghost.visible = false;
+        return;
+      }
       const k = p[i] ?? 0;
       const mine = lit.current.has(i);
       tile.ghost.visible = mine && k < 1;

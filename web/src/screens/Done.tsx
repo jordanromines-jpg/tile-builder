@@ -4,7 +4,7 @@
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { matchProject } from "../engine/match";
-import { projectById } from "../projects";
+import { useProject } from "../projects/load";
 import { say, stop } from "../speech/say";
 import { clearStep } from "../store/db";
 import { useInventory } from "../store/hooks";
@@ -20,7 +20,7 @@ import { SpeakButton } from "../ui/kid/SpeakButton";
 
 export function Done() {
   const { pid } = useParams({ strict: false }) as { pid: string };
-  const project = projectById(pid);
+  const project = useProject(pid);
   const navigate = useNavigate();
   const inv = useInventory();
   const [celebrating, setCelebrating] = useState(true);
@@ -32,7 +32,8 @@ export function Done() {
     return () => stop();
   }, [project]);
 
-  if (!project) return <Navigate to="/" />;
+  if (project === null) return <Navigate to="/" />;
+  if (!project) return <main className="h-dvh bg-stage" aria-busy="true" />;
   const instead = inv && Object.keys(inv.counts).length ? matchProject(project, inv).instead : {};
 
   return (

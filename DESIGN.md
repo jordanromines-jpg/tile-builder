@@ -152,7 +152,7 @@ and tilts a little when pressed. One tap target; it goes straight into build mod
 
 ### Shelf (`Shelf`)
 A row of cards standing on a wooden plank, scrolling by swipe with snap, and a round ▶ button at the age's target size
-for a child who taps.
+for a child who taps. Draws 12 cards at a time and adds more as it is swiped (2.4).
 
 ### Step dots (`StepDots`)
 One dot a step: done ones filled, this one large and ringed, the rest hollow. Countable; never a progress bar. For 9–10
@@ -230,6 +230,21 @@ Words by age, used naturally inside steps, never drilled (`child-development.md`
 | 9–10 | net, vertex, equilateral, isosceles, parallel | quarter turn, mirror image, top view, side view | faces, edges and vertices; halves and quarters |
 
 Grown-up lines in a 3–5 step speak to the grown-up by name: "Grown-up, hold the wall while your builder adds the roof."
+
+## Performance
+
+The iPad is the target, so the app does as little as it can while a child waits (2.4).
+
+- **Projects as data.** The plans in `web/src/projects/` run at build time (`npm run projects`) and write
+  `public/projects/<id>.json` plus `src/projects/catalog.json`. The app never imports the plans; a unit test keeps the
+  JSON in step with them. Run `npm run projects` after changing a plan.
+- **Matching from counts.** The Library and the grown-ups' counts match against stand-ins built from the catalogue
+  (`skeleton`), which give the same answer as the full project.
+- **Merged tiles.** In 3D, landed tiles are merged into one mesh per colour and part (frame, glass, rivets); only the
+  current step's tiles are separate. A finished model is about 13 draw calls.
+- **Adaptive sharpness.** `PerformanceMonitor` lowers the pixel ratio when frames drop and raises it again after.
+- **Offline.** The app shell, tile chips, fonts and project data are precached; project pictures are cached as they
+  are seen and warmed when the iPad is idle.
 
 ## Accessibility
 

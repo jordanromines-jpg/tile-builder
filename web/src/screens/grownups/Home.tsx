@@ -4,7 +4,7 @@ import { useState } from "react";
 import { canBuildCount, inventoryTotal } from "../../engine/match";
 import type { Backup } from "../../engine/types";
 import { setTheme } from "../../ground";
-import { PROJECTS } from "../../projects";
+import { PROJECT_INFO, SKELETONS } from "../../projects/load";
 import { exportBackup, readBackup, restoreBackup } from "../../store/backup";
 import { useInventory, useSettings } from "../../store/hooks";
 import { BackupCard } from "../../ui/grownups/BackupCard";
@@ -23,12 +23,12 @@ export function GrownupsHome() {
   const toast = useToast();
   const [pending, setPending] = useState<{ backup: Backup; summary: string } | null>(null);
   const tiles = inv ? inventoryTotal(inv) : 0;
-  const can = inv ? canBuildCount(PROJECTS, inv) : 0;
+  const can = inv ? canBuildCount(SKELETONS, inv) : 0;
   const card = "flex min-h-11 flex-col rounded-lg border border-line bg-surface-2 p-4 font-bold";
   return (
     <Frame title="For grown-ups">
       <p className="text-[length:var(--fs-parent-heading)]" data-testid="summary">
-        {summaryLine(tiles, can, PROJECTS.length)}
+        {summaryLine(tiles, can, PROJECT_INFO.length)}
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         <Link to="/grownups/tiles" className={card}>

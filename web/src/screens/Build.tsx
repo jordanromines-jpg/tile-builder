@@ -5,7 +5,8 @@ import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { layerOf, worldPolygon } from "../engine/geometry";
 import { matchProject, type Match } from "../engine/match";
-import { projectById } from "../projects";
+import type { Project } from "../engine/types";
+import { useProject } from "../projects/load";
 import { say, speechEnabled, stop } from "../speech/say";
 import { click } from "../speech/sound";
 import { getStep, saveStep } from "../store/db";
@@ -30,13 +31,14 @@ export const REST_MS = 90_000;
 
 export function Build() {
   const { pid } = useParams({ strict: false }) as { pid: string };
-  const project = projectById(pid);
-  if (!project) return <Navigate to="/" />;
-  return <BuildProject key={pid} pid={pid} />;
+  const project = useProject(pid);
+  if (project === null) return <Navigate to="/" />;
+  // the tiles are loading (a moment, from the iPad's own copy): the empty stage
+  if (!project) return <main className="h-dvh bg-stage" aria-busy="true" />;
+  return <BuildProject key={pid} pid={pid} project={project} />;
 }
 
-function BuildProject({ pid }: { pid: string }) {
-  const project = projectById(pid)!;
+function BuildProject({ pid, project }: { pid: string; project: Project }) {
   const navigate = useNavigate();
   const inv = useInventory();
   const settings = useSettings();

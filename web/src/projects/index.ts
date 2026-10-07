@@ -13,7 +13,3 @@ import { AGE_B2 } from "./b2";
 import { AGE_C2 } from "./c2";
 
 export const PROJECTS: Project[] = [...AGE_A, ...AGE_A2, ...AGE_B, ...AGE_B2, castle, ...AGE_C, ...AGE_C2, ...AGE_D, ...AGE_D_BIG, ...MORE, ...FRESH];
-
-export function projectById(id: string): Project | undefined {
-  return PROJECTS.find((p) => p.id === id);
-}

@@ -2,11 +2,12 @@
    With an age chosen: what you can build now, then what needs a few more tiles, then the other ages. With no age
    yet: one shelf an age, smallest first. One tap on a card goes straight into build mode (D18). */
 import { useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { matchProject, inventoryTotal, type Match } from "../engine/match";
 import type { Theme } from "../engine/themes";
-import type { Age, Project } from "../engine/types";
-import { PROJECTS } from "../projects";
+import type { Age } from "../engine/types";
+import { PROJECT_INFO, SKELETONS } from "../projects/load";
+import type { ProjectInfo } from "../projects/serialize";
 import { saveSettings } from "../store/db";
 import { useInventory, useProgress, useSettings } from "../store/hooks";
 import { S } from "../strings";
@@ -24,13 +25,39 @@ import { FirstRunCard } from "./FirstRunCard";
 const RANK = { can: 0, swap: 1, need: 2 } as const;
 
 interface Item {
-  project: Project;
+  project: ProjectInfo;
   match: Match | null;
 }
 
 /** Buildable first, then with a swap, then short; fewer stars first within each. */
 export function sortItems(items: Item[]): Item[] {
   return [...items].sort((a, b) => (a.match && b.match ? RANK[a.match.state] - RANK[b.match.state] : 0) || a.project.stars - b.project.stars || a.project.title.localeCompare(b.project.title));
+}
+
+/** Cards a shelf draws at first, and how many more each time its end comes near (2.4: a shelf of 165 cards is drawn as
+    it is scrolled, not all at once). */
+export const PAGE = 12;
+
+/** A shelf's cards, drawn a page at a time: a marker after the last drawn card brings the next page when the shelf is
+    scrolled (or ▶ is tapped) to within a screen of it. */
+function LazyCards<T>({ items, card }: { items: T[]; card: (item: T) => ReactNode }) {
+  const [n, setN] = useState(PAGE);
+  const end = useRef<HTMLSpanElement>(null);
+  const more = n < items.length;
+  useEffect(() => {
+    const el = end.current;
+    if (!more || !el) return;
+    if (typeof IntersectionObserver === "undefined") return setN(items.length);
+    const io = new IntersectionObserver((seen) => seen.some((e) => e.isIntersecting) && setN((k) => k + PAGE), { root: el.parentElement, rootMargin: "0px 100% 0px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [more, n, items.length]);
+  return (
+    <>
+      {items.slice(0, n).map(card)}
+      {more && <span ref={end} aria-hidden="true" className="w-px shrink-0" />}
+    </>
+  );
 }
 
 export function Library() {
@@ -43,16 +70,16 @@ export function Library() {
   const hasTiles = !!inv && inventoryTotal(inv) > 0;
 
   const items = useMemo(
-    () => PROJECTS.filter((p) => !theme || p.theme === theme).map((project) => ({ project, match: hasTiles && inv ? matchProject(project, inv) : null })),
+    () => PROJECT_INFO.flatMap((project, i) => (!theme || project.theme === theme ? [{ project, match: hasTiles && inv ? matchProject(SKELETONS[i], inv) : null }] : [])),
     [theme, hasTiles, inv],
   );
-  const themes = useMemo(() => [...new Set(PROJECTS.map((p) => p.theme))], []);
+  const themes = useMemo(() => [...new Set(PROJECT_INFO.map((p) => p.theme))], []);
 
   const card = ({ project, match }: Item) => (
     <ProjectCard
       key={project.id}
       title={project.title}
-      picture={<ProjectPicture project={project} />}
+      picture={<ProjectPicture id={project.id} />}
       stars={project.stars}
       state={match?.state}
       missing={match?.missing}
@@ -88,8 +115,8 @@ export function Library() {
         {!hasTiles && inv && <EmptyState text={S.kid.emptyTiles} banner />}
         {shown.length ? (
           shown.map((s) => (
-            <Shelf key={s.title} title={s.title}>
-              {s.items.map(card)}
+            <Shelf key={`${s.title} ${theme ?? ""}`} title={s.title}>
+              <LazyCards items={s.items} card={card} />
             </Shelf>
           ))
         ) : (

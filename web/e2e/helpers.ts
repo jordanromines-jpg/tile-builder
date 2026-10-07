@@ -68,3 +68,14 @@ export async function savedStep(page: Page, projectId: string, step: number) {
     )
     .toBe(step);
 }
+
+/** Shelves draw their cards as they scroll (2.4): swipe the shelf under this heading along until the card comes. */
+export async function swipeTo(page: Page, shelf: string, card: RegExp) {
+  const row = page.locator("section", { has: page.getByRole("heading", { name: shelf }) }).locator("div.overflow-x-auto");
+  const button = page.getByRole("button", { name: card });
+  for (let i = 0; i < 20 && !(await button.count()); i++) {
+    await row.evaluate((d) => d.scrollTo({ left: d.scrollWidth }));
+    await page.waitForTimeout(150);
+  }
+  return button;
+}

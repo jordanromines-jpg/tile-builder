@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 import { applyTheme } from "./ground";
 import { router } from "./router";
-import { startPwa } from "./pwa";
+import { startPwa, warmPictures } from "./pwa";
 import { OfflineNote, showOfflineNote } from "./OfflineNote";
 import { SettingsSync } from "./SettingsSync";
 import { ToastProvider } from "./ui/grownups/Toast";
@@ -22,3 +22,4 @@ createRoot(document.getElementById("root")!).render(
 );
 
 startPwa(showOfflineNote);
+warmPictures();

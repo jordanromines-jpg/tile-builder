@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.4.0 · 7 Oct 2026
+
+The same app, quicker: it opens faster, the big builds turn smoothly, and the first install downloads far less.
+
+- **Projects are built ahead.** The plans that lay out all 281 builds now run once, when the app is built
+  (`npm run projects`), not on the iPad each time it opens. The app carries a small catalogue (names, ages, stars and
+  tiles by shape) and fetches a project's tiles and steps when it is opened. The main bundle dropped from 888 KB to
+  717 KB; the rest is React, the router, zod and Dexie.
+- **A lighter Library.** Cards are matched against the family's tiles from the catalogue's counts, and each shelf draws
+  12 cards at a time, adding more as it is swiped. The first card shows in 0.77 s instead of 1.16 s (CI, software GL).
+  The portrait iPad no longer opens the 6–8 shelf scrolled to its end.
+- **Smoother 3D.** Tiles that have landed join one mesh per colour, so a finished model takes 13 draw calls instead of
+  261 (the Grand Hexagon Palace) or 157 (the castle). Only the step being built stays as separate tiles, for the
+  drop-in and the glow. The picture sharpness eases down on an iPad that drops frames and comes back when it recovers.
+- **A faster first install.** The offline copy no longer waits for all 281 project pictures (3.99 MB instead of
+  10.4 MB). Pictures are kept as they are seen, and the rest are fetched quietly in the background when the iPad is
+  idle, so everything still works offline.
+
 ## 2.3.0 · 2 Oct 2026
 
 Every build now holds up like real tiles, and there are 100 more to build (281 in all: 16 for 3–5, 36 for 6–8, 64

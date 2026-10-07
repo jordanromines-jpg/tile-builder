@@ -5,7 +5,7 @@ import { BRAND_IDS, BRANDS, COLOURS, COLOUR_NAMES, SHAPE_IDS, SHAPES, TALL_LEG_C
 import { canBuildCount, inventoryTotal } from "../../engine/match";
 import { SETS, type SetPreset } from "../../engine/sets";
 import type { Inventory } from "../../engine/types";
-import { PROJECTS } from "../../projects";
+import { PROJECT_INFO, SKELETONS } from "../../projects/load";
 import { saveInventory } from "../../store/db";
 import { EMPTY_INVENTORY, useInventory } from "../../store/hooks";
 import { addSet, applySet, effectiveLeg, setColourCount, setCount, setTallLeg, toggleBrand } from "../../store/inventory";
@@ -47,7 +47,7 @@ export function Tiles() {
   return (
     <Frame title="Your tiles">
       <p className="text-[length:var(--fs-parent-heading)]" data-testid="summary">
-        {summaryLine(inventoryTotal(inv), canBuildCount(PROJECTS, inv), PROJECTS.length)}
+        {summaryLine(inventoryTotal(inv), canBuildCount(SKELETONS, inv), PROJECT_INFO.length)}
       </p>
 
       <section className="flex flex-col gap-3">
