@@ -6,7 +6,7 @@ approved is written into a plan first and waits for his go; adding detail to an 
 
 ## Start here
 
-`2026-10-02-tile-builder.md` is the plan. A session picking up work reads its build log (the last row says what is
+`2026-10-07-tots-and-trucks.md` is the plan in progress (0–3 batch 2, then Monster trucks); `2026-10-02-tile-builder.md` is the original plan. A session picking up work reads its build log (the last row says what is
 next), then `PRODUCT.md`, `DESIGN.md`, `docs/research/README.md` and `web/README.md`, checks out the commit the log
 names, runs the checks, and starts the next key.
 
@@ -21,6 +21,7 @@ names, runs the checks, and starts the next key.
 
 | Plan | Status | Carries |
 |---|---|---|
+| `2026-10-07-tots-and-trucks.md` | approved 7 Oct 2026, in progress | 2.6 (32 more 0–3 builds, big squares used well), 2.7 and 2.8 (Monster trucks: about 50 builds, engine R11, track kit, Library shelf and filter) |
 | `2026-10-02-tile-builder.md` | approved 2 Oct 2026, in progress | PR 0.1 to 8.1; gates G1 (the brief) and G2 (the mockups) |
 
 ## One file per plan
