@@ -2,7 +2,7 @@
    castle says what it needs; one tap opens build mode. Plates in both themes; axe. */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { useSet } from "./helpers";
+import { swipeTo, useSet } from "./helpers";
 
 async function ready(page: Page, set = "Magna-Tiles Clear Colors 32") {
   await useSet(page, set);
@@ -16,7 +16,8 @@ test("a Magna-Tiles 32 builds the 3–5 shelf; the castle says what it needs; on
   await ready(page);
   const can = page.getByRole("button", { name: /You can build it!/ });
   expect(await can.count()).toBeGreaterThanOrEqual(8);
-  await expect(page.getByRole("button", { name: /^The castle, 3 stars, Need \d+ more/ })).toBeVisible();
+  const castle = await swipeTo(page, "For 9 to 10", /^The castle, 3 stars, Need \d+ more/);
+  await expect(castle).toBeVisible();
   await page.getByRole("button", { name: /^A fish,/ }).click();
   await expect(page).toHaveURL(/#\/build\/fish$/);
 });

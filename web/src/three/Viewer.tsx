@@ -4,7 +4,7 @@
      c (9–10) turn and zoom freely; a slow turn (one in 25 s) until touched, and never under reduced motion
    Each new step eases the view toward the tiles being placed. `sweep` circles the finished model once (the end of a
    build). Performance: pixel ratio at most 2 (1.5 on smaller devices, 1 without a GPU), frames drawn only when something moves. */
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, PerformanceMonitor } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
@@ -24,11 +24,11 @@ const FOCUS_MS = 700;
 const SWEEP_MS = 3400;
 
 /** What the browser tests read through window.__viewer. */
-const stats = { yaw: 0, frames: 0 };
+const stats = { yaw: 0, frames: 0, calls: 0 };
 
 declare global {
   interface Window {
-    __viewer?: { yaw: () => number; age: Age; autoRotate: () => boolean; frames: () => number };
+    __viewer?: { yaw: () => number; age: Age; autoRotate: () => boolean; frames: () => number; calls: () => number };
   }
 }
 
@@ -144,8 +144,10 @@ function Spin({ on }: { on: boolean }) {
 }
 
 function Counter() {
-  useFrame(() => {
+  useFrame((state) => {
     stats.frames++;
+    // what the last frame cost the GPU, for the browser tests (three counts it per render)
+    stats.calls = state.gl.info.render.calls;
   });
   return null;
 }
@@ -245,7 +247,12 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   const tint = paint + ground;
   // Turntable turns the model about the middle of its footprint: turn the aim with it, so the built tiles stay in view
   const aim = useMemo(() => focus.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), (turns * Math.PI) / 2), [focus, turns]);
-  const dpr: [number, number] = softwareGL() ? [0.75, 0.75] : [1, typeof navigator !== "undefined" && (navigator.hardwareConcurrency ?? 8) <= 4 ? 1.5 : 2];
+  const soft = softwareGL();
+  const sharpest = typeof navigator !== "undefined" && (navigator.hardwareConcurrency ?? 8) <= 4 ? 1.5 : 2;
+  // 2.4: if turning the model drops frames, draw fewer pixels (down to the screen's own 1×), and sharpen again when it
+  // keeps up
+  const [top, setTop] = useState(sharpest);
+  const dpr: [number, number] = soft ? [0.75, 0.75] : [1, top];
 
   useEffect(() => setTouched(false), [project.id]);
   // shared geometry, materials and textures are kept between builds; let them go when the stage closes
@@ -254,13 +261,14 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
     if (hush) setTouched(true);
   }, [hush]);
   useEffect(() => {
-    window.__viewer = { yaw: () => stats.yaw, age, autoRotate: () => autoRotate, frames: () => stats.frames };
+    window.__viewer = { yaw: () => stats.yaw, age, autoRotate: () => autoRotate, frames: () => stats.frames, calls: () => stats.calls };
   }, [age, autoRotate]);
 
   const start = viewFrom(aim, distance);
   return (
     <div ref={wrap} className="h-full w-full" role="img" aria-label={label} style={{ touchAction: age === "a" ? "pan-y" : "none" }}>
       <Canvas dpr={dpr} frameloop="demand" camera={{ position: start.toArray(), fov: FOV, near: 0.1, far: 200 }} gl={{ antialias: true }}>
+        {!soft && <PerformanceMonitor onDecline={() => setTop((t) => Math.max(1, t - 0.5))} onIncline={() => setTop((t) => Math.min(sharpest, t + 0.5))} />}
         <Stage paint={tint} radius={whole.size} />
         <Turntable yaw={(turns * Math.PI) / 2} still={still}>
           <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} paint={tint} />

@@ -41,9 +41,10 @@ export function drawProject(project: Project, shown = project.placed.length, leg
 }
 
 /** The finished project as the build stage draws it: its 3D picture (src/pictures.ts) on the stage colour, or the
-    drawing below for a part-built project and when the picture is missing. */
-export function ProjectPicture({ project, shown, label }: { project: Project; shown?: number; label?: string }) {
-  const file = projectFile(project.id);
+    drawing below for a part-built project and when the picture is missing (when the project's tiles are at hand; the
+    Library has only the id, and shows the empty stage instead). */
+export function ProjectPicture({ id, project, shown, label }: { id?: string; project?: Project; shown?: number; label?: string }) {
+  const file = projectFile(id ?? project!.id);
   const [failed, setFailed] = useState(false);
   if (shown === undefined && !failed)
     return (
@@ -58,6 +59,7 @@ export function ProjectPicture({ project, shown, label }: { project: Project; sh
         onError={() => setFailed(true)}
       />
     );
+  if (!project) return <div className="block h-full w-full bg-stage" role={label ? "img" : undefined} aria-label={label} aria-hidden={label ? undefined : true} />;
   return <ProjectDrawing project={project} shown={shown} label={label} />;
 }
 

@@ -3,15 +3,16 @@
    The screens with 3D load on first use, so the Library opens fast. */
 import { createHashHistory, createRootRoute, createRoute, createRouter, Outlet } from "@tanstack/react-router";
 import { lazy, Suspense, type ComponentType } from "react";
-import { GrownupsHome } from "./screens/grownups/Home";
-import { Settings } from "./screens/grownups/Settings";
-import { Tiles } from "./screens/grownups/Tiles";
 import { Library } from "./screens/Library";
 import { S } from "./strings";
 
 const Design = lazy(() => import("./screens/Design").then((m) => ({ default: m.Design })));
 const Build = lazy(() => import("./screens/Build").then((m) => ({ default: m.Build })));
 const Done = lazy(() => import("./screens/Done").then((m) => ({ default: m.Done })));
+// the grown-ups' pages load when a grown-up opens them, so the Library starts lighter (2.4)
+const GrownupsHome = lazy(() => import("./screens/grownups/Home").then((m) => ({ default: m.GrownupsHome })));
+const Tiles = lazy(() => import("./screens/grownups/Tiles").then((m) => ({ default: m.Tiles })));
+const Settings = lazy(() => import("./screens/grownups/Settings").then((m) => ({ default: m.Settings })));
 
 function later(C: ComponentType) {
   return function Later() {
@@ -42,9 +43,9 @@ const root = createRootRoute({ component: () => <Outlet />, errorComponent: Oops
 const library = createRoute({ getParentRoute: () => root, path: "/", component: Library });
 const build = createRoute({ getParentRoute: () => root, path: "/build/$pid", component: later(Build) });
 const done = createRoute({ getParentRoute: () => root, path: "/done/$pid", component: later(Done) });
-const grownups = createRoute({ getParentRoute: () => root, path: "/grownups", component: GrownupsHome });
-const tiles = createRoute({ getParentRoute: () => root, path: "/grownups/tiles", component: Tiles });
-const settings = createRoute({ getParentRoute: () => root, path: "/grownups/settings", component: Settings });
+const grownups = createRoute({ getParentRoute: () => root, path: "/grownups", component: later(GrownupsHome) });
+const tiles = createRoute({ getParentRoute: () => root, path: "/grownups/tiles", component: later(Tiles) });
+const settings = createRoute({ getParentRoute: () => root, path: "/grownups/settings", component: later(Settings) });
 const design = createRoute({ getParentRoute: () => root, path: "/design", component: later(Design) });
 
 const tree = root.addChildren([library, build, done, grownups, tiles, settings, design]);

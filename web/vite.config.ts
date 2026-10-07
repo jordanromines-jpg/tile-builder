@@ -28,7 +28,20 @@ export default defineConfig({
           { src: "icons/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
         ],
       },
-      workbox: { globPatterns: ["**/*.{js,css,html,woff2,webp,png,svg,json}"], maximumFileSizeToCacheInBytes: 6e6 },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,woff2,webp,png,svg,json}"],
+        // 2.4: the project pictures (most of the download) are not in the install; each is kept the first time it is
+        // shown, and the rest are fetched quietly once the app is idle (src/pwa.ts), so they all work offline soon after
+        globIgnores: ["pictures/projects/**"],
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.includes("/pictures/projects/"),
+            handler: "CacheFirst",
+            options: { cacheName: "project-pictures" },
+          },
+        ],
+        maximumFileSizeToCacheInBytes: 6e6,
+      },
     }),
   ],
   build: { outDir: "dist", chunkSizeWarningLimit: 1500 },
