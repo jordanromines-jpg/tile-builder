@@ -12,6 +12,7 @@ export {
   GridFour,
   Hand,
   House,
+  Jeep,
   Lock,
   Minus,
   PawPrint,

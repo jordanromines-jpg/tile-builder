@@ -8,7 +8,9 @@
    - R10c: standing tiles in one plane, on one layer, joined side by side make a row; every row touches, at a side or
      top edge, a tile out of its plane (a wall at an angle, a lid, a leaning tile). A tile's bottom edge is a hinge,
      like the table, so it does not brace.
-   Checked on the finished build: a child holds a wall while building the corner that braces it. */
+   Checked on the finished build: a child holds a wall while building the corner that braces it.
+   A crash obstacle (role "crash", 2.7) is built to be knocked over by a truck, so R10 lets it wobble: it skips all
+   three. It must still stand while it is built (R6). */
 import { dot, type V3 } from "./geometry";
 import type { Analysis } from "./check";
 import type { Problem } from "./problems";
@@ -64,7 +66,9 @@ export function holdsProblems(project: Project, a: Analysis): Problem[] {
   const out: Problem[] = [];
   const n = project.placed.length;
   const held = heldFlats(project, a);
+  const crash = (i: number) => project.placed[i].role === "crash";
   for (let i = 0; i < n; i++) {
+    if (crash(i)) continue;
     if (a.orient[i] === "flat" && !a.onTable[i] && !held.has(i)) out.push({ rule: "R10", tile: i, message: "this flat tile would sag: it needs two edges resting on walls below, not just on other flat tiles" });
     if (!(a.orient[i] === "flat" && a.onTable[i])) {
       const edges = new Set<number>();
@@ -75,7 +79,7 @@ export function holdsProblems(project: Project, a: Analysis): Problem[] {
   }
   const seen = new Set<number>();
   for (let i = 0; i < n; i++) {
-    if (a.orient[i] !== "standing" || seen.has(i)) continue;
+    if (a.orient[i] !== "standing" || seen.has(i) || crash(i)) continue;
     const row = [i];
     seen.add(i);
     for (let k = 0; k < row.length; k++) {

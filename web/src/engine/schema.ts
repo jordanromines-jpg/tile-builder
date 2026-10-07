@@ -19,7 +19,9 @@ export const PlacedZ = z.object({
   pos: Vec3,
   /** [tilt about the base edge, turn about the vertical]; a roof's tilt is worked out from the triangle's legs */
   rot: z.tuple([z.number(), z.number()]),
-  role: z.literal("roof").optional(),
+  /** roof: leans into a pyramid; ramp (2.7): leans from a base edge up to a support, for trucks to drive on; crash
+      (2.7): built to be knocked over by a truck */
+  role: z.enum(["roof", "ramp", "crash"]).optional(),
 });
 
 export const StepZ = z.object({
