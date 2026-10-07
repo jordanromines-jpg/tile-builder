@@ -32,7 +32,7 @@ A project ships only when `npm run check:projects` passes it under every tall-tr
 | R2 no overlap | No two tiles in one plane overlap; no tile passes through another. Tiles that touch along an edge, or rest an edge on a face, are fine |
 | R3 grounded | Through edges that meet, every tile is joined to a tile on the table |
 | R4 steps | The steps place tiles 0 to n−1 once each, in order; each tile meets something built so far (or this step), or is on the table; after each step R3 holds |
-| R5 layers | No step places a tile more than one layer above the top so far (a layer is the whole number under a tile's lowest point) |
+| R5 layers | No step places a tile more than one layer above the top so far (a layer is the whole number under a tile's lowest point; a tile reaches every layer up to its highest point, so a big square standing up reaches two) |
 | R6 stands | After every step: a standing tile on the table has a neighbour at a side edge (not in flat projects); a standing tile above the table sits its bottom edge on an edge, or spans a gap with two edges met; a flat tile above the table rests on two edges; a leaning tile's base edge sits on a top edge of an upright tile |
 | R7 pyramids | Leaning tiles are triangles in whole pyramids: four of one kind (three over a triangle) whose apexes meet, all placed in one step |
 | R8 brands | R1 to R7 hold for every leg; a project using rectangles, windows, doors or fences lists them in `needs.brandExtras` |

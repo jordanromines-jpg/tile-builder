@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { castle } from "../projects/castle";
+import { bigTunnel } from "../projects/tots-kit";
 import { Builder } from "../projects/helpers";
 import { checkProject } from "./check";
 import { ProjectZ } from "./schema";
@@ -65,6 +66,12 @@ describe("the checker", () => {
     c.wallX("square", "red", 0, 0, 1);
     c.step("ring and a twin");
     expect(rules(checkProject(c.build(meta)))).toContain("R2");
+  });
+
+  it("R5 (2.6): a big square standing up reaches two layers, and a roof may go on in the walls' own step", () => {
+    const b = new Builder();
+    bigTunnel(b, "red", "blue", 0, 0, "a big-square tunnel, walls and roof together");
+    expect(checkProject(b.build({ ...meta, age: "c" })).problems.filter((p) => p.rule !== "R9")).toEqual([]);
   });
 
   it("R5: a step may not jump a layer", () => {

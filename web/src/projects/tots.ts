@@ -6,7 +6,7 @@ import type { Project } from "../engine/types";
 import { Builder } from "./helpers";
 import { squareMosaic, tot, triangleMosaic, triangleRows, type TotMeta } from "./tots-kit";
 
-const g = (s: string) =>
+export const g = (s: string) =>
   s
     .split("\n")
     .map((r) => r.trim())
@@ -14,13 +14,13 @@ const g = (s: string) =>
 
 const LAY = "Lay it flat on the table.";
 
-function flat(meta: TotMeta, rows: string[], opening = LAY): Project {
+export function flat(meta: TotMeta, rows: string[], opening = LAY): Project {
   const b = new Builder();
   squareMosaic(b, rows, opening);
   return tot(b, meta);
 }
 
-function tris(meta: TotMeta, rows: string[], opening = LAY): Project {
+export function tris(meta: TotMeta, rows: string[], opening = LAY): Project {
   const b = new Builder();
   triangleMosaic(b, rows, opening);
   return tot(b, meta);
