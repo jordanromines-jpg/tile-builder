@@ -9,6 +9,7 @@ import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import type { Colour, ShapeId } from "../engine/catalog";
 import { worldPolygon } from "../engine/geometry";
 import type { Project } from "../engine/types";
+import { play } from "../sound/sound";
 import { DROP_S, DROP_S_REDUCED, fade, GHOST_S, GLOW_S, mulberry, snap, stepProgress } from "./anim";
 import { placeTile } from "./buildScene";
 import { BASE_OPACITY, makeTileMaterials, releaseTiles, rivetMaterial, type TileMaterials } from "./TileMesh";
@@ -237,7 +238,10 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
     // the new tiles' glow and the ghost pulse for a few seconds, then hold still, so an open step costs no frames
     const pulsing = !still && age < GLOW_S;
     const startable = waiting ? Math.min(shown, Math.min(...[...lit.current, shown])) : shown;
+    const before = p.filter((k) => k >= 1).length;
     const moving = stepProgress(p, shown, Math.min(dt, 0.05), still ? DROP_S_REDUCED : DROP_S, startable);
+    // a tile has landed: the magnets' click (3.0), once a frame however many land together
+    if (p.filter((k) => k >= 1).length > before && lit.current.size) play("snap");
     const t = state.clock.elapsedTime;
     const pulse = pulsing ? 0.16 + 0.1 * Math.sin(t * Math.PI * 2 * 0.7) : 0.16;
     const quiet = lit.current.size > 0 && shown < tiles.length;

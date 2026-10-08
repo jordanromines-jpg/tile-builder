@@ -8,9 +8,8 @@ import { matchProject, type Match } from "../engine/match";
 import type { Project } from "../engine/types";
 import { useProject } from "../projects/load";
 import { say, speechEnabled, stop } from "../speech/say";
-import { click } from "../speech/sound";
 import { getStep, saveStep } from "../store/db";
-import { useInventory, useSettings } from "../store/hooks";
+import { useInventory } from "../store/hooks";
 import { effectiveLeg } from "../store/inventory";
 import { S } from "../strings";
 import { Viewer } from "../three/Viewer";
@@ -18,6 +17,7 @@ import { ArrowLeft, Play } from "../ui/icons";
 import { AgeProvider, older } from "../ui/kid/AgeContext";
 import { fell, FellDown, layerStart, type FallState } from "../ui/kid/FellDown";
 import { KidBar } from "../ui/kid/KidBar";
+import { Decor } from "../looks/decor";
 import { KidButton } from "../ui/kid/KidButton";
 import { SpeakButton } from "../ui/kid/SpeakButton";
 import { StepDots } from "../ui/kid/StepDots";
@@ -41,7 +41,6 @@ export function Build() {
 function BuildProject({ pid, project }: { pid: string; project: Project }) {
   const navigate = useNavigate();
   const inv = useInventory();
-  const settings = useSettings();
   const [step, setStep] = useState<number | null>(null);
   const [settled, setSettled] = useState(0);
   const [gate, setGate] = useState<"need" | null>(null);
@@ -121,7 +120,6 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
     setStep(s);
     setTurns(0);
     void saveStep(pid, s);
-    if (settings?.soundEffects) click();
     speak(s);
   };
   const next = () => {
@@ -138,7 +136,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
 
   return (
     <AgeProvider age={age}>
-      <main className="kid relative h-dvh overflow-hidden bg-stage" onPointerDown={wake}>
+      <main className="ts-build kid relative h-dvh overflow-hidden bg-stage" onPointerDown={wake}>
         {/* the stage fills the screen; the panels float over it and the model is framed in what they leave clear */}
         <div className="absolute inset-0">
           <Viewer
@@ -172,7 +170,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
               onBack={() => void navigate({ to: "/" })}
               hear={<SpeakButton text={lineOf(step)} />}
               title={
-                <h1 className="soft inline-block max-w-full truncate rounded-full bg-surface-2 px-6 py-2 font-display text-[length:var(--fs-kid-label-b)] font-bold text-ink-1">
+                <h1 className="ts-title soft inline-block max-w-full truncate rounded-full bg-surface-2 px-6 py-2 font-display text-[length:var(--fs-kid-label-b)] font-bold text-ink-1">
                   {project.title}
                 </h1>
               }
@@ -190,16 +188,17 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
         </div>
         <aside
           ref={stripRef}
-          className="soft absolute inset-x-4 flex flex-col gap-3 rounded-[32px] bg-surface-2 p-4"
+          className="ts-panel soft absolute inset-x-4 flex flex-col gap-3 rounded-[32px] bg-surface-2 p-4"
           style={{ bottom: "max(env(safe-area-inset-bottom), 16px)" }}
           aria-label={S.kid.step(step + 1, last + 1)}
         >
+          <Decor at="panel" />
           <StepDots count={last + 1} current={step} onJump={older(age) ? go : undefined} />
           <div className="flex items-center gap-5">
             <KidButton label={S.kid.stepBack} showLabel={false} icon={<ArrowLeft size={36} weight="bold" />} onPress={() => go(step - 1)} disabled={step === 0} />
             <div className="flex min-w-0 flex-1 flex-col gap-2">
               <div className="flex min-w-0 items-center gap-5">
-                <ul className="flex shrink-0 flex-wrap items-center gap-3" aria-label={S.build.stepTiles}>
+                <ul className="ts-step-tiles flex shrink-0 flex-wrap items-center gap-3" aria-label={S.build.stepTiles}>
                   {tiles.map((t) => (
                     <li key={`${t.shape}-${t.colour}-${t.instead}`}>
                       <TileChip shape={t.shape} colour={t.colour} count={t.count} size={chip} leg={leg} instead={t.instead} speak />
@@ -214,11 +213,11 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
               {match?.note === "best-with-one-brand" && step === 0 && <p className="text-ink-2">{S.build.bestWithOneBrand}</p>}
               {age === "t" && step === 0 && <p className="text-ink-2">{S.build.forBaby}</p>}
             </div>
-            <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} className="min-w-[148px]" />
+            <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} sound="step" className="ts-next min-w-[148px]" />
           </div>
         </aside>
         {resting && (
-          <button type="button" onClick={wake} className="fixed inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-surface/95" aria-label={S.build.keepBuilding}>
+          <button type="button" onClick={wake} className="ts-rest fixed inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-surface/95" aria-label={S.build.keepBuilding}>
             <span className="font-display text-[length:var(--fs-kid-display-c)] font-semibold text-ink-2">{S.build.keepBuilding}</span>
             <span className="flex flex-wrap justify-center gap-6">
               {tiles.map((t) => (

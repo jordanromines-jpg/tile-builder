@@ -29,7 +29,7 @@ function Stack({ n }: { n: number }) {
 
 export function AgePicker({ value, onChange }: { value: Age | null; onChange: (a: Age) => void }) {
   return (
-    <div role="group" aria-label={S.kid.pickAge} className="flex flex-wrap gap-4">
+    <div role="group" aria-label={S.kid.pickAge} className="ts-ages flex flex-wrap gap-4">
       {AGES.map((a) => (
         <button
           key={a}
@@ -40,7 +40,7 @@ export function AgePicker({ value, onChange }: { value: Age | null; onChange: (a
             say(S.kid.ages[a]);
             onChange(a);
           }}
-          className="kid flex min-h-[88px] min-w-[104px] items-end justify-center gap-3 rounded-lg border-2 border-line bg-surface-2 px-3 py-2 font-display font-semibold text-ink-1 transition-transform duration-100 active:scale-95 aria-pressed:border-accent aria-pressed:bg-accent-soft aria-pressed:ring-4 aria-pressed:ring-focus"
+          className="ts-age kid flex min-h-[88px] min-w-[104px] items-end justify-center gap-3 rounded-lg border-2 border-line bg-surface-2 px-3 py-2 font-display font-semibold text-ink-1 transition-transform duration-100 active:scale-95 aria-pressed:border-accent aria-pressed:bg-accent-soft aria-pressed:ring-4 aria-pressed:ring-focus"
           style={{ fontSize: "var(--fs-kid-label-b)" }}
         >
           <Stack n={TILES[a]} />

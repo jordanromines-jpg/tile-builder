@@ -1,0 +1,2 @@
+/* Picture book (3.3): paper, crayon and watercolour. Overrides tokens and restyles the ts-* hooks under
+   [data-look="book"]; dark under [data-look="book"][data-theme="dark"] and the system's dark setting. */

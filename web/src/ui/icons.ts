@@ -16,6 +16,7 @@ export {
   Jeep,
   Lock,
   Minus,
+  Palette,
   PawPrint,
   Play,
   Plus,

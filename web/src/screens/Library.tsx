@@ -5,6 +5,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { matchProject, inventoryTotal, type Match } from "../engine/match";
 import { SECTIONS, type Theme } from "../engine/themes";
+import { Decor } from "../looks/decor";
+import { LookPicker } from "../ui/LookPicker";
+import { play } from "../sound/sound";
+import { Palette } from "../ui/icons";
 import type { Age } from "../engine/types";
 import { PROJECT_INFO, SKELETONS } from "../projects/load";
 import type { ProjectInfo } from "../projects/serialize";
@@ -61,6 +65,7 @@ function LazyCards<T>({ items, card }: { items: T[]; card: (item: T) => ReactNod
 }
 
 export function Library() {
+  const [looksOpen, setLooksOpen] = useState(false);
   const navigate = useNavigate();
   const settings = useSettings();
   const inv = useInventory();
@@ -114,14 +119,36 @@ export function Library() {
 
   return (
     <AgeProvider age={age ?? "a"}>
-      <main className="kid safe mx-auto flex min-h-dvh max-w-[1400px] flex-col gap-6">
-        <header className="flex flex-wrap items-center gap-x-6 gap-y-4">
+      <main className="ts-library kid safe relative mx-auto flex min-h-dvh max-w-[1400px] flex-col gap-6">
+        <Decor at="page" />
+        <header className="ts-header relative flex flex-wrap items-center gap-x-6 gap-y-4">
           <Wordmark />
           <AgePicker value={age} onChange={(a) => void saveSettings({ age: a })} />
           <span className="flex-1" />
           <GrownUpsDoor />
         </header>
-        <ThemeFilter value={theme} onChange={setTheme} themes={themes} />
+        <div className="flex items-center gap-4">
+          <div className="min-w-0 flex-1">
+            <ThemeFilter value={theme} onChange={setTheme} themes={themes} />
+          </div>
+          <button
+            type="button"
+            aria-label={S.kid.looks}
+            aria-pressed={looksOpen}
+            onClick={() => {
+              play("tap");
+              setLooksOpen((o) => !o);
+            }}
+            className="ts-looks-button ts-button ts-button-plain kid press soft grid h-16 w-16 place-items-center rounded-full border-2 border-line bg-surface-2 text-ink-1 aria-pressed:ring-4 aria-pressed:ring-focus"
+          >
+            <Palette size={34} weight="duotone" aria-hidden="true" />
+          </button>
+        </div>
+        {looksOpen && (
+          <section aria-label={S.kid.looks} className="ts-looks-panel soft rounded-lg bg-surface-2 p-4">
+            <LookPicker size="small" />
+          </section>
+        )}
         {!hasTiles && inv && <EmptyState text={S.kid.emptyTiles} banner />}
         {shown.length ? (
           shown.map((s) => (

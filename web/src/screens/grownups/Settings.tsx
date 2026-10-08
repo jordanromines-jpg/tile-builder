@@ -8,6 +8,7 @@ import { requestPersist } from "../../store/storage";
 import { Button } from "../../ui/grownups/Button";
 import { ConfirmDialog } from "../../ui/grownups/Dialog";
 import { Radios, Switch } from "../../ui/grownups/Field";
+import { LookPicker } from "../../ui/LookPicker";
 import { SettingsList } from "../../ui/grownups/SettingsList";
 import { StorageStatus } from "../../ui/grownups/StorageStatus";
 import { useToast } from "../../ui/grownups/Toast";
@@ -48,7 +49,7 @@ export function Settings() {
     <Frame title="Settings">
       <SettingsList title="Voice and sound">
         <Switch label="Read steps aloud" help="Off unless you turn it on. A child can always tap Hear again." on={s.voice} onChange={(v) => void saveSettings({ voice: v })} />
-        <Switch label="Sound effects" help="A soft click on each new step. Silent when the iPad is on mute." on={s.soundEffects} onChange={(v) => void saveSettings({ soundEffects: v })} />
+        <Switch label="Sound effects" help="A click as each tile lands, and a chime when a build is finished. Silent when the iPad is on mute." on={s.soundEffects} onChange={(v) => void saveSettings({ soundEffects: v })} />
         <label className="flex flex-col gap-2">
           <span className="font-bold">The voice's language</span>
           <select
@@ -67,9 +68,14 @@ export function Settings() {
 
       <SettingsList title="Look">
         <div className="flex flex-col gap-2">
-          <span className="font-bold">Theme</span>
+          <span className="font-bold">Style</span>
+          <span className="text-ink-2">Children can change it on the shelf too.</span>
+          <LookPicker />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="font-bold">Light or dark</span>
           <Radios<Theme>
-            label="Theme"
+            label="Light or dark"
             value={s.theme}
             onChange={(t) => {
               setTheme(t);

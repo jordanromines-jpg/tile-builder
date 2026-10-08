@@ -2,6 +2,8 @@
    whole card is one tap: it goes straight into build mode (D18). */
 import type { ReactNode } from "react";
 import { S } from "../../strings";
+import { Decor } from "../../looks/decor";
+import { play } from "../../sound/sound";
 import { TilePicture } from "../TileChip";
 import { badgeText, BuildBadge, type BuildState, type Missing } from "./BuildBadge";
 
@@ -35,20 +37,24 @@ export function ProjectCard({ title, picture, stars, state, missing = [], resume
     <button
       type="button"
       aria-label={label}
-      onClick={onPress}
-      className="kid lift soft group flex w-[300px] shrink-0 snap-start flex-col overflow-hidden rounded-[28px] border-2 border-line bg-surface-2 text-left"
+      onClick={() => {
+        play("tap");
+        onPress();
+      }}
+      className="ts-card kid lift soft group flex w-[300px] shrink-0 snap-start flex-col overflow-hidden rounded-[28px] border-2 border-line bg-surface-2 text-left"
     >
-      <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-t-[26px] bg-stage">
+      <span className="ts-card-picture relative block aspect-[4/3] w-full overflow-hidden rounded-t-[26px] bg-stage">
         {picture}
+        <Decor at="card" />
         {resume ? (
-          <span className="soft absolute left-3 top-3 rounded-full bg-accent px-4 py-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-tight text-accent-ink">
+          <span className="ts-resume soft absolute left-3 top-3 rounded-full bg-accent px-4 py-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-tight text-accent-ink">
             {S.kid.step(resume, 0).split(" of")[0]}
           </span>
         ) : null}
       </span>
       <span className="flex flex-1 flex-col gap-2 px-4 pb-4 pt-3">
         <span className="flex items-start justify-between gap-2">
-          <span className="font-display text-[28px] font-bold leading-tight text-ink-1">{title}</span>
+          <span className="ts-card-title font-display text-[28px] font-bold leading-tight text-ink-1">{title}</span>
           <Stars n={stars} />
         </span>
         {state && <BuildBadge state={state} missing={missing} />}

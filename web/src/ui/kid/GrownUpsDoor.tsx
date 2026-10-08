@@ -15,7 +15,7 @@ export function GrownUpsDoor() {
         say(S.kid.door);
         void navigate({ to: "/grownups" });
       }}
-      className="kid grid h-11 w-11 place-items-center rounded-full border border-line bg-surface-2 text-ink-2"
+      className="ts-door kid grid h-11 w-11 place-items-center rounded-full border border-line bg-surface-2 text-ink-2"
     >
       <Lock size={22} weight="bold" aria-hidden="true" />
     </button>
