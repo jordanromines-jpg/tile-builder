@@ -1,5 +1,7 @@
 # Build plans
 
+`CLAUDE.md` at the repo root has the session rules and key facts; read it first.
+
 Every plan for Tile Steps (the repo's working name: Tile Builder) lives here and is committed with the work it describes. Work beyond what Jordan has
 approved is written into a plan first and waits for his go; adding detail to an idea isn't agreement. The format is
 `web-agent`'s (`plans/README.md` there), adapted to one builder session.
