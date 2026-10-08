@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.8.0 · 8 Oct 2026
+
+Fifty Monster trucks builds (395 builds in all), and every one of them now stands up like real magnet tiles and holds
+a truck. Jordan, looking at the 2.7 builds: "this won't support any weight."
+
+- **35 new truck builds**, for every age: a road loop, a bumpy road with two kickers and crush-the-cubes for 0–3; a
+  knock-down wall, a ramp and drop, a little arena and a two-lane ramp for 3–5; a drag strip, the big tunnel, stair-step
+  drops, a monster garage, a bounce bridge, a crash castle and a domino run for 6–8; big-air gap, a freestyle bowl, a bus
+  jump, a figure-eight with a crossover bridge, a skills course, a donut circle, ramp-to-ramp, a cliff jump and a
+  two-lane race with a tunnel for 9–10; and for 11–16 world finals freestyle, a backflip ramp, crash-zone city, a
+  double-decker race, triple big air, the wall of doom, a spiral ramp round an 8-high tower, a canyon jump, a rollover
+  pit, a train-yard crash, bridge-to-bridge and the ultimate arena. Nine reach 7–8 squares high, sixteen are wider than
+  a square metre, and 39 use the big squares.
+- **No ramp join hangs in mid-air (R11).** A magnet join is a hinge, and a truck folds it. Every whole height of a ramp
+  now sits on a tower, and each half-height join of a square ramp gets a **brace**: a square leaning up from the next
+  tower, which locks the join in a triangle. This replaces 2.7's "taut pair" of ramp tiles between supports.
+- **Things to crash stand until they're hit.** A wall to smash has a corner or a return at each end of every row; a
+  flat stack of squares would fold before a truck reached it. Only dominoes may stand alone.
+- **It stands firm (new rule R12).** At every height, a truck build is at most four times as tall as it is wide there,
+  so towers over four high are two squares across; and a deck a truck drives on rests on two opposite walls, never on a
+  corner. The rule comes to every other project (at six times) in 2.8.2.
+- **The why, for 9–16.** The step that uses a principle says it in a line: "Triangles don't fold: the brace locks the
+  join."
+- **The first fifteen, reworked.** All 2.7 builds pass the new rules. "Mega ramp from eight high" is now "Mega ramp and
+  the eight-high tower": an 8-high ramp that stands firm would take more than four sets.
 ## 2.7.0 · 7 Oct 2026
 
 Monster trucks: a section of the site for 1:64 Monster Jam trucks, for every age (360 builds in all).

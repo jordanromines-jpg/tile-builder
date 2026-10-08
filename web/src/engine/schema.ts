@@ -21,7 +21,7 @@ export const PlacedZ = z.object({
   rot: z.tuple([z.number(), z.number()]),
   /** roof: leans into a pyramid; ramp (2.7): leans from a base edge up to a support, for trucks to drive on; crash
       (2.7): built to be knocked over by a truck */
-  role: z.enum(["roof", "ramp", "crash"]).optional(),
+  role: z.enum(["roof", "ramp", "crash", "brace"]).optional(),
 });
 
 export const StepZ = z.object({

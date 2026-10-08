@@ -28,6 +28,25 @@ describe("the track kit (2.7)", () => {
     expect(end.z).toBeCloseTo(-6 * Math.cos(Math.PI / 6));
   });
 
+  it("R11 (2.8): a small-square ramp gets a brace under every mid-air join, and takes it away and it fails", () => {
+    const b = new Builder();
+    ramp(b, "red", { x: 0, y: 0, z: 0 }, "N", 2, { topTower: true });
+    const braces = b.placed.map((p, i) => (p.role === "brace" ? i : -1)).filter((i) => i >= 0);
+    expect(braces.length).toBe(2);
+    expect(problems(b)).toEqual([]);
+    const bare = new Builder();
+    ramp(bare, "red", { x: 0, y: 0, z: 0 }, "N", 1, { topTower: true });
+    bare.placed = bare.placed.filter((p) => p.role !== "brace");
+    bare.steps = bare.steps.filter((s) => s.tiles.every((t) => t < bare.placed.length));
+    expect(problems(bare).map((p) => p.message)).toContainEqual(expect.stringContaining("mid-air"));
+  });
+
+  it("R12 (2.8): ramp towers over four high are two squares across, so a mega ramp stands firm", () => {
+    const b = new Builder();
+    ramp(b, "red", { x: 0, y: 0, z: 0 }, "N", 6, { big: true, topTower: true });
+    expect(problems(b)).toEqual([]);
+  });
+
   it("R11: a ramp whose top rests on nothing, and three ramp tiles with no support under them, fail", () => {
     const loose = new Builder();
     ramp(loose, "red", { x: 0, y: 0, z: 0 }, "N", 1);
@@ -41,7 +60,7 @@ describe("the track kit (2.7)", () => {
     expect(problems(sag).map((p) => p.rule)).toContain("R11");
   });
 
-  it("crashables may wobble: a wall of doom seven high, dominoes and a crush car pass", () => {
+  it("crashables stand until hit: a wall of doom seven high with its returns, dominoes and a crush car pass", () => {
     const b = new Builder();
     crashWall(b, ["red", "yellow"], { x: 0, y: 0, z: 0 }, "N", 3, 7, (r) => `row ${r + 1}`);
     dominoes(b, ["blue"], { x: 5, y: 0, z: 0 }, "E", 4, "dominoes");
