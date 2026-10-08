@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.8.1 · 8 Oct 2026
+
+The 3D view copes with the big builds. Jordan: "the canvas is also struggling with bigger builds": slow, too small,
+parts vanishing, and blank.
+
+- **No more blank screen.** The fog was fixed at 22 to 60 squares from the camera, and the camera stands 45 to 145
+  away from the big truck builds, so they were drawn as plain background. The fog now starts past the model, at any
+  zoom, and the table grows with the build, so its edge never shows.
+- **Bigger on screen.** The view fits what is built by its width and its height apart, instead of a ball round it.
+- **No hitch on Next.** Landed tiles merge in chunks; a 200-tile build's worst frame while stepping went from 67 ms to
+  17 ms (on a Mac with its GPU).
+- **Lighter frames.** The soft shadow is drawn when the model comes to rest, not on every frame (six passes a frame
+  became one). Builds over 120 tiles use a lighter tile (a third of the triangles, the same look up close), draw at
+  most 1.5 pixels a point, and turn by themselves once, then rest.
+- **Pictures of tall builds** (the 8-high drop tower, the tallest tower, the space elevator and 14 more) are no longer
+  cut off at the top; every other picture is unchanged.
 ## 2.8.0 · 8 Oct 2026
 
 Fifty Monster trucks builds (395 builds in all), and every one of them now stands up like real magnet tiles and holds

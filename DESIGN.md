@@ -244,7 +244,16 @@ The iPad is the target, so the app does as little as it can while a child waits 
 - **Matching from counts.** The Library and the grown-ups' counts match against stand-ins built from the catalogue
   (`skeleton`), which give the same answer as the full project.
 - **Merged tiles.** In 3D, landed tiles are merged into one mesh per colour and part (frame, glass, rivets); only the
-  current step's tiles are separate. A finished model is about 13 draw calls.
+  current step's tiles are separate. A finished model is about 13 draw calls. 2.8.1: they merge in chunks of 32
+  tiles, and a full chunk is never merged again, so a step costs the same on a 200-tile build as on a small one.
+- **Framing (2.8.1).** The camera fits the box round what is built so far by width and by height apart (`fitBox` in
+  `three/camera.ts`), in the part of the view the panels leave clear; a view the child can turn is fitted for every way
+  it can face. A picture moves back only when a tile would be cut off (17 tall builds).
+- **Fog and table (2.8.1).** The fog starts past the far side of the model at the furthest the child can zoom out, and
+  the table runs on into full fog, so a big build is never fogged and the table's edge never shows.
+- **Big builds (over 120 tiles, 2.8.1).** A lighter tile (a third of the triangles, the same look up close), the
+  pixel ratio at most 1.5, and a turn by itself once, then rest. The contact shadow is drawn when the model comes to
+  rest, not every frame (a frame was six passes; now one).
 - **Mosaic view (2.5).** Flat 0–3 mosaics use their own camera (`MOSAIC` in `three/camera.ts`): from the front and 60°
   above, in build mode and in their pictures, so they read the right way up.
 - **Adaptive sharpness.** `PerformanceMonitor` lowers the pixel ratio when frames drop and raises it again after.

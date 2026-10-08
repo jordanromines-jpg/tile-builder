@@ -19,15 +19,15 @@ export interface PlacedTile {
   parts: { shape: ShapeId; at: [number, number]; flip: boolean }[];
 }
 
-/** One placed tile's meshes (two halves when a swap stands in for it), not yet posed. */
-export function placeTile(raw: Placed, leg: number, instead?: ShapeId): PlacedTile {
+/** One placed tile's meshes (two halves when a swap stands in for it), not yet posed; `light`, the lighter tile. */
+export function placeTile(raw: Placed, leg: number, instead?: ShapeId, light = false): PlacedTile {
   const p = asBuilt(raw, instead);
   const mats = makeTileMaterials(p.colour ?? "blue");
   const group = new THREE.Group();
   const parts: PlacedTile["parts"] = [];
   for (const part of partsOf(raw.shape, raw.role === "roof" ? undefined : instead)) {
     const shape = raw.role === "roof" ? p.shape : part.shape;
-    const holder = tileGroup(shape, leg, mats);
+    const holder = tileGroup(shape, leg, mats, light);
     holder.position.set(part.at[0], part.at[1], 0);
     if (part.flip) holder.rotation.z = Math.PI;
     group.add(holder);

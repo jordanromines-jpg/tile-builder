@@ -59,8 +59,8 @@ export function lite(): boolean {
 }
 
 /** One tile's meshes, built imperatively (Model.tsx uses this for every tile it animates). */
-export function tileGroup(shape: ShapeId, leg: number, m: TileMaterials): THREE.Group {
-  const geo = buildGeometry(shape, leg);
+export function tileGroup(shape: ShapeId, leg: number, m: TileMaterials, light = false): THREE.Group {
+  const geo = buildGeometry(shape, leg, light);
   const g = new THREE.Group();
   const frame = new THREE.Mesh(geo.frame, m.frame);
   frame.castShadow = true;

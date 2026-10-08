@@ -5,7 +5,8 @@ import * as THREE from "three";
 import { SHAPES, type Colour, type ShapeId } from "../engine/catalog";
 import type { Project } from "../engine/types";
 import { projectGroup } from "./buildScene";
-import { fitDistance, lookOf, viewFrom } from "./camera";
+import { fitBox, fitDistance, fitTight, lookOf, viewFrom } from "./camera";
+import { worldPolygon } from "../engine/geometry";
 import { frameOf } from "./Model";
 import { lightScene } from "./Stage";
 import { makeTileMaterials, tileGroup } from "./TileMesh";
@@ -96,7 +97,12 @@ export function drawProject(r: THREE.WebGLRenderer, project: Project, leg: numbe
   const aspect = w / h;
   const camera = new THREE.PerspectiveCamera(32, aspect, 0.1, 200);
   const target = new THREE.Vector3(0, Math.min(f.height * 0.38, 2.4), 0);
-  camera.position.copy(viewFrom(target, fitDistance(f.size, aspect, f.height) * 1.08, 0, lookOf(project)));
+  const look = lookOf(project);
+  // 2.8.1: a tall build's top was cut off. Every tile's corners are checked; only when one falls outside does the camera
+  // stand back, to fit them all with a little air, so every other picture stays as it was
+  const pts = project.placed.flatMap((t) => worldPolygon(t, leg)).map((v) => new THREE.Vector3(v[0], v[1], v[2]).sub(f.center).sub(target));
+  const usual = fitDistance(f.size, aspect, f.height) * 1.08;
+  camera.position.copy(viewFrom(target, fitTight(pts, aspect, 1, look) > usual ? fitBox(pts, aspect, 1, look) : usual, 0, look));
   camera.lookAt(target);
   const url = shoot(r, scene, camera, w, h);
   dispose();
