@@ -59,6 +59,7 @@ the brace (A1) needs a real build and a real truck (T1).
 | D4 | The trucks plan wanted "at least 8 builds at 7–8 high". At k = 4, 7 high needs a base 2 wide, and a 2-wide ramp's towers cost about 6 squares a ring (a 7-high ramp: about 170 squares of towers out of 200). | "Keep 8 builds at 7–8 high" (8 Oct), within 4 Magna sets. Those builds spend most of their tiles on supports: wide towers, stepped decks (ziggurats), drops and short ramps rather than long ones. |
 | D5 | The why in the steps: how much? | "Only for 9+" (8 Oct): ages 9–10 and 11–16 get one short line on the step where a principle is used ("Triangles don't fold: this brace locks the join."). Younger steps stay as they are. No new UI. |
 | D6 | Order | "Trucks, canvas, all, flowers" (8 Oct): 2.8 (trucks, under P1–P5), 2.8.1 (the canvas), 2.8.2 (R12 for every project), then 2.9 (wildflowers). |
+| D7 | Step dots for long builds: one row ("12 of 45") or two rows (2b) | "keep the step dots as two rows" (8 Oct). 2b's dots stay as they are. |
 
 ## Phases, pull requests and keys
 
