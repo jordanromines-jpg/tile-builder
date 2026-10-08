@@ -31,7 +31,7 @@ export class Builder {
   steps: Step[] = [];
   private open: number[] = [];
 
-  add(shape: ShapeId, colour: Colour, pos: [number, number, number], rot: [number, number], role?: "roof" | "ramp" | "crash"): number {
+  add(shape: ShapeId, colour: Colour, pos: [number, number, number], rot: [number, number], role?: "roof" | "ramp" | "crash" | "brace"): number {
     this.placed.push(role ? { shape, colour, pos, rot, role } : { shape, colour, pos, rot });
     this.open.push(this.placed.length - 1);
     return this.placed.length - 1;

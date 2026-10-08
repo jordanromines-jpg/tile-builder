@@ -1,5 +1,5 @@
 /* What the checker can find, in words a project's author reads (plan key 4f). */
-export type Rule = "R0" | "R1" | "R2" | "R3" | "R4" | "R5" | "R6" | "R7" | "R8" | "R9" | "R10" | "R11";
+export type Rule = "R0" | "R1" | "R2" | "R3" | "R4" | "R5" | "R6" | "R7" | "R8" | "R9" | "R10" | "R11" | "R12";
 
 export interface Problem {
   rule: Rule;
@@ -22,7 +22,8 @@ export const RULES: Record<Rule, string> = {
   R8: "the project passes for every brand's tall triangle and names the special tiles it needs",
   R9: "the steps and size fit the project's age",
   R10: "it holds up like real tiles: lids rest on walls, every tile is held by two others, walls are braced",
-  R11: "ramps hold a truck: each end rests on the table, a support or the next ramp, and no more than two ramp tiles run between supports",
+  R11: "ramps hold a truck: each end rests on the table, a support or the next ramp, and every join has a support or a brace under it",
+  R12: "it stands firm: nothing is too tall for its base, and a truck's deck rests on two opposite edges",
 };
 
 export function describe(p: Problem, project = ""): string {

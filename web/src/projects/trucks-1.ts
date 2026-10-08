@@ -115,10 +115,10 @@ function rampToTheRoof(): Project {
 
 function megaRamp4(): Project {
   const b = new Builder();
-  const top = ramp(b, "purple", at(0, 0), "N", 4, { big: true, topTower: true, support: "blue", say: "Lean four big purple squares up, end to end, each resting on the last, from the table to the top tower." });
+  const top = ramp(b, "purple", at(0, 0), "N", 4, { big: true, topTower: true, support: "blue", say: "Lean four big purple squares up, end to end, each resting on the last, from the table to the top tower. Every join sits on a tower, so the ramp can't fold like a hinge." });
   b.lid("square", "yellow", 0, 4, top.z - 1);
   b.lid("square", "yellow", 1, 4, top.z - 1);
-  b.step("Two yellow squares flat on top: the start deck. Trucks start up here.");
+  b.step("Two yellow squares flat on top: the start deck. It rests on two opposite walls of the ring, so it can't tip into a corner.");
   lane(b, ["green", "yellow"], at(2, 0), "S", 2, 2, "At the bottom, four squares flat for the trucks to land on.");
   lane(b, ["green", "yellow"], at(2, 2), "S", 2, 2, "Four more, to slow down.");
   crushCar(b, "red", 0, 4.5, "a crush car at the end");
@@ -128,8 +128,8 @@ function megaRamp4(): Project {
 function towerDrop5(): Project {
   const b = new Builder();
   const deckZ = -5 * 2 * RUN - 1;
-  tower(b, ["red", "orange", "yellow", "green", "blue"], 0, deckZ, 2, 1, 5, "purple", (r) => (r === 0 ? "Far from you, stand a ring of six squares, two wide. The drop tower." : `Another ring on top: ${r + 1} high.`));
-  ramp(b, "blue", at(0, 0), "N", 5, { support: "yellow", say: "Lean the ramp up from the table, square by square, onto each tower, to the deck at the top." });
+  tower(b, ["red", "orange", "yellow", "green", "blue"], 0, deckZ, 2, 1, 5, "purple", (r) => (r === 0 ? "Far from you, stand a ring of six squares, two wide. The drop tower: two across holds it steady at five high." : `Another ring on top: ${r + 1} high.`));
+  ramp(b, "blue", at(0, 0), "N", 5, { support: "yellow", say: "Lean the ramp up from the table, square by square, onto each tower, to the deck at the top. The squares in the middle get a brace each next: triangles don't fold." });
   lane(b, ["green", "yellow"], at(0, deckZ), "N", 3, 2, "Behind the drop tower, six squares flat on the table. That's where the trucks land.");
   return truck(b, { id: "truck-tower-drop-five", title: "Tower drop, five high", age: "c", done: "Up the ramp to the top, and over the edge. A five-square drop!" });
 }
@@ -139,7 +139,7 @@ function crashTestCity(): Project {
   lane(b, ["blue", "purple"], at(0, 0), "N", 2, 2, "Lay four squares flat for the run-up, two lanes side by side.");
   kicker(b, "orange", at(0, -2), "N", { lanes: 2, support: "yellow" });
   const z = -2 - 2 * RUN - 1;
-  crashWall(b, ["red", "yellow", "blue", "green"], at(-1, z - 2), "N", 4, 3, (r) => (r === 0 ? "Two squares past the kicker, stand four squares in a row across the way. A wall to smash." : "Another row on top, just stacked."));
+  crashWall(b, ["red", "yellow", "blue", "green"], at(-1, z - 2), "N", 4, 3, (r) => (r === 0 ? "Two squares past the kicker, stand four squares in a row across the way, with a square turned back at each end. The turned squares make corners, so the wall stands until a truck hits it." : "Another row on top, just stacked."));
   crushCar(b, "green", -3, z - 1, "a crush car on the left");
   crushCar(b, "blue", 4, z - 1, "a crush car on the right");
   dominoes(b, ["red", "yellow"], at(-2.5, z - 5), "E", 4, "Behind the wall, stand four squares up one by one, a square apart: dominoes.");
@@ -150,7 +150,7 @@ function crashTestCity(): Project {
 
 function dropTower8(): Project {
   const b = new Builder();
-  tower(b, ["red", "orange", "yellow", "green", "blue", "purple", "red", "orange"], 0, -2, 2, 2, 8, "yellow", (r) => (r === 0 ? "Stand a ring of eight squares, two by two. The drop tower starts here." : `Another ring on top: ${r + 1} squares high.`));
+  tower(b, ["red", "orange", "yellow", "green", "blue", "purple", "red", "orange"], 0, -2, 2, 2, 8, "yellow", (r) => (r === 0 ? "Stand a ring of eight squares, two by two. The drop tower starts here. Two across for eight high keeps it from tipping." : `Another ring on top: ${r + 1} squares high.`));
   lane(b, ["green", "green", "blue"], at(2, 0), "S", 3, 2, "In front of the tower, lay six squares flat: the landing zone.");
   crushCar(b, "red", 3, -1, "a crush car beside the tower");
   crushCar(b, "blue", 3, 1.5, "another crush car");
@@ -161,15 +161,18 @@ function dropTower8(): Project {
 
 function megaRamp8(): Project {
   const b = new Builder();
-  const top = ramp(b, "red", at(0, 0), "N", 8, { topTower: true, support: "blue", say: "Lean the mega ramp up from the table, square by square, each resting on the last and on the towers, all the way to the top." });
-  b.lid("square", "yellow", 0, 8, top.z - 1);
-  b.step("A yellow square on top of the tallest tower: the start, eight squares up.");
-  lane(b, ["green"], at(1, 0), "S", 1, 1, "At the bottom, one square flat on the table.");
-  kicker(b, "orange", at(1, 1), "S", { support: "purple", say: "Lean the kicker up from it onto a ring." });
-  const land = 1 + 2 * RUN + 1 + 2 + 1 + 2 * RUN;
-  ramp(b, "orange", at(0, land), "N", 1, { topTower: true, support: "purple", say: "Two squares past the kicker, lean the landing ramp up onto its ring." });
-  lane(b, ["green"], at(1, land), "S", 2, 1, "Two squares flat past the landing.");
-  return truck(b, { id: "truck-mega-ramp-eight", title: "Mega ramp from eight high", age: "d", done: "Eight squares up, down the mega ramp, off the kicker and over the gap. Big air!" });
+  // the eight-high tower on the right: two squares across for every eight high, so it doesn't tip (R12)
+  tower(b, ["red", "orange", "yellow", "green", "blue", "purple", "red", "orange"], 4, -9, 2, 2, 8, "yellow", (r) => (r === 0 ? "Stand a ring of eight squares, two by two. A tower can be four times as high as it is wide, so two across holds eight high." : `Another ring on top: ${r + 1} squares high.`));
+  // the mega ramp on the left: a whole ramp eight high would need more tiles than four sets hold, so it climbs to four
+  const top = ramp(b, "red", at(0, 0), "N", 4, { topTower: true, support: "blue", say: "Lean the mega ramp up from the table, square by square, each resting on the last and on the towers, to the top. A join with nothing under it folds like a hinge, so every join sits on a tower." });
+  b.lid("square", "yellow", 0, 4, top.z - 1);
+  b.step("A yellow square flat on top of the tallest ring: the ramp's jump-off deck, four squares up.");
+  lane(b, ["green", "yellow"], at(0, top.z - 1), "N", 3, 2, "Beyond the ramp's deck, six squares flat on the table: where its jumpers land.");
+  lane(b, ["green", "green", "blue"], at(6, -6), "S", 3, 2, "In front of the tall tower, lay six squares flat: the landing zone for the big drop.");
+  crushCar(b, "red", 7.5, -9, "a crush car beside the tower");
+  crushCar(b, "blue", -3, -3, "another crush car beside the ramp");
+  crashWall(b, ["red", "yellow", "blue"], at(4, -1), "N", 3, 3, (r) => (r === 0 ? "Past the landing zone, stand three squares in a row, with a square turned back at each end: a wall to smash. The turned squares make corners, so it stands until a truck hits it." : "Another row on top, just stacked."));
+  return truck(b, { id: "truck-mega-ramp-eight", title: "Mega ramp and the eight-high tower", age: "d", done: "Up the mega ramp and off the deck, then the big one: a drop from eight squares up, straight through the wall!" });
 }
 
 function stadium(): Project {
@@ -182,7 +185,7 @@ function stadium(): Project {
   crushCar(b, "red", 2, -3, "a crush car by the left wall");
   crushCar(b, "green", 2, -5, "another");
   crushCar(b, "blue", 2, -7, "and a third");
-  crashWall(b, ["red", "yellow", "blue"], at(12, -6), "N", 3, 3, (r) => (r === 0 ? "On the right, stand three squares in a row: a wall to smash." : "Another row on top, just stacked."));
+  crashWall(b, ["red", "yellow", "blue"], at(12, -6), "N", 3, 3, (r) => (r === 0 ? "On the right, stand three squares in a row, with a square turned back at each end: a wall to smash. The turned squares make corners, so it stands until it's hit." : "Another row on top, just stacked."));
   dominoes(b, ["red", "yellow", "green"], at(1, -11.5), "E", 3, "Along the back, stand three squares up, a square apart: dominoes.");
   dominoes(b, ["blue", "purple"], at(11, -11.5), "E", 2, "Two more at the back right.");
   return truck(b, { id: "truck-monster-stadium", title: "The Monster stadium", age: "d", done: "Ladies and gentlemen, the Monster stadium! Through the tunnel, over the jump, crush the cars." });

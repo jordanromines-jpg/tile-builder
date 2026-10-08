@@ -43,6 +43,12 @@ export function tower(b: Builder, colours: Colour[], x0: number, z0: number, w: 
     b.step(say?.(r) ?? (r === 0 ? `Stand ${2 * (w + d)} squares in a ring, ${w} by ${d}. A support.` : `Another ring on top: ${r + 1} high.`));
   }
   if (lid) {
+    // on a tower two or more each way, a lid square would perch on a corner of the ring (R12b): a wall across the top
+    // ring under every join gives each one two opposite edges to rest on
+    if (w >= 2 && d >= 2) {
+      for (let x = x0 + 1; x < x0 + w; x++) for (let z = z0; z < z0 + d; z++) b.wallZ("square", colours[(h - 1) % colours.length], x, h - 1, z);
+      b.step(`Inside the top ring, stand ${(w - 1) * d} more squares across the middle, so the deck has walls to rest on.`);
+    }
     for (let x = 0; x < w; x++) for (let z = 0; z < d; z++) b.lid("square", lid, x0 + x, h, z0 + z);
     b.step(`Lay ${w * d === 1 ? "a square" : `${w * d} squares`} flat on top. A deck to start from.`);
   }
@@ -86,12 +92,13 @@ export function ramp(b: Builder, colour: Colour, at: At, dir: Dir, rise: number,
   const right = RIGHT[dir];
   // towers under the joins at each whole height, on the uphill side so the ramp passes over them
   const heights: number[] = [];
-  // squares join at every half height, so a tower stands at every whole one; a big square rises a whole square, and
-  // two big squares may run on between towers (R11d), so a tower at every second height is enough
-  for (let h = 1; h <= rise; h++) if ((h < rise && (!o.big || h % 2 === 0)) || (h === rise && o.topTower)) heights.push(h);
+  // a tower at every whole height: a big square rises a whole one, so every join of a big-square ramp sits on a tower;
+  // squares join at half heights too, and those joins get a brace (below) (R11, 2.8)
+  for (let h = 1; h <= rise; h++) if (h < rise || (h === rise && o.topTower)) heights.push(h);
   for (const h of heights) {
     const join = move(at, up, (h * per) * run, h);
-    const r = rect(join, up, 1, right, lanes);
+    // a tower at most four times as high as it is wide (R12): towers over four high are two squares across
+    const r = rect(join, up, 1, right, Math.max(lanes, Math.ceil((at.y + h) / 4)));
     const c = o.support ?? "blue";
     for (let k = 0; k < at.y + h; k++) {
       b.room(c, r.x0, r.z0, r.w, r.d, k);
@@ -106,6 +113,19 @@ export function ramp(b: Builder, colour: Colour, at: At, dir: Dir, rise: number,
     }
   }
   b.step(o.say ?? `Lean the ramp up from the bottom, ${o.big ? "big squares" : lanes === 2 ? "two squares side by side" : "one square"} at a time, each resting on the last, up to the top.`);
+  // a join in mid-air is a hinge, and a truck folds it: under each one, a brace leans from the face of the tower the
+  // pair runs up to, one square below its top, so brace, upper ramp tile and tower wall make a triangle that can't fold
+  if (!o.big) {
+    const down = RY[OPPOSITE[dir]];
+    for (let k = 1; k < rise * per; k += 2) {
+      const foot = move(at, up, (k + 1) * run, (k + 1) * lift - 1);
+      for (let l = 0; l < lanes; l++) {
+        const p = move(foot, right, l + 1);
+        b.add("square", colour, [p.x, p.y, p.z], [-(Q - SLOPE), down], "brace");
+      }
+    }
+    b.step(rise === 1 ? "Lock the ramp: lean one more square from the side of the tower up under the middle of the ramp. Now it holds a truck." : "Lock each pair: under every middle join, lean a square up from the side of the tower beyond. Now it holds a truck.");
+  }
   return move(at, up, rise * per * run, rise);
 }
 
@@ -186,13 +206,21 @@ export function dominoes(b: Builder, colours: Colour[], at: At, dir: Dir, n: num
   b.step(say);
 }
 
-/** A wall to smash: `len` squares long towards the right of `dir`, `h` high, stacked straight up (role crash). */
+/** A wall to smash: `len` squares long towards the right of `dir`, `h` high, stacked straight up (role crash), with a
+    square turned back at each end of every row. A flat stack of squares is a stack of hinges and folds before a truck
+    reaches it; the returns make each row a corner, so it stands until it is hit (R10c, 2.8). */
 export function crashWall(b: Builder, colours: Colour[], at: At, dir: Dir, len: number, h: number, say: (row: number) => string) {
   const right = RIGHT[dir];
+  const up = UP[dir];
+  const end = move(at, right, len);
   for (let r = 0; r < h; r++) {
     for (let i = 0; i < len; i++) {
       const p = move(at, right, i);
       b.add("square", colours[(r + i) % colours.length], [p.x, r, p.z], [0, RY[dir]], "crash");
+    }
+    for (const p of [at, end]) {
+      const q = move(p, up, 1);
+      b.placed[b.stand("square", colours[(r + len) % colours.length], [p.x, p.z], [q.x, q.z], r)].role = "crash";
     }
     b.step(say(r));
   }

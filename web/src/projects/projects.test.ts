@@ -131,25 +131,27 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
     expect(bad).toEqual([]);
   });
 
-  it("2.7: Monster trucks for every age, each with a ramp, a jump, a drop or something to crash, from four Magna-Tiles 100 at most", () => {
+  it("2.8: fifty Monster trucks across the ages, each with a ramp, a jump, a drop or something to crash, from four Magna-Tiles 100 at most", () => {
     const s = setById("magna-100")!;
     let four = inventoryFromSet(s.pieces, s.brand, null);
     for (let k = 0; k < 3; k++) four = addSet(four, s);
     const all = PROJECTS.filter((p) => p.theme === "trucks");
-    expect((["t", "a", "b", "c", "d"] as Age[]).map((a) => trucks(a).length).every((n) => n >= 3)).toBe(true);
+    expect((["t", "a", "b", "c", "d"] as Age[]).map((a) => trucks(a).length)).toEqual([6, 7, 10, 12, 15]);
     expect(all.filter((p) => matchProject(p, four).state === "need").map((p) => p.id)).toEqual([]);
     const feature = (p: Project) => p.placed.some((t) => t.role === "ramp" || t.role === "crash") || Math.max(...p.placed.map((t) => t.pos[1])) >= 3;
     expect(all.filter((p) => !feature(p)).map((p) => p.id)).toEqual([]);
-    const high = (p: Project) => Math.max(...p.placed.map((t) => t.pos[1] + (t.shape === "square-large" ? 2 : 1)));
-    expect(all.filter((p) => high(p) >= 8).length).toBeGreaterThanOrEqual(2);
+    // how high each tile really reaches: a flat tile is as high as it lies, a standing one its length, a ramp in between
+    const reach: Record<string, number> = { "square-large": 2, "tri-isosceles-tall": 2, "tri-equilateral": Math.sqrt(3) / 2 };
+    const high = (p: Project) => Math.max(...p.placed.map((t) => t.pos[1] + (reach[t.shape] ?? 1) * Math.cos(t.rot[0]))) + 1e-9;
+    expect(all.filter((p) => high(p) >= 7).length).toBeGreaterThanOrEqual(8);
     // more than a square metre: about 178 square units of table
     const area = (p: Project) => {
       const xs = p.placed.map((t) => t.pos[0]);
       const zs = p.placed.map((t) => t.pos[2]);
       return (Math.max(...xs) - Math.min(...xs)) * (Math.max(...zs) - Math.min(...zs));
     };
-    expect(all.filter((p) => area(p) >= 178).length).toBeGreaterThanOrEqual(1);
-    expect(all.filter((p) => p.placed.some((t) => t.shape === "square-large")).length).toBeGreaterThanOrEqual(5);
+    expect(all.filter((p) => area(p) >= 178).length).toBeGreaterThanOrEqual(8);
+    expect(all.filter((p) => p.placed.some((t) => t.shape === "square-large")).length).toBeGreaterThanOrEqual(30);
   });
 
   it("every step says something, and every project ends with its own line", () => {

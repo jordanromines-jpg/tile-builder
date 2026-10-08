@@ -79,12 +79,16 @@ for a toy car) and on triangles laid against the squares' edges for roofs, rays,
 A section of its own, a Monster trucks shelf on the Library and a filter chip, for every age: arenas, ramps, jumps,
 drops and crashes for 1:64 Monster Jam trucks (about 7–8 cm long). One small square is one lane, a big square two.
 
-- **Ramps work.** Every ramp is 30°: a square rises half a square, a big square a whole one. A ramp rests on a ring
-  of walls at every whole height, so a chain of tiles never sags under a truck (checker rule R11).
+- **Ramps hold a truck (2.8).** Every ramp is 30°: a square rises half a square, a big square a whole one. Every
+  magnet join is a hinge, so no ramp join hangs in mid-air: a tower stands under every whole height, and a square
+  ramp's half-height joins each get a brace, a square leaning up from the next tower that locks the join in a
+  triangle (checker rule R11). Towers over four squares high are two squares across, so they don't tip (R12).
 - **Big air and drops.** Kickers launch a truck over a gap onto a landing ramp; mega ramps and drop towers start eight
   squares up.
-- **Things to crash.** Crush cars, walls of doom, dominoes and skittles are built to be knocked down; the checker lets
-  them wobble (they skip R10) but they must stand while they are built.
+- **Things to crash.** Crush cars, walls of doom, dominoes and skittles are built to be knocked down, so they may
+  wobble, but they stand until they are hit: a wall to smash has corners or returns, never a flat stack (2.8).
+- **Engineering you can see (2.8).** Builds follow real principles: triangles don't fold, wide bases don't tip, load
+  goes down through walls, decks rest on two opposite walls. For 9–16, the step that uses one says why, in a line.
 - **Big.** The biggest builds are wider than a metre and take up to four 100-piece sets.
 - **Safety.** Crashing is the point, but trucks are driven, not thrown. 0–3 builds are for a grown-up to build and
   drive, as for the rest of that band.

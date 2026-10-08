@@ -45,7 +45,7 @@ export function rampProblems(project: Project, a: Analysis): Problem[] {
     if (!base) out.push({ rule: "R11", tile: i, message: "this ramp's bottom edge rests on nothing: put it on the table, a support or the ramp below" });
     if (!top) out.push({ rule: "R11", tile: i, message: "this ramp's top edge rests on nothing: it needs a support under it, or the next ramp" });
     if (base === "bent" || top === "bent") out.push({ rule: "R11", tile: i, message: "two ramps meet at an angle here with nothing under the join: it would fold" });
-    if (base === "join" && top === "join") out.push({ rule: "R11", tile: i, message: "three ramp tiles run on with no support under them: put a support under every second join" });
+    if (base === "join" || top === "join") out.push({ rule: "R11", tile: i, message: "two ramp tiles meet in mid-air here: the join is a hinge and a truck would fold it. Put a support or a brace under it" });
   });
   return out;
 }

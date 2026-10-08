@@ -21,6 +21,7 @@ import {
 } from "./geometry";
 import { holdsProblems } from "./hold";
 import { rampProblems } from "./ramps";
+import { stabilityProblems } from "./stability";
 import type { Problem } from "./problems";
 import type { Project } from "./types";
 
@@ -140,8 +141,9 @@ function standsProblem(project: Project, a: Analysis, i: number, set: Set<number
 export function pyramids(project: Project, a: Analysis): number[][] {
   const groups = new Map<string, number[]>();
   project.placed.forEach((_, i) => {
-    // ramps (2.7) lean on their own, not into pyramids
-    if (a.orient[i] !== "tilted" || project.placed[i].role === "ramp") return;
+    // ramps (2.7) and the braces under their joins (2.8) lean on their own, not into pyramids
+    const role = project.placed[i].role;
+    if (a.orient[i] !== "tilted" || role === "ramp" || role === "brace") return;
     // -0.00 and 0.00 are the same place
     const k = apexOf(a.polys[i]).map((v) => (Math.abs(v) < 0.005 ? 0 : v).toFixed(2)).join(",");
     groups.set(k, [...(groups.get(k) ?? []), i]);
@@ -205,6 +207,8 @@ function checkWithLeg(project: Project, leg: number): Problem[] {
   out.push(...holdsProblems(project, a));
   // R11: ramps hold a truck
   out.push(...rampProblems(project, a));
+  // R12: it stands firm
+  out.push(...stabilityProblems(project, a));
 
   return out.map((p) => ({ ...p, leg }));
 }

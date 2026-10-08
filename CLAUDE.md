@@ -6,8 +6,8 @@ can build, and walks a child through each build in 3D, step by step. It works of
 Jordan owns it and decides scope.
 
 ## Start here
-1. Read `plans/README.md`, then the plan in progress, `plans/2026-10-07-tots-and-trucks.md`.
-   **The last row of its build log says what is next.**
+1. Read `plans/README.md`, then the plan in progress, `plans/2026-10-08-sound-structures.md` (then Part C of
+   `plans/2026-10-07-tots-and-trucks.md`). **The last row of its build log says what is next.**
 2. Read `PRODUCT.md` (age bands, Monster trucks), `DESIGN.md`, `web/src/engine/README.md` (checker rules R1–R11) and
    `CHANGELOG.md`.
 3. Check out the branch the build log names, or start a new one from `main`. Run the checks below before changing
@@ -69,7 +69,8 @@ restore with `git checkout -- web/public/pictures` and run it again. Only the ch
     `triangleMosaic` and `triangleRows`; `points` (triangles off edges); `bigCells`; `bigCube` and `bigTunnel`;
   - `track-kit.ts`: Monster trucks: 30° `ramp` with support towers, `kicker`, `tower`, `bigTower` (8 high),
     `lane`, `crushCar`, `fence`, `dominoes`, `crashWall`, `arenaWall`, `tunnel`.
-- **Roles:** `roof` (pyramid triangles), `ramp` (R11), `crash` (built to fall: skips R10).
+- **Roles:** `roof` (pyramid triangles), `ramp` (R11), `brace` (locks a ramp join in a triangle; `ramp()` adds them),
+  `crash` (built to fall: skips R10a–b, but keeps R10c, so it stands until hit).
 - **Sets** (`engine/sets.ts`):
   - Magna 100: 50 squares, 4 big, 20 triangles, 11 corner, 15 tall;
   - Picasso 100: 8 big;
@@ -86,6 +87,14 @@ restore with `git checkout -- web/public/pictures` and run it again. Only the ch
   colour isn't available.
 
 ## Gotchas learned
+- **Builds must stand like real tiles (2.8).** Every magnet join is a hinge. No ramp join in mid-air (R11); crash walls
+  have corners; R12: at every height a structure is at most 4× (trucks) or 6× (others, from 2.8.2) as tall as it is
+  wide; truck decks rest on two opposite edges. Use the kit (`ramp`, `tower`, `crashWall`), which does this for you.
+- **On this Mac (Node 26):** run unit tests with `NODE_OPTIONS=--no-experimental-webstorage` (Node's own
+  `localStorage` hides jsdom's), and `npm run pictures` / Playwright with `NODE_OPTIONS=--dns-result-order=ipv4first`
+  (Vite binds IPv6 localhost). CI uses Node 22 and needs neither. Pictures drawn here differ slightly from CI's, so
+  restore every picture whose project didn't change. Python tests: `uv run --no-project --with-requirements
+  design/requirements.txt python -m pytest -q tests`.
 - Floating-point: round sizes before passing them to `Builder.room` (the √3 offsets of ramps produce 0.9999… and
   1.0000…2).
 - R5 counts how high a tile reaches, tile by tile within a step: a big square standing up is two layers.
