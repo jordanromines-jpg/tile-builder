@@ -56,10 +56,10 @@ function sockRocket(): Project {
   for (const c of ["red", "yellow", "red", "yellow"] as const) b.room(c, 0, 0, 1, 1, b.placed.length / 4);
   b.chunk(3, ["Stand three squares in a U.", "Close the ring and start the next one on top.", "Keep stacking.", "Keep stacking.", "Four rings tall: the rocket."]);
   b.stand("tri-right", "blue", [0, 1], [-1, 1]);
-  b.stand("tri-right", "blue", [1, 1], [2, 1]);
+  b.stand("tri-right", "blue", [1, 1], [1, 2]);
   b.stand("tri-right", "blue", [1, 0], [2, 0]);
-  b.chunk(3, ["Three fins at the bottom corners: small triangles, straight edge against the rocket."]);
-  b.stand("tri-right", "blue", [0, 0], [-1, 0]);
+  b.chunk(3, ["Three fins at the bottom corners, each pointing a different way: small triangles, straight edge against the rocket."]);
+  b.stand("tri-right", "blue", [0, 0], [0, -1]);
   b.step("The fourth fin.");
   b.roof("purple", 0, 0, 4);
   b.step("A tall pointy nose. Phew, what's that smell? Socks!");

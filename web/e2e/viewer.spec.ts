@@ -14,6 +14,20 @@ async function open(page: Page, age: "a" | "b" | "c") {
 
 const yaw = (page: Page) => page.evaluate(() => window.__viewer!.yaw());
 
+/** Waits until the view has stopped drawing: the model has landed and its shadow is drawn (2.8.1 draws the shadow
+    once the model comes to rest, so a picture taken before then differs from one taken after). */
+async function settled(page: Page) {
+  let last = -1;
+  await expect
+    .poll(async () => {
+      const now = await page.evaluate(() => window.__viewer!.frames());
+      const still = now === last;
+      last = now;
+      return still;
+    }, { intervals: [400] })
+    .toBe(true);
+}
+
 for (const age of ["a", "b", "c"] as const) {
   test(`age ${age}: ▶ turns the model a quarter, "back to my side" turns it back`, async ({ page }) => {
     const { errors } = await open(page, age);
@@ -27,6 +41,7 @@ for (const age of ["a", "b", "c"] as const) {
 
 test("age a: dragging does nothing and it never turns by itself", async ({ page }) => {
   const { v } = await open(page, "a");
+  await settled(page);
   const before = await v.screenshot();
   const box = (await v.boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);

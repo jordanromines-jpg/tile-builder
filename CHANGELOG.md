@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.8.2 · 8 Oct 2026
+
+Every build stands firm, not just the trucks. The rule from 2.8 (R12) now covers every project: at every height, a
+build is at most six times as tall as it is wide there, so a tall thin tower doesn't tip when a hand brushes it.
+
+- **22 builds made steadier, each still itself.** Lighthouses, rockets, the space elevator, the wifi tower and the
+  balloon launch tower now rise from a wider stepped base; toast towers and the hamster rope bridge stand on a toaster
+  and a hamster den; a dragon's tower and a burger stand's sign are tied to the building beside them; the sock rocket's
+  fins point four ways. A few are a little shorter: the baby rainbow tower lost its top (purple) ring, the cable car
+  station and the pointy-opinions tower a ring each, the silly spiral its tallest cap.
+- **The why, for 9–16:** the step that widens a base says so ("A wide base doesn't tip: two squares across holds it
+  steady.").
+- **A flat wall no longer slips through.** A wall one tile thick counts as no width at all; a foot added at the bottom
+  doesn't make it stand.
+- A test of the 3D view no longer fails at random: it waits until the shadow is drawn before taking its picture.
 ## 2.8.1 · 8 Oct 2026
 
 The 3D view copes with the big builds. Jordan: "the canvas is also struggling with bigger builds": slow, too small,

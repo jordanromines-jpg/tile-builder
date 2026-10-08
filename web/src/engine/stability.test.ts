@@ -51,6 +51,19 @@ describe("R12, it stands firm (2.8)", () => {
   });
 });
 
+describe("R12 for every project (2.8.2)", () => {
+  it("a build that isn't a truck may be six times as high as it is wide: 1 × 1 six high stands, seven tips", () => {
+    const house = { ...meta, theme: "homes" as const };
+    const tall = (h: number) => {
+      const b = new Builder();
+      tower(b, ["red"], 0, 0, 1, 1, h, "yellow");
+      return checkProject(b.build(house)).problems.filter((p) => p.rule === "R12");
+    };
+    expect(tall(6)).toEqual([]);
+    expect(tall(7).length).toBeGreaterThan(0);
+  });
+});
+
 describe("crashables stand until hit (R10c for crash tiles, 2.8)", () => {
   it("a flat stack of crash squares folds; the kit's wall, with its returns, stands", () => {
     const flat = new Builder();

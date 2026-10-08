@@ -23,6 +23,16 @@ function wallSaysHi(): Project {
 function worriedSmiley(): Project {
   const s = new Studio();
   pixelWall(s, "The face", 0, 0, ["gyyyyyg", "yyyyyyy", "ybyyyby", "yyyyyyy", "yyrrryy", "yryyyry", "gyyyyyg"]);
+  // the wall is seven high and one square thick, so its bottom row gets a second square going back at each end: two deep
+  s.part(
+    0,
+    (b) => {
+      b.wallZ("square", "green", 0, 0, -2);
+      b.wallZ("square", "green", 7, 0, -2);
+      return 2;
+    },
+    () => "The face's feet: one more square going back at each end of the bottom row, in line with the ones there. A deep base doesn't tip: two squares deep holds the tall face steady.",
+  );
   s.rug("the shadow", Array.from({ length: 7 }, (_, i) => [i, 1] as [number, number]), "green", "a strip in front");
   return s.build({ id: "slightly-worried-smiley", title: "The Smiley That Is Slightly Worried", theme: "patterns", age: "d", done: "You built the smiley! It is slightly worried. Did it leave the oven on? Probably not. Probably." });
 }
@@ -160,7 +170,7 @@ function bananaMountain(): Project {
     s.triLid(`the mountain, level ${y + 1}`, level, y + 1, colours[y], "a floor of triangles, one on each little room");
   });
   s.tetra("the peak", up(0, 0), 2, "orange");
-  s.tower("the cable car station", 5, 0.5, 4, ["blue", "purple"], { cap: "tall", capColour: "red" });
+  s.tower("the cable car station", 5, 0.5, 3, ["blue", "purple"], { cap: "tall", capColour: "red" });
   s.rug("the path", [[4, 1.5], [4, 2.5], [3, 2.5], [2, 2.5]], "orange", "a path to the station");
   return s.build({ id: "banana-mountain-cable-car", title: "The Cable Car Station on Banana Mountain", theme: "vehicles", age: "d", done: "You built Banana Mountain! The cable car goes up to the top. Nobody knows why it's called Banana Mountain. Nobody asks." });
 }

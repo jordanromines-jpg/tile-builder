@@ -41,12 +41,14 @@ function cheeseLighthouse(): Project {
   const b = new Builder();
   b.room("yellow", 0, 0, 2, 2, 0);
   b.chunk(4, ["The base: four squares round a corner.", "Close it: eight squares round a two-by-two space."]);
-  b.lids("orange", 0, 0, 2, 2, 1);
+  b.room("orange", 0, 0, 2, 2, 1);
+  b.chunk(4, ["A second ring on top, the same size. A wide base doesn't tip: two squares across holds it steady.", "Close it: eight squares again."]);
+  b.lids("yellow", 0, 0, 2, 2, 2);
   b.step("Four squares flat on top.");
-  const c: Colour[] = ["yellow", "orange", "yellow", "orange", "yellow"];
-  b.tower(c, 1, 1, 1);
-  b.chunk(4, ["On the front right of the top, a ring of four.", "Stack another ring: holes in cheese are optional.", "Keep stacking.", "Keep stacking.", "Five rings tall."]);
-  b.roof("red", 1, 1, 6);
+  const c: Colour[] = ["orange", "yellow", "orange"];
+  b.tower(c, 1, 1, 2);
+  b.chunk(4, ["On the front right of the top, a ring of four.", "Stack another ring: holes in cheese are optional.", "One more ring: three rings tall."]);
+  b.roof("red", 1, 1, 5);
   b.step("A pyramid of isosceles triangles on top: the lamp. It smells for miles.");
   return b.build({ id: "cheese-lighthouse", title: "The stinky cheese lighthouse", theme: "bridges", age: "c", stars: 1, done: "You built the stinky cheese lighthouse! Ships can't see it in the fog, but they can smell it.", swaps: [TALL_TO_LOW] });
 }
@@ -143,23 +145,29 @@ function penguinParty(): Project {
 
 function spaghettiTower(): Project {
   const b = new Builder();
-  const c: Colour[] = ["red", "orange", "yellow", "green", "blue", "purple", "red", "orange"];
-  b.tower(c, 0, 0, 0);
-  b.chunk(4, ["Stand four squares in a ring.", "Stack another ring: orange.", "A yellow ring next.", "A green ring.", "A blue ring.", "Purple. Grown-up, hold the bottom.", "Red again, on top.", "Orange: eight rings, a rainbow of spaghetti."]);
-  b.roof("yellow", 0, 0, 8, "tri-equilateral");
+  const c: Colour[] = ["red", "orange", "green", "blue", "purple", "red", "orange"];
+  b.room("red", 0, 0, 2, 2, 0);
+  b.room("orange", 0, 0, 2, 2, 1);
+  b.chunk(4, ["The base: four squares round a corner.", "Close the ring: eight squares round a two-by-two space.", "Stack a second ring: orange.", "Close it. A wide base doesn't tip: two squares across holds it steady."]);
+  b.lids("yellow", 0, 0, 2, 2, 2);
+  b.step("Four squares flat on top: the plate.");
+  b.tower(c.slice(2), 0, 0, 2);
+  b.chunk(4, ["Now the spaghetti: stand four squares in a ring on one corner of the plate.", "A blue ring on top.", "Purple. Grown-up, hold the bottom.", "Red again, on top.", "Orange: five rings of spaghetti."]);
+  b.roof("yellow", 0, 0, 7, "tri-equilateral");
   b.step("A meatball on top: four equilateral triangles meeting at one vertex.");
-  return b.build({ id: "spaghetti-tower", title: "The spaghetti tower", theme: "patterns", age: "c", stars: 1, done: "You built the spaghetti tower! Thirty-six tiles of pasta. Don't slurp it." });
+  return b.build({ id: "spaghetti-tower", title: "The spaghetti tower", theme: "patterns", age: "c", stars: 1, done: "You built the spaghetti tower! Forty-four tiles of pasta. Don't slurp it." });
 }
 
 function dragonDaycare(): Project {
   const b = new Builder();
   b.room("green", 0, 0, 4, 3, 0, [0]);
   b.chunk(4, ["The pen: squares round a four-by-three space, with a gate gap at the front left.", "Keep going round.", "Keep going.", "Close the pen."]);
-  b.tower(["red", "red", "red", "red"], 5, 0, 0);
-  b.chunk(4, ["One square to the right of the pen, the nap tower: a ring of four.", "Stack another.", "And a third.", "And a fourth."]);
-  b.roof("orange", 5, 0, 4);
+  b.room("red", 4, 0, 1, 1, 0, [3]);
+  b.step("Right beside the pen, the nap tower shares the pen's wall. Stand three squares. Sharing a wall ties the tower to the pen, so it doesn't tip.");
+  b.tower(["red", "red", "red"], 4, 0, 1);
+  b.chunk(4, ["Stack a ring of four on top.", "And a third.", "And a fourth."]);
+  b.roof("orange", 4, 0, 4);
   b.step("A tall roof: dragon babies nap under it.");
-
   return b.build({ id: "dragon-daycare", title: "Dragon daycare", theme: "animals", age: "c", stars: 1, done: "You built dragon daycare! Naptime is at two. Snack time is a whole sheep.", swaps: [TALL_TO_LOW] });
 }
 

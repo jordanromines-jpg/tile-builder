@@ -27,11 +27,13 @@ function lighthouse(): Project {
   const b = new Builder();
   b.room("blue", 0, 0, 2, 2, 0);
   b.chunk(4, ["Stand four squares edge to edge round a corner.", "Close the base: eight squares round a two-by-two square."]);
-  b.lids("blue", 0, 0, 2, 2, 1);
+  b.room("blue", 0, 0, 2, 2, 1);
+  b.chunk(4, ["Stack a second ring of the same size. A wide base doesn't tip: two squares across holds it steady.", "Close it: eight squares again."]);
+  b.lids("blue", 0, 0, 2, 2, 2);
   b.step("Lay four squares flat on top. The base is a cube two squares wide.");
-  const C = ["red", "yellow", "red", "yellow"] as const;
-  C.forEach((c, i) => b.room(c, 0, 0, 1, 1, i + 1));
-  b.chunk(4, ["On one corner of the top, make a ring of four squares.", "Stack another ring on it. Stripes.", "And another.", "The fourth ring makes the tower four squares tall."]);
+  const C = ["red", "yellow", "red"] as const;
+  C.forEach((c, i) => b.room(c, 0, 0, 1, 1, i + 2));
+  b.chunk(4, ["On one corner of the top, make a ring of four squares.", "Stack another ring on it. Stripes.", "And another: the tower is three squares tall."]);
   b.roof("red", 0, 0, 5);
   b.step("Top it with a pyramid of isosceles triangles. Four faces, one vertex at the top.");
   return b.build({ id: "lighthouse", title: "A lighthouse", theme: "bridges", age: "c", stars: 1, done: "You built a lighthouse! Ships can see it from far away.", swaps: [TALL_TO_LOW] });

@@ -5,6 +5,14 @@ import { Site } from "../kit";
 
 type C = Colour;
 
+/** Adds one short "why" sentence to the first step whose words start with `from` (ages 9+ only, so only called for those). */
+function why(p: Project, from: string, text: string): Project {
+  const step = p.steps.find((s) => s.say.startsWith(from));
+  if (!step) throw new Error(`no step starts with "${from}"`);
+  step.say += ` ${text}`;
+  return p;
+}
+
 /** Four corner towers, curtain walls between them, and something in the middle. */
 function corners(s: Site, w: number, d: number, h: number, tc: C[], wc: C, cren: C | undefined, cap: "tall" | "low" = "tall") {
   const spots: [number, number, string][] = [[0, 0, "the back left tower"], [w, 0, "the back right tower"], [0, d, "the front left tower"], [w, d, "the front right tower"]];
@@ -128,7 +136,8 @@ function dragonLair(): Project {
   const lair = s.block("the lair", 0, 0, 4, 3, 2, ["red", "orange"], { door: true, roof: "orange" });
   s.roofs("the spikes", [[0, 0], [1, 0], [2, 0], [3, 0]], lair.top, "low", "red");
   s.tower("the egg tower", 5, 1, 4, ["green", "yellow"], { cap: "tall", capColour: "green" });
-  return s.build({ id: "dragon-lair", title: "The Dragon's Bouncy Lair", theme: "castles", age: "d", done: "You built the Dragon's Bouncy Lair! The dragon bounces when it's happy. The floor does not like it." });
+  s.deck("the egg bridge", "x", 4, 5, 1, 2, "yellow");
+  return why(s.build({ id: "dragon-lair", title: "The Dragon's Bouncy Lair", theme: "castles", age: "d", done: "You built the Dragon's Bouncy Lair! The dragon bounces when it's happy. The floor does not like it." }), "The egg bridge", "A tall thin tower tips, but a bridge ties it to the wide lair, so it holds steady.");
 }
 
 function chessCastle(): Project {
@@ -150,12 +159,15 @@ function doughnutFort(): Project {
 
 function gateCastle(): Project {
   const s = new Site();
-  s.tower("the left gate tower", 0, 0, 5, ["blue", "purple"], {});
-  s.tower("the right gate tower", 2, 0, 5, ["blue", "purple"], {});
-  s.deck("the gate bridge", "x", 1, 2, 0, 5, "yellow");
+  // each gate tower stands on a wide 2 × 2 base for its two lowest rings, then narrows (a ziggurat), and the bridge ties the two
+  s.tower("the left gate base", 0, -1, 2, ["blue", "purple"], { size: 2, cap: "none" });
+  s.tower("the right gate base", 3, -1, 2, ["blue", "purple"], { size: 2, cap: "none" });
+  s.tower("the left gate tower", 1, 0, 3, ["blue", "purple"], { base: 2 });
+  s.tower("the right gate tower", 3, 0, 3, ["blue", "purple"], { base: 2 });
+  s.deck("the gate bridge", "x", 2, 3, 0, 5, "yellow");
   s.wall("the left wall", "x", -3, 0, 1, 2, "blue");
-  s.wall("the right wall", "x", 3, 6, 1, 2, "blue");
-  return s.build({ id: "drawbridge-gate", title: "The Drawbridge That Never Closes", theme: "castles", age: "d", done: "You built the Drawbridge That Never Closes! Anyone can come in. Even the pizza delivery." });
+  s.wall("the right wall", "x", 5, 8, 1, 2, "blue");
+  return why(s.build({ id: "drawbridge-gate", title: "The Drawbridge That Never Closes", theme: "castles", age: "d", done: "You built the Drawbridge That Never Closes! Anyone can come in. Even the pizza delivery." }), "The left gate base", "A wide base doesn't tip: each tower starts two squares across, then narrows as it rises.");
 }
 
 function toiletTowers(): Project {

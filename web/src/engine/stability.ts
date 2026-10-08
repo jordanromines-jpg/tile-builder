@@ -12,10 +12,8 @@ import type { Analysis } from "./check";
 import type { Problem } from "./problems";
 import type { Project } from "./types";
 
-/** How many times its narrowest base a structure may be tall. Every other project gets 6 in 2.8.2, once the builds
-    that are too slender today have been widened; until then R12 checks Monster trucks builds only. */
+/** How many times its narrowest width a structure may be tall: trucks since 2.8, every project since 2.8.2. */
 export const SLENDER = { trucks: 4, other: 6 };
-export const ALL_PROJECTS = false;
 
 /** The narrowest width of a set of points on the table (x, z), across every direction in 5° steps. */
 function narrowest(pts: [number, number][]): number {
@@ -68,7 +66,8 @@ export function structures(project: Project, a: Analysis): { tiles: number[]; he
     const widths: number[] = [];
     for (let y = 0; y < height - 1e-3; y++) {
       const pts = section(a, tiles, y);
-      widths.push(pts.length ? narrowest(pts) : 0);
+      // no tile crosses this height: nothing to tip (-1); a flat wall crossing it is 0 wide, and does tip
+      widths.push(pts.length ? narrowest(pts) : -1);
     }
     out.push({ tiles, height, widths });
   }
@@ -78,12 +77,11 @@ export function structures(project: Project, a: Analysis): { tiles: number[]; he
 export function stabilityProblems(project: Project, a: Analysis): Problem[] {
   const out: Problem[] = [];
   const trucks = project.theme === "trucks";
-  if (!trucks && !ALL_PROJECTS) return out;
   const k = trucks ? SLENDER.trucks : SLENDER.other;
   for (const s of structures(project, a)) {
     // a single layer can't tip far; a structure with no feet on the table is caught by R3
     if (s.height <= 1 + 1e-3) continue;
-    const y = s.widths.findIndex((w, y) => w > 0 && s.height - y > k * w + 1e-3);
+    const y = s.widths.findIndex((w, y) => w >= 0 && s.height - y > k * w + 1e-3);
     if (y >= 0)
       out.push({ rule: "R12", tile: s.tiles[0], message: `this part is ${round(s.height - y)} high above ${y ? `height ${y}` : "the table"}, where it is only ${round(s.widths[y])} wide: it would tip. Keep it at most ${k} times as high as it is wide, or tie it to a neighbour` });
   }

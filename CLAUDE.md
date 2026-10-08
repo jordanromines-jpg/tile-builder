@@ -88,8 +88,8 @@ restore with `git checkout -- web/public/pictures` and run it again. Only the ch
 
 ## Gotchas learned
 - **Builds must stand like real tiles (2.8).** Every magnet join is a hinge. No ramp join in mid-air (R11); crash walls
-  have corners; R12: at every height a structure is at most 4× (trucks) or 6× (others, from 2.8.2) as tall as it is
-  wide; truck decks rest on two opposite edges. Use the kit (`ramp`, `tower`, `crashWall`), which does this for you.
+  have corners; R12: at every height a structure is at most 4× (trucks) or 6× (others) as tall as it is
+  wide (every project since 2.8.2); truck decks rest on two opposite edges. Use the kit (`ramp`, `tower`, `crashWall`), which does this for you.
 - **On this Mac (Node 26):** run unit tests with `NODE_OPTIONS=--no-experimental-webstorage` (Node's own
   `localStorage` hides jsdom's), and `npm run pictures` / Playwright with `NODE_OPTIONS=--dns-result-order=ipv4first`
   (Vite binds IPv6 localhost). CI uses Node 22 and needs neither. Pictures drawn here differ slightly from CI's, so

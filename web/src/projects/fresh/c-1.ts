@@ -37,12 +37,12 @@ function pointyOpinions(): Project {
   const s = new Studio();
   const t1: Tri = [L(0, 0), L(1, 0), L(0, 1)];
   const t2: Tri = [L(1, 0), L(1, 1), L(0, 1)];
-  for (let y = 0; y < 6; y++) {
+  for (let y = 0; y < 5; y++) {
     s.walls("the tall tower", t1, 1, [(["purple", "blue", "green"] as Colour[])[y % 3]], { closed: true, base: y, what: "in a triangle" });
-    if (y < 3) s.walls("the short tower", t2, 1, [(["orange", "yellow"] as Colour[])[y % 2]], { closed: true, base: y, what: "in a triangle, sharing a wall" });
+    if (y < 3) s.walls("the short tower", t2, 1, [(["orange", "yellow"] as Colour[])[y % 2]], { closed: true, base: y, what: "in a triangle, sharing a wall, so the two towers hold each other steady" });
   }
   s.tetra("the short tower", t2, 3, "red");
-  s.tetra("the tall tower", t1, 6, "red");
+  s.tetra("the tall tower", t1, 5, "red");
   s.fins("the towers", [L(0, 0), L(1, 0), L(1, 1), L(0, 1)].map((p) => ({ corner: p, out: [p[0] - 0.75, p[1] + EQH / 2] as P })), "yellow", "feet");
   return s.build({ id: "tower-of-pointy-opinions", title: "The Tower of Pointy Opinions", theme: "bridges", age: "c", done: "You built the Tower of Pointy Opinions! The tall one thinks it is right. The short one thinks so too." });
 }

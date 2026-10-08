@@ -5,6 +5,14 @@ import type { Project } from "../../engine/types";
 import { Site } from "../kit";
 
 /** Pyramids on the cells of a w × d roof that are not under the smaller block on top of it (x0..x0+iw, z0..z0+id). */
+/** Add one short, true "why" sentence to the first step whose line starts with `start` (ages 9 and up only). */
+function why(p: Project, start: string, text: string): Project {
+  const st = p.steps.find((x) => x.say.startsWith(start));
+  if (!st) throw new Error(`${p.id}: no step starts "${start}"`);
+  st.say += ` ${text}`;
+  return p;
+}
+
 function ring(s: Site, name: string, w: number, d: number, y: number, inner: [number, number, number, number], kind: "tall" | "low" | "mix", c: Colour) {
   const [ix, iz, iw, id] = inner;
   const cells: [number, number][] = [];
@@ -43,11 +51,12 @@ function lateClock(): Project {
 
 function toastTowers(): Project {
   const s = new Site();
-  s.tower("the white toast tower", 0, 0, 5, ["yellow", "orange"], { cap: "tall", capColour: "orange" });
-  s.tower("the brown toast tower", 2, 0, 5, ["orange", "yellow"], { cap: "tall", capColour: "orange" });
+  const toaster = s.block("the toaster", 0, 0, 3, 2, 2, ["red", "orange"], { roof: "blue" });
+  s.tower("the white toast tower", 0, 0, 3, ["yellow", "orange"], { base: toaster.top, cap: "tall", capColour: "orange" });
+  s.tower("the brown toast tower", 2, 0, 3, ["orange", "yellow"], { base: toaster.top, cap: "tall", capColour: "orange" });
   s.deck("the butter bridge", "x", 1, 2, 0, 5, "yellow");
   s.plaza("the jam river", 0, 2, 3, 2, "red");
-  return s.build({ id: "toast-towers", title: "The Twin Towers of Toast", theme: "bridges", age: "c", done: "You built the Twin Towers of Toast! Butter side up, always." });
+  return why(s.build({ id: "toast-towers", title: "The Twin Towers of Toast", theme: "bridges", age: "c", done: "You built the Twin Towers of Toast! Butter side up, always." }), "The toaster", "A wide base doesn't tip: a toaster two squares deep holds both towers steady.");
 }
 
 function zipLine(): Project {
@@ -86,11 +95,12 @@ function tallestTower(): Project {
 
 function hamsterRopeBridge(): Project {
   const s = new Site();
-  s.tower("the left hamster tower", 0, 0, 7, ["orange", "yellow"], { cap: "lid", capColour: "orange" });
-  s.tower("the right hamster tower", 2, 0, 7, ["orange", "yellow"], { cap: "lid", capColour: "orange" });
+  const den = s.block("the hamster den", 0, 0, 3, 2, 2, ["purple", "blue"], { roof: "green" });
+  s.tower("the left hamster tower", 0, 0, 5, ["orange", "yellow"], { base: den.top, cap: "lid", capColour: "orange" });
+  s.tower("the right hamster tower", 2, 0, 5, ["orange", "yellow"], { base: den.top, cap: "lid", capColour: "orange" });
   s.deck("the rope bridge", "x", 1, 2, 0, 7, "green");
   s.plaza("the hamster ball pit", 0, 2, 3, 2, "purple");
-  return s.build({ id: "hamster-rope-bridge", title: "The Rope Bridge of Raging Hamsters", theme: "bridges", age: "d", done: "You built the Rope Bridge! The hamsters are racing across. They are VERY angry. Nobody knows why." });
+  return why(s.build({ id: "hamster-rope-bridge", title: "The Rope Bridge of Raging Hamsters", theme: "bridges", age: "d", done: "You built the Rope Bridge! The hamsters are racing across. They are VERY angry. Nobody knows why." }), "The hamster den", "A wide base doesn't tip: the den is two squares deep and ties both towers into one wide shape.");
 }
 
 function zebraZiggurat(): Project {
@@ -130,7 +140,7 @@ function pyramidParty(): Project {
 function sillySpiral(): Project {
   const s = new Site();
   const spots: [number, number][] = [[0, 0], [2, 0], [4, 0], [4, 2], [4, 4], [2, 4], [0, 4], [0, 2]];
-  spots.forEach(([x, z], i) => s.tower(`step ${i + 1}`, x, z, Math.ceil((i + 1) / 2), ["red", "orange", "yellow", "green"], { cap: i === 7 ? "tall" : "lid", capColour: "blue" }));
+  spots.forEach(([x, z], i) => s.tower(`step ${i + 1}`, x, z, Math.ceil((i + 1) / 2), ["red", "orange", "yellow", "green"], { cap: i === 7 ? "low" : "lid", capColour: "blue" }));
   return s.build({ id: "silly-spiral", title: "The Spiral of Silly Steps", theme: "patterns", age: "d", done: "You built the Spiral of Silly Steps! Each step is a little bit taller. Walk round and round." });
 }
 
@@ -172,11 +182,13 @@ function mushroomVillage(): Project {
 
 function sunflowerTower(): Project {
   const s = new Site();
-  const t = s.tower("the sunflower stem", 1, 1, 6, ["green", "green"], { cap: "lid", capColour: "yellow" });
+  const root = s.tower("the thick sunflower stem", 1, 1, 3, ["green", "green"], { size: 2, cap: "none" });
+  const t = s.tower("the thin sunflower stem", 1, 1, 3, ["green", "green"], { base: root.top, cap: "lid", capColour: "yellow" });
   s.plaza("the flower bed", 0, 0, 3, 3, "orange");
   s.roofs("the flower", [[1, 1]], t.top, "tall", "yellow");
-  for (const [x, z] of [[0, 0], [2, 0], [0, 2], [2, 2]] as const) s.tent("a seedling", x, z, "low", "green", 0);
-  return s.build({ id: "sunflower-watch-tower", title: "The Sunflower Watch Tower", theme: "gardens", age: "c", done: "You built the Sunflower Watch Tower! It always turns to face the sun. And the snacks." });
+  for (const [x, z] of [[0, 0], [2, 0], [0, 2]] as const) s.tent("a seedling", x, z, "low", "green", 0);
+  s.tent("a seedling on the ledge", 2, 2, "low", "green", root.top);
+  return why(s.build({ id: "sunflower-watch-tower", title: "The Sunflower Watch Tower", theme: "gardens", age: "c", done: "You built the Sunflower Watch Tower! It always turns to face the sun. And the snacks." }), "The thick sunflower stem", "A wide base doesn't tip: the stem is two squares across at the bottom and one at the top.");
 }
 
 function secretShed(): Project {
