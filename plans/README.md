@@ -1,5 +1,7 @@
 # Build plans
 
+`CLAUDE.md` at the repo root has the session rules and key facts; read it first.
+
 Every plan for Tile Steps (the repo's working name: Tile Builder) lives here and is committed with the work it describes. Work beyond what Jordan has
 approved is written into a plan first and waits for his go; adding detail to an idea isn't agreement. The format is
 `web-agent`'s (`plans/README.md` there), adapted to one builder session.
@@ -21,7 +23,7 @@ names, runs the checks, and starts the next key.
 
 | Plan | Status | Carries |
 |---|---|---|
-| `2026-10-07-tots-and-trucks.md` | approved 7 Oct 2026, in progress | 2.6 (32 more 0–3 builds, big squares used well), 2.7 and 2.8 (Monster trucks: about 50 builds, engine R11, track kit, Library shelf and filter) |
+| `2026-10-07-tots-and-trucks.md` | approved 7 Oct 2026, in progress | 2.6 (32 more 0–3 builds, big squares used well), 2.7 and 2.8 (Monster trucks: about 50 builds, engine R11, track kit, Library shelf and filter), 2.9 (50 native wildflower builds: Kansas, Chicago, North Carolina) |
 | `2026-10-02-tile-builder.md` | approved 2 Oct 2026, in progress | PR 0.1 to 8.1; gates G1 (the brief) and G2 (the mockups) |
 
 ## One file per plan

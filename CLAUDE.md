@@ -1,0 +1,96 @@
+# Tile Steps: notes for every session
+
+Tile Steps (repo `jordanromines-jpg/tile-builder`, live at https://jordanromines-jpg.github.io/tile-builder/) is an
+iPad web app. A family enters its magnet tiles (Magna-Tiles, PicassoTiles, Connetix). The app shows which projects they
+can build, and walks a child through each build in 3D, step by step. It works offline, and nothing leaves the device.
+Jordan owns it and decides scope.
+
+## Start here
+1. Read `plans/README.md`, then the plan in progress, `plans/2026-10-07-tots-and-trucks.md`.
+   **The last row of its build log says what is next.**
+2. Read `PRODUCT.md` (age bands, Monster trucks), `DESIGN.md`, `web/src/engine/README.md` (checker rules R1–R11) and
+   `CHANGELOG.md`.
+3. Check out the branch the build log names, or start a new one from `main`. Run the checks below before changing
+   anything.
+
+## Rules Jordan has set (always)
+- **Never commit keys or secrets.** CI scans for `21st_sk_[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16}`. A 21st API key was once
+  pasted in chat: never write it anywhere.
+- **No real children's names or photos, and no analytics.** Nothing leaves the device.
+- **Plans first.** Work beyond what Jordan approved goes into a plan in `plans/` and waits for his go. Ask (with a
+  question tool) when a choice is his. Keep the plan's build log current in the same commit as the work, and add a line
+  to `plans/CHANGELOG.md` when a plan changes.
+- **Every source file is 500 lines or fewer** (`npm run size`). Split project files (`trucks-1.ts`, `trucks-2.ts`, …).
+- **Agents and workflows:** Jordan allowed agents for the big batches ("run agents if you need to"). Earlier he said
+  "no workflows". Use the Agent tool only, not the Workflow tool, unless he asks.
+- **Shipping:** open a draft PR, subscribe to its activity, merge (squash) once CI is green, then confirm the
+  `pages.yml` run on main succeeded. github.io can't be reached from the cloud sandbox; check the Actions run instead.
+  Then tell Jordan in plain words what changed.
+- **Shapes:** use the big squares (Jordan calls them "the 4x4s") and the triangles inventively, not just grids of small
+  squares.
+- **Look at what you make:** render `npm run pictures`, make a contact sheet of every new picture (with `sharp`, loaded
+  via `createRequire` from `web/package.json`, saved in the scratchpad) and look at it. Fix shapes that read badly.
+
+## Checks (all must pass before a push; CI runs the same)
+```
+cd web
+npm test                      # unit tests (vitest)
+npm run check:projects        # every project passes the checker (R1–R11), under every brand's tall-triangle leg
+npm run size                  # 500-line limit
+npx tsc -b                    # types
+npm run build                 # build and precache
+npx playwright test --workers=2   # e2e, with screenshot plates in e2e/plates (update only after looking at them)
+cd .. && python -m pytest -q tests/test_tokens.py
+grep -rEl '21st_sk_[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16}' --exclude-dir=node_modules --exclude-dir=.git .   # must find nothing
+```
+After changing any project, run `npm run projects` to regenerate `public/projects/*.json` and
+`src/projects/catalog.json` (a test fails if they are stale). Then run `npm run pictures`, which regenerates
+`public/pictures/` and its manifest. The pictures run takes minutes and deletes the folder first. If it is interrupted,
+restore with `git checkout -- web/public/pictures` and run it again. Only the changed projects' pictures and
+`manifest.json` should differ.
+
+## How projects work
+- A project is data: tiles placed in 3D (`pos`, `rot` = [tilt about the base edge, turn about vertical]) and steps.
+  It is written with `Builder` (`web/src/projects/helpers.ts`) and proved by the checker (`web/src/engine/check.ts`,
+  `hold.ts` R10, `ramps.ts` R11).
+- Units are square edges (a small square is about 7.5 cm). y is up, and the child looks from +z.
+- **Age bands:**
+  - `t` 0–3 (built by a grown-up; flat mosaics are shown from above);
+  - `a` 3–5 (one tile a step; simple words);
+  - `b` 6–8;
+  - `c` 9–10;
+  - `d` 11–16.
+
+  Rules are in `engine/ages.ts`: `AGE_RULES`, and `TRUCK_RULES` for theme `trucks`, chosen by `rulesFor`. Stars go by
+  size within the band.
+- **Kits:**
+  - `kit.ts` / `studio.ts`: buildings and shapes for the older ages;
+  - `tots-kit.ts`: mosaics: `squareMosaic`, with tokens `R`, `R+` (big square), `RY/` and `RY\` (corner halves);
+    `triangleMosaic` and `triangleRows`; `points` (triangles off edges); `bigCells`; `bigCube` and `bigTunnel`;
+  - `track-kit.ts`: Monster trucks: 30° `ramp` with support towers, `kicker`, `tower`, `bigTower` (8 high),
+    `lane`, `crushCar`, `fence`, `dominoes`, `crashWall`, `arenaWall`, `tunnel`.
+- **Roles:** `roof` (pyramid triangles), `ramp` (R11), `crash` (built to fall: skips R10).
+- **Sets** (`engine/sets.ts`):
+  - Magna 100: 50 squares, 4 big, 20 triangles, 11 corner, 15 tall;
+  - Picasso 100: 8 big;
+  - Connetix: adds windows, doors, rectangles and fences.
+
+  Matching ignores colour. Builds must fit the budget their tests set.
+- **Library** (`web/src/screens/Library.tsx`):
+  - an age picker;
+  - a theme filter (`engine/themes.ts`, with icons in `ui/ThemeIcon.tsx`);
+  - shelves by age, then a Monster trucks shelf.
+
+  Cards draw 12 at a time.
+- **Colours:** red, orange, yellow, green, blue and purple only (no white, pink or brown). Say so when a real thing's
+  colour isn't available.
+
+## Gotchas learned
+- Floating-point: round sizes before passing them to `Builder.room` (the √3 offsets of ramps produce 0.9999… and
+  1.0000…2).
+- R5 counts how high a tile reaches, tile by tile within a step: a big square standing up is two layers.
+- A wall alone on the table fails R6 unless it's `crash`. A step whose walls only stand together (a tunnel: walls and
+  roof) must be one step.
+- E2e locators: shelves render lazily (12 cards), so use `swipeTo` from `e2e/helpers.ts` to reach later cards. Titles
+  must be unique (a test checks).
+- Commit trailers come from the session's attribution reminder. Don't put model names in commits or PRs.
