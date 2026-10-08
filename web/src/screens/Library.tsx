@@ -88,7 +88,12 @@ export function Library() {
     />
   );
 
-  const byAge = (a: Age) => sortItems(items.filter((i) => i.project.age === a));
+  // Monster trucks (2.7) have a shelf of their own, after the chosen age's, unless the trucks filter is on: then
+  // they fill the shelves by age like any theme
+  const trucksShelf = theme !== "trucks";
+  const pool = trucksShelf ? items.filter((i) => i.project.theme !== "trucks") : items;
+  const byAge = (a: Age) => sortItems(pool.filter((i) => i.project.age === a));
+  const trucks = trucksShelf ? [age, ...SHELF_ORDER.filter((a) => a !== age)].flatMap((a) => sortItems(items.filter((i) => i.project.theme === "trucks" && i.project.age === a))) : [];
   const shelves: { title: string; items: Item[] }[] = [];
   if (age) {
     const mine = byAge(age);
@@ -96,8 +101,10 @@ export function Library() {
       shelves.push({ title: S.library.ready, items: mine.filter((i) => i.match?.state !== "need") });
       shelves.push({ title: S.library.more, items: mine.filter((i) => i.match?.state === "need") });
     } else shelves.push({ title: S.library.forAge(S.kid.ages[age]), items: mine });
+    shelves.push({ title: S.library.trucks, items: trucks });
     for (const a of SHELF_ORDER.filter((x) => x !== age)) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
   } else {
+    shelves.push({ title: S.library.trucks, items: trucks });
     for (const a of SHELF_ORDER) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
   }
   const shown = shelves.filter((s) => s.items.length);

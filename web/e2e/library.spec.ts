@@ -40,6 +40,15 @@ test("2.5: 0 to 3 puts the mosaics first; one opens with the grown-up's line and
   await expect(page.getByRole("list", { name: "Step 1 of 6" })).toBeVisible();
 });
 
+test("2.7: a Monster trucks shelf after the age's shelves; the trucks chip shows only trucks; a card opens", async ({ page }) => {
+  await ready(page, "Magna-Tiles Clear Colors 100");
+  await expect(page.getByRole("heading", { name: "Monster trucks" })).toBeVisible();
+  await page.getByRole("button", { name: "Monster trucks", exact: true }).click();
+  await expect(page.getByRole("button", { name: /^A fish,/ })).toHaveCount(0);
+  await (await swipeTo(page, "For 3 to 5", /^My first jump,/)).click();
+  await expect(page).toHaveURL(/#\/build\/truck-first-jump$/);
+});
+
 test("the theme filter shows one theme", async ({ page }) => {
   await ready(page);
   await page.getByRole("button", { name: "Space", exact: true }).click();

@@ -139,7 +139,8 @@ Five picture buttons: one small triangle with 0–3 (2.5), then stacks of one to
 11–16 (2.1). 11–16 and 0–3 use the 9–10 sizes and controls (0–3 is built by a grown-up). Chosen: accent edge and ring. Speaks the age on tap when the voice is on.
 
 ### Theme filter (`ThemeFilter`)
-Round picture chips, All and the eight themes, at the age's target size. Speaks the theme on tap.
+Round picture chips, All and the nine themes, at the age's target size. Speaks the theme on tap. The ninth, Monster
+trucks (2.7, a 4×4 truck icon), shows only the truck builds, in shelves by age.
 
 ### Project card (`ProjectCard`)
 The finished project in 3D on the table (its SVG drawing until that is ready, D24), its title, 1–3 stars drawn as
@@ -152,7 +153,9 @@ and tilts a little when pressed. One tap target; it goes straight into build mod
 
 ### Shelf (`Shelf`)
 A row of cards standing on a wooden plank, scrolling by swipe with snap, and a round ▶ button at the age's target size
-for a child who taps. Draws 12 cards at a time and adds more as it is swiped (2.4).
+for a child who taps. Draws 12 cards at a time and adds more as it is swiped (2.4). The Monster trucks shelf (2.7)
+follows the chosen age's shelves and holds every truck build, the chosen age's first; truck builds stay off the age
+shelves.
 
 ### Step dots (`StepDots`)
 One dot a step: done ones filled, this one large and ringed, the rest hollow. Countable; never a progress bar. For 9–10

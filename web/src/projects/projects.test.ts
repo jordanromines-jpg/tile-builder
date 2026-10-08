@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AGE_RULES } from "../engine/ages";
+import { rulesFor } from "../engine/ages";
 import { inventoryFromSet, matchProject } from "../engine/match";
 import { setById } from "../engine/sets";
 import { addSet } from "../store/inventory";
@@ -14,7 +14,9 @@ const inv = (id: string) => {
   const s = setById(id)!;
   return inventoryFromSet(s.pieces, s.brand, null);
 };
-const of = (age: Age) => PROJECTS.filter((p) => p.age === age);
+// the age shelves leave out Monster trucks (2.7), which have their own shelf and tests
+const of = (age: Age) => PROJECTS.filter((p) => p.age === age && p.theme !== "trucks");
+const trucks = (age: Age) => PROJECTS.filter((p) => p.age === age && p.theme === "trucks");
 const buildable = (age: Age, set: string) => of(age).filter((p) => matchProject(p, inv(set)).state !== "need").map((p) => p.id);
 
 describe("the projects (plan keys 6h, 6j, 6l)", () => {
@@ -115,7 +117,7 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
 
   it("gives stars by size within the age: lower third 1, middle 2, upper 3", () => {
     const wrong = PROJECTS.filter((p) => {
-      const r = AGE_RULES[p.age];
+      const r = rulesFor(p);
       const third = (r.maxTiles - r.minTiles) / 3;
       const want = p.placed.length < r.minTiles + third ? 1 : p.placed.length < r.minTiles + 2 * third ? 2 : 3;
       return p.age !== "a" && p.stars !== want;
@@ -127,6 +129,27 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
     const older = /\b(vertex|vertices|equilateral|isosceles|parallel|symmetrical|pyramid|edge|layer|net)\b/i;
     const bad = of("a").flatMap((p) => p.steps.filter((s) => older.test(s.say.replace(/^Grown-up,.*?\. /, "")) || s.say.split(/\s+/).length > 22).map((s) => `${p.id}: ${s.say}`));
     expect(bad).toEqual([]);
+  });
+
+  it("2.7: Monster trucks for every age, each with a ramp, a jump, a drop or something to crash, from four Magna-Tiles 100 at most", () => {
+    const s = setById("magna-100")!;
+    let four = inventoryFromSet(s.pieces, s.brand, null);
+    for (let k = 0; k < 3; k++) four = addSet(four, s);
+    const all = PROJECTS.filter((p) => p.theme === "trucks");
+    expect((["t", "a", "b", "c", "d"] as Age[]).map((a) => trucks(a).length).every((n) => n >= 3)).toBe(true);
+    expect(all.filter((p) => matchProject(p, four).state === "need").map((p) => p.id)).toEqual([]);
+    const feature = (p: Project) => p.placed.some((t) => t.role === "ramp" || t.role === "crash") || Math.max(...p.placed.map((t) => t.pos[1])) >= 3;
+    expect(all.filter((p) => !feature(p)).map((p) => p.id)).toEqual([]);
+    const high = (p: Project) => Math.max(...p.placed.map((t) => t.pos[1] + (t.shape === "square-large" ? 2 : 1)));
+    expect(all.filter((p) => high(p) >= 8).length).toBeGreaterThanOrEqual(2);
+    // more than a square metre: about 178 square units of table
+    const area = (p: Project) => {
+      const xs = p.placed.map((t) => t.pos[0]);
+      const zs = p.placed.map((t) => t.pos[2]);
+      return (Math.max(...xs) - Math.min(...xs)) * (Math.max(...zs) - Math.min(...zs));
+    };
+    expect(all.filter((p) => area(p) >= 178).length).toBeGreaterThanOrEqual(1);
+    expect(all.filter((p) => p.placed.some((t) => t.shape === "square-large")).length).toBeGreaterThanOrEqual(5);
   });
 
   it("every step says something, and every project ends with its own line", () => {

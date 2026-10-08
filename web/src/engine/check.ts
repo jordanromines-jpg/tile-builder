@@ -1,6 +1,6 @@
 /* The checker (plan keys 4f, 4l): proves a hand-written project can be built, step by step, with real tiles. The rules
    are in problems.ts (RULES) and, in words, in engine/README.md. */
-import { AGE_RULES } from "./ages";
+import { rulesFor } from "./ages";
 import { BRANDS, TALL_LEG_CHOICES, type ShapeId } from "./catalog";
 import {
   apexOf,
@@ -20,6 +20,7 @@ import {
   type V3,
 } from "./geometry";
 import { holdsProblems } from "./hold";
+import { rampProblems } from "./ramps";
 import type { Problem } from "./problems";
 import type { Project } from "./types";
 
@@ -118,11 +119,14 @@ function standsProblem(project: Project, a: Analysis, i: number, set: Set<number
   if (o === "tilted") {
     // its base on an upright or flat tile's edge, or on the table: a whole pyramid on the table holds itself up
     const onTable = a.bottom[i].includes(0) && a.onTable[i];
-    const base = onTable || [...a.meets[i].entries()].some(([j, es]) => set.has(j) && es.has(0) && a.orient[j] !== "tilted");
+    // a ramp (2.7) may also start where the ramp below it ends
+    const ramp = project.placed[i].role === "ramp";
+    const base = onTable || [...a.meets[i].entries()].some(([j, es]) => set.has(j) && es.has(0) && (a.orient[j] !== "tilted" || (ramp && project.placed[j].role === "ramp")));
     return base ? null : "a leaning tile's base edge must sit on a top edge below, or on the table";
   }
   if (a.onTable[i]) {
-    if (project.flat) return null;
+    // a crash obstacle (2.7) balances on its edge until a truck knocks it down
+    if (project.flat || project.placed[i].role === "crash") return null;
     const sides = [...met].filter((e) => !a.bottom[i].includes(e));
     // a wall raised from the edge of a floor tile is held by its magnets
     const onFloor = [...a.meets[i].entries()].some(([j, es]) => set.has(j) && a.orient[j] === "flat" && [...es].some((e) => a.bottom[i].includes(e)));
@@ -136,7 +140,8 @@ function standsProblem(project: Project, a: Analysis, i: number, set: Set<number
 export function pyramids(project: Project, a: Analysis): number[][] {
   const groups = new Map<string, number[]>();
   project.placed.forEach((_, i) => {
-    if (a.orient[i] !== "tilted") return;
+    // ramps (2.7) lean on their own, not into pyramids
+    if (a.orient[i] !== "tilted" || project.placed[i].role === "ramp") return;
     // -0.00 and 0.00 are the same place
     const k = apexOf(a.polys[i]).map((v) => (Math.abs(v) < 0.005 ? 0 : v).toFixed(2)).join(",");
     groups.set(k, [...(groups.get(k) ?? []), i]);
@@ -198,23 +203,33 @@ function checkWithLeg(project: Project, leg: number): Problem[] {
 
   // R10: it holds up like real tiles
   out.push(...holdsProblems(project, a));
+  // R11: ramps hold a truck
+  out.push(...rampProblems(project, a));
 
   return out.map((p) => ({ ...p, leg }));
 }
 
-/** R9: the steps and size fit the project's age. A whole pyramid in one step counts as one group at every age. */
+/** R9: the steps and size fit the project's age. A whole pyramid in one step counts as one group at every age; in a
+    Monster trucks build (2.7), so do a whole ring of walls, a whole run of ramp tiles and a step of big squares (a
+    tunnel or a tower section, which only stand together). */
 function checkAge(project: Project, legs: number[]): Problem[] {
   const out: Problem[] = [];
-  const rule = AGE_RULES[project.age];
+  const rule = rulesFor(project);
   const n = project.placed.length;
   if (n < rule.minTiles || n > rule.maxTiles) out.push({ rule: "R9", message: `${n} tiles; age ${rule.label} projects have ${rule.minTiles} to ${rule.maxTiles}` });
   const a = analyse(project, legs[0]);
   const pyrs = pyramids(project, a).map((g) => [...g].sort((x, y) => x - y).join(","));
   project.steps.forEach((s, k) => {
     const isPyramid = pyrs.includes([...s.tiles].sort((x, y) => x - y).join(","));
-    if (s.tiles.length > rule.maxTilesPerStep && !isPyramid) out.push({ rule: "R9", step: k, message: `${s.tiles.length} tiles in one step; age ${rule.label} takes at most ${rule.maxTilesPerStep}` });
+    const trucks = project.theme === "trucks";
+    const isRamp = trucks && s.tiles.every((t) => project.placed[t]?.role === "ramp");
+    const isBig = trucks && s.tiles.every((t) => project.placed[t]?.shape === "square-large");
+    const isRing = trucks && s.tiles.length >= 4 && s.tiles.every((t) => a.orient[t] === "standing" && s.tiles.filter((u) => a.meets[t]?.has(u)).length >= 2);
+    if (s.tiles.length > rule.maxTilesPerStep && !isPyramid && !isRamp && !isRing && !isBig) out.push({ rule: "R9", step: k, message: `${s.tiles.length} tiles in one step; age ${rule.label} takes at most ${rule.maxTilesPerStep}` });
   });
-  if (project.age === "a" && !project.flat && Math.max(...a.layer) > 1) out.push({ rule: "R9", message: "a 3–5 project lies flat or has at most two layers" });
+  // a 3–5 Monster trucks build may have a big-square tunnel or a crush car on a ring: three layers (2.7)
+  const most = project.theme === "trucks" ? 2 : 1;
+  if (project.age === "a" && !project.flat && Math.max(...a.layer) > most) out.push({ rule: "R9", message: `a 3–5 project lies flat or has at most ${most + 1} layers` });
   return out;
 }
 
