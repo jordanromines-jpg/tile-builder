@@ -3,6 +3,10 @@
 Every change to a plan in this folder, newest first: the date, the plan, what changed, and the pull request. Add a
 line in the same commit as the plan change.
 
+## 2026-10-08
+
+- `2026-10-07-tots-and-trucks.md`: Part C, 50 native wildflower builds (Kansas, Chicago, North Carolina) as 2.9; build log for 2.7 merged.
+
 ## 2026-10-07
 
 - `2026-10-07-tots-and-trucks.md`: build log, Part A done (#31).

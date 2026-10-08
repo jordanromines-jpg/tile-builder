@@ -337,6 +337,104 @@ Every one uses big squares or other shapes beyond plain squares, where they make
 - Agents may be used to write project files in parallel. Give each one a file and an age band, the kit API, the
   shape targets and the checker command, and have them return only after `check:projects` passes.
 
+## Part C — 2.9: native wildflowers of Kansas, Chicago and North Carolina (50 builds)
+
+Jordan, 8 Oct 2026: "the next set of 50 will be for flowers native to Kansas, chicago, and North carolina. single
+flowers and bouquets and etc." This comes after Part B (2.8 finishes the ~35 remaining truck builds first), unless
+Jordan says otherwise.
+
+### C0. Decisions to confirm with Jordan at the start (AskUserQuestion), with these defaults
+- **Where they show:** a **Wildflowers** shelf on the Library plus a filter chip, the way trucks work. That means a new
+  theme `flowers` (with the Phosphor `Flower` or `FlowerTulip` icon), and the existing `gardens` theme stays for the
+  older garden builds. The default is to mirror trucks: `Library.tsx` gets `trucksShelf`-style code for `flowers`.
+- **Ages:** all five bands, 10 each.
+- **Region in the title**, for example "Kansas sunflower", "Chicago prairie bouquet" or "Carolina dogwood branch".
+  The done line names the region and a true fact ("The sunflower is the state flower of Kansas.").
+- **Colour honesty:** tiles come only in red, orange, yellow, green, blue and purple, with no white, pink or brown.
+  - Pick flowers whose real colours are in that set.
+  - When a flower's real colour isn't available (white dogwood, pink phlox, brown centres), say so in the step words:
+    "Dogwood petals are white; we use yellow".
+  - Or use the nearest colour (pink becomes purple or red) and say so once.
+
+### C1. Flower list, native and checked against sources before building
+Use web research (or agents) to confirm that each one is native to that region. Candidates:
+- **Kansas (prairie):**
+  - sunflower (*Helianthus annuus*, the state flower, yellow);
+  - purple coneflower (*Echinacea angustifolia*);
+  - black-eyed Susan (yellow with a dark centre: use orange or purple for the centre);
+  - butterfly milkweed (orange);
+  - blazing star / liatris (purple spikes);
+  - prairie wild indigo (*Baptisia*, blue);
+  - goldenrod (yellow);
+  - Indian blanket / gaillardia (red and yellow);
+  - Maximilian sunflower;
+  - compass plant (yellow).
+- **Chicago / northern Illinois (prairie and woodland):**
+  - violet (the Illinois state flower, purple);
+  - wild columbine (red and yellow);
+  - Virginia bluebells (blue);
+  - prairie smoke (purple-red);
+  - wild bergamot (purple);
+  - shooting star (purple);
+  - purple prairie clover;
+  - rattlesnake master (green and white, so green);
+  - spiderwort (blue);
+  - cardinal flower (red).
+- **North Carolina (mountains to coast):**
+  - flowering dogwood (the state flower; white bracts, so they need the colour note);
+  - Carolina lily (orange);
+  - Turk's cap lily (orange);
+  - flame azalea (orange and red);
+  - Catawba rhododendron (purple);
+  - mountain laurel;
+  - trumpet creeper (orange-red);
+  - Joe-Pye weed (purple);
+  - cardinal flower (red);
+  - Venus flytrap (native only to the Carolinas; green and red, a fun one).
+
+### C2. Build kinds, and which kit each uses
+- **Single flowers, flat mosaics** (0–3, 3–5): `tots-kit.ts` `squareMosaic`, plus `points` for petals and rays,
+  `triangleRows` for round heads, and big squares for centres (a sunflower is a big-square centre with 12–16 triangle
+  rays).
+- **Standing single flowers** (6–16): a square stem tower (a 1×1 ring stack, green), leaves as tall triangles, and a
+  head as a ring of tall triangles leaning out or a pyramid. Check the leaning-out petal geometry against R7 and R10. If
+  leaning petals need a new role (like `ramp`), add `petal` with a rule in the R11 style, plus tests.
+- **Bouquets:**
+  - a vase (a ring of squares or big squares, 2–3 high) with several stems of different heights rising out of it;
+  - a wrapped bouquet (a cone of tall triangles) with flower heads on top;
+  - a region bouquet that mixes that region's flowers.
+- **Other ideas:**
+  - a prairie strip: a flat row of mixed wildflowers on a green lane;
+  - a wreath: a ring of flower heads round a big-square middle;
+  - a window box: a long trough of squares with flowers;
+  - a garden bed for each region;
+  - a state-flower trio (sunflower, violet, dogwood);
+  - a pollinator garden with a butterfly on the milkweed;
+  - a Venus flytrap with jaws of triangles.
+- **Shapes:** use big squares and triangles inventively, as in Part A, rather than plain square grids.
+
+### C3. Distribution: 50 builds, 10 for each age, mixed across the three regions
+- **0–3:** 10 flat mosaics. A grown-up builds them, with words for the grown-up.
+- **3–5:** 10 small flat or two-layer builds, one tile a step. Use the 3–5 word list (no geometry words).
+- **6–8:** 10 builds: standing single flowers and small vases.
+- **9–10:** 10 builds: bouquets and window boxes.
+- **11–16:** 10 big builds: a bouquet of each region, a state-flower trio, a big wreath, a pollinator garden, and a
+  prairie with a dozen flowers. Up to two sets, as for other builds of that age.
+
+### C4. Files, tests and docs
+- `web/src/projects/flowers-1.ts` … `flowers-3.ts`, each 500 lines or fewer, plus a `flower-kit.ts` if the
+  standing-flower and vase helpers grow.
+- `projects.test.ts`:
+  - flower counts by age are `[10, 10, 10, 10, 10]`;
+  - every flower build names its region in the title;
+  - each region has at least 15;
+  - each flower build fits its age's set budget;
+  - titles are unique.
+- If the theme is new: `ThemeFilter` test (ten themes), a Library e2e for the shelf and chip, and the plates.
+- Docs: a PRODUCT.md section on wildflowers (regions, colour honesty), DESIGN.md, and CHANGELOG 2.9.0.
+- Ship as A7: all checks, then draft PR, CI, merge and the Pages run. Use two PRs if it grows: the kit and 25 builds,
+  then 25 more.
+
 ## Verification (each PR)
 1. `npm test`, `npm run check:projects`, `npm run size`, `npx tsc -b`, `npm run build`, `npx playwright test --workers=2`.
 2. `pytest -q tests/test_tokens.py`. Then the key scan,
@@ -355,3 +453,4 @@ The last row says what is next. Update it in the same commit as the work.
 | 2026-10-07 | Part A done: 32 more 0–3 builds (`tots2.ts` 20, `tots-big.ts` 12) using big squares (14) and edge triangles (10), with 6 that stand up. The kit gained `points`, `bigCells`, `bigFlat`, `bigRing`, `bigCube` and `bigTunnel`. R5 counts how high a tile reaches. All checks green; 106 e2e. | `tile-steps-2-6` (PR #31) | Merge #31, then Part B: start B1 (engine: ramps, R11, crash role, section) on `tile-steps-2-7` |
 | 2026-10-07 | 2.6 merged (#31) and live. Part B started. Engine: theme `trucks` (the section marker; there is no separate `section` field), tile roles `ramp` and `crash`, R11 in `engine/ramps.ts`, crash exemptions in R10, `TRUCK_RULES` and `rulesFor` in `ages.ts`, R9 groups (ring, ramp run, big-square step). `track-kit.ts`: `tower`, `bigTower`, `ramp` (30°, supports), `kicker`, `lane`, `crushCar`, `fence`, `dominoes`, `crashWall`, `arenaWall`, `tunnel`, with `track-kit.test.ts`. The Library has a Monster trucks shelf and the trucks chip in the theme filter. | `tile-steps-2-7` | B5: the first 15 truck builds (`projects/trucks-1.ts`, 3 for each age), then pictures, tests, docs, PR 2.7 |
 | 2026-10-07 | 2.7 ready: the first 15 truck builds (`projects/trucks-1.ts`, 3 for each age) all pass, pictures checked, docs (PRODUCT.md "Monster trucks", DESIGN.md, engine README R11, CHANGELOG 2.7.0), tests (truck checks, ThemeFilter nine themes, e2e for the shelf and chip), 108 e2e green. | `tile-steps-2-7` | Merge 2.7, then 2.8: the other ~35 builds (`trucks-2.ts` …), following B5's list and avoiding the 15 already done |
+| 2026-10-08 | 2.7 merged (#32, `ff4f147`). Jordan asked for the next 50 builds to be native wildflowers of Kansas, Chicago and North Carolina (single flowers, bouquets and more), so Part C (2.9) was added to this plan. | `tile-steps-2-8` | 2.8: write the ~35 remaining truck builds (B5 list minus `trucks-1.ts`), then Part C. Confirm C0 with Jordan first |
