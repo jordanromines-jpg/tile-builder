@@ -43,12 +43,13 @@ describe("kid components", () => {
     expect(say).toHaveBeenCalledWith("9 to 10");
   });
 
-  it("ThemeFilter has All and the nine themes, Monster trucks the ninth", () => {
+  it("ThemeFilter has All and the ten themes, Monster trucks and Wildflowers last", () => {
     vi.spyOn(speech, "say").mockImplementation(() => {});
     const change = vi.fn();
     render(<ThemeFilter value={null} onChange={change} />);
-    expect(screen.getAllByRole("button")).toHaveLength(10);
+    expect(screen.getAllByRole("button")).toHaveLength(11);
     expect(screen.getByRole("button", { name: "Monster trucks" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Wildflowers" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Castles" }));
     expect(change).toHaveBeenCalledWith("castles");
   });

@@ -20,5 +20,10 @@ import { TRUCKS_3 } from "./trucks-3";
 import { TRUCKS_4 } from "./trucks-4";
 import { TRUCKS_5 } from "./trucks-5";
 import { TRUCKS_6 } from "./trucks-6";
+import { FLOWERS_1 } from "./flowers-1";
+import { FLOWERS_2 } from "./flowers-2";
+import { FLOWERS_3 } from "./flowers-3";
+import { FLOWERS_4 } from "./flowers-4";
+import { FLOWERS_5 } from "./flowers-5";
 
-export const PROJECTS: Project[] = [...AGE_A, ...AGE_A2, ...AGE_B, ...AGE_B2, castle, ...AGE_C, ...AGE_C2, ...AGE_D, ...AGE_D_BIG, ...MORE, ...FRESH, ...AGE_T, ...AGE_T2, ...AGE_T_BIG, ...TRUCKS_1, ...TRUCKS_2, ...TRUCKS_3, ...TRUCKS_4, ...TRUCKS_5, ...TRUCKS_6];
+export const PROJECTS: Project[] = [...AGE_A, ...AGE_A2, ...AGE_B, ...AGE_B2, castle, ...AGE_C, ...AGE_C2, ...AGE_D, ...AGE_D_BIG, ...MORE, ...FRESH, ...AGE_T, ...AGE_T2, ...AGE_T_BIG, ...TRUCKS_1, ...TRUCKS_2, ...TRUCKS_3, ...TRUCKS_4, ...TRUCKS_5, ...TRUCKS_6, ...FLOWERS_1, ...FLOWERS_2, ...FLOWERS_3, ...FLOWERS_4, ...FLOWERS_5];

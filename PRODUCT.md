@@ -97,6 +97,23 @@ Project names are meant to make children laugh (the Burping Volcano, the Castle 
 underneath is real, and every project passes the checker, including its rule that every build holds up like real
 tiles (2.3): roofs rest on walls, nothing hangs by one edge, and no wall stands without something bracing it.
 
+## Wildflowers (2.9)
+
+A section of its own, a Wildflowers shelf on the Library and a tulip chip on the filter: 50 flowers native to Kansas,
+Chicago (northern Illinois) and North Carolina, ten for each age, each region in the title (17 Kansas, 17 Chicago, 16
+Carolina). Every flower was checked as native against a source (state wildflower sites, extension services, Illinois
+Wildflowers), and every build ends with one true fact from those sources: the state flowers (sunflower, violet,
+dogwood), the pollinators, the Venus flytrap growing wild only near Wilmington.
+
+- **Colour honesty.** Tiles come in six colours. When a flower's real colour isn't one of them (white dogwood, pink
+  coneflower, a brown sunflower middle), the build uses the nearest and says so once: "Dogwood flowers are white; we
+  use yellow."
+- **They stand like real tiles.** A magnet joint is a hinge, so an open flower can't stick out sideways off a thin
+  stem: flower heads are closed shapes of leaning triangles (buds, cones, spikes), standing flowers grow from a pot,
+  and a bouquet's stems share walls so they stand as one plant. The flat pictures for the youngest lie on the table.
+- **By age:** flat pictures for 0–3 and 3–5, potted flowers for 6–8, bouquets and window boxes for 9–10, and gardens,
+  a wreath, a bog and the three state flowers for 11–16.
+
 ## The screens
 
 1. **Library.** The age picker, the theme filter, shelves of project cards with their badges, the grown-ups door.

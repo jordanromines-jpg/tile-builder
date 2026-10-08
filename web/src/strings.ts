@@ -68,6 +68,7 @@ export const S = {
     more: "These need a few more tiles",
     forAge: (ages: string) => `For ${ages}`,
     trucks: "Monster trucks",
+    flowers: "Wildflowers",
   },
   firstRun: {
     homeTitle: "Add this to your Home Screen first, so it keeps your tiles",

@@ -8,7 +8,7 @@ approved is written into a plan first and waits for his go; adding detail to an 
 
 ## Start here
 
-`2026-10-08-sound-structures.md` is the plan in progress (2.8 trucks that hold a truck, 2.8.1 the canvas, 2.8.2 sound structures everywhere); `2026-10-07-tots-and-trucks.md` carries Part C (2.9, wildflowers) next; `2026-10-02-tile-builder.md` is the original plan. A session picking up work reads its build log (the last row says what is
+`2026-10-07-tots-and-trucks.md` is the plan in progress (Part C, 2.9: wildflowers); `2026-10-08-sound-structures.md` (2.8, 2.8.1, 2.8.2) is merged, waiting only on Jordan's tests T1 and T2; `2026-10-02-tile-builder.md` is the original plan. A session picking up work reads its build log (the last row says what is
 next), then `PRODUCT.md`, `DESIGN.md`, `docs/research/README.md` and `web/README.md`, checks out the commit the log
 names, runs the checks, and starts the next key.
 
