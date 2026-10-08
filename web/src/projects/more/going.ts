@@ -2,6 +2,14 @@
 import type { Project } from "../../engine/types";
 import { Site } from "../kit";
 
+/** Adds one short "why" sentence to the first step whose words start with `from` (ages 9+ only, so only called for those). */
+function why(p: Project, from: string, text: string): Project {
+  const step = p.steps.find((s) => s.say.startsWith(from));
+  if (!step) throw new Error(`no step starts with "${from}"`);
+  step.say += ` ${text}`;
+  return p;
+}
+
 function busStation(): Project {
   const s = new Site();
   const st = s.block("the bus station", 0, 0, 6, 2, 2, ["green", "yellow"], { door: true, roof: "blue" });
@@ -73,18 +81,22 @@ function drySubmarine(): Project {
 function balloonTower(): Project {
   const s = new Site();
   const base = s.block("the launch pad", 0, 0, 3, 3, 1, ["green"], { roof: "yellow" });
-  const t = s.tower("the launch tower", 0, 0, 6, ["red", "orange"], { base: base.top, cap: "lid", capColour: "red" });
+  // the launch tower is two squares across for its lowest three layers, then narrows (a stepped tower)
+  const wide = s.tower("the launch tower base", 0, 0, 3, ["red", "orange"], { base: base.top, size: 2, cap: "none" });
+  const t = s.tower("the launch tower", 0, 0, 3, ["red", "orange"], { base: wide.top, cap: "lid", capColour: "red" });
   s.roofs("the balloon", [[0, 0]], t.top, "tall", "purple");
   s.roofs("the sandbags", [[2, 0], [2, 2], [0, 2]], base.top, "low", "orange");
-  return s.build({ id: "balloon-launch-tower", title: "The Hot-Air Balloon Launch Tower", theme: "vehicles", age: "d", done: "You built the Balloon Launch Tower! Pop! Oh. Never mind." });
+  return why(s.build({ id: "balloon-launch-tower", title: "The Hot-Air Balloon Launch Tower", theme: "vehicles", age: "d", done: "You built the Balloon Launch Tower! Pop! Oh. Never mind." }), "The launch tower base", "A wide base doesn't tip: two squares across holds a tall tower steady.");
 }
 
 function beanRocket(): Project {
   const s = new Site();
-  const pad = s.block("the launch pad", 0, 0, 3, 3, 1, ["purple"], { roof: "yellow" });
-  s.tower("the bean rocket", 1, 1, 7, ["red", "orange"], { base: pad.top, cap: "tall", capColour: "green" });
-  for (const [x, z, n] of [[0, 0, "a booster"], [2, 2, "another booster"]] as const) s.tower(n, x, z, 2, ["yellow"], { base: pad.top, cap: "low", capColour: "red" });
-  return s.build({ id: "bean-rocket", title: "The Rocket Ship Fuelled by Beans", theme: "space", age: "d", done: "You built the Bean Rocket! It runs on beans. You can guess how. TOOT." });
+  const pad = s.block("the launch pad", 0, 0, 4, 3, 1, ["purple"], { roof: "yellow" });
+  // the rocket is two squares across for its lowest four layers, then narrows to a nose; a booster at each front corner joins it
+  const wide = s.tower("the bean rocket base", 1, 0, 4, ["red", "orange"], { base: pad.top, size: 2, cap: "none" });
+  s.tower("the bean rocket", 1, 0, 3, ["red", "orange"], { base: wide.top, cap: "tall", capColour: "green" });
+  for (const [x, z, n] of [[0, 2, "a booster"], [3, 2, "another booster"]] as const) s.tower(n, x, z, 2, ["yellow"], { base: pad.top, cap: "low", capColour: "red" });
+  return why(s.build({ id: "bean-rocket", title: "The Rocket Ship Fuelled by Beans", theme: "space", age: "d", done: "You built the Bean Rocket! It runs on beans. You can guess how. TOOT." }), "The bean rocket base", "A wide base doesn't tip: two squares across holds a tall rocket steady.");
 }
 
 function seasickFerry(): Project {
@@ -135,7 +147,8 @@ function burgerStation(): Project {
   const b2 = s.block("the burger", 0, 0, 4, 4, 1, ["red"], { base: b1.top, roof: "yellow" });
   s.roofs("the sesame seeds", [[0, 0], [3, 0], [0, 3], [3, 3], [1, 1], [2, 2]], b2.top, "low", "orange");
   s.tower("the drive-thru sign", 5, 0, 4, ["red", "yellow"], { cap: "tall", capColour: "red" });
-  return s.build({ id: "space-burger-station", title: "The Galactic Space Burger Station", theme: "space", age: "d", done: "You built the Space Burger Station! Would you like fries with your asteroid?" });
+  s.deck("the order tray", "x", 4, 5, 0, 2, "yellow");
+  return why(s.build({ id: "space-burger-station", title: "The Galactic Space Burger Station", theme: "space", age: "d", done: "You built the Space Burger Station! Would you like fries with your asteroid?" }), "The order tray", "A tall thin sign tips, but a tray joins it to the wide burger, so it holds steady.");
 }
 
 function cometObservatory(): Project {

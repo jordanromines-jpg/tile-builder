@@ -164,9 +164,12 @@ function spaceElevator(): Project {
   b.chunk(6, ["Inside, a cross of squares from wall to wall.", "A second layer on the cross. It holds the roof, and the whole elevator, up."]);
   b.lids("purple", 0, 0, 3, 3, 2);
   b.chunk(6, ["Roof it: nine squares, corner first.", "Close the roof."]);
-  const shaft: Colour[] = ["yellow", "orange", "yellow", "orange", "yellow", "orange", "yellow", "orange"];
-  b.tower(shaft, 1, 1, 2);
-  b.chunk(4, ["In the middle of the roof, the elevator shaft: a ring of four.", "Stack another ring. Up, up.", "Another ring. Higher!", "Another ring. Higher!", "Grown-up, hold the base.", "Nearly in orbit.", "Keep going.", "The last ring on top."]);
+  b.tower(["yellow", "orange", "yellow", "orange", "yellow"], 1, 1, 2, 2, 2);
+  b.chunk(6, ["In the middle of the roof, the elevator shaft starts wide: eight squares round a two-by-two space. A wide base doesn't tip: two squares across holds it steady.", "Close the ring and start the next one. Up, up.", "Keep stacking.", "Another ring. Higher!", "Grown-up, hold the base.", "The fourth wide ring.", "The fifth wide ring."]);
+  b.lids("purple", 1, 1, 2, 2, 7);
+  b.step("Cap the wide part: four squares flat.");
+  b.tower(["orange", "yellow", "orange"], 1, 1, 7);
+  b.chunk(4, ["Now the shaft narrows: a ring of four on the cap.", "Stack another ring. Higher!", "The last ring on top."]);
   b.roof("red", 1, 1, 10);
   b.step("A pyramid nose cone on top. Next stop: snacks.");
   return b.build({ id: "space-elevator", title: "Space Elevator to the Snack Bar", theme: "space", age: "d", stars: 1, done: "You built the Space Elevator! Ten storeys up for one packet of crisps. Worth it.", swaps: [TALL_TO_LOW] });
@@ -230,8 +233,12 @@ function rocketGarage(): Project {
   b.chunk(6, ["Inside, a wall of squares across the middle, two wide and three high. It holds the roof up."]);
   b.lids("yellow", 0, 0, 3, 2, 3);
   b.step("Roof the garage: six squares flat.");
-  b.tower(["red", "orange", "red", "orange", "red", "orange"], 4, 0, 0);
-  b.chunk(4, ["One square to the right of the garage, the rocket: a ring of four.", "Stack another ring on top.", "Keep stacking.", "Another ring. Higher!", "Another ring. Higher!", "The sixth ring on top."]);
+  b.tower(["red", "orange", "red"], 4, 0, 0, 2, 2);
+  b.chunk(6, ["One square to the right of the garage, the rocket's wide base: squares round a two-by-two space. A wide base doesn't tip: two squares across holds it steady.", "Close it and start the second wide ring.", "Close the second ring and start the third.", "Close the third wide ring."]);
+  b.lids("yellow", 4, 0, 2, 2, 3);
+  b.step("Cap the base with four squares flat.");
+  b.tower(["orange", "red", "orange"], 4, 0, 3);
+  b.chunk(4, ["Now the rocket narrows: a ring of four on the cap.", "Another ring. Higher!", "The last ring on top."]);
   b.roof("purple", 4, 0, 6);
   b.step("A tall nose cone. Grandpa says it is a garden shed.");
   b.lowRoof("blue", 0, 0, 3);
@@ -267,15 +274,15 @@ function dinoMuseum(): Project {
 /** The Wi-Fi Tower That Never Works: a lattice mast tapering to a spike. */
 function wifiTower(): Project {
   const b = new Builder();
-  b.tower(["blue", "purple", "blue", "purple"], 0, 0, 0, 2, 2);
-  b.chunk(6, ["The base of the mast: eight squares round a two-by-two space.", "Close it and start the next ring.", "Keep stacking.", "Keep stacking.", "Four rings tall.", "Finish the fourth ring."]);
-  b.lids("yellow", 0, 0, 2, 2, 4);
+  b.tower(["blue", "purple", "blue", "purple", "blue", "purple"], 0, 0, 0, 2, 2);
+  b.chunk(6, ["The base of the mast: eight squares round a two-by-two space. A wide base doesn't tip: two squares across holds it steady.", "Close it and start the next ring.", "Keep stacking.", "Keep stacking.", "Keep stacking.", "Keep stacking.", "Finish the sixth ring."]);
+  b.lids("yellow", 0, 0, 2, 2, 6);
   b.step("A platform: four squares flat on top.");
-  b.tower(["red", "orange", "red", "orange", "red"], 1, 1, 4);
-  b.chunk(4, ["The top mast: a ring of four on the front right of the platform.", "Stack another.", "Another ring. Higher!", "Nearly there.", "The last ring on top."]);
+  b.tower(["red", "orange", "red"], 1, 1, 6);
+  b.chunk(4, ["The top mast: a ring of four on the front right of the platform.", "Stack another.", "The last ring on top."]);
   b.roof("yellow", 1, 1, 9);
   b.step("The spike: four tall triangles. Still no signal.");
-  for (const [x, z] of [[0, 0], [1, 0], [0, 1]] as const) b.lowRoof("green", x, z, 4);
+  for (const [x, z] of [[0, 0], [1, 0], [0, 1]] as const) b.lowRoof("green", x, z, 6);
   b.chunk(4, ["Three small pyramids on the platform's other squares: the dishes. One for each bar of signal you won't get."]);
   return b.build({ id: "wifi-tower", title: "The Wi-Fi Tower That Never Works", theme: "space", age: "d", stars: 1, done: "You built the Wi-Fi Tower! Try turning it off and on again.", swaps: [TALL_TO_LOW] });
 }

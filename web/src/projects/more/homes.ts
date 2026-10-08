@@ -2,6 +2,14 @@
 import type { Project } from "../../engine/types";
 import { Site } from "../kit";
 
+/** Adds one short "why" sentence to the first step whose words start with `from` (ages 9+ only, so only called for those). */
+function why(p: Project, from: string, text: string): Project {
+  const step = p.steps.find((s) => s.say.startsWith(from));
+  if (!step) throw new Error(`no step starts with "${from}"`);
+  step.say += ` ${text}`;
+  return p;
+}
+
 function messyHouse(): Project {
   const s = new Site();
   const h = s.block("the messy house", 0, 0, 4, 3, 2, ["orange", "yellow"], { door: true, floors: "green", roof: "red" });
@@ -72,10 +80,12 @@ function overdueLibrary(): Project {
 function decisionHall(): Project {
   const s = new Site();
   const hall = s.block("the very small town hall", 0, 0, 3, 2, 2, ["yellow", "orange"], { door: true, roof: "blue" });
-  s.tower("the very big clock tower", 1, 0, 5, ["blue", "purple"], { base: hall.top, cap: "tall", capColour: "red" });
+  // the clock tower is two squares across for its lower two layers, then narrows (a stepped tower)
+  s.tower("the very big clock tower base", 1, 0, 2, ["blue", "purple"], { base: hall.top, size: 2, cap: "none" });
+  s.tower("the very big clock tower", 1, 0, 3, ["blue", "purple"], { base: hall.top + 2, cap: "tall", capColour: "red" });
   s.plaza("the square", 0, 3, 3, 3, "green");
   s.roofs("the very small dome", [[0, 0]], hall.top, "low", "green");
-  return s.build({ id: "big-decisions-hall", title: "The Very Small Town Hall of Very Big Decisions", theme: "homes", age: "d", done: "You built the Town Hall! Today's big decision: should Tuesday be pancake day? Yes." });
+  return why(s.build({ id: "big-decisions-hall", title: "The Very Small Town Hall of Very Big Decisions", theme: "homes", age: "d", done: "You built the Town Hall! Today's big decision: should Tuesday be pancake day? Yes." }), "The very big clock tower base", "A wide base doesn't tip: two squares across holds a tall tower steady.");
 }
 
 function pajamaPalace(): Project {

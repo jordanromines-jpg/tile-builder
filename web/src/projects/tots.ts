@@ -421,12 +421,12 @@ function rainbowTower(): Project {
   const b = new Builder();
   b.lid("square", "purple", 0, 0, 0);
   b.step("Lay a purple square flat on the table.");
-  const colours: Colour[] = ["red", "orange", "yellow", "green", "blue", "purple"];
+  const colours: Colour[] = ["red", "orange", "yellow", "green", "blue"];
   colours.forEach((c, i) => {
     b.room(c, 0, 0, 1, 1, i);
     b.step(i === 0 ? "Stand four red squares round it, a box." : `Four ${c} squares on top, standing on the box below.`);
   });
-  b.lowRoof("red", 0, 0, 6);
+  b.lowRoof("red", 0, 0, 5);
   b.step("Lean four red triangles together on top until their points meet. A rainbow tower!");
   return tot(b, { id: "baby-rainbow-tower", title: "A rainbow tower", theme: "patterns", done: "A tall rainbow tower. Look up, up, up!" }, false);
 }
