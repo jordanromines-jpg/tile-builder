@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.9.0 · 8 Oct 2026
+
+Wildflowers: 50 flowers native to Kansas, Chicago and North Carolina (445 builds in all). Jordan: "flowers native to
+Kansas, chicago, and North carolina. single flowers and bouquets and etc."
+
+- **A Wildflowers shelf and chip.** The Library has a Wildflowers shelf after the Monster trucks one, and a tulip chip
+  on the theme filter that shows only wildflowers, by age.
+- **Ten for each age:** flat flower pictures for 0–3 and 3–5 (a Kansas sunflower with triangle rays, a dogwood of four
+  big squares, a six-pointed Carolina lily, a Venus flytrap with triangle teeth); potted flowers for 6–8 (a coneflower,
+  a blazing star spike, a Turk's cap lily); bouquets, window boxes and a trellis for 9–10; and for 11–16 the region
+  bouquets, a prairie with twelve flowers, a sunflower field, a pollinator garden, a woodland, a big wreath, a bog with
+  flytraps and pitcher plants, and North Carolina's dogwood with the two other state flowers.
+- **True to life.** Every flower was checked as native to its region; every build ends with a true fact from those
+  sources; a colour that tiles don't come in is said once ("Dogwood flowers are white; we use yellow").
+- **They stand.** Flower heads are closed shapes, tall flowers grow from a pot, and a bouquet's stems lean on each
+  other, so every build passes the 2.8 rules. For 9–16, a step says why.
 ## 2.8.2 · 8 Oct 2026
 
 Every build stands firm, not just the trucks. The rule from 2.8 (R12) now covers every project: at every height, a

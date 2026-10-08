@@ -49,6 +49,16 @@ test("2.7: a Monster trucks shelf after the age's shelves; the trucks chip shows
   await expect(page).toHaveURL(/#\/build\/truck-first-jump$/);
 });
 
+test("2.9: a Wildflowers shelf after the age's shelves; the flower chip shows only wildflowers; a card opens", async ({ page }) => {
+  await ready(page, "Magna-Tiles Clear Colors 100");
+  await expect(page.getByRole("heading", { name: "Wildflowers" })).toBeVisible();
+  await page.getByRole("button", { name: "Wildflowers", exact: true }).click();
+  await expect(page.getByRole("button", { name: /^A fish,/ })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /^My first jump,/ })).toHaveCount(0);
+  await (await swipeTo(page, "For 3 to 5", /^(Kansas|Chicago|Carolina|North Carolina) /)).first().click();
+  await expect(page).toHaveURL(/#\/build\/flower-/);
+});
+
 test("the theme filter shows one theme", async ({ page }) => {
   await ready(page);
   await page.getByRole("button", { name: "Space", exact: true }).click();

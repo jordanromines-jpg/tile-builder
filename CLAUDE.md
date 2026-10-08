@@ -6,8 +6,9 @@ can build, and walks a child through each build in 3D, step by step. It works of
 Jordan owns it and decides scope.
 
 ## Start here
-1. Read `plans/README.md`, then the plan in progress, `plans/2026-10-08-sound-structures.md` (then Part C of
-   `plans/2026-10-07-tots-and-trucks.md`). **The last row of its build log says what is next.**
+1. Read `plans/README.md`, then the plan in progress, `plans/2026-10-07-tots-and-trucks.md` (Part C, wildflowers),
+   and `plans/2026-10-08-sound-structures.md` (the rules every build follows). **The last row of the build log says
+   what is next.**
 2. Read `PRODUCT.md` (age bands, Monster trucks), `DESIGN.md`, `web/src/engine/README.md` (checker rules R1–R11) and
    `CHANGELOG.md`.
 3. Check out the branch the build log names, or start a new one from `main`. Run the checks below before changing
@@ -67,6 +68,8 @@ restore with `git checkout -- web/public/pictures` and run it again. Only the ch
   - `kit.ts` / `studio.ts`: buildings and shapes for the older ages;
   - `tots-kit.ts`: mosaics: `squareMosaic`, with tokens `R`, `R+` (big square), `RY/` and `RY\` (corner halves);
     `triangleMosaic` and `triangleRows`; `points` (triangles off edges); `bigCells`; `bigCube` and `bigTunnel`;
+  - flower builds (`flowers-1.ts` … `flowers-5.ts`, theme `flowers`): flat pictures with tots-kit, potted flowers with
+    closed heads (pyramids), bouquets whose stems share walls;
   - `track-kit.ts`: Monster trucks: 30° `ramp` with support towers, `kicker`, `tower`, `bigTower` (8 high),
     `lane`, `crushCar`, `fence`, `dominoes`, `crashWall`, `arenaWall`, `tunnel`.
 - **Roles:** `roof` (pyramid triangles), `ramp` (R11), `brace` (locks a ramp join in a triangle; `ramp()` adds them),
@@ -80,7 +83,7 @@ restore with `git checkout -- web/public/pictures` and run it again. Only the ch
 - **Library** (`web/src/screens/Library.tsx`):
   - an age picker;
   - a theme filter (`engine/themes.ts`, with icons in `ui/ThemeIcon.tsx`);
-  - shelves by age, then a Monster trucks shelf.
+  - shelves by age, then a Monster trucks shelf and a Wildflowers shelf (`SECTIONS` in `engine/themes.ts`).
 
   Cards draw 12 at a time.
 - **Colours:** red, orange, yellow, green, blue and purple only (no white, pink or brown). Say so when a real thing's

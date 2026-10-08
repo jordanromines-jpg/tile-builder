@@ -4,7 +4,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { matchProject, inventoryTotal, type Match } from "../engine/match";
-import type { Theme } from "../engine/themes";
+import { SECTIONS, type Theme } from "../engine/themes";
 import type { Age } from "../engine/types";
 import { PROJECT_INFO, SKELETONS } from "../projects/load";
 import type { ProjectInfo } from "../projects/serialize";
@@ -88,12 +88,15 @@ export function Library() {
     />
   );
 
-  // Monster trucks (2.7) have a shelf of their own, after the chosen age's, unless the trucks filter is on: then
-  // they fill the shelves by age like any theme
-  const trucksShelf = theme !== "trucks";
-  const pool = trucksShelf ? items.filter((i) => i.project.theme !== "trucks") : items;
+  // Monster trucks (2.7) and Wildflowers (2.9) have a shelf each, after the chosen age's, the chosen age's builds
+  // first; with that theme's filter on, its builds fill the shelves by age like any theme
+  const sections = SECTIONS.filter((t) => t !== theme);
+  const pool = items.filter((i) => !sections.includes(i.project.theme));
   const byAge = (a: Age) => sortItems(pool.filter((i) => i.project.age === a));
-  const trucks = trucksShelf ? [age, ...SHELF_ORDER.filter((a) => a !== age)].flatMap((a) => sortItems(items.filter((i) => i.project.theme === "trucks" && i.project.age === a))) : [];
+  const sectionShelves = sections.map((t) => ({
+    title: S.library[t as "trucks" | "flowers"],
+    items: [age, ...SHELF_ORDER.filter((a) => a !== age)].flatMap((a) => sortItems(items.filter((i) => i.project.theme === t && i.project.age === a))),
+  }));
   const shelves: { title: string; items: Item[] }[] = [];
   if (age) {
     const mine = byAge(age);
@@ -101,10 +104,10 @@ export function Library() {
       shelves.push({ title: S.library.ready, items: mine.filter((i) => i.match?.state !== "need") });
       shelves.push({ title: S.library.more, items: mine.filter((i) => i.match?.state === "need") });
     } else shelves.push({ title: S.library.forAge(S.kid.ages[age]), items: mine });
-    shelves.push({ title: S.library.trucks, items: trucks });
+    shelves.push(...sectionShelves);
     for (const a of SHELF_ORDER.filter((x) => x !== age)) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
   } else {
-    shelves.push({ title: S.library.trucks, items: trucks });
+    shelves.push(...sectionShelves);
     for (const a of SHELF_ORDER) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
   }
   const shown = shelves.filter((s) => s.items.length);

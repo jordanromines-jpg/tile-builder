@@ -344,6 +344,9 @@ flowers and bouquets and etc." This comes after Part B (2.8 finishes the ~35 rem
 Jordan says otherwise.
 
 ### C0. Decisions to confirm with Jordan at the start (AskUserQuestion), with these defaults
+
+Confirmed 8 Oct 2026, all four as recommended: "Own shelf + chip", "10 per age, region in title", "Nearest colour, said
+once", and (a fifth, from the 2.8 rules) "Pot or wide base" for tall flowers.
 - **Where they show:** a **Wildflowers** shelf on the Library plus a filter chip, the way trucks work. That means a new
   theme `flowers` (with the Phosphor `Flower` or `FlowerTulip` icon), and the existing `gardens` theme stays for the
   older garden builds. The default is to mirror trucks: `Library.tsx` gets `trucksShelf`-style code for `flowers`.
@@ -455,3 +458,5 @@ The last row says what is next. Update it in the same commit as the work.
 | 2026-10-07 | 2.7 ready: the first 15 truck builds (`projects/trucks-1.ts`, 3 for each age) all pass, pictures checked, docs (PRODUCT.md "Monster trucks", DESIGN.md, engine README R11, CHANGELOG 2.7.0), tests (truck checks, ThemeFilter nine themes, e2e for the shelf and chip), 108 e2e green. | `tile-steps-2-7` | Merge 2.7, then 2.8: the other ~35 builds (`trucks-2.ts` …), following B5's list and avoiding the 15 already done |
 | 2026-10-08 | 2.7 merged (#32, `ff4f147`). Jordan asked for the next 50 builds to be native wildflowers of Kansas, Chicago and North Carolina (single flowers, bouquets and more), so Part C (2.9) was added to this plan. | `tile-steps-2-8` | 2.8: write the ~35 remaining truck builds (B5 list minus `trucks-1.ts`), then Part C. Confirm C0 with Jordan first |
 | 2026-10-08 | 2.8: the 35 builds written (`trucks-2.ts` … `trucks-6.ts`). Jordan found ramps that wouldn't hold a truck and crash walls that would fold, and asked for engineering principles everywhere: 2.8 now ships under `2026-10-08-sound-structures.md` (its build log carries on there). | `tile-steps-2-8` | See `2026-10-08-sound-structures.md`; Part C (2.9) after 2.8, 2.8.1 and 2.8.2 |
+| 2026-10-08 | 2.9: C0 confirmed. C1: an agent checked the 30 candidates against sources (`kswildflower.org`, NC State Extension, Illinois Wildflowers, state statutes): all Kansas and North Carolina native; for Chicago, cardinal flower dropped (rare in northern Illinois) for prairie blazing star, wild lupine left out (one source). Theme `flowers` (tulip chip) and a Wildflowers shelf (`SECTIONS` in `themes.ts`). Five agents, one age each: 50 builds (`flowers-1.ts` … `flowers-5.ts`), 17 Kansas, 17 Chicago, 16 Carolina; every fact from the research rows; colour notes said once. A small `flower-kit.ts` was written, found wrong (a stem of single rings stands 3 under a tall head with the tallest brand's triangle, not 4; and a ring a step breaks 6–8's 3 a step), used by no one, and removed. All 50 pictures looked at; the 0–3 bluebells and the 6–8 milkweed redone. All checks green. | `tile-steps-2-9` | Draft PR 2.9, CI, merge, Pages |
+

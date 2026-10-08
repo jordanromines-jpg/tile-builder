@@ -9,6 +9,7 @@ export {
   Check,
   DownloadSimple,
   Flower,
+  FlowerTulip,
   GridFour,
   Hand,
   House,

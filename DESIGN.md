@@ -155,7 +155,8 @@ and tilts a little when pressed. One tap target; it goes straight into build mod
 A row of cards standing on a wooden plank, scrolling by swipe with snap, and a round ▶ button at the age's target size
 for a child who taps. Draws 12 cards at a time and adds more as it is swiped (2.4). The Monster trucks shelf (2.7)
 follows the chosen age's shelves and holds every truck build, the chosen age's first; truck builds stay off the age
-shelves.
+shelves. The Wildflowers shelf (2.9) works the same way and follows it; its filter chip has the tulip icon (the
+gardens chip keeps the flower).
 
 ### Step dots (`StepDots`)
 One dot a step: done ones filled, this one large and ringed, the rest hollow. Countable; never a progress bar. For 9–10

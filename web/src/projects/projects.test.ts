@@ -15,7 +15,7 @@ const inv = (id: string) => {
   return inventoryFromSet(s.pieces, s.brand, null);
 };
 // the age shelves leave out Monster trucks (2.7), which have their own shelf and tests
-const of = (age: Age) => PROJECTS.filter((p) => p.age === age && p.theme !== "trucks");
+const of = (age: Age) => PROJECTS.filter((p) => p.age === age && p.theme !== "trucks" && p.theme !== "flowers");
 const trucks = (age: Age) => PROJECTS.filter((p) => p.age === age && p.theme === "trucks");
 const buildable = (age: Age, set: string) => of(age).filter((p) => matchProject(p, inv(set)).state !== "need").map((p) => p.id);
 
@@ -152,6 +152,20 @@ describe("the projects (plan keys 6h, 6j, 6l)", () => {
     };
     expect(all.filter((p) => area(p) >= 178).length).toBeGreaterThanOrEqual(8);
     expect(all.filter((p) => p.placed.some((t) => t.shape === "square-large")).length).toBeGreaterThanOrEqual(30);
+  });
+
+  it("2.9: fifty wildflowers, ten for each age, each naming its region, fifteen or more a region, within its age's sets", () => {
+    const all = PROJECTS.filter((p) => p.theme === "flowers");
+    expect((["t", "a", "b", "c", "d"] as Age[]).map((a) => all.filter((p) => p.age === a).length)).toEqual([10, 10, 10, 10, 10]);
+    const region = (p: Project) => (/\bKansas\b/.test(p.title) ? "Kansas" : /\bChicago\b/.test(p.title) ? "Chicago" : /\b(Carolina|North Carolina)\b/.test(p.title) ? "Carolina" : null);
+    expect(all.filter((p) => !region(p)).map((p) => p.title)).toEqual([]);
+    for (const r of ["Kansas", "Chicago", "Carolina"]) expect(all.filter((p) => region(p) === r).length, r).toBeGreaterThanOrEqual(15);
+    // one Magna-Tiles 100 set up to 10, two for 11 to 16, as for the other builds of those ages (2.3)
+    const s = setById("magna-100")!;
+    const one = inventoryFromSet(s.pieces, s.brand, null);
+    const two = addSet(one, s);
+    const over = all.filter((p) => matchProject(p, p.age === "d" ? two : one).state === "need");
+    expect(over.map((p) => p.id)).toEqual([]);
   });
 
   it("every step says something, and every project ends with its own line", () => {
