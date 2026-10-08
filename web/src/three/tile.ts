@@ -52,12 +52,13 @@ function rounded<T extends THREE.Path>(pts: Pt[], r: number, into: T): T {
   return into;
 }
 
-/** A bevelled frame between an outer outline and an inner opening, centred on z = 0. */
-function frameRing(outer: Pt[], inner: Pt[]): THREE.BufferGeometry {
+/** A bevelled frame between an outer outline and an inner opening, centred on z = 0; `light` with fewer curve and bevel
+    segments. */
+function frameRing(outer: Pt[], inner: Pt[], light = false): THREE.BufferGeometry {
   const s = rounded(inset(outer, BEVEL), CORNER, new THREE.Shape());
   s.holes.push(rounded([...inner].reverse(), INNER_CORNER, new THREE.Path()));
   const depth = TH - 2 * BEVEL;
-  const g = new THREE.ExtrudeGeometry(s, { depth, bevelEnabled: true, bevelThickness: BEVEL, bevelSize: BEVEL, bevelSegments: 3, curveSegments: 6 });
+  const g = new THREE.ExtrudeGeometry(s, { depth, bevelEnabled: true, bevelThickness: BEVEL, bevelSize: BEVEL, bevelSegments: light ? 1 : 3, curveSegments: light ? 3 : 6 });
   g.translate(0, 0, -depth / 2);
   return g;
 }
@@ -105,15 +106,17 @@ function clean(g: THREE.BufferGeometry): THREE.BufferGeometry {
   return out;
 }
 
-export function buildGeometry(shape: ShapeId, leg = DEFAULT_LEG): TileGeometry {
-  const key = shape === "tri-isosceles-tall" ? `${shape}:${leg}` : shape;
+/** A tile's shapes. `light` (2.8.1): a lighter tile for big builds on the iPad, about a third of the triangles, with
+    fewer segments in the bevels, the rounded corners and the rivets; the pictures and smaller builds keep the full one. */
+export function buildGeometry(shape: ShapeId, leg = DEFAULT_LEG, light = false): TileGeometry {
+  const key = (shape === "tri-isosceles-tall" ? `${shape}:${leg}` : shape) + (light ? ":light" : "");
   const hit = cache.get(key);
   if (hit) return hit;
   const def = SHAPES[shape];
   const pts = def.points(leg);
   const hole = holeOf(shape);
-  const parts = [clean(frameRing(pts, inset(pts, RIM)))];
-  if (hole) parts.push(clean(frameRing(inset(hole, -RIM * 0.7), hole)));
+  const parts = [clean(frameRing(pts, inset(pts, RIM), light))];
+  if (hole) parts.push(clean(frameRing(inset(hole, -RIM * 0.7), hole, light)));
   if (def.noFace) for (const x of [0.33, 0.66]) parts.push(clean(bar(x - RIM / 2, RIM * 0.6, x + RIM / 2, 0.5 - RIM * 0.6)));
   const frame = mergeGeometries(parts)!;
   frame.computeVertexNormals();
@@ -122,12 +125,12 @@ export function buildGeometry(shape: ShapeId, leg = DEFAULT_LEG): TileGeometry {
   if (!def.noFace) {
     const face = rounded(inset(pts, RIM * 0.6), INNER_CORNER, new THREE.Shape());
     if (hole) face.holes.push(rounded([...inset(hole, -RIM * 0.5)].reverse(), INNER_CORNER, new THREE.Path()));
-    glass = new THREE.ShapeGeometry(face, 6);
+    glass = new THREE.ShapeGeometry(face, light ? 3 : 6);
   }
 
   // a chrome rivet through each corner of the frame, showing on both sides
   const rv = inset(pts, RIM * 0.5).map(([x, y]) => {
-    const c = new THREE.CylinderGeometry(0.026, 0.026, TH + 0.008, 14);
+    const c = new THREE.CylinderGeometry(0.026, 0.026, TH + 0.008, light ? 8 : 14);
     c.rotateX(Math.PI / 2);
     c.translate(x, y, 0);
     return clean(c);

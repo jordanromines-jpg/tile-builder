@@ -3,10 +3,11 @@
      b (6–8)  ◀ ▶ and one-finger drag to turn
      c (9–10) turn and zoom freely; a slow turn (one in 25 s) until touched, and never under reduced motion
    Each new step eases the view toward the tiles being placed. `sweep` circles the finished model once (the end of a
-   build). Performance: pixel ratio at most 2 (1.5 on smaller devices, 1 without a GPU), frames drawn only when something moves. */
+   build). Performance: pixel ratio at most 2 (1.5 on smaller devices and for builds over BIG_BUILD tiles, 1 without a
+   GPU), frames drawn only when something moves; a big build turns once by itself and then rests (2.8.1). */
 import { OrbitControls, PerformanceMonitor } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { ShapeId } from "../engine/catalog";
@@ -14,14 +15,16 @@ import type { Age, Project } from "../engine/types";
 import { softwareGL } from "../gpu";
 import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
-import { easeInOut, fitDistance, FOV, lookOf, viewFrom, type Look } from "./camera";
-import { frameOf, Model, releaseShared } from "./Model";
+import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
+import { BIG_BUILD, frameOf, Model, releaseShared } from "./Model";
 import { Stage } from "./Stage";
 
 export const TURN_MS = 600;
 const FOCUS_MS = 700;
 // the circle at the end finishes before the shower does (TileConfetti's 3.6 s)
 const SWEEP_MS = 3400;
+// one whole turn at autoRotateSpeed 60 / 25 (one turn in 25 s)
+const TURN_ONCE_MS = 25_000;
 
 /** What the browser tests read through window.__viewer. */
 const stats = { yaw: 0, frames: 0, calls: 0 };
@@ -32,7 +35,7 @@ declare global {
   }
 }
 
-function Turntable({ yaw, still, children }: { yaw: number; still: boolean; children: React.ReactNode }) {
+function Turntable({ yaw, still, onRest, children }: { yaw: number; still: boolean; onRest: () => void; children: React.ReactNode }) {
   const g = useRef<THREE.Group>(null);
   const invalidate = useThree((s) => s.invalidate);
   const from = useRef({ start: 0, from: 0, to: 0 });
@@ -40,8 +43,10 @@ function Turntable({ yaw, still, children }: { yaw: number; still: boolean; chil
     if (!g.current) return;
     // with motion reduced the turn is instant: nothing to ease from
     from.current = still ? { start: 0, from: yaw, to: yaw } : { start: performance.now(), from: g.current.rotation.y, to: yaw };
+    // an instant turn is at rest at once
+    if (still) onRest();
     invalidate();
-  }, [yaw, still, invalidate]);
+  }, [yaw, still, invalidate, onRest]);
   useFrame(() => {
     if (!g.current) return;
     const f = from.current;
@@ -49,6 +54,10 @@ function Turntable({ yaw, still, children }: { yaw: number; still: boolean; chil
     g.current.rotation.y = f.from + (f.to - f.from) * (1 - Math.pow(1 - k, 3));
     stats.yaw = g.current.rotation.y;
     if (k < 1) invalidate();
+    else if (f.start) {
+      f.start = 0;
+      onRest();
+    }
   });
   return <group ref={g}>{children}</group>;
 }
@@ -144,10 +153,20 @@ function Spin({ on }: { on: boolean }) {
 }
 
 function Counter() {
+  const gl = useThree((s) => s.gl);
+  // three counts per render() and starts again at each one; a frame has more than one (the contact shadow draws the
+  // scene too), so count them all and start again once a frame (2.8.1)
+  useEffect(() => {
+    gl.info.autoReset = false;
+    return () => {
+      gl.info.autoReset = true;
+    };
+  }, [gl]);
   useFrame((state) => {
     stats.frames++;
-    // what the last frame cost the GPU, for the browser tests (three counts it per render)
+    // every pass of the last frame, for the browser tests
     stats.calls = state.gl.info.render.calls;
+    state.gl.info.reset();
   });
   return null;
 }
@@ -230,9 +249,6 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
     const upto = Array.from({ length: Math.max(1, Math.min(shown, project.placed.length)) }, (_, i) => i);
     return frameOf(project, leg, upto);
   }, [project, leg, shown]);
-  // frame what is built so far (with room for the next tiles), pulling back as the build grows
-  const span = Math.max(2.2, built.size * 1.1, Math.min(whole.size, built.size + 1.2));
-  const distance = fitDistance(span, aspect, Math.min(span, built.height + 0.6), clear / size.h);
   const focus = useMemo(() => {
     const mid = built.middle.clone().sub(whole.center);
     mid.y = Math.min(built.height * 0.38, 2.4);
@@ -241,20 +257,42 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
     return mid.lerp(new THREE.Vector3(step.x, Math.min(step.y, built.height * 0.6), step.z), 0.2);
   }, [project, leg, current, shown, whole, built]);
   const [touched, setTouched] = useState(false);
+  // bumped when the model comes to rest: the contact shadow is drawn again then
+  const [shade, setShade] = useState(0);
+  const rest = useCallback(() => setShade((n) => n + 1), []);
   const autoRotate = older(age) && spin && !still && !touched && !sweep;
   // the iPad's light or dark can change while a build is open: read the colours again
   const ground = useGround();
   const tint = paint + ground;
   // Turntable turns the model about the middle of its footprint: turn the aim with it, so the built tiles stay in view
   const aim = useMemo(() => focus.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), (turns * Math.PI) / 2), [focus, turns]);
+  const look = lookOf(project);
+  // frame what is built so far, with room for the next tiles (2.8.1): its box, turned as the model is, fitted by width
+  // and by height apart; a view the child can turn is fitted for every way it can face
+  const distance = useMemo(() => {
+    const room = new THREE.Vector3(0.6, 0.3, 0.6);
+    const min = built.min.clone().sub(room).max(whole.min).sub(whole.center);
+    const max = built.max.clone().add(room).min(whole.max).sub(whole.center);
+    const yaw = (turns * Math.PI) / 2;
+    const corners = cornersOf(min, max).map((c) => c.applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw).sub(aim));
+    return Math.max(4, fitBox(corners, aspect, clear / size.h, look, age === "a" ? [0] : ANY_YAW));
+  }, [built, whole, turns, aim, aspect, clear, size.h, look, age]);
   const soft = softwareGL();
-  const sharpest = typeof navigator !== "undefined" && (navigator.hardwareConcurrency ?? 8) <= 4 ? 1.5 : 2;
+  const big = project.placed.length > BIG_BUILD;
+  // a big build draws a lot a pixel: at most 1.5× (2.8.1), as on smaller devices
+  const sharpest = big || (typeof navigator !== "undefined" && (navigator.hardwareConcurrency ?? 8) <= 4) ? 1.5 : 2;
   // 2.4: if turning the model drops frames, draw fewer pixels (down to the screen's own 1×), and sharpen again when it
   // keeps up
   const [top, setTop] = useState(sharpest);
   const dpr: [number, number] = soft ? [0.75, 0.75] : [1, top];
 
   useEffect(() => setTouched(false), [project.id]);
+  // a big build turns once by itself, then rests, so the iPad doesn't draw it at 60 frames a second until touched
+  useEffect(() => {
+    if (!autoRotate || !big) return;
+    const t = setTimeout(() => setTouched(true), TURN_ONCE_MS);
+    return () => clearTimeout(t);
+  }, [autoRotate, big]);
   // shared geometry, materials and textures are kept between builds; let them go when the stage closes
   useEffect(() => () => releaseShared(), []);
   useEffect(() => {
@@ -264,15 +302,14 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
     window.__viewer = { yaw: () => stats.yaw, age, autoRotate: () => autoRotate, frames: () => stats.frames, calls: () => stats.calls };
   }, [age, autoRotate]);
 
-  const look = lookOf(project);
   const start = viewFrom(aim, distance, 0, look);
   return (
     <div ref={wrap} className="h-full w-full" role="img" aria-label={label} style={{ touchAction: age === "a" ? "pan-y" : "none" }}>
       <Canvas dpr={dpr} frameloop="demand" camera={{ position: start.toArray(), fov: FOV, near: 0.1, far: 200 }} gl={{ antialias: true }}>
         {!soft && <PerformanceMonitor onDecline={() => setTop((t) => Math.max(1, t - 0.5))} onIncline={() => setTop((t) => Math.min(sharpest, t + 0.5))} />}
-        <Stage paint={tint} radius={whole.size} />
-        <Turntable yaw={(turns * Math.PI) / 2} still={still}>
-          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} paint={tint} />
+        <Stage paint={tint} radius={whole.size} reach={older(age) ? distance * 1.8 : distance} shade={shade} />
+        <Turntable yaw={(turns * Math.PI) / 2} still={still} onRest={rest}>
+          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} paint={tint} onRest={rest} />
         </Turntable>
         {age !== "a" && (
           <OrbitControls

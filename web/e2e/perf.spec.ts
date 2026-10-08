@@ -10,7 +10,7 @@ test("the Library shows its first card quickly", async ({ page }, info) => {
   console.log(`first card: ${ms} ms`);
 });
 
-for (const pid of ["queen-hexabella-palace", "castle"]) {
+for (const pid of ["queen-hexabella-palace", "castle", "truck-ultimate-arena"]) {
   test(`the finished ${pid} draws in few calls`, async ({ page }, info) => {
     await page.goto(`#/done/${pid}`);
     await expect.poll(() => page.evaluate(() => window.__viewer?.frames() ?? 0), { timeout: 30_000 }).toBeGreaterThan(2);

@@ -18,6 +18,44 @@ export function fitDistance(size: number, aspect: number, height = size, clear =
   return (r / Math.sin(fov / 2)) * 1.02;
 }
 
+/** Every 30°: the turns a view may take when the child can turn it freely. */
+export const ANY_YAW = Array.from({ length: 12 }, (_, i) => (i * Math.PI) / 6);
+
+/** How far back the camera stands so every corner fits in the view (2.8.1): each corner, given relative to where the
+    camera looks, is projected into the camera at the three-quarter angle turned by each of `yaws`, and checked against
+    the view's width (`aspect`, width over full height) and the height left clear of panels (`clear`, a share of it).
+    Width and height are checked apart, so a long, low build fills the width instead of a sphere round it. */
+export function fitBox(corners: THREE.Vector3[], aspect: number, clear = 1, look: Look = THREE_QUARTER, yaws: number[] = [0]): number {
+  // a little air round the edges
+  return fitTight(corners, aspect, clear, look, yaws) * 1.06 + 0.3;
+}
+
+/** As `fitBox`, with no air: the distance at which the outermost point just touches the edge of the view. */
+export function fitTight(corners: THREE.Vector3[], aspect: number, clear = 1, look: Look = THREE_QUARTER, yaws: number[] = [0]): number {
+  const t = Math.tan((FOV * Math.PI) / 360);
+  const tv = t * clear;
+  const th = t * aspect;
+  const up = new THREE.Vector3(0, 1, 0);
+  let d = 0;
+  for (const yaw of yaws) {
+    const back = viewFrom(new THREE.Vector3(), 1, yaw, look);
+    const right = new THREE.Vector3().crossVectors(up, back).normalize();
+    const camUp = new THREE.Vector3().crossVectors(back, right);
+    for (const c of corners) {
+      const z = c.dot(back);
+      d = Math.max(d, z + Math.abs(c.dot(right)) / th, z + Math.abs(c.dot(camUp)) / tv);
+    }
+  }
+  return d;
+}
+
+/** The eight corners of the box from `min` to `max`. */
+export function cornersOf(min: THREE.Vector3, max: THREE.Vector3): THREE.Vector3[] {
+  const out: THREE.Vector3[] = [];
+  for (const x of [min.x, max.x]) for (const y of [min.y, max.y]) for (const z of [min.z, max.z]) out.push(new THREE.Vector3(x, y, z));
+  return out;
+}
+
 export interface Look {
   azimuth: number;
   elevation: number;

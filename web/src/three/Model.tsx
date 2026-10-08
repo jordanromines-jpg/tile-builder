@@ -40,20 +40,26 @@ export function frameOf(project: Project, leg: number, tiles?: number[]) {
   const cz = (Math.min(...zs) + Math.max(...zs)) / 2;
   const w = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...zs) - Math.min(...zs));
   const h = Math.max(...ys);
-  return { center: new THREE.Vector3(cx, 0, cz), middle: new THREE.Vector3(cx, cy, cz), size: Math.max(w, h, 1), height: h };
+  const min = new THREE.Vector3(Math.min(...xs), Math.min(0, ...ys), Math.min(...zs));
+  const max = new THREE.Vector3(Math.max(...xs), h, Math.max(...zs));
+  return { center: new THREE.Vector3(cx, 0, cz), middle: new THREE.Vector3(cx, cy, cz), size: Math.max(w, h, 1), height: h, min, max };
 }
 
 let ghostMat: THREE.MeshBasicMaterial | null = null;
 
+/** Builds bigger than this are drawn with the lighter tile (2.8.1). */
+export const BIG_BUILD = 120;
+
 function buildTiles(project: Project, leg: number, instead: Record<number, ShapeId>, accent: THREE.Color): TileObj[] {
+  const light = project.placed.length > BIG_BUILD;
   const rand = mulberry(7);
   ghostMat ??= new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.3, depthWrite: false, side: THREE.DoubleSide, forceSinglePass: true });
   ghostMat.color.copy(accent);
   return project.placed.map((raw, i) => {
-    const { group, mats, pT, qT, parts } = placeTile(raw, leg, instead[i]);
+    const { group, mats, pT, qT, parts } = placeTile(raw, leg, instead[i], light);
     const ghost = new THREE.Group();
     for (const part of parts) {
-      const geo = buildGeometry(part.shape, leg);
+      const geo = buildGeometry(part.shape, leg, light);
       const g = new THREE.Mesh(geo.glass ?? geo.frame, ghostMat!);
       g.position.set(part.at[0], part.at[1], 0);
       if (part.flip) g.rotation.z = Math.PI;
@@ -73,11 +79,22 @@ function buildTiles(project: Project, leg: number, instead: Record<number, Shape
 }
 
 /** The tiles that have landed, drawn as one mesh a colour and part (2.4): a 150-tile build is a handful of draw calls
-    instead of hundreds. Only this step's tiles, still moving or glowing, are drawn one by one. */
+    instead of hundreds. Only this step's tiles, still moving or glowing, are drawn one by one. 2.8.1: the merged tiles
+    are kept in chunks of about CHUNK tiles; a full chunk is never merged again, so a step re-merges only the newest,
+    open chunk (merging all 200 tiles of a big build every step took 60–75 ms and sent 5–16 MB to the GPU). */
+const CHUNK = 32;
+
+interface Chunk {
+  from: number;
+  to: number;
+  meshes: THREE.Mesh[];
+}
+
 class Settled {
   readonly group = new THREE.Group();
   count = 0;
   private mats = new Map<Colour, TileMaterials>();
+  private chunks: Chunk[] = [];
   glass: THREE.Material[] = [];
 
   materials(colour: Colour): TileMaterials {
@@ -86,14 +103,26 @@ class Settled {
     return m;
   }
 
-  /** Merge tiles 0 to n − 1, each where it lands. */
+  /** Show tiles 0 to n − 1 merged, each where it lands: keep the chunks below n, drop or trim the rest, add the new. */
   rebuild(tiles: TileObj[], n: number, root: THREE.Group) {
-    this.clearMeshes();
-    this.count = n;
-    const buckets = new Map<string, { geos: THREE.BufferGeometry[]; material: THREE.Material; part: "frame" | "glass" | "rivet" }>();
+    while (this.chunks.length && this.chunks.at(-1)!.from >= n) this.drop(this.chunks.pop()!);
+    let from = this.chunks.at(-1)?.to ?? 0;
+    const last = this.chunks.at(-1);
+    // the open chunk (not yet full), or one cut short by going back a step, is merged again with the new tiles
+    if (last && (last.to > n || last.to - last.from < CHUNK)) {
+      this.drop(this.chunks.pop()!);
+      from = last.from;
+    }
     root.updateMatrixWorld(true);
     const toRoot = root.matrixWorld.clone().invert();
-    for (const tile of tiles.slice(0, n)) {
+    for (let a = from; a < n; a += CHUNK) this.chunks.push(this.merge(tiles, a, Math.min(n, a + CHUNK), toRoot));
+    this.count = n;
+    this.glass = [...new Set(this.chunks.flatMap((c) => c.meshes.filter((m) => m.renderOrder === 1).map((m) => m.material as THREE.Material)))];
+  }
+
+  private merge(tiles: TileObj[], from: number, to: number, toRoot: THREE.Matrix4): Chunk {
+    const buckets = new Map<string, { geos: THREE.BufferGeometry[]; material: THREE.Material; part: "frame" | "glass" | "rivet" }>();
+    for (const tile of tiles.slice(from, to)) {
       tile.group.position.copy(tile.pT);
       tile.group.quaternion.copy(tile.qT);
       tile.group.updateMatrixWorld(true);
@@ -107,31 +136,30 @@ class Settled {
         b.geos.push((o.geometry as THREE.BufferGeometry).clone().applyMatrix4(new THREE.Matrix4().multiplyMatrices(toRoot, o.matrixWorld)));
       });
     }
-    this.glass = [];
+    const meshes: THREE.Mesh[] = [];
     buckets.forEach((b) => {
       const merged = mergeGeometries(b.geos);
       b.geos.forEach((g) => g.dispose());
       if (!merged) return;
       const mesh = new THREE.Mesh(merged, b.material);
-      mesh.castShadow = b.part !== "rivet";
-      mesh.receiveShadow = b.part === "frame";
-      if (b.part === "glass") {
-        mesh.renderOrder = 1;
-        this.glass.push(b.material);
-      }
+      if (b.part === "glass") mesh.renderOrder = 1;
       this.group.add(mesh);
+      meshes.push(mesh);
     });
+    return { from, to, meshes };
   }
 
-  private clearMeshes() {
-    for (const m of [...this.group.children] as THREE.Mesh[]) {
+  private drop(c: Chunk) {
+    for (const m of c.meshes) {
       m.geometry.dispose();
       this.group.remove(m);
     }
   }
 
   dispose() {
-    this.clearMeshes();
+    this.chunks.forEach((c) => this.drop(c));
+    this.chunks = [];
+    this.count = 0;
     this.mats.forEach((m) => {
       m.frame.dispose();
       m.glass.dispose();
@@ -152,9 +180,11 @@ export interface ModelProps {
   still?: boolean;
   /** bumped when the theme changes, to read the colours again */
   paint?: number;
+  /** called when the tiles come to rest (built, or this step's landed): the contact shadow is drawn then (2.8.1) */
+  onRest?: () => void;
 }
 
-export function Model({ project, shown, leg, instead = {}, settled = 0, current = [], still = false, paint = 0 }: ModelProps) {
+export function Model({ project, shown, leg, instead = {}, settled = 0, current = [], still = false, paint = 0, onRest }: ModelProps) {
   const invalidate = useThree((s) => s.invalidate);
   const key = JSON.stringify(instead);
   const accent = useMemo(() => new THREE.Color(cssColour("accent", "#BF5409")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -166,6 +196,9 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
   const settledMesh = useMemo(() => new Settled(), []);
   const lit = useRef(new Set<number>());
   const since = useRef(0);
+  const wasMoving = useRef(true);
+  const rest = useRef(onRest);
+  rest.current = onRest;
 
   useEffect(() => {
     root.clear();
@@ -191,6 +224,8 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
   useEffect(() => {
     lit.current = new Set(current.filter((t) => t < shown));
     since.current = performance.now();
+    // a new step: the next frame that finds nothing moving is a rest, even when the tiles appear at once
+    wasMoving.current = true;
     if (still) progress.current = progress.current.map((_, i) => (i < shown ? 1 : 0));
     invalidate();
   }, [shown, current, still, invalidate]);
@@ -237,6 +272,8 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
       tile.mats.frame.emissive.copy(glow ? tile.mats.frame.color : BLACK);
       tile.mats.frame.emissiveIntensity = glow ? pulse : 0;
     });
+    if (wasMoving.current && !moving && !waiting) rest.current?.();
+    wasMoving.current = moving || waiting;
     if (moving || waiting || (lit.current.size && pulsing)) invalidate();
   });
 
