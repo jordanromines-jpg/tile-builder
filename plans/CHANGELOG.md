@@ -5,6 +5,8 @@ line in the same commit as the plan change.
 
 ## 2026-10-08
 
+- `2026-10-08-sound-structures.md`: D7, the step dots stay two rows (Jordan).
+- `2026-10-07-tots-and-trucks.md`: 2.9 merged; Part C done.
 - `2026-10-07-tots-and-trucks.md`: C0 confirmed by Jordan; 2.9 build log (50 wildflowers).
 - `2026-10-08-sound-structures.md`: 2.8.1 and 2.8.2 merged; status.
 - `2026-10-08-sound-structures.md`: new plan (approved, D1–D6): sound structures (R11 strict with braces, crash walls braced, R12 stands firm, the why for 9+), 2.8 under it, then 2.8.1 the canvas (from a measured investigation), 2.8.2 R12 for every project, then 2.9.
