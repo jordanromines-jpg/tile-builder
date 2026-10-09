@@ -1,6 +1,7 @@
 /* The finish's falling tiles (4.2c): with motion on, the celebration draws, and then the stage stops drawing; a tap skips
    it; with motion reduced nothing falls. */
 import { expect, test, type Page } from "@playwright/test";
+import { tapParty } from "./helpers";
 
 const frames = (page: Page) => page.evaluate(() => window.__viewer?.frames() ?? 0);
 
@@ -35,12 +36,7 @@ test.describe("the finish with motion", () => {
 
   test("a tap skips it", async ({ page }) => {
     await page.goto("#/done/castle");
-    const party = page.getByRole("button", { name: "Well done" });
-    // tapped as soon as it shows, as a child does, without waiting for the button to hold still (it moves with the
-    // party, and on a slow renderer the shower could be over first)
-    await expect(party).toBeVisible();
-    await party.click({ force: true });
-    await expect(party).toHaveCount(0);
+    await tapParty(page);
     await expect(page.getByText("Put the iPad down and play with what you made.")).toBeVisible();
   });
 });
