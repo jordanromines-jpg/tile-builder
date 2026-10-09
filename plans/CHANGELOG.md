@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-09
 
+- `2026-10-09-truck-runs-autobuild.md`: rewritten in full and approved (4.0–4.2, decisions D1–D10). `2026-10-09-build-helpers.md`: 3.8 and 3.9 merged; done. `README.md`: the new plan in progress.
 - `2026-10-09-truck-runs-autobuild.md`: new plan (4.0 truck runs, 4.1 Watch it build), approved with Jordan's answers.
 - `2026-10-09-build-helpers.md`: 3.9 build log.
 - `2026-10-09-build-helpers.md`: 3.7 merged; 3.8 build log.
