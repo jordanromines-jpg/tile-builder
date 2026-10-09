@@ -70,6 +70,10 @@ export const S = {
     forAge: (ages: string) => `For ${ages}`,
     trucks: "Monster trucks",
     flowers: "Wildflowers",
+    keepBuilding: "Keep building",
+    tryThis: "Try this one",
+    keepGoing: "Keep going",
+    start: "Start",
   },
   firstRun: {
     homeTitle: "Add this to your Home Screen first, so it keeps your tiles",

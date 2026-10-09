@@ -16,7 +16,7 @@ export function Shelf({ title, children }: { title: ReactNode; children: ReactNo
       </h2>
       <div className="flex items-center gap-4">
         <div className="relative flex min-w-0 flex-1 flex-col">
-          <div ref={row} className="relative z-[1] -mb-3 flex min-w-0 snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-1 pb-1 pt-2" style={{ scrollbarWidth: "none", scrollPaddingLeft: 4 }}>
+          <div ref={row} className="relative z-[1] -mb-3 flex min-w-0 snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-2 pb-4 pt-3" style={{ scrollbarWidth: "none", scrollPaddingLeft: 4 }}>
             {children}
           </div>
           <div className="ts-plank plank relative" aria-hidden="true">

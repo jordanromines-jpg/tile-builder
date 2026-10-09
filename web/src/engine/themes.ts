@@ -10,6 +10,20 @@ export const THEMES: Theme[] = ["castles", "homes", "vehicles", "space", "animal
 /** Themes with a shelf of their own on the Library, after the chosen age's shelves, in this order. */
 export const SECTIONS: Theme[] = ["trucks", "flowers"];
 
+/** One short word a chip can show under its picture (3.1); the full name is still spoken and read out. */
+export const THEME_SHORT: Record<Theme, string> = {
+  castles: "Castles",
+  homes: "Homes",
+  vehicles: "Go!",
+  space: "Space",
+  animals: "Animals",
+  gardens: "Gardens",
+  bridges: "Bridges",
+  patterns: "Patterns",
+  trucks: "Trucks",
+  flowers: "Flowers",
+};
+
 export const THEME_LABELS: Record<Theme, string> = {
   castles: "Castles",
   homes: "Homes",

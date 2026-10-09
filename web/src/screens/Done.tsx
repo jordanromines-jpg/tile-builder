@@ -3,6 +3,7 @@
    "one more?". The saved step is cleared. */
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Decor } from "../looks/decor";
 import { play } from "../sound/sound";
 import { matchProject } from "../engine/match";
 import { useProject } from "../projects/load";
@@ -60,7 +61,8 @@ export function Done() {
             <SpeakButton text={`${project.done} ${S.done.putDown}`} />
           </span>
           <h1 className="ts-finish-words relative soft rounded-full bg-surface-2 px-8 py-3 text-center font-display text-[length:var(--fs-kid-display-c)] font-bold leading-tight text-ink-1">
-            {project.done}
+            <Decor at="finish" />
+            <span className="relative">{project.done}</span>
           </h1>
         </div>
         {!celebrating && (

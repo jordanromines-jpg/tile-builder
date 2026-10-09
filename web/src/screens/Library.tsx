@@ -13,12 +13,13 @@ import type { Age } from "../engine/types";
 import { PROJECT_INFO, SKELETONS } from "../projects/load";
 import type { ProjectInfo } from "../projects/serialize";
 import { saveSettings } from "../store/db";
-import { useInventory, useProgress, useSettings } from "../store/hooks";
+import { useInventory, useLatestProgress, useProgress, useSettings } from "../store/hooks";
 import { S } from "../strings";
 import { AgeProvider, SHELF_ORDER } from "../ui/kid/AgeContext";
 import { AgePicker } from "../ui/kid/AgePicker";
 import { EmptyState } from "../ui/kid/EmptyState";
 import { GrownUpsDoor } from "../ui/kid/GrownUpsDoor";
+import { HeroCard } from "../ui/kid/HeroCard";
 import { ProjectCard } from "../ui/kid/ProjectCard";
 import { Shelf } from "../ui/kid/Shelf";
 import { ThemeFilter } from "../ui/kid/ThemeFilter";
@@ -70,6 +71,7 @@ export function Library() {
   const settings = useSettings();
   const inv = useInventory();
   const progress = useProgress() ?? {};
+  const latest = useLatestProgress();
   const [theme, setTheme] = useState<Theme | null>(null);
   const age = settings?.age ?? null;
   const hasTiles = !!inv && inventoryTotal(inv) > 0;
@@ -112,10 +114,15 @@ export function Library() {
     shelves.push(...sectionShelves);
     for (const a of SHELF_ORDER.filter((x) => x !== age)) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
   } else {
-    shelves.push(...sectionShelves);
+    // no age yet (a new family): the ages first, smallest first, then the sections (3.1: trucks came first before)
     for (const a of SHELF_ORDER) shelves.push({ title: S.library.forAge(S.kid.ages[a]), items: byAge(a) });
+    shelves.push(...sectionShelves);
   }
   const shown = shelves.filter((s) => s.items.length);
+  // the first thing to look at (3.1): the build in progress, or one the family can build now at the chosen age
+  const resumeItem = latest ? items.find((i) => i.project.id === latest.projectId) : undefined;
+  const suggestItem = !resumeItem && age ? byAge(age).find((i) => !i.match || i.match.state !== "need") : undefined;
+  const heroItem = resumeItem ?? suggestItem;
 
   return (
     <AgeProvider age={age ?? "a"}>
@@ -150,6 +157,16 @@ export function Library() {
           </section>
         )}
         {!hasTiles && inv && <EmptyState text={S.kid.emptyTiles} banner />}
+        {heroItem && (
+          <HeroCard
+            kind={resumeItem ? "resume" : "suggest"}
+            title={heroItem.project.title}
+            picture={<ProjectPicture id={heroItem.project.id} />}
+            stars={heroItem.project.stars}
+            step={resumeItem && latest ? latest.step + 1 : undefined}
+            onPress={() => void navigate({ to: "/build/$pid", params: { pid: heroItem.project.id } })}
+          />
+        )}
         {shown.length ? (
           shown.map((s) => (
             <Shelf key={`${s.title} ${theme ?? ""}`} title={s.title}>

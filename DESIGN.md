@@ -257,7 +257,7 @@ The iPad is the target, so the app does as little as it can while a child waits 
   rest, not every frame (a frame was six passes; now one).
 - **Mosaic view (2.5).** Flat 0–3 mosaics use their own camera (`MOSAIC` in `three/camera.ts`): from the front and 60°
   above, in build mode and in their pictures, so they read the right way up.
-- **Adaptive sharpness.** `PerformanceMonitor` lowers the pixel ratio when frames drop and raises it again after.
+- **Adaptive sharpness.** `FrameWatch` (3.1) watches only frames drawn while something moves; when they drop it turns the look's effects down a tier, then lowers the pixel ratio, and raises them again after.
 - **Offline.** The app shell, tile chips, fonts and project data are precached; project pictures are cached as they
   are seen and warmed when the iPad is idle.
 

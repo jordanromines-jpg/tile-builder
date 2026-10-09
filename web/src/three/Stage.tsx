@@ -60,15 +60,18 @@ export function Stage({ paint, radius, reach, shade = 0, contact = true }: { pai
   const floor = useMemo(() => look.floor.texture(dark), [look, dark]);
   // a step in reach (half a square) is enough: the fog doesn't move with every eased frame of the camera
   const fog = useMemo(() => fogFor(Math.ceil(reach * 2) / 2, radius), [reach, radius]);
+  const fx = useMemo(() => (lite() ? {} : look.effects(tier, dark)), [look, tier, dark]);
+  const effectsOn = !!(fx.ao || fx.bloom || fx.vignette);
   useEffect(() => {
-    gl.toneMapping = THREE.NeutralToneMapping;
+    // with effects on, the effects apply the Neutral curve themselves, last (Effects.tsx): never twice
+    gl.toneMapping = effectsOn ? THREE.NoToneMapping : THREE.NeutralToneMapping;
     gl.toneMappingExposure = look.exposure(dark);
     lightScene(scene, gl, look.background(dark), fog, look.environment);
     // the far plane past the whole table: nothing is clipped zoomed out
     camera.far = Math.max(200, fog.far + fog.table / 2);
     camera.updateProjectionMatrix();
     invalidate();
-  }, [scene, gl, camera, dark, paint, fog, look, invalidate]);
+  }, [scene, gl, camera, dark, paint, fog, look, effectsOn, invalidate]);
   useEffect(() => {
     // the floor keeps its pattern's size on a bigger table
     if (floor) floor.repeat.set((look.floor.repeat * fog.table) / 80, (look.floor.repeat * fog.table) / 80);
@@ -79,7 +82,6 @@ export function Stage({ paint, radius, reach, shade = 0, contact = true }: { pai
   const hemi = look.hemisphere(dark);
   const key = look.key(dark);
   const fill = look.fill(dark);
-  const fx = useMemo(() => (lite() ? {} : look.effects(tier, dark)), [look, tier, dark]);
   return (
     <>
       <hemisphereLight args={[hemi.sky, hemi.ground, hemi.intensity + (lite() ? 0.9 : 0)]} />
@@ -91,7 +93,7 @@ export function Stage({ paint, radius, reach, shade = 0, contact = true }: { pai
       </mesh>
       {/* frames={1}: drei counts its frames afresh each time it renders, so a new `shade` draws the shadow once more */}
       {contact && !lite() && <ContactShadows key="shadow" name={`shade-${shade}`} frames={1} position={[0, 0.003, 0]} scale={s * 2.2} blur={look.contact.blur} far={Math.max(3, radius)} opacity={look.contact.opacity(dark)} resolution={512} color={look.contact.color} />}
-      {(fx.ao || fx.bloom || fx.vignette) && (
+      {effectsOn && (
         <Suspense fallback={null}>
           <Effects fx={fx} />
         </Suspense>

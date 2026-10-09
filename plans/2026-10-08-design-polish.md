@@ -15,7 +15,9 @@ in the session scratchpad, not committed).
 children's app (Fredoka, Andika, Atkinson); accessibility basics (targets, contrast, labels).
 
 **Holds it at 3/10, worst first:**
-1. **Grown-ups screens look broken:** the gate is a 180-pixel card with 13-pixel text alone in an empty page.
+1. **Grown-ups screens are plain:** the gate is a sensible card (about 360 pixels wide, 28-pixel title) alone on an
+   empty page. (The first audit called it broken, from a scaled-down contact sheet; at full size it is only plain.
+   Corrected 8 Oct.)
 2. **The Library looks like a prototype:** a flat page; twelve identical round icon buttons with no words, cut off;
    small cards with small floating pictures; a 2-pixel "shelf"; no first thing to look at, no "keep building".
 3. **The 3D stage is cheap around good tiles:** the wood reads as stripes; flat light; no darkening where tiles meet,
@@ -95,7 +97,7 @@ hidden with "fewer moving things" (reduced motion keeps it still).
 
 | # | What | Done when | Time |
 |---|------|-----------|------|
-| 1a | Grown-ups screens laid out for an iPad: the gate, Tiles and Settings full-size, readable, in a two-column frame | before/after screenshots | 3 h |
+| 1a | Grown-ups screens: the gate given a friendly picture and a page around it (each look styles it); Tiles and Settings checked at full size | before/after screenshots | 1 h |
 | 1b | Library: a "keep building" hero card (the project in progress, or a suggestion); theme chips with words; bigger cards whose pictures fill them; shelves with room to breathe; the composed empty state | e2e and plates | 4 h |
 | 1c | Build mode: the step panel's layout (this step's tiles big, the words, Next), turn buttons grouped; first-step framing against the whole build's footprint, with a faint outline of where it all goes | screenshot of step 1 of five builds | 3 h |
 | 1d | The landing: squash, settle, `snap` sound, a glint; the ghost as a breathing outline (reduced motion: none) | | 2 h |

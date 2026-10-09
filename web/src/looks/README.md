@@ -51,9 +51,10 @@ Atkinson Hyperlegible Next) unless the lead adds one; no images from the network
 | `ts-library`, `ts-build`, `ts-done`, `ts-grownups` (`ts-gate` for the lock screen) | each screen's root |
 | `ts-header`, `ts-wordmark` | the Library's top bar and the name |
 | `ts-ages`, `ts-age` (`[aria-pressed=true]` when picked) | the age picker |
-| `ts-chips`, `ts-chip` (`[aria-pressed=true]`) | the theme filter |
+| `ts-chips`; `ts-chip-wrap` (the button, `[aria-pressed=true]` when picked) holding `ts-chip` (the round picture) and `ts-chip-word` (its word); select the picked one with `.ts-chip-wrap[aria-pressed="true"] .ts-chip` (3.1) | the theme filter |
 | `ts-shelf`, `ts-shelf-title`, `ts-plank`, `ts-more` | a shelf, its heading, its plank, its ▶ button |
 | `ts-card`, `ts-card-picture`, `ts-card-title`, `ts-resume` | a project card |
+| `ts-hero`, `ts-hero-picture`, `ts-hero-eyebrow`, `ts-hero-title` (3.1) | the Library's first card: "Keep building" or "Try this one" (its button is a `ts-button ts-button-accent ts-button-primary`) |
 | `ts-badge` + `ts-badge-can` / `ts-badge-need` / `ts-badge-soft` | "You can build it" and friends |
 | `ts-button` + `ts-button-accent` / `-plain` / `-soft`, `ts-button-primary` | every kid button |
 | `ts-next` | the big Next button |
