@@ -78,6 +78,8 @@ export const SettingsZ = z.object({
   homeScreenCardSeen: z.boolean(),
   persisted: z.boolean().nullable(),
   lastBackup: z.string().nullable(),
+  /** how fast Watch it build plays (4.1); an older backup has none */
+  watchSpeed: z.enum(["slow", "medium", "fast"]).default("medium"),
 });
 
 export const ProgressZ = z.object({ projectId: z.string(), step: z.number().int().nonnegative(), updatedAt: z.string() });

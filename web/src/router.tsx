@@ -42,7 +42,13 @@ const root = createRootRoute({ component: () => <Outlet />, errorComponent: Oops
 
 const library = createRoute({ getParentRoute: () => root, path: "/", component: Library });
 const build = createRoute({ getParentRoute: () => root, path: "/build/$pid", component: later(Build) });
-const done = createRoute({ getParentRoute: () => root, path: "/done/$pid", component: later(Done) });
+// ?watched=1: the build was watched to its end (4.1), so the child's own saved step stays
+const done = createRoute({
+  getParentRoute: () => root,
+  path: "/done/$pid",
+  component: later(Done),
+  validateSearch: (s: Record<string, unknown>): { watched?: 1 } => (s.watched === 1 || s.watched === "1" ? { watched: 1 } : {}),
+});
 const grownups = createRoute({ getParentRoute: () => root, path: "/grownups", component: later(GrownupsHome) });
 const tiles = createRoute({ getParentRoute: () => root, path: "/grownups/tiles", component: later(Tiles) });
 const settings = createRoute({ getParentRoute: () => root, path: "/grownups/settings", component: later(Settings) });

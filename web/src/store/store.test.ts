@@ -15,6 +15,12 @@ describe("the store", () => {
     expect(await getSettings()).toMatchObject({ age: "b", voice: false, lang: "en-US" });
   });
 
+  it("remembers Watch it build's speed, Medium until chosen (4.1)", async () => {
+    expect((await getSettings()).watchSpeed).toBe("medium");
+    await saveSettings({ watchSpeed: "fast" });
+    expect((await getSettings()).watchSpeed).toBe("fast");
+  });
+
   it("keeps the inventory", async () => {
     const s = setById("magna-32")!;
     await saveInventory(inventoryFromSet(s.pieces, "magna", 1.877));

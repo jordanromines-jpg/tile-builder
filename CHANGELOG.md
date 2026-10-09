@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.1.0 · 9 Oct 2026
+
+Watch it build. Jordan: "an auto build mode that has a speed selector that goes through it one step at a time."
+
+- **A Watch button** in the top bar (the round play button). The build plays itself, one step at a time, for any age.
+- **Three speeds:** Slow, Medium or Fast. The iPad remembers the one you chose. Pause and Play are right there, and a
+  tap on the model pauses too.
+- **Your place is safe.** Watching never changes where the builder had got to. "Build from here" makes the step on the
+  screen the builder's own; "Stop watching" goes back to where they were.
+- **Pip helps** as ever, and hurries at Fast. At Slow and Medium each step is read aloud when the voice is on.
+- At the end it goes to the finish, and the builder's saved place is kept.
+
 ## 3.9.0 · 9 Oct 2026
 
 Pip helps. Jordan: "also animate this guy and make him help with builds."

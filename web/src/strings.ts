@@ -69,6 +69,13 @@ export const S = {
     closeSteps: "Close all steps",
     chooseStep: "Choose a step",
     stepNumber: (n: number) => `Step ${n}`,
+    watch: "Watch it build",
+    watchPlay: "Play",
+    watchPause: "Pause",
+    watchSpeed: "How fast",
+    watchSpeeds: { slow: "Slow", medium: "Medium", fast: "Fast" },
+    buildFromHere: "Build from here",
+    stopWatching: "Stop watching",
   },
   oops: "That didn't work. Let's go back.",
   done: {

@@ -21,6 +21,7 @@ export const DEFAULT_SETTINGS: Settings = {
   homeScreenCardSeen: false,
   persisted: null,
   lastBackup: null,
+  watchSpeed: "medium",
 };
 
 export const EMPTY_INVENTORY: Inventory = { brands: [], tallLeg: null, counts: {} };
@@ -43,6 +44,10 @@ class TileDB extends Dexie {
     this.version(3)
       .stores({ settings: "id", inventory: "id", progress: "projectId" })
       .upgrade((tx) => tx.table("settings").toCollection().modify((r: SettingsRow) => void (r.soundEffects = true)));
+    // 4.1: Watch it build remembers its speed; an iPad without one gets Medium
+    this.version(4)
+      .stores({ settings: "id", inventory: "id", progress: "projectId" })
+      .upgrade((tx) => tx.table("settings").toCollection().modify((r: SettingsRow) => void (r.watchSpeed ??= "medium")));
   }
 }
 

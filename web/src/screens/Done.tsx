@@ -1,7 +1,7 @@
 /* The end of a build (plan keys 3c, 7h; sprint 2, change 9): the finished model while the view circles it once under a
    shower of little tiles, then a photo card of it. The project's own line is said aloud when the voice is on; then "Put the iPad down and play with what you made." and one button back to the shelf. No next project, no
    "one more?". The saved step is cleared. */
-import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
+import { Navigate, useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Pip } from "../friend/Pip";
 import { Decor } from "../looks/decor";
@@ -24,6 +24,7 @@ import { SpeakButton } from "../ui/kid/SpeakButton";
 
 export function Done() {
   const { pid } = useParams({ strict: false }) as { pid: string };
+  const watched = useSearch({ strict: false }).watched === 1;
   const project = useProject(pid);
   const navigate = useNavigate();
   const inv = useInventory();
@@ -31,11 +32,12 @@ export function Done() {
 
   useEffect(() => {
     if (!project || project === "unreachable") return;
-    void clearStep(project.id);
+    // a build watched to its end (4.1) was not built: the child keeps their place
+    if (!watched) void clearStep(project.id);
     play("finish");
     say(project.done);
     return () => stop();
-  }, [project]);
+  }, [project, watched]);
 
   if (project === null) return <Navigate to="/" />;
   if (project === "unreachable") return <CantLoad title={infoById(pid)?.title ?? pid} />;
