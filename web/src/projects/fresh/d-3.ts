@@ -56,11 +56,9 @@ function sierpinski(): Project {
   const s = new Studio();
   const ups: Tri[] = [];
   for (let j = 0; j < 8; j++) for (let i = 0; i + j < 8; i++) if ((i & j) === 0) ups.push(up(i, j));
-  // the frame first, then the pattern inside it and the corners on the pattern: flat tiles joined to a frame that is
-  // still going up get lifted as it rocks (R14)
+  s.triLid("the pattern", ups, 0, (k) => RAINBOW[k % 6], "triangles flat, leaving the holes empty");
   s.walls("the frame", bigTriPath(L, 0, 0, 8), 2, ["purple", "blue"], { closed: true, what: "round the outside" });
-  s.triLid("the pattern", ups, 0, (k) => RAINBOW[k % 6], "triangles flat, leaving the holes empty", undefined, true);
-  [up(0, 0), up(7, 0), up(0, 7)].forEach((t) => s.tetra("a corner", t, 0, "yellow", true));
+  [up(0, 0), up(7, 0), up(0, 7)].forEach((t) => s.tetra("a corner", t, 0, "yellow"));
   return s.build({ id: "sierpinski-say-it-five-times", title: "The Sierpinski Triangle (Say It Five Times Fast)", theme: "patterns", age: "d", done: "You built the Sierpinski triangle! Triangles in triangles in triangles. Now say Sierpinski five times fast." });
 }
 

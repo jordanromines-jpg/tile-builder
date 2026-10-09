@@ -72,8 +72,12 @@ function accidentalTortoise(): Project {
   const head = triOut(hc.centre, hc.corners[5], hc.corners[0]);
   s.walls("the head", head, 2, ["yellow", "green"], { closed: true, what: "in a triangle against the shell" });
   s.tetra("the head", head, 2, "green");
-  const feet = [ring[0].corners[0], ring[2].corners[4], ring[3].corners[3], ring[5].corners[1]];
-  s.fins("the feet", feet.map((p) => ({ corner: p, out: away(middle.centre, p) })), "yellow", "four feet", true);
+  // the feet are little pyramids against the outside of four shell pieces: a foot hung on a corner by one edge swung
+  // (R14), and three triangles leaning together stand by themselves
+  ([[0, 0], [2, 4], [3, 3], [5, 1]] as [number, number][]).forEach(([r, k], i) => {
+    const h = ring[r];
+    s.tetra(`foot number ${i + 1}`, triOut(h.centre, h.corners[k], h.corners[(k + 1) % 6]), 0, "yellow", true);
+  });
   return s.build({ id: "tortoise-won-by-accident", title: "The Tortoise Who Won by Accident", theme: "animals", age: "d", done: "You built the tortoise! It won the race by accident. It was going the other way. Still counts." });
 }
 

@@ -4,6 +4,7 @@ import type { Colour } from "../../engine/catalog";
 import type { Project } from "../../engine/types";
 import { reorderSteps } from "../helpers";
 import { Studio, hexagon, lattice, polygon, star, type P, type Tri } from "../studio";
+import { triOut } from "./parts";
 
 const L = lattice(0, 0);
 const EQH = Math.sqrt(3) / 2;
@@ -95,7 +96,9 @@ function tuesdaySaucer(): Project {
   s.triLid("the saucer", st.tris, 1, (i) => (i < 6 ? "blue" : "green"), "a star-shaped deck");
   s.tetra("the cockpit", st.tris[6], 1, "yellow");
   s.tetra("the radar", st.tris[9], 1, "red");
-  s.fins("the landing legs", st.corners.filter((_, i) => i % 2 === 1).map((p) => ({ corner: p, out: [p[0] - st.centre[0], p[1] - st.centre[1]] as P })), "orange", "landing legs", true);
+  // the landing legs are little pyramids against three of the star's points: a leg hung on a point by one edge swung
+  // (R14), and three triangles leaning together stand by themselves
+  [1, 5, 9].forEach((k, i) => s.tetra(`landing leg ${i + 1}`, triOut(st.centre, st.corners[k], st.corners[(k + 1) % 12]), 0, "orange", true));
   return s.build({ id: "tuesday-flying-saucer", title: "The Flying Saucer That Only Flies on Tuesdays", theme: "space", age: "c", done: "You built the flying saucer! Is it Tuesday? No? Then it just sits there, looking shiny." });
 }
 

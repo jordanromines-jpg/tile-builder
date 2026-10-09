@@ -200,13 +200,11 @@ function everythingStation(): Project {
     .filter((_, i) => i % 2 === 1)
     .forEach((t, k) => {
       const u = unit(away(st.centre, t));
-      // one square long, to its full height before the next: an arm hangs on its point by one hinge, and a longer or a
-      // lower one swings like a door (R14)
-      const arm: P[] = [t, [r9(t[0] + u[0]), r9(t[1] + u[1])]];
-      s.walls(`arm number ${k + 1}`, arm, 2, ["orange", "red"], { what: "straight out from a point", level: (y) => 2.5 + k * 0.1 + y * 0.01 });
-      s.fins(`arm number ${k + 1}`, [{ corner: arm[1], out: u }], "yellow", "a docking rocket", true);
+      const arm: P[] = [t, [r9(t[0] + u[0]), r9(t[1] + u[1])], [r9(t[0] + 2 * u[0]), r9(t[1] + 2 * u[1])]];
+      s.walls(`arm number ${k + 1}`, arm, 2, ["orange", "red"], { what: "straight out from a point" });
+      s.fins(`arm number ${k + 1}`, [{ corner: arm[2], out: u }], "yellow", "a docking rocket");
     });
-  s.fins("the hub", st.corners.filter((_, i) => i % 2 === 0).map((p) => ({ corner: p, out: away(st.centre, p) })), "green", "antennas between the arms", true);
+  s.fins("the hub", st.corners.filter((_, i) => i % 2 === 0).map((p) => ({ corner: p, out: away(st.centre, p) })), "green", "antennas between the arms");
   [-3.6, 7.6].forEach((x, i) => s.pad(`landing pad ${i + 1}`, x, -2, "purple", "a big square"));
   [-3.6, 7.6].forEach((x, i) => s.pad(`spare pad ${i + 1}`, x, 0.4, "blue", "a big square"));
   return s.build({ id: "space-station-of-everything", title: "The Space Station of Absolutely Everything", theme: "space", age: "d", done: "You built the Space Station of Absolutely Everything! It has everything. Except a kettle. Somebody forgot the kettle." });

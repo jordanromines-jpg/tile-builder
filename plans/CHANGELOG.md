@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-09
 
+- `2026-10-09-truck-runs-autobuild.md`: 4.2a batch B (28 of 34 stand; 6 left, see the new plan). `2026-10-09-r14-flat-tiles.md`: new, proposed.
 - `2026-10-09-truck-runs-autobuild.md`: 4.2a batch A build log (34 of the 68 falling builds fixed; their causes and the kit options added).
 - `2026-10-09-truck-runs-autobuild.md`: 4.0a merged; P1 built (68 builds fall, all allowed for now).
 - `2026-10-09-truck-runs-autobuild.md`: D11 (R14 blocks only real falls), D12 (auto-merge off); 4.1 merged; P0 spike results.

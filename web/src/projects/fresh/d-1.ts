@@ -138,7 +138,9 @@ function sevenStages(): Project {
     s.walls("a booster", t, 3, ["blue", "purple", "blue"], { closed: true, what: "in a triangle against the side" });
     s.tetra("a booster", t, 3, "yellow");
   }
-  s.fins("the fins", [0, 3].map((k) => ({ corner: h.corners[k], out: away(h.centre, h.corners[k]) })), "green", "fins", true);
+  // the fins are little pyramids against the two free sides at the bottom: a fin hung on a corner by one edge swung
+  // (R14), and three triangles leaning together stand by themselves
+  for (const k of [2, 5]) s.tetra("a fin", triOut(h.centre, h.corners[k], h.corners[(k + 1) % 6]), 0, "green", true);
   return s.build({ id: "seven-stage-rocket", title: "The Rocket with Seven Stages (Six Too Many)", theme: "space", age: "d", done: "You built the seven-stage rocket! Stage one goes up. Stage seven is still waiting for its turn." });
 }
 
