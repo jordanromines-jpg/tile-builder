@@ -3,7 +3,19 @@
 import type { ReactNode } from "react";
 import { Friend, FRIEND_POSES } from "./Friend";
 
-const POSE_NOTE: Record<string, string> = { idle: "waiting", read: "reads the step", point: "this tile here", think: "next step loading", cheer: "all done" };
+const POSE_NOTE: Record<string, string> = {
+  idle: "waiting",
+  read: "reads the step",
+  point: "this tile here",
+  think: "next step loading",
+  cheer: "all done, or a layer done",
+  hold: "carries the step's tiles",
+  clap: "the tiles landed",
+  wave: "welcome back",
+  comfort: "it fell down",
+  look: "looking through the steps",
+  sleep: "resting",
+};
 
 function Ground({ dark, children }: { dark: boolean; children: ReactNode }) {
   return (

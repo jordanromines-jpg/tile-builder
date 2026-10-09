@@ -72,6 +72,19 @@ button { font: inherit; color: inherit; }
 .pip-bob { animation: pip-bob 1.2s var(--ease) 2; transform-origin: 50% 100%; }
 .pip-hop { animation: pip-hop 0.7s var(--ease) 4; transform-origin: 50% 100%; }
 @media (prefers-reduced-motion: reduce) { .pip-bob, .pip-hop { animation: none; } }
+/* Pip is always a little alive (3.9): a blink, a breath, an ear and the tail now and then. Long cycles that are still
+   most of the time; DOM only, so the 3D view never draws for them. Off with motion reduced and on the rest screen. */
+.friend-alive .friend-eyes, .friend-alive .friend-body, .friend-alive .friend-ear, .friend-alive .friend-tail { transform-box: fill-box; }
+.friend-alive .friend-eyes { transform-origin: center; animation: friend-blink 4.6s infinite; }
+.friend-alive .friend-body { transform-origin: 50% 100%; animation: friend-breathe 3.2s ease-in-out infinite; }
+.friend-alive .friend-ear { transform-origin: 50% 100%; animation: friend-ear 7.3s infinite; }
+.friend-alive .friend-ear-r { animation-delay: -2.1s; }
+.friend-alive .friend-tail { transform-origin: 0% 100%; animation: friend-tail 5.5s ease-in-out infinite; }
+@keyframes friend-blink { 0%, 95%, 99%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.08); } }
+@keyframes friend-breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1, 1.018); } }
+@keyframes friend-ear { 0%, 96%, 100% { transform: rotate(0); } 97.5% { transform: rotate(-6deg); } 99% { transform: rotate(4deg); } }
+@keyframes friend-tail { 0%, 92%, 100% { transform: rotate(0); } 96% { transform: rotate(9deg); } }
+@media (prefers-reduced-motion: reduce) { .friend-alive * { animation: none !important; } }
 /* Split View and Slide Over (3.6): under 760 px wide the kid type steps down a size in every look (html[data-look]
    outranks a look's [data-look="…"] token block, which is where every look sets its sizes) */
 @media (max-width: 760px) {
@@ -114,3 +127,14 @@ button { font: inherit; color: inherit; }
 }
 .ts-slider:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; border-radius: 999px; }
 .ts-filmstrip { scrollbar-width: thin; }
+
+/* Pip's tip bubble (3.9): a little tail down toward him, in the bubble's own colour. */
+.ts-bubble::after {
+  content: "";
+  position: absolute;
+  right: 30px;
+  bottom: -10px;
+  border: 10px solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--surface-2);
+}

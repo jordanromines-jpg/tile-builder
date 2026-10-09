@@ -121,6 +121,8 @@ dogwood), the pollinators, the Venus flytrap growing wild only near Wilmington.
    the turn buttons, "It fell down". A fresh build opens on **Get your tiles** (3.7): every tile it takes, by shape and
    colour, the total, and what's short; "Tiles you need" in the top bar opens it again. **All steps** (3.8) shows every step: a slider
    that builds the model up and down in 3D, and a strip of pictures to tap; any child can also tap a step dot to jump.
+   **Pip helps** (3.9): he carries each step's tiles to where they go, claps when they land, and gives a tip at the
+   first step that needs one (a roof, a ramp, a crash wall, a big square standing, the third layer).
 3. **Well done.** A short celebration, the build's own line ("You built the castle!"), then "Put the iPad down and
    play with what you made", and one button back to the shelf.
 4. **Grown-ups side**, behind the door: Tiles (start from a set, then − and +), Settings, Backup.

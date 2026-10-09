@@ -18,7 +18,9 @@ import { ArrowLeft, GridFour, Play } from "../ui/icons";
 import { AgeProvider, older } from "../ui/kid/AgeContext";
 import { fell, FellDown, layerStart, type FallState } from "../ui/kid/FellDown";
 import { KidBar } from "../ui/kid/KidBar";
-import { Pip, useStepPose } from "../friend/Pip";
+import { Guide, GUIDE_HOLD_S, TargetBus, type Arrival } from "../friend/Guide";
+import { tipsByStep } from "../friend/tips";
+import { useStill } from "../ui/motion";
 import { Decor } from "../looks/decor";
 import { KidButton } from "../ui/kid/KidButton";
 import { SpeakButton } from "../ui/kid/SpeakButton";
@@ -73,13 +75,20 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
     (s: number) => [project.steps[s].say, ...(swapAt.get(s) ?? []).map((sw) => sw.say)].join(" "),
     [project, swapAt],
   );
+  // Pip's tips (3.9): shown in his bubble and said after the step's line, as one utterance so neither cuts the other
+  const tips = useMemo(() => tipsByStep(project, leg), [project, leg]);
+  const tipOf = useCallback((s: number) => {
+    const k = tips.get(s);
+    return k ? S.tips[k] : null;
+  }, [tips]);
+  const spokenOf = useCallback((s: number) => [lineOf(s), tipOf(s)].filter(Boolean).join(" "), [lineOf, tipOf]);
   const speak = useCallback(
     (s: number) => {
-      say(lineOf(s));
+      say(spokenOf(s));
       // a line was spoken: the 9–10 model stops turning by itself so the child can listen and look
       if (speechEnabled()) setHush((h) => h + 1);
     },
-    [lineOf, age],
+    [spokenOf, age],
   );
 
   // first open: carry on from the saved step; a fresh build (step 1) shows its tiles first
@@ -122,11 +131,24 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
     [project, leg],
   );
 
-  const pipPose = useStepPose(step ?? 0);
+  // Pip (3.9): how the step came (Next: he carries its tiles over), where its tiles are, when they land
+  const still = useStill();
+  const [arrival, setArrival] = useState<Arrival>({ kind: "open", n: 0 });
+  const bus = useMemo(() => new TargetBus(), []);
+  const [landed, setLanded] = useState(0);
+  const land = useCallback(() => setLanded((n) => n + 1), []);
+  const [gaze, setGaze] = useState<-1 | 0 | 1>(0);
+  useEffect(() => {
+    if (!gaze) return;
+    const t = setTimeout(() => setGaze(0), 600);
+    return () => clearTimeout(t);
+  }, [gaze, preview]);
+
   if (step === null) return <main className="min-h-dvh" />;
 
-  const go = (n: number) => {
+  const go = (n: number, kind: Arrival["kind"] = "jump") => {
     const s = Math.max(0, Math.min(last, n));
+    setArrival((a) => ({ kind, n: a.n + 1 }));
     setGate(null);
     setStep(s);
     setTurns(0);
@@ -138,7 +160,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
       void navigate({ to: "/done/$pid", params: { pid } });
       return;
     }
-    go(step + 1);
+    go(step + 1, "next");
   };
 
   const view = tray ? (preview ?? step) : step;
@@ -169,6 +191,9 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
             turns={turns}
             stepKey={view}
             browse={tray}
+            hold={!still && arrival.kind === "next" && !tray ? GUIDE_HOLD_S : undefined}
+            onTarget={bus.set}
+            onRest={land}
             hush={hush}
             inset={{ top: 112, bottom: strip }}
             spin={!resting}
@@ -184,6 +209,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
               inset={{ top: 112, bottom: strip }}
               onStart={() => {
                 setGate(null);
+                setArrival((a) => ({ kind: "next", n: a.n + 1 }));
                 speak(step);
               }}
               onPick={() => void navigate({ to: "/" })}
@@ -195,7 +221,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
           <div className="pointer-events-auto">
             <KidBar
               onBack={() => void navigate({ to: "/" })}
-              hear={<SpeakButton text={lineOf(step)} />}
+              hear={<SpeakButton text={spokenOf(step)} />}
               extra={
                 <KidButton
                   label={S.build.tilesButton}
@@ -256,10 +282,11 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
           aria-label={S.kid.step(step + 1, last + 1)}
         >
           <Decor at="panel" />
-          {/* Pip sits on the panel's top edge, above Next, and points left at this step's tiles */}
-          <Pip pose={pipPose} size={88} flip className="absolute -top-[76px] right-10" />
           {tray ? (
-            <StepTray project={project} leg={leg} instead={instead} step={step} preview={view} onPreview={setPreview} onCommit={commit} onClose={closeTray} />
+            <StepTray project={project} leg={leg} instead={instead} step={step} preview={view} onPreview={(i) => {
+                setGaze(i > view ? 1 : i < view ? -1 : 0);
+                setPreview(i);
+              }} onCommit={commit} onClose={closeTray} />
           ) : (
             <>
             <StepDots count={last + 1} current={step} onJump={go} />
@@ -311,6 +338,22 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
             setFallOpen(false);
             go(layerStart(stepLayers, step));
           }}
+        />
+        {/* Pip: on the panel's top edge above Next, and off to the model to help (3.9) */}
+        <Guide
+          arrival={arrival}
+          tiles={tiles}
+          leg={leg}
+          tip={tipOf(step)}
+          bus={bus}
+          panel={stripRef}
+          top={112}
+          landed={landed}
+          finishesLayer={step === last || stepLayers[step + 1] > stepLayers[step]}
+          tray={tray}
+          gaze={gaze}
+          falling={fallOpen}
+          resting={resting}
         />
       </main>
     </AgeProvider>

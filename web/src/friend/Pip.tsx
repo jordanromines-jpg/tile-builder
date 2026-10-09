@@ -1,33 +1,36 @@
-/* Pip, the tile friend (3.1, gate G1: Jordan approved the sheet and the name). Pip sits on the edge of the step panel in
-   build mode and points at this step's tiles when a step begins, then rests; on the finish screen Pip cheers, big.
-   A few gentle movements when the pose changes, never a loop that runs on (it would keep the iPad drawing); none with
-   reduced motion. Decoration only (aria-hidden): the screens say everything in words. Looks style it through `ts-pip`. */
+/* Pip, the tile friend (3.1, gate G1: Jordan approved the sheet and the name; 3.9: more poses, and he helps). In build
+   mode Guide.tsx moves him; on the finish screen Pip cheers, big. A little movement when the pose changes, and (3.9,
+   Jordan: "animate this guy") always a little alive: a blink, a breath, an ear and the tail now and then. All DOM, so
+   the 3D view never draws for him; none with motion reduced. Decoration only (aria-hidden): the screens say
+   everything in words. Looks style it through `ts-pip`. */
 import { useEffect, useState } from "react";
 import { useStill } from "../ui/motion";
 import { Friend, type FriendPose } from "./Friend";
 
-export function Pip({ pose, size, flip = false, className = "" }: { pose: FriendPose; size: number; flip?: boolean; className?: string }) {
+/** the poses that start with a little bob */
+const BOBS: FriendPose[] = ["point", "hold", "clap", "wave"];
+
+export interface PipProps {
+  pose: FriendPose;
+  size: number;
+  flip?: boolean;
+  /** blinking and breathing (off on the rest screen) */
+  alive?: boolean;
+  gaze?: -1 | 0 | 1;
+  className?: string;
+}
+
+export function Pip({ pose, size, flip = false, alive = true, gaze = 0, className = "" }: PipProps) {
   const still = useStill();
   // a new key each time the pose changes restarts its little movement
   const [n, setN] = useState(0);
   useEffect(() => setN((k) => k + 1), [pose]);
-  const move = still ? "" : pose === "cheer" ? "pip-hop" : "pip-bob";
+  const move = still ? "" : pose === "cheer" ? "pip-hop" : BOBS.includes(pose) ? "pip-bob" : "";
   return (
     <span aria-hidden="true" className={`ts-pip pointer-events-none inline-block ${className}`} style={{ width: size, height: size, transform: flip ? "scaleX(-1)" : undefined }}>
       <span key={n} className={`block h-full w-full ${move}`}>
-        <Friend pose={pose} size={size} />
+        <Friend pose={pose} size={size} gaze={flip ? ((-gaze) as -1 | 0 | 1) : gaze} className={alive && !still ? "friend-alive" : undefined} />
       </span>
     </span>
   );
-}
-
-/** Build mode's pose: pointing at the tiles for a moment when a step begins, then idle. */
-export function useStepPose(step: number): FriendPose {
-  const [pose, setPose] = useState<FriendPose>("point");
-  useEffect(() => {
-    setPose("point");
-    const t = setTimeout(() => setPose("idle"), 2600);
-    return () => clearTimeout(t);
-  }, [step]);
-  return pose;
 }

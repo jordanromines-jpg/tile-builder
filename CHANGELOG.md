@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.9.0 · 9 Oct 2026
+
+Pip helps. Jordan: "also animate this guy and make him help with builds."
+
+- **He shows where.** With Next, Pip picks up the step's tiles, hops over to where they go on the model, tosses them
+  in as the 3D tiles drop, claps when they land (or cheers when a layer is done), and hops back to the step panel.
+- **Tips, once.** At the first step that needs one, a tip in a bubble by Pip, said after the step: hold the walls
+  while the roof goes on; a ramp leans on its tower; the brace locks the ramp; a crash wall is built to fall; a big
+  square is heavy; finish each layer before the next. They come from the builds' own tiles, so every build has them.
+- **He reacts.** He looks along as the child scrubs All steps, comforts after "It fell down", sleeps on the rest screen
+  and waves when the child comes back.
+- **Always a little alive:** he blinks, breathes, and twitches an ear or his tail now and then. With motion reduced he
+  stays still in his place and points.
+
 ## 3.8.0 · 9 Oct 2026
 
 All steps. Jordan: "I should be able to see all the steps for a project and scroll through them to jump ahead or see

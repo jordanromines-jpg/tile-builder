@@ -23,6 +23,7 @@ const ALL = [
   ["build-tiles-big", "#/build/truck-ultimate-arena"],
   ["build-middle", "#/build/castle", 10],
   ["build-steps", "#/build/castle", 0, undefined, "All steps"],
+  ["build-tip", "#/build/castle", 0, undefined, "Step 17 of 21"],
   ["build-last", "#/build/castle", 30],
   ["build-big", "#/build/truck-ultimate-arena", 20],
   ["build-flower", "#/build/flower-kansas-sunflower-vase", 8],
