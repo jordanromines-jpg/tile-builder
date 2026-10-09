@@ -39,6 +39,8 @@ export const S = {
     step: (i: number, n: number) => `Step ${i} of ${n}`,
     emptyTiles: "A grown-up can add your tiles behind the door.",
     emptyShelf: "No projects here yet. Try another picture.",
+    cantLoad: "This one isn't on the iPad yet. Ask a grown-up to join Wi-Fi, then try again.",
+    tryAgain: "Try again",
     skip: "Tap to go on",
     themes: "Themes",
     turnGroup: "Turn the model",

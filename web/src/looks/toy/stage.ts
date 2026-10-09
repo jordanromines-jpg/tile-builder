@@ -26,18 +26,6 @@ function birchTexture(dark: boolean): THREE.Texture | null {
     seed = (seed * 16807) % 2147483647;
     return seed / 2147483647;
   };
-  // broad soft bands of lighter and darker wood, so the surface breathes
-  for (let i = 0; i < 0; i++) {
-    const y = rnd() * 512;
-    const h = 20 + rnd() * 60;
-    const grad = g.createLinearGradient(0, y - h, 0, y + h);
-    const col = i % 2 ? light : grain;
-    grad.addColorStop(0, "rgba(0,0,0,0)");
-    grad.addColorStop(0.5, col);
-    grad.addColorStop(1, "rgba(0,0,0,0)");
-    g.fillStyle = grad;
-    g.fillRect(0, y - h, 512, h * 2);
-  }
   // long, faint, wavering grain lines (wrap-safe: the sine repeats over the width)
   g.lineWidth = 1;
   for (let k = 0; k < 40; k++) {

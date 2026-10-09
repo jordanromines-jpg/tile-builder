@@ -6,7 +6,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { layerOf, worldPolygon } from "../engine/geometry";
 import { matchProject, type Match } from "../engine/match";
 import type { Project } from "../engine/types";
-import { useProject } from "../projects/load";
+import { infoById, useProject } from "../projects/load";
+import { CantLoad } from "./build/CantLoad";
 import { say, speechEnabled, stop } from "../speech/say";
 import { getStep, saveStep } from "../store/db";
 import { useInventory } from "../store/hooks";
@@ -34,6 +35,7 @@ export function Build() {
   const { pid } = useParams({ strict: false }) as { pid: string };
   const project = useProject(pid);
   if (project === null) return <Navigate to="/" />;
+  if (project === "unreachable") return <CantLoad title={infoById(pid)?.title ?? pid} />;
   // the tiles are loading (a moment, from the iPad's own copy): the empty stage
   if (!project) return <main className="h-dvh bg-stage" aria-busy="true" />;
   return <BuildProject key={pid} pid={pid} project={project} />;
@@ -198,10 +200,11 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
           {/* Pip sits on the panel's top edge, above Next, and points left at this step's tiles */}
           <Pip pose={pipPose} size={88} flip className="absolute -top-[76px] right-10" />
           <StepDots count={last + 1} current={step} onJump={older(age) ? go : undefined} />
-          <div className="flex items-center gap-5">
+          {/* narrow (Split View, 3.6): this step's tiles and words take the whole first row; Back and Next the second */}
+          <div className="flex items-center gap-5 max-[760px]:flex-wrap max-[760px]:gap-3">
             <KidButton label={S.kid.stepBack} showLabel={false} icon={<ArrowLeft size={36} weight="bold" />} onPress={() => go(step - 1)} disabled={step === 0} />
-            <div className="flex min-w-0 flex-1 flex-col gap-2">
-              <div className="flex min-w-0 items-center gap-5">
+            <div className="flex min-w-0 flex-1 flex-col gap-2 max-[760px]:order-first max-[760px]:basis-full">
+              <div className="flex min-w-0 items-center gap-5 max-[760px]:gap-3">
                 <ul className="ts-step-tiles flex shrink-0 flex-wrap items-center gap-3" aria-label={S.build.stepTiles}>
                   {tiles.map((t) => (
                     <li key={`${t.shape}-${t.colour}-${t.instead}`}>
@@ -217,7 +220,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
               {match?.note === "best-with-one-brand" && step === 0 && <p className="text-ink-2">{S.build.bestWithOneBrand}</p>}
               {age === "t" && step === 0 && <p className="text-ink-2">{S.build.forBaby}</p>}
             </div>
-            <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} sound="step" className="ts-next min-w-[148px]" />
+            <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} sound="step" className="ts-next min-w-[148px] max-[760px]:ml-auto" />
           </div>
         </aside>
         {resting && (

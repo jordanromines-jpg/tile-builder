@@ -21,7 +21,7 @@ export function EmptyState({ text, banner }: { text: string; banner?: boolean })
         <TilePicture shape="square" px={64} />
         <TilePicture shape="tri-equilateral" px={64} />
       </Picture>
-      <p className="max-w-md font-kid text-[length:var(--fs-kid-label-c)] font-bold text-ink-2">{text}</p>
+      <p className="max-w-md text-balance font-kid text-[length:var(--fs-kid-label-c)] font-bold text-ink-2">{text}</p>
     </div>
   );
 }
