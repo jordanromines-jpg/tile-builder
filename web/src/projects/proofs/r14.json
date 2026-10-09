@@ -1,0 +1,4872 @@
+{
+ "alien-boot-sale": {
+  "key": "4437641d8d4cb66a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 34627
+ },
+ "always-late-clock": {
+  "key": "02f808cd0382504e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 86467
+ },
+ "ant-invaded-picnic": {
+  "key": "633d684c6140d227",
+  "falls": [
+   {
+    "step": 6,
+    "tile": 18,
+    "mm": 89,
+    "deg": 8,
+    "phase": "settling"
+   },
+   {
+    "step": 7,
+    "tile": 19,
+    "mm": 21,
+    "deg": 3,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 3,
+  "worstMm": 89,
+  "ms": 4569
+ },
+ "apple-aqueduct": {
+  "key": "fd5e189efb48b09c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 17259
+ },
+ "baby-apple": {
+  "key": "528d5ede7a1d9c9c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 5059
+ },
+ "baby-balloons": {
+  "key": "894dce71d0f3305d",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1304
+ },
+ "baby-bee": {
+  "key": "e8c93e609b922ac0",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1985
+ },
+ "baby-big-and-little-cube": {
+  "key": "058e045367d60ff4",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 748
+ },
+ "baby-big-fish": {
+  "key": "02954808dafc53b3",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 427
+ },
+ "baby-big-heart": {
+  "key": "78f4c92b23049c72",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 32747
+ },
+ "baby-big-robot": {
+  "key": "6779e5c8b38dbfa4",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2609
+ },
+ "baby-big-rocket": {
+  "key": "c4552a20d31c813a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 778
+ },
+ "baby-big-square-quilt": {
+  "key": "efd357ab2dfed542",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2376
+ },
+ "baby-big-sun": {
+  "key": "a9ae5cdf9231659c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 880
+ },
+ "baby-big-train": {
+  "key": "019135936dc871e5",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 790
+ },
+ "baby-bunny": {
+  "key": "b88a9f17bd8be61c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2784
+ },
+ "baby-bunting-quilt": {
+  "key": "7dc25b579f6dca3d",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 11846
+ },
+ "baby-butterfly": {
+  "key": "d6eb94a4a2553feb",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4126
+ },
+ "baby-car-tunnel": {
+  "key": "c97abaee46b9a31d",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 506
+ },
+ "baby-cat-face": {
+  "key": "3c9e3060171eb580",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 3879
+ },
+ "baby-checks": {
+  "key": "a99b976f1515ec92",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2538
+ },
+ "baby-colour-stairs": {
+  "key": "c36934af7ef46cb3",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 3676
+ },
+ "baby-colour-wheel": {
+  "key": "d0bddc8529548a40",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1967
+ },
+ "baby-cube-on-cube": {
+  "key": "946da3af6c14a034",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 757
+ },
+ "baby-duck": {
+  "key": "0fbc9a1f9a4f1986",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4666
+ },
+ "baby-fish": {
+  "key": "b8f351109f2cba47",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2844
+ },
+ "baby-flower": {
+  "key": "99369934bb6d631e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 3386
+ },
+ "baby-frog-face": {
+  "key": "4437f2d8d4891ea3",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1369
+ },
+ "baby-happy-face": {
+  "key": "bd7825f51b6fbbb7",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 8279
+ },
+ "baby-hedgehog": {
+  "key": "1cb102f59e09d9bd",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 329
+ },
+ "baby-honey-flowers": {
+  "key": "35e71bf5e882b9eb",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 434
+ },
+ "baby-house": {
+  "key": "24a8d7d04cec30ae",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2777
+ },
+ "baby-house-and-garden": {
+  "key": "77f0abc589584cdd",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1162
+ },
+ "baby-ice-cream": {
+  "key": "c41443629df5f65f",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2884
+ },
+ "baby-kite": {
+  "key": "846a1a1b0f368a45",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 3468
+ },
+ "baby-ladybird": {
+  "key": "04b236a99adf7ab4",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 13262
+ },
+ "baby-little-heart": {
+  "key": "84e3121fab23a180",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2304
+ },
+ "baby-little-house": {
+  "key": "6b69a6b97f5f16c7",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1217
+ },
+ "baby-moon-and-stars": {
+  "key": "7bd33ec44ba97115",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1155
+ },
+ "baby-owl": {
+  "key": "bb8845c587f9a4b7",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 3288
+ },
+ "baby-penguin": {
+  "key": "1d5add5d5e1a3eff",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 5968
+ },
+ "baby-petal-flower": {
+  "key": "53c407d6c63a6786",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 412
+ },
+ "baby-picnic-blanket": {
+  "key": "ce049717515ad5c5",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 34517
+ },
+ "baby-pointy-crown": {
+  "key": "b64ef3b6272d68f9",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 490
+ },
+ "baby-present": {
+  "key": "e2add4927b03624e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 3249
+ },
+ "baby-rainbow-arch": {
+  "key": "f5f24a27e98a01cc",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4325
+ },
+ "baby-rainbow-quilt": {
+  "key": "99702d3e3ca00773",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 20952
+ },
+ "baby-rainbow-stripes": {
+  "key": "22124f409e0be29e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 6333
+ },
+ "baby-rainbow-tower": {
+  "key": "762245ca92440a23",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 2034
+ },
+ "baby-rainbow-triangle": {
+  "key": "c7a495dd2d76fcdb",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 751
+ },
+ "baby-red-car": {
+  "key": "922a7bc435ccdcfe",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1991
+ },
+ "baby-rocket": {
+  "key": "6d904c008f78b8d4",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 8765
+ },
+ "baby-sailing-boat": {
+  "key": "a4b03b70ea82f309",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1230
+ },
+ "baby-shape-friends": {
+  "key": "23cd228d029eac9c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 642
+ },
+ "baby-shiny-diamond": {
+  "key": "6c8b1eae93648746",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 3940
+ },
+ "baby-snail": {
+  "key": "8f7a8697e0783665",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1471
+ },
+ "baby-squares-in-squares": {
+  "key": "62551b76911f7bf3",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 6004
+ },
+ "baby-strawberry": {
+  "key": "e71d85710e3edcf1",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2077
+ },
+ "baby-sunflower": {
+  "key": "a5aa29f4ab8a98c2",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1480
+ },
+ "baby-sunshine": {
+  "key": "3df2564eff32d44a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4909
+ },
+ "baby-three-cubes": {
+  "key": "82cd0f2b2a45e4d7",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1626
+ },
+ "baby-three-pyramids": {
+  "key": "7e5e758877a74d7a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 842
+ },
+ "baby-tree": {
+  "key": "9eba82c81a14d7e0",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1836
+ },
+ "baby-triangle-zigzag": {
+  "key": "e7b3b1f12a276b84",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2270
+ },
+ "baby-turtle": {
+  "key": "bdd31bd5b5d98df5",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 5006
+ },
+ "baby-twinkle-star": {
+  "key": "3d4892fd7759b535",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 973
+ },
+ "baby-whale": {
+  "key": "5bfa41a16a474d72",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2657
+ },
+ "baby-zigzag-roof-house": {
+  "key": "e5edec5c6f46b81e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 944
+ },
+ "balloon-launch-tower": {
+  "key": "62bcc1d7583ee0bc",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 73650
+ },
+ "banana-boat": {
+  "key": "d5c4cbca9b6c5fc2",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 227
+ },
+ "banana-mountain-cable-car": {
+  "key": "3c78b1db35664d0a",
+  "falls": [
+   {
+    "step": 18,
+    "tile": 12,
+    "mm": 27,
+    "deg": 6,
+    "phase": "settling"
+   },
+   {
+    "step": 21,
+    "tile": 21,
+    "mm": 23,
+    "deg": 3,
+    "phase": "settling"
+   },
+   {
+    "step": 22,
+    "tile": 21,
+    "mm": 23,
+    "deg": 3,
+    "phase": "settling"
+   }
+  ],
+  "sags": 4,
+  "worstMm": 27,
+  "ms": 35582
+ },
+ "barn": {
+  "key": "9d20b8b59edc4a9a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 4816
+ },
+ "bean-rocket": {
+  "key": "8faf73d13577b72e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 92789
+ },
+ "bee-block-of-flats": {
+  "key": "6c89b388daeb4082",
+  "falls": [
+   {
+    "step": 11,
+    "tile": 11,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 8,
+  "worstMm": 20,
+  "ms": 11563
+ },
+ "bee-hotel": {
+  "key": "bf861804c56a3a71",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 31288
+ },
+ "beep-robot": {
+  "key": "1b747c24ebfc319e",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 4,
+  "ms": 3127
+ },
+ "beetle-in-two-hats": {
+  "key": "3f3817188b1e0efe",
+  "falls": [
+   {
+    "step": 10,
+    "tile": 8,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after left"
+   }
+  ],
+  "sags": 6,
+  "worstMm": 20,
+  "ms": 4485
+ },
+ "big-decisions-hall": {
+  "key": "56d8c649fc42b975",
+  "falls": [
+   {
+    "step": 15,
+    "tile": 20,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 4,
+  "worstMm": 21,
+  "ms": 22756
+ },
+ "boat": {
+  "key": "f82fa591edae0a59",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1261
+ },
+ "box": {
+  "key": "8a4de8e5884bc93d",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 253
+ },
+ "box-house": {
+  "key": "2007d18338a72425",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 10,
+  "ms": 10538
+ },
+ "brave-ant-bridge": {
+  "key": "f26a4b9484137238",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 13,
+  "ms": 4955
+ },
+ "bridge-to-nowhere": {
+  "key": "17e02e6b445b1a92",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 21626
+ },
+ "broccoli-ice-cream-van": {
+  "key": "2577cd8991022fce",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 12,
+  "ms": 8878
+ },
+ "bubble-mansion": {
+  "key": "e28ec98dca364db7",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 9,
+  "ms": 59530
+ },
+ "burp-fortress": {
+  "key": "5db4d14f2afaf32b",
+  "falls": [],
+  "sags": 12,
+  "worstMm": 10,
+  "ms": 79875
+ },
+ "burp-rocket": {
+  "key": "19c8b90051557e25",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 5,
+  "ms": 3672
+ },
+ "burping-frog": {
+  "key": "9e5f5468af2f2b40",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 282
+ },
+ "burping-volcano": {
+  "key": "c6d627d9f0642b2a",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 10,
+  "ms": 3567
+ },
+ "burrito-bridge": {
+  "key": "31322a4b0a6c38fc",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4348
+ },
+ "bus": {
+  "key": "c2d55219baf07905",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 3,
+  "ms": 883
+ },
+ "butler-mansion": {
+  "key": "e354fa8cf1dbd938",
+  "falls": [
+   {
+    "step": 2,
+    "tile": 1,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 0,
+  "worstMm": 29,
+  "ms": 11703
+ },
+ "captain-custard-star-fortress": {
+  "key": "14da5e20773b83e3",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 11,
+  "ms": 20676
+ },
+ "car": {
+  "key": "26ce68b7cc38a9b9",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 349
+ },
+ "castle": {
+  "key": "683165ee1d3891e1",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 10,
+  "ms": 28265
+ },
+ "castle-ate-itself": {
+  "key": "e8fe96e52f51d507",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 78571
+ },
+ "castle-on-triangle-hill": {
+  "key": "1d91692acb6039ab",
+  "falls": [],
+  "sags": 7,
+  "worstMm": 12,
+  "ms": 32227
+ },
+ "cat": {
+  "key": "678185a804cc2356",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 281
+ },
+ "cat-hotel": {
+  "key": "edd3038b6e1f6d6d",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 31778
+ },
+ "chaos-mansion": {
+  "key": "12044d774995f5b2",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 8,
+  "ms": 77167
+ },
+ "cheese-lighthouse": {
+  "key": "0ef34f5aa2421f23",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 4306
+ },
+ "chess-castle": {
+  "key": "1d3a16e6fcbdfd2f",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 24361
+ },
+ "chicken-disco": {
+  "key": "69bd0b0b428f97fc",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 18102
+ },
+ "chilly-igloo": {
+  "key": "a19e63227c6e4f4e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 42427
+ },
+ "comet-observatory": {
+  "key": "54ddaae88de1f622",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 4,
+  "ms": 69312
+ },
+ "competitive-marrow-allotment": {
+  "key": "4bcba39a2fc409eb",
+  "falls": [
+   {
+    "step": 7,
+    "tile": 25,
+    "mm": 27,
+    "deg": 7,
+    "phase": "settling"
+   },
+   {
+    "step": 9,
+    "tile": 31,
+    "mm": 22,
+    "deg": 6,
+    "phase": "settling"
+   }
+  ],
+  "sags": 10,
+  "worstMm": 27,
+  "ms": 17326
+ },
+ "compost-castle": {
+  "key": "d8f2770c4fe057ce",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 8,
+  "ms": 145610
+ },
+ "cottage": {
+  "key": "38b5ebaadb759943",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 5,
+  "ms": 930
+ },
+ "cow-spa": {
+  "key": "944f723d46e6dad8",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 8,
+  "ms": 29386
+ },
+ "croc-dentist": {
+  "key": "8d780348fe93d2d5",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 10,
+  "ms": 13345
+ },
+ "custard-river-truss-bridge": {
+  "key": "741cfb0260fd0584",
+  "falls": [
+   {
+    "step": 5,
+    "tile": 14,
+    "mm": 24,
+    "deg": 24,
+    "phase": "settling"
+   },
+   {
+    "step": 6,
+    "tile": 16,
+    "mm": 14,
+    "deg": 17,
+    "phase": "settling"
+   },
+   {
+    "step": 7,
+    "tile": 16,
+    "mm": 21,
+    "deg": 18,
+    "phase": "settling"
+   },
+   {
+    "step": 8,
+    "tile": 14,
+    "mm": 16,
+    "deg": 19,
+    "phase": "settling"
+   },
+   {
+    "step": 9,
+    "tile": 40,
+    "mm": 30,
+    "deg": 19,
+    "phase": "settling"
+   },
+   {
+    "step": 10,
+    "tile": 40,
+    "mm": 30,
+    "deg": 19,
+    "phase": "settling"
+   },
+   {
+    "step": 12,
+    "tile": 27,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 13,
+    "tile": 40,
+    "mm": 20,
+    "deg": 14,
+    "phase": "leaning away"
+   },
+   {
+    "step": 14,
+    "tile": 40,
+    "mm": 20,
+    "deg": 14,
+    "phase": "leaning away"
+   },
+   {
+    "step": 15,
+    "tile": 40,
+    "mm": 20,
+    "deg": 14,
+    "phase": "leaning away"
+   },
+   {
+    "step": 16,
+    "tile": 40,
+    "mm": 20,
+    "deg": 14,
+    "phase": "leaning away"
+   },
+   {
+    "step": 17,
+    "tile": 40,
+    "mm": 20,
+    "deg": 14,
+    "phase": "leaning away"
+   },
+   {
+    "step": 18,
+    "tile": 40,
+    "mm": 20,
+    "deg": 14,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 30,
+  "ms": 23088
+ },
+ "dino-museum": {
+  "key": "c77383f5ac51b7a0",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 22263
+ },
+ "dinosaur": {
+  "key": "1177f011b515ba27",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 597
+ },
+ "dirty-car-wash": {
+  "key": "afe01dfec49a0b3c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 13221
+ },
+ "disco-bungalow": {
+  "key": "5d53eaa893e8812e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 35443
+ },
+ "dizzy-square-spiral": {
+  "key": "ee3682795b1713e6",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 14,
+  "ms": 18743
+ },
+ "domino-city": {
+  "key": "ef4344fb019b4a8f",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 2,
+  "ms": 58377
+ },
+ "doughnut-fort": {
+  "key": "f96fc84b99b22343",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 5,
+  "ms": 8028
+ },
+ "dragon-daycare": {
+  "key": "72ab88030e610c91",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 2692
+ },
+ "dragon-lair": {
+  "key": "83a08d94abf3d14a",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 9,
+  "ms": 64040
+ },
+ "dragon-scared-of-mice": {
+  "key": "d80f9ff89da729aa",
+  "falls": [
+   {
+    "step": 9,
+    "tile": 16,
+    "mm": 19,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 11,
+    "tile": 15,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 12,
+    "tile": 15,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after away"
+   },
+   {
+    "step": 13,
+    "tile": 14,
+    "mm": 19,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 14,
+    "tile": 14,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 3,
+  "worstMm": 21,
+  "ms": 8899
+ },
+ "dragon-zigzag-wall": {
+  "key": "7013a5268243216b",
+  "falls": [
+   {
+    "step": 6,
+    "tile": 16,
+    "mm": 20,
+    "deg": 12,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 5,
+  "worstMm": 20,
+  "ms": 6824
+ },
+ "drawbridge-gate": {
+  "key": "5c0bdda9386f1b1c",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 9,
+  "ms": 43991
+ },
+ "dry-submarine-base": {
+  "key": "ad909ed0ffade170",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 10,
+  "ms": 37361
+ },
+ "duck-skyscraper": {
+  "key": "9bf2d55704890395",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 9786
+ },
+ "eiffel-tower-wobbly-cousin": {
+  "key": "cf8126b7272d8694",
+  "falls": [
+   {
+    "step": 4,
+    "tile": 11,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 10,
+  "worstMm": 20,
+  "ms": 32553
+ },
+ "elephant-bungee": {
+  "key": "47f38fc17010dc4e",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 25453
+ },
+ "endless-bus-station": {
+  "key": "0046e2fc7b48404c",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 8,
+  "ms": 20459
+ },
+ "enormous-house": {
+  "key": "8340779bce62d227",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 17,
+  "ms": 104956
+ },
+ "every-room-living-room": {
+  "key": "5a2f14f659a25183",
+  "falls": [
+   {
+    "step": 8,
+    "tile": 13,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   }
+  ],
+  "sags": 5,
+  "worstMm": 20,
+  "ms": 9651
+ },
+ "everything-tower": {
+  "key": "9fbd336a1a32dedb",
+  "falls": [],
+  "sags": 10,
+  "worstMm": 12,
+  "ms": 238087
+ },
+ "evil-lair": {
+  "key": "d303e94732940e0a",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 26389
+ },
+ "fairy-mushroom-ring": {
+  "key": "cdfe20a0ef34d154",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 3,
+  "ms": 11985
+ },
+ "fish": {
+  "key": "b078cd078e6f04c5",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 165
+ },
+ "flower": {
+  "key": "3ea6e9454f3c5a82",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 406
+ },
+ "flower-bed-grew-too-much": {
+  "key": "04eacdb48955d478",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 8388
+ },
+ "flower-carolina-bog-garden": {
+  "key": "0c7c9402b861465c",
+  "falls": [
+   {
+    "step": 29,
+    "tile": 55,
+    "mm": 63,
+    "deg": 11,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 0,
+  "worstMm": 63,
+  "ms": 71164
+ },
+ "flower-carolina-cardinal-flower": {
+  "key": "af3fcab9ee3bd34a",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 2,
+  "ms": 7944
+ },
+ "flower-carolina-dogwood": {
+  "key": "89f1ad4cf2ec702c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 555
+ },
+ "flower-carolina-flame-azalea-bush": {
+  "key": "a8fd02305cb88fcf",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 4,
+  "ms": 48627
+ },
+ "flower-carolina-joe-pye-weed": {
+  "key": "e996430015801bef",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 9032
+ },
+ "flower-carolina-mountain-bouquet": {
+  "key": "424e2ec9119661f0",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 119794
+ },
+ "flower-carolina-mountain-laurel-bouquet": {
+  "key": "8c42d334b164359b",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 22574
+ },
+ "flower-carolina-state-flowers": {
+  "key": "9e219423e055dd46",
+  "falls": [
+   {
+    "step": 19,
+    "tile": 65,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 20,
+  "ms": 54956
+ },
+ "flower-carolina-trumpet-creeper": {
+  "key": "ab9d5496d717810f",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 511
+ },
+ "flower-carolina-trumpet-creeper-trellis": {
+  "key": "e51b8ca267fef876",
+  "falls": [
+   {
+    "step": 12,
+    "tile": 39,
+    "mm": 21,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 2,
+  "worstMm": 21,
+  "ms": 7391
+ },
+ "flower-carolina-turks-cap-lily": {
+  "key": "17ac71ae07536427",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 8753
+ },
+ "flower-carolina-venus-flytrap": {
+  "key": "505067a5709704cd",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 3402
+ },
+ "flower-carolina-venus-flytrap-bog": {
+  "key": "348a5973d97a19f1",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 10762
+ },
+ "flower-chicago-big-wreath": {
+  "key": "ccf3a63635ba96ed",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 3,
+  "ms": 77269
+ },
+ "flower-chicago-blazing-star-bergamot-bouquet": {
+  "key": "6706d2832b67572a",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 16,
+  "ms": 37186
+ },
+ "flower-chicago-pollinator-garden": {
+  "key": "ac3c3d4ce9e438a7",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 42058
+ },
+ "flower-chicago-prairie-bouquet": {
+  "key": "92ffbc2feca7f51b",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 116868
+ },
+ "flower-chicago-prairie-smoke": {
+  "key": "7f80bcba0d50bfc1",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 542
+ },
+ "flower-chicago-shooting-star": {
+  "key": "60b41a622f14c3d1",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 655
+ },
+ "flower-chicago-spiderwort": {
+  "key": "6f68d3a103299fce",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 587
+ },
+ "flower-chicago-spiderwort-vase": {
+  "key": "fcc4f41f7f1024e3",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 6277
+ },
+ "flower-chicago-violet": {
+  "key": "628a0d70ed4497a8",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 648
+ },
+ "flower-chicago-violet-little-pot": {
+  "key": "711a266e81d3219a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 2850
+ },
+ "flower-chicago-violet-window-box": {
+  "key": "ff16556f60f07590",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 30430
+ },
+ "flower-chicago-virginia-bluebells": {
+  "key": "beac4b7d6bfd8efc",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 4,
+  "ms": 26233
+ },
+ "flower-chicago-wild-bergamot": {
+  "key": "0ab4b1a1781f1ccd",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 12290
+ },
+ "flower-chicago-woodland-bluebells": {
+  "key": "fc5b4da26926b638",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 4,
+  "ms": 106301
+ },
+ "flower-kansas-blazing-star-spike": {
+  "key": "05467274fd70c308",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 6837
+ },
+ "flower-kansas-butterfly-milkweed": {
+  "key": "d3f6801ceb5b3c66",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 3,
+  "ms": 15738
+ },
+ "flower-kansas-compass-plant": {
+  "key": "becb23f88db386f1",
+  "falls": [
+   {
+    "step": 8,
+    "tile": 1,
+    "mm": 22,
+    "deg": 19,
+    "phase": "settling"
+   },
+   {
+    "step": 18,
+    "tile": 1,
+    "mm": 18,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   }
+  ],
+  "sags": 2,
+  "worstMm": 22,
+  "ms": 24390
+ },
+ "flower-kansas-coneflower-pot": {
+  "key": "88cf4b4d1a3d5d41",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 9232
+ },
+ "flower-kansas-dozen-prairie": {
+  "key": "9529600bd5d241ca",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 91215
+ },
+ "flower-kansas-goldenrod-blazing-star-bouquet": {
+  "key": "1c3d11c41742908e",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 13,
+  "ms": 31345
+ },
+ "flower-kansas-prairie-bouquet": {
+  "key": "508355911866e943",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 120137
+ },
+ "flower-kansas-prairie-window-box": {
+  "key": "bcc27b45a251fd27",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 3,
+  "ms": 43719
+ },
+ "flower-kansas-sunflower-field": {
+  "key": "4617a56ebfc79880",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 42201
+ },
+ "flower-kansas-sunflower-vase": {
+  "key": "ccbf1f77fa037820",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 9,
+  "ms": 28937
+ },
+ "flower-ks-goldenrod": {
+  "key": "d4d866042b624a95",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 944
+ },
+ "flower-ks-indian-blanket": {
+  "key": "afe47bda9d0a9bcf",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 773
+ },
+ "flower-ks-sunflower": {
+  "key": "2f0e8a662f4200a1",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 3,
+  "ms": 804
+ },
+ "flower-t-carolina-dogwood-blossom": {
+  "key": "a11f77ee5d35d6fa",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 945
+ },
+ "flower-t-carolina-lily": {
+  "key": "9671f860b0bd8b60",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 674
+ },
+ "flower-t-carolina-venus-flytrap": {
+  "key": "081c9699b1c328f5",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2628
+ },
+ "flower-t-chicago-violet": {
+  "key": "58d43a0f82b9194e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1200
+ },
+ "flower-t-chicago-virginia-bluebells": {
+  "key": "5d6c51bd819c201a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 695
+ },
+ "flower-t-chicago-wild-columbine": {
+  "key": "c27f39dd3fe4b355",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2052
+ },
+ "flower-t-kansas-black-eyed-susan": {
+  "key": "2ccc00904dcf2f9d",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 8641
+ },
+ "flower-t-kansas-butterfly-milkweed": {
+  "key": "606de2bc4d937fcf",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4422
+ },
+ "flower-t-kansas-indian-blanket": {
+  "key": "46e6033fa0389c89",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4156
+ },
+ "flower-t-kansas-sunflower": {
+  "key": "df8e61603bfcee1a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 2332
+ },
+ "fort-knock": {
+  "key": "1b2c2df46711dc01",
+  "falls": [],
+  "sags": 15,
+  "worstMm": 17,
+  "ms": 52382
+ },
+ "fortress-of-three-corners": {
+  "key": "631869dcd0dfa2e6",
+  "falls": [],
+  "sags": 17,
+  "worstMm": 9,
+  "ms": 46413
+ },
+ "frog-opera": {
+  "key": "81e28534285753fa",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 3,
+  "ms": 57048
+ },
+ "garage": {
+  "key": "55d33bdbdf250675",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1329
+ },
+ "giant-tomato-greenhouse": {
+  "key": "797b668aa661fad1",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 7,
+  "ms": 12787
+ },
+ "giants-doll-house": {
+  "key": "85eceb3e7fd3885b",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 3,
+  "ms": 13799
+ },
+ "giraffe-elevator": {
+  "key": "871441bc5b2deef9",
+  "falls": [
+   {
+    "step": 16,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after left"
+   },
+   {
+    "step": 33,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after away"
+   },
+   {
+    "step": 34,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 10,
+  "worstMm": 20,
+  "ms": 185586
+ },
+ "gnome-parliament": {
+  "key": "df526bb59dc32207",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 3,
+  "ms": 139504
+ },
+ "goat-gym": {
+  "key": "e0e4f5d5a36bd78b",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 13255
+ },
+ "gossiping-grannies-gazebo": {
+  "key": "95a7842614fe0ed3",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 6,
+  "ms": 9782
+ },
+ "grumpy-cabbages": {
+  "key": "446d3aeeda6e2b30",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 36984
+ },
+ "grumpy-gnome-garden": {
+  "key": "fa45cc20788fb4b8",
+  "falls": [
+   {
+    "step": 9,
+    "tile": 20,
+    "mm": 21,
+    "deg": 6,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 10,
+    "tile": 22,
+    "mm": 22,
+    "deg": 6,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 22,
+  "ms": 3966
+ },
+ "grumpy-robot": {
+  "key": "27fb23b3a142e5fb",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 305
+ },
+ "grumpy-summer": {
+  "key": "d626cfe269921218",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 8,
+  "ms": 35105
+ },
+ "hamster-house": {
+  "key": "37964ce0f7e43171",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 2773
+ },
+ "hamster-rope-bridge": {
+  "key": "fdcf8d1e4ee7d4cd",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 9,
+  "ms": 56921
+ },
+ "hamster-stadium": {
+  "key": "6be8d98c5b215c33",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 6,
+  "ms": 6796
+ },
+ "haunted-factory": {
+  "key": "9e3284bb46722390",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 5,
+  "ms": 28033
+ },
+ "hedge-topiary-zoo": {
+  "key": "982dfda966963092",
+  "falls": [
+   {
+    "step": 7,
+    "tile": 21,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 8,
+    "tile": 21,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 9,
+    "tile": 16,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 10,
+    "tile": 21,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 11,
+    "tile": 13,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 12,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 13,
+    "tile": 13,
+    "mm": 19,
+    "deg": 15,
+    "phase": "upright after left"
+   },
+   {
+    "step": 14,
+    "tile": 13,
+    "mm": 19,
+    "deg": 15,
+    "phase": "upright after left"
+   },
+   {
+    "step": 15,
+    "tile": 23,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 16,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 17,
+    "tile": 13,
+    "mm": 19,
+    "deg": 15,
+    "phase": "upright after left"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 21,
+  "ms": 13365
+ },
+ "hedgehog-hotel": {
+  "key": "d2bbe7ba9318dcf3",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 10,
+  "ms": 22112
+ },
+ "hexagon-snack-maze": {
+  "key": "6e06ba100a8c7d2d",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 17,
+  "ms": 13610
+ },
+ "hexagon-street": {
+  "key": "bbdea73cdd4a1e11",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 19,
+  "ms": 47542
+ },
+ "hexagon-tower-up-for-ages": {
+  "key": "cb21c712c6622de5",
+  "falls": [
+   {
+    "step": 5,
+    "tile": 7,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   }
+  ],
+  "sags": 13,
+  "worstMm": 20,
+  "ms": 38585
+ },
+ "hexagonal-hamster-flats": {
+  "key": "efccf9dcdbfc7ed5",
+  "falls": [
+   {
+    "step": 12,
+    "tile": 26,
+    "mm": 19,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 13,
+    "tile": 26,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 15,
+    "tile": 26,
+    "mm": 17,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 16,
+    "tile": 26,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 18,
+    "tile": 26,
+    "mm": 17,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 19,
+    "tile": 26,
+    "mm": 16,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 20,
+    "tile": 26,
+    "mm": 17,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 21,
+    "tile": 26,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 23,
+    "tile": 26,
+    "mm": 21,
+    "deg": 15,
+    "phase": "upright after left"
+   },
+   {
+    "step": 24,
+    "tile": 26,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 8,
+  "worstMm": 21,
+  "ms": 48386
+ },
+ "hiccup-hall": {
+  "key": "fab6e736e7bc7663",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 3,
+  "ms": 78225
+ },
+ "hippo-hotel": {
+  "key": "1629118806fc59e3",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 9,
+  "ms": 86678
+ },
+ "homework-pyramid": {
+  "key": "54fc3478ee987b4f",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 47871
+ },
+ "honeycomb-hotel": {
+  "key": "0bf1b7247df1eaf9",
+  "falls": [
+   {
+    "step": 15,
+    "tile": 24,
+    "mm": 21,
+    "deg": 10,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 17,
+    "tile": 24,
+    "mm": 15,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 19,
+    "tile": 25,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 20,
+    "tile": 27,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 8,
+  "worstMm": 21,
+  "ms": 28941
+ },
+ "house": {
+  "key": "91453f88a73a8dfd",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 278
+ },
+ "ice-cream-truck": {
+  "key": "0d6c1bbcd6573b8b",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 2,
+  "ms": 1004
+ },
+ "joke-tower": {
+  "key": "7b6e7c75560b531c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 60183
+ },
+ "kaleidoscope-carpet": {
+  "key": "425b07a52a565ae7",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4400
+ },
+ "kaleidoscope-tower": {
+  "key": "6a91d98f0a0073fb",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 58074
+ },
+ "keep": {
+  "key": "760d4abfd7840c92",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1774
+ },
+ "kennel": {
+  "key": "8d027433e8c56cc4",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 463
+ },
+ "king-kevin-octagon-keep": {
+  "key": "a7a821faee95a93f",
+  "falls": [],
+  "sags": 10,
+  "worstMm": 6,
+  "ms": 35875
+ },
+ "knight-school": {
+  "key": "d49299c01c683cfe",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 8,
+  "ms": 25003
+ },
+ "lander-landed-on-its-head": {
+  "key": "d94c2daf2881d07e",
+  "falls": [
+   {
+    "step": 10,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 11,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 12,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after away"
+   },
+   {
+    "step": 13,
+    "tile": 21,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 3,
+  "worstMm": 20,
+  "ms": 20236
+ },
+ "late-train-station": {
+  "key": "c570bf68c21b2b69",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 10,
+  "ms": 23758
+ },
+ "laundry-wall": {
+  "key": "ee0e1f05c0128378",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 7,
+  "ms": 13722
+ },
+ "lemonade-lake-zigzag-bridge": {
+  "key": "5d9ead09c1373485",
+  "falls": [],
+  "sags": 10,
+  "worstMm": 4,
+  "ms": 22984
+ },
+ "lighthouse": {
+  "key": "52b7217a541f72cc",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 4347
+ },
+ "lighthouse-hotel": {
+  "key": "b674590fa66fd05e",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 9,
+  "ms": 85537
+ },
+ "llama-airport": {
+  "key": "42f86807981c3ff1",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 4,
+  "ms": 24193
+ },
+ "llama-theatre": {
+  "key": "df4bf0a9c3d59b20",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 20953
+ },
+ "long-bridge": {
+  "key": "904e7340fcb9e227",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 4735
+ },
+ "long-way-bridge": {
+  "key": "7ffcb05939cb7d70",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 40654
+ },
+ "loo-roll-tower": {
+  "key": "43be37f65941ae4b",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 2268
+ },
+ "loo-towers": {
+  "key": "31ba0d1e18878603",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 3,
+  "ms": 37636
+ },
+ "lost-sandwich-lighthouse": {
+  "key": "b7af11630a56a200",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 3,
+  "ms": 3173
+ },
+ "loud-duck-bandstand": {
+  "key": "e7a9840486b3a689",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 2591
+ },
+ "lunar-laundromat": {
+  "key": "8ac140270ad02d8f",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 79477
+ },
+ "mansion-seven-pointy-hats": {
+  "key": "f11baa543a521e90",
+  "falls": [
+   {
+    "step": 10,
+    "tile": 21,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 11,
+    "tile": 24,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 12,
+    "tile": 22,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 14,
+    "tile": 21,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 15,
+    "tile": 21,
+    "mm": 21,
+    "deg": 16,
+    "phase": "upright after left"
+   },
+   {
+    "step": 17,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after away"
+   },
+   {
+    "step": 19,
+    "tile": 21,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after left"
+   }
+  ],
+  "sags": 7,
+  "worstMm": 21,
+  "ms": 72075
+ },
+ "marathon-snail": {
+  "key": "17e1dcbb61989984",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 9,
+  "ms": 13482
+ },
+ "mars-mayhem": {
+  "key": "1db2a026f5fd9e48",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 53828
+ },
+ "messy-house": {
+  "key": "45df75f1ca55e56a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 38338
+ },
+ "mild-confusion-maze": {
+  "key": "fa3c867bdc0ab21f",
+  "falls": [
+   {
+    "step": 3,
+    "tile": 0,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 4,
+    "tile": 0,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 5,
+    "tile": 0,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 6,
+    "tile": 0,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 7,
+    "tile": 0,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 21,
+    "tile": 52,
+    "mm": 20,
+    "deg": 6,
+    "phase": "upright after right"
+   }
+  ],
+  "sags": 3,
+  "worstMm": 29,
+  "ms": 11419
+ },
+ "mirror-palace": {
+  "key": "177ba9917cb0d8a5",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 3,
+  "ms": 69554
+ },
+ "moat-and-cheese": {
+  "key": "89ae7e1f8df24615",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 9,
+  "ms": 35868
+ },
+ "monster-truck-arena": {
+  "key": "04a418571fd2913c",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 7,
+  "ms": 7693
+ },
+ "monster-truck-many-wheels": {
+  "key": "207e24a5d864f597",
+  "falls": [],
+  "sags": 16,
+  "worstMm": 16,
+  "ms": 16329
+ },
+ "moon-base": {
+  "key": "75731039ab7b8d91",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 16360
+ },
+ "moon-hot-dog-stand": {
+  "key": "70157fde3d8fa3fa",
+  "falls": [
+   {
+    "step": 13,
+    "tile": 11,
+    "mm": 20,
+    "deg": 16,
+    "phase": "upright after away"
+   },
+   {
+    "step": 14,
+    "tile": 11,
+    "mm": 20,
+    "deg": 16,
+    "phase": "upright after away"
+   },
+   {
+    "step": 15,
+    "tile": 11,
+    "mm": 20,
+    "deg": 16,
+    "phase": "upright after away"
+   },
+   {
+    "step": 16,
+    "tile": 11,
+    "mm": 20,
+    "deg": 16,
+    "phase": "upright after away"
+   }
+  ],
+  "sags": 3,
+  "worstMm": 20,
+  "ms": 31096
+ },
+ "mostly-lid-chest": {
+  "key": "af790032dd31c524",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 10,
+  "ms": 4851
+ },
+ "mostly-neck-giraffe": {
+  "key": "58f8497dbad9ed7a",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 16,
+  "ms": 5278
+ },
+ "mostly-sail-boat": {
+  "key": "062c1f7bb206775e",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 19,
+  "ms": 3446
+ },
+ "mouse-mall": {
+  "key": "1e34c6811c147a21",
+  "falls": [
+   {
+    "step": 2,
+    "tile": 1,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 0,
+  "worstMm": 29,
+  "ms": 44809
+ },
+ "mushroom-village": {
+  "key": "75e18c9c8d960540",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 34382
+ },
+ "nap-temple": {
+  "key": "669b1a7179c466a0",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 55839
+ },
+ "nearly-there-snail": {
+  "key": "c4a0a0b117776e43",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 2,
+  "ms": 1919
+ },
+ "nervous-flamingo-stilt-house": {
+  "key": "0e98565a983f0b9b",
+  "falls": [
+   {
+    "step": 8,
+    "tile": 23,
+    "mm": 21,
+    "deg": 8,
+    "phase": "leaning right"
+   }
+  ],
+  "sags": 16,
+  "worstMm": 21,
+  "ms": 98882
+ },
+ "no-homework-school": {
+  "key": "e6595b4198f8d28f",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 7,
+  "ms": 84319
+ },
+ "noisy-flats": {
+  "key": "efbe399f66677670",
+  "falls": [
+   {
+    "step": 15,
+    "tile": 11,
+    "mm": 21,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 11,
+  "worstMm": 21,
+  "ms": 43802
+ },
+ "nosy-street": {
+  "key": "73862eeb8e1d9250",
+  "falls": [
+   {
+    "step": 13,
+    "tile": 15,
+    "mm": 20,
+    "deg": 16,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 8,
+  "worstMm": 20,
+  "ms": 29302
+ },
+ "not-bouncy-castle": {
+  "key": "18273643078658cd",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 4,
+  "ms": 6041
+ },
+ "octopus-lost-count": {
+  "key": "a6611419dd0145a3",
+  "falls": [
+   {
+    "step": 22,
+    "tile": 30,
+    "mm": 23,
+    "deg": 9,
+    "phase": "leaning right"
+   },
+   {
+    "step": 23,
+    "tile": 15,
+    "mm": 21,
+    "deg": 7,
+    "phase": "leaning left"
+   },
+   {
+    "step": 24,
+    "tile": 31,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 25,
+    "tile": 21,
+    "mm": 22,
+    "deg": 6,
+    "phase": "leaning left"
+   },
+   {
+    "step": 26,
+    "tile": 21,
+    "mm": 21,
+    "deg": 7,
+    "phase": "leaning away"
+   },
+   {
+    "step": 27,
+    "tile": 21,
+    "mm": 20,
+    "deg": 11,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 11,
+  "worstMm": 23,
+  "ms": 10355
+ },
+ "overdue-library": {
+  "key": "e9426b3925d3ebfc",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 47574
+ },
+ "owl-night-school": {
+  "key": "aa655e0140c6cf26",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 9,
+  "ms": 37542
+ },
+ "own-wind-windmill": {
+  "key": "f0dd2d6221b8fc13",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 5,
+  "ms": 9547
+ },
+ "pajama-palace": {
+  "key": "1af8dceed512349e",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 9,
+  "ms": 48640
+ },
+ "paper-plane-airport": {
+  "key": "598517ff47110963",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 7,
+  "ms": 37239
+ },
+ "pawns-won-chess-set": {
+  "key": "5528c884932dc3ad",
+  "falls": [
+   {
+    "step": 10,
+    "tile": 36,
+    "mm": 35,
+    "deg": 19,
+    "phase": "settling"
+   },
+   {
+    "step": 11,
+    "tile": 39,
+    "mm": 31,
+    "deg": 9,
+    "phase": "settling"
+   },
+   {
+    "step": 12,
+    "tile": 39,
+    "mm": 21,
+    "deg": 6,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 8,
+  "worstMm": 35,
+  "ms": 27142
+ },
+ "penguin-parlour": {
+  "key": "b51304e95b143a71",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 9,
+  "ms": 28771
+ },
+ "penguin-party": {
+  "key": "714d9d1dd4d5a493",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 4041
+ },
+ "pickle-ship": {
+  "key": "816f95ee5f8fc06a",
+  "falls": [
+   {
+    "step": 3,
+    "tile": 3,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 29,
+  "ms": 3335
+ },
+ "pig-palace": {
+  "key": "c226aa9bb88da0e2",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 7,
+  "ms": 87187
+ },
+ "pirate-hotel": {
+  "key": "dd730f8b97e6462a",
+  "falls": [
+   {
+    "step": 2,
+    "tile": 1,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 8,
+  "worstMm": 29,
+  "ms": 152567
+ },
+ "pitched-house": {
+  "key": "aa5947878805152f",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 5,
+  "ms": 895
+ },
+ "pizza-princess": {
+  "key": "9a4706fcd7f02be6",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 4,
+  "ms": 44543
+ },
+ "pizza-tower": {
+  "key": "e214450e90001e29",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 17136
+ },
+ "planet-pickle": {
+  "key": "f52ff6e95d86636e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 47758
+ },
+ "planet-sparkle-crystal-cave": {
+  "key": "d71778c63becfdbb",
+  "falls": [
+   {
+    "step": 7,
+    "tile": 15,
+    "mm": 20,
+    "deg": 7,
+    "phase": "settling"
+   },
+   {
+    "step": 8,
+    "tile": 15,
+    "mm": 20,
+    "deg": 7,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 9,
+    "tile": 16,
+    "mm": 136,
+    "deg": 119,
+    "phase": "settling"
+   }
+  ],
+  "sags": 11,
+  "worstMm": 136,
+  "ms": 10606
+ },
+ "planet-wobble-tent": {
+  "key": "502439f2e5f05b9c",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 4,
+  "ms": 1268
+ },
+ "polite-alien-embassy": {
+  "key": "c129da6a742f3e1d",
+  "falls": [
+   {
+    "step": 11,
+    "tile": 30,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after left"
+   },
+   {
+    "step": 15,
+    "tile": 33,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 16,
+    "tile": 34,
+    "mm": 18,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 18,
+    "tile": 30,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 21,
+    "tile": 30,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after away"
+   }
+  ],
+  "sags": 10,
+  "worstMm": 20,
+  "ms": 50188
+ },
+ "polite-mummy-tomb": {
+  "key": "de8b0313a50bcdb6",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 18,
+  "ms": 32751
+ },
+ "polite-pirate-paddle-steamer": {
+  "key": "daba5b9183fd07eb",
+  "falls": [
+   {
+    "step": 9,
+    "tile": 22,
+    "mm": 12,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   }
+  ],
+  "sags": 7,
+  "worstMm": 19,
+  "ms": 55410
+ },
+ "porcupine-pin-cushion": {
+  "key": "8309e29f495256bb",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 12,
+  "ms": 3708
+ },
+ "puddle-hovercraft": {
+  "key": "3bb2e81fad036a72",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 17,
+  "ms": 10151
+ },
+ "pumpkin-palace": {
+  "key": "44acf8b35fc25e77",
+  "falls": [
+   {
+    "step": 16,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after left"
+   }
+  ],
+  "sags": 9,
+  "worstMm": 20,
+  "ms": 125654
+ },
+ "pyramid-garden": {
+  "key": "dcab542684cdc4ba",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1398
+ },
+ "pyramid-party": {
+  "key": "cbb9091b169a8cee",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 22966
+ },
+ "queen-hexabella-palace": {
+  "key": "15f953cb95f76196",
+  "falls": [
+   {
+    "step": 16,
+    "tile": 35,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after left"
+   },
+   {
+    "step": 20,
+    "tile": 38,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 21,
+    "tile": 39,
+    "mm": 18,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 23,
+    "tile": 35,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 26,
+    "tile": 35,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after away"
+   },
+   {
+    "step": 29,
+    "tile": 39,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 11,
+  "worstMm": 20,
+  "ms": 62690
+ },
+ "queen-of-crumbs-crown": {
+  "key": "33555d68375c89bf",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 3,
+  "ms": 1455
+ },
+ "rabbit-hole-hotel": {
+  "key": "f4cb405b914e17a1",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 9,
+  "ms": 54832
+ },
+ "racing-bed": {
+  "key": "cde6b9fee4c1ad25",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 812
+ },
+ "rained-indoors-camp": {
+  "key": "e117f4e9eaa692b9",
+  "falls": [
+   {
+    "step": 5,
+    "tile": 9,
+    "mm": 21,
+    "deg": 12,
+    "phase": "leaning right"
+   },
+   {
+    "step": 7,
+    "tile": 10,
+    "mm": 21,
+    "deg": 6,
+    "phase": "settling"
+   }
+  ],
+  "sags": 6,
+  "worstMm": 21,
+  "ms": 3567
+ },
+ "remote-museum": {
+  "key": "195fc7f2024172a0",
+  "falls": [
+   {
+    "step": 15,
+    "tile": 19,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 4,
+  "worstMm": 21,
+  "ms": 27295
+ },
+ "robot": {
+  "key": "b13c5ce70847a64e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1957
+ },
+ "robot-butler": {
+  "key": "08c0963a52aa3bb5",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 18027
+ },
+ "rocket": {
+  "key": "6df01192505537bb",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 258
+ },
+ "rocket-garage": {
+  "key": "9bbf59afd909d76a",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 12,
+  "ms": 39164
+ },
+ "rocket-tower": {
+  "key": "24ed8c329dde7585",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 1724
+ },
+ "round-in-circles-train": {
+  "key": "73a6cfc3831a0db3",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 9048
+ },
+ "sandwich-tower": {
+  "key": "d88b22257f240ec6",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 58575
+ },
+ "saturns-spare-ring": {
+  "key": "5958b287c0c41504",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 2,
+  "ms": 5918
+ },
+ "screen-door-submarine": {
+  "key": "07c0b05613eab39f",
+  "falls": [
+   {
+    "step": 8,
+    "tile": 12,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 20,
+  "ms": 3862
+ },
+ "sculpture": {
+  "key": "aa809c49f60d1b18",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 5126
+ },
+ "seasick-ferry": {
+  "key": "dcdd4a47a2ec335f",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 7,
+  "ms": 36555
+ },
+ "secret-shed": {
+  "key": "7a3110df0cc4e551",
+  "falls": [
+   {
+    "step": 12,
+    "tile": 17,
+    "mm": 21,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 5,
+  "worstMm": 21,
+  "ms": 30265
+ },
+ "seven-stage-rocket": {
+  "key": "203a870482488eb4",
+  "falls": [
+   {
+    "step": 7,
+    "tile": 11,
+    "mm": 20,
+    "deg": 14,
+    "phase": "leaning away"
+   },
+   {
+    "step": 8,
+    "tile": 10,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 9,
+    "tile": 10,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 10,
+    "tile": 10,
+    "mm": 22,
+    "deg": 16,
+    "phase": "settling"
+   },
+   {
+    "step": 11,
+    "tile": 10,
+    "mm": 21,
+    "deg": 16,
+    "phase": "upright after right"
+   },
+   {
+    "step": 12,
+    "tile": 11,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 13,
+    "tile": 11,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 9,
+  "worstMm": 22,
+  "ms": 48026
+ },
+ "show-off-peacock": {
+  "key": "db34dd2b4536d564",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 11,
+  "ms": 9132
+ },
+ "sierpinski-say-it-five-times": {
+  "key": "d92c58b7529eff46",
+  "falls": [
+   {
+    "step": 11,
+    "tile": 15,
+    "mm": 20,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 12,
+    "tile": 24,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 13,
+    "tile": 23,
+    "mm": 17,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 14,
+    "tile": 11,
+    "mm": 17,
+    "deg": 15,
+    "phase": "upright after away"
+   }
+  ],
+  "sags": 3,
+  "worstMm": 20,
+  "ms": 19151
+ },
+ "silly-snail": {
+  "key": "3e7c3cae99a407a6",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 236
+ },
+ "silly-spiral": {
+  "key": "12cb85117eece6fb",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 40519
+ },
+ "sir-wobbles-star-fort": {
+  "key": "252a9857cffd2353",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 10,
+  "ms": 5594
+ },
+ "six-grumpy-knights-citadel": {
+  "key": "fb3848c3af720e0e",
+  "falls": [],
+  "sags": 10,
+  "worstMm": 8,
+  "ms": 27324
+ },
+ "sleepy-shark": {
+  "key": "0c1ebc57a9097fbf",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 306
+ },
+ "slightly-worried-smiley": {
+  "key": "610a545c2a67b325",
+  "falls": [
+   {
+    "step": 17,
+    "tile": 65,
+    "mm": 29,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 6,
+  "worstMm": 29,
+  "ms": 19248
+ },
+ "sloth-racing": {
+  "key": "21315e2d98c4972e",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 7,
+  "ms": 13436
+ },
+ "slow-spin-station": {
+  "key": "e074fd87729a4545",
+  "falls": [
+   {
+    "step": 9,
+    "tile": 11,
+    "mm": 14,
+    "deg": 15,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 7,
+  "worstMm": 18,
+  "ms": 5164
+ },
+ "snack-castle": {
+  "key": "453b110c9e102a00",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 3,
+  "ms": 30807
+ },
+ "snack-fort": {
+  "key": "c8c79fb7b3403a84",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 10,
+  "ms": 3312
+ },
+ "snack-mission-control": {
+  "key": "5270400a476fc041",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 3,
+  "ms": 102425
+ },
+ "snail-stadium": {
+  "key": "0d40894759712493",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 4,
+  "ms": 8074
+ },
+ "sneezealot-castle": {
+  "key": "6322666ea32fd948",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 11025
+ },
+ "sneezing-dragon": {
+  "key": "ed6df75d1792af47",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 721
+ },
+ "snore-keep": {
+  "key": "a4ce83590078e443",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 7,
+  "ms": 47915
+ },
+ "snorkel-shack": {
+  "key": "b6efe5eddfb29cd7",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 12,
+  "ms": 23441
+ },
+ "snowflake-space-station": {
+  "key": "cb44907f4062824f",
+  "falls": [],
+  "sags": 7,
+  "worstMm": 16,
+  "ms": 18876
+ },
+ "sock-drawer-scraper": {
+  "key": "1454f7478f2db593",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 4,
+  "ms": 95070
+ },
+ "sock-palace": {
+  "key": "cc1517046e450a7c",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 9,
+  "ms": 46176
+ },
+ "sock-rocket": {
+  "key": "a91bd46a1345f268",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 7,
+  "ms": 3133
+ },
+ "sock-skyscraper": {
+  "key": "e3dc080c5fafd575",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 11,
+  "ms": 148026
+ },
+ "sore-stegosaurus": {
+  "key": "ea4867e5c2cd7aeb",
+  "falls": [
+   {
+    "step": 4,
+    "tile": 5,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 5,
+    "tile": 1,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 20,
+  "ms": 1038
+ },
+ "space-burger-station": {
+  "key": "f9b5e356605db311",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 119242
+ },
+ "space-elevator": {
+  "key": "0af52c5dcea9e67e",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 58832
+ },
+ "space-hamster-habitat": {
+  "key": "3ed664350eb97d1c",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 19101
+ },
+ "space-station": {
+  "key": "739f8a59a039801f",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 7672
+ },
+ "space-station-of-everything": {
+  "key": "fe8853e94508db8f",
+  "falls": [
+   {
+    "step": 20,
+    "tile": 30,
+    "mm": 20,
+    "deg": 13,
+    "phase": "upright after right"
+   },
+   {
+    "step": 21,
+    "tile": 39,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 22,
+    "tile": 34,
+    "mm": 38,
+    "deg": 29,
+    "phase": "settling"
+   },
+   {
+    "step": 23,
+    "tile": 35,
+    "mm": 43,
+    "deg": 33,
+    "phase": "settling"
+   },
+   {
+    "step": 24,
+    "tile": 39,
+    "mm": 36,
+    "deg": 27,
+    "phase": "settling"
+   },
+   {
+    "step": 25,
+    "tile": 39,
+    "mm": 40,
+    "deg": 30,
+    "phase": "settling"
+   },
+   {
+    "step": 26,
+    "tile": 39,
+    "mm": 41,
+    "deg": 32,
+    "phase": "settling"
+   },
+   {
+    "step": 27,
+    "tile": 34,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 28,
+    "tile": 39,
+    "mm": 30,
+    "deg": 23,
+    "phase": "settling"
+   },
+   {
+    "step": 29,
+    "tile": 39,
+    "mm": 39,
+    "deg": 30,
+    "phase": "settling"
+   },
+   {
+    "step": 30,
+    "tile": 39,
+    "mm": 37,
+    "deg": 28,
+    "phase": "settling"
+   },
+   {
+    "step": 31,
+    "tile": 34,
+    "mm": 41,
+    "deg": 31,
+    "phase": "settling"
+   },
+   {
+    "step": 32,
+    "tile": 39,
+    "mm": 40,
+    "deg": 31,
+    "phase": "settling"
+   },
+   {
+    "step": 33,
+    "tile": 39,
+    "mm": 41,
+    "deg": 31,
+    "phase": "settling"
+   },
+   {
+    "step": 34,
+    "tile": 39,
+    "mm": 39,
+    "deg": 30,
+    "phase": "settling"
+   },
+   {
+    "step": 35,
+    "tile": 39,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 36,
+    "tile": 57,
+    "mm": 33,
+    "deg": 18,
+    "phase": "settling"
+   },
+   {
+    "step": 37,
+    "tile": 39,
+    "mm": 27,
+    "deg": 21,
+    "phase": "settling"
+   },
+   {
+    "step": 38,
+    "tile": 39,
+    "mm": 27,
+    "deg": 21,
+    "phase": "settling"
+   },
+   {
+    "step": 39,
+    "tile": 39,
+    "mm": 32,
+    "deg": 24,
+    "phase": "settling"
+   }
+  ],
+  "sags": 3,
+  "worstMm": 43,
+  "ms": 18113
+ },
+ "space-toilet": {
+  "key": "dcd03c08b773162a",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 4348
+ },
+ "spaghetti-tower": {
+  "key": "96dfff5bc0954c22",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 6502
+ },
+ "squeaky-garage": {
+  "key": "7e4fa362a3775499",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 9,
+  "ms": 47990
+ },
+ "squirrel-nut-bank": {
+  "key": "34455b3d2e5e20f0",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 9,
+  "ms": 37923
+ },
+ "squished-house": {
+  "key": "e393244a30638f8d",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 6,
+  "ms": 65338
+ },
+ "stadium": {
+  "key": "b1f1d94f57253f4e",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 6,
+  "ms": 7216
+ },
+ "staircase-to-nowhere": {
+  "key": "5eede497158a519f",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 3,
+  "ms": 12992
+ },
+ "star": {
+  "key": "257823583248261e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 836
+ },
+ "star-that-was-too-tall": {
+  "key": "b82ea32d877ce8ca",
+  "falls": [],
+  "sags": 7,
+  "worstMm": 12,
+  "ms": 11498
+ },
+ "stubborn-snowflake": {
+  "key": "a58e6b25899ddd45",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 5,
+  "ms": 8454
+ },
+ "sunflower-watch-tower": {
+  "key": "e760180cef8cc6da",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 41254
+ },
+ "tallest-tower": {
+  "key": "c03161b3a1e7fc8c",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 5,
+  "ms": 23045
+ },
+ "technically-illegal-rocket-car": {
+  "key": "519e374c2984f9d5",
+  "falls": [
+   {
+    "step": 18,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 19,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 20,
+    "tile": 23,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after left"
+   }
+  ],
+  "sags": 7,
+  "worstMm": 20,
+  "ms": 23799
+ },
+ "tidy-bee-hut": {
+  "key": "585c34f346a30059",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 2,
+  "ms": 2220
+ },
+ "tiny-duck-pond": {
+  "key": "3aab7d8638c50e3d",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 5220
+ },
+ "tiny-toenail-temple": {
+  "key": "e8181a983949f316",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 44473
+ },
+ "tiny-train-viaduct": {
+  "key": "da3daa825239c3e8",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 17352
+ },
+ "toast-towers": {
+  "key": "206bb5370e9bdcc9",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 4,
+  "ms": 46555
+ },
+ "tortoise-won-by-accident": {
+  "key": "44c7737ca989d786",
+  "falls": [
+   {
+    "step": 13,
+    "tile": 34,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 14,
+    "tile": 32,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 15,
+    "tile": 35,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after right"
+   },
+   {
+    "step": 16,
+    "tile": 32,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 5,
+  "worstMm": 20,
+  "ms": 32810
+ },
+ "tower": {
+  "key": "955a102a37922b21",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 1006
+ },
+ "tower-of-pointy-opinions": {
+  "key": "4e02547b8b9fa5ce",
+  "falls": [
+   {
+    "step": 5,
+    "tile": 5,
+    "mm": 32,
+    "deg": 24,
+    "phase": "settling"
+   },
+   {
+    "step": 6,
+    "tile": 7,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 7,
+    "tile": 6,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 9,
+    "tile": 5,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 2,
+  "worstMm": 32,
+  "ms": 7571
+ },
+ "town-hall": {
+  "key": "87bac290f42a982e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 7197
+ },
+ "traffic-cone-factory": {
+  "key": "a8528d374944772e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1380
+ },
+ "treeless-treehouse": {
+  "key": "3f04590ccad571a7",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 21197
+ },
+ "triangle-town": {
+  "key": "a9788079dedf285e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 51003
+ },
+ "triangle-truss-bridge": {
+  "key": "270181f5eb1d8d69",
+  "falls": [
+   {
+    "step": 5,
+    "tile": 13,
+    "mm": 23,
+    "deg": 20,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 6,
+    "tile": 12,
+    "mm": 14,
+    "deg": 16,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 9,
+    "tile": 12,
+    "mm": 15,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 11,
+    "tile": 12,
+    "mm": 15,
+    "deg": 15,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 4,
+  "worstMm": 23,
+  "ms": 6955
+ },
+ "triple-decker-bus": {
+  "key": "816ab3abe9e2e48b",
+  "falls": [
+   {
+    "step": 10,
+    "tile": 19,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 11,
+    "tile": 21,
+    "mm": 25,
+    "deg": 19,
+    "phase": "settling"
+   },
+   {
+    "step": 12,
+    "tile": 19,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after left"
+   },
+   {
+    "step": 15,
+    "tile": 21,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 17,
+    "tile": 21,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 9,
+  "worstMm": 25,
+  "ms": 56741
+ },
+ "triple-trouble-bridge": {
+  "key": "377136d73bb78b92",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 37494
+ },
+ "truck-backflip-ramp": {
+  "key": "8b806a0cc09337f5",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 68309
+ },
+ "truck-big-air-gap": {
+  "key": "7711148c7ded7661",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 19419
+ },
+ "truck-big-air-two-lanes": {
+  "key": "99e4c499d79519ed",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 15,
+  "ms": 3120
+ },
+ "truck-big-square-garage": {
+  "key": "025bccc1e4507a3f",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 409
+ },
+ "truck-big-tunnel": {
+  "key": "9700feac3afbf67c",
+  "falls": [],
+  "sags": 11,
+  "worstMm": 6,
+  "ms": 12479
+ },
+ "truck-bounce-bridge": {
+  "key": "bbdcbf387ece9b1d",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 19131
+ },
+ "truck-bridge-to-bridge": {
+  "key": "6fa69201aa5c3f3a",
+  "falls": [],
+  "sags": 32,
+  "worstMm": 6,
+  "ms": 186944
+ },
+ "truck-bumpy-road": {
+  "key": "aca5aa52b7422b69",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1853
+ },
+ "truck-bus-jump": {
+  "key": "d18b82718144c10b",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 20306
+ },
+ "truck-canyon-jump": {
+  "key": "ab4cd0d6c8c5c141",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 3,
+  "ms": 107189
+ },
+ "truck-cliff-jump": {
+  "key": "447568778306a5fc",
+  "falls": [
+   {
+    "step": 17,
+    "tile": 88,
+    "mm": 21,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 18,
+    "tile": 88,
+    "mm": 21,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 19,
+    "tile": 88,
+    "mm": 21,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 20,
+    "tile": 88,
+    "mm": 21,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 21,
+    "tile": 88,
+    "mm": 21,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 22,
+    "tile": 88,
+    "mm": 21,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 23,
+    "tile": 124,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 24,
+    "tile": 124,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 25,
+    "tile": 124,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 26,
+    "tile": 124,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 27,
+    "tile": 124,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 28,
+    "tile": 124,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 29,
+    "tile": 124,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 10,
+  "worstMm": 24,
+  "ms": 130515
+ },
+ "truck-crash-castle": {
+  "key": "0ac7fbf658d1cf2b",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 4580
+ },
+ "truck-crash-test-city": {
+  "key": "e0f7461c80495f8e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 20677
+ },
+ "truck-crash-zone-city": {
+  "key": "5fb97b72f4607e0d",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 7,
+  "ms": 33356
+ },
+ "truck-crush-car-jump": {
+  "key": "23c834cda41e02bc",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 4,
+  "ms": 1377
+ },
+ "truck-crush-car-row": {
+  "key": "f87fec601c6dfa6e",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 15,
+  "ms": 5330
+ },
+ "truck-crush-the-cubes": {
+  "key": "82b989707cbfd611",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1902
+ },
+ "truck-domino-run": {
+  "key": "e9eb651e21b98dfa",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 5296
+ },
+ "truck-donut-circle": {
+  "key": "1d119ac64129d8ae",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 9,
+  "ms": 34186
+ },
+ "truck-double-decker-race": {
+  "key": "d1e6a098ae184fb2",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 6,
+  "ms": 57261
+ },
+ "truck-drag-strip": {
+  "key": "d4ea78837e69314a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 26358
+ },
+ "truck-drop-tower-eight": {
+  "key": "732a9836a15d374a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 7,
+  "ms": 48024
+ },
+ "truck-figure-eight-bridge": {
+  "key": "8edbd5e33df8b22a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 39516
+ },
+ "truck-first-jump": {
+  "key": "1e7f5932320f63d6",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 4,
+  "ms": 1067
+ },
+ "truck-freestyle-bowl": {
+  "key": "cebf74aa24dfc83e",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 3,
+  "ms": 38100
+ },
+ "truck-knock-down-tower": {
+  "key": "5167f13db2d43073",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 915
+ },
+ "truck-knock-down-wall": {
+  "key": "b19a54a66f6c0ddc",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 380
+ },
+ "truck-little-arena": {
+  "key": "db87cc556fcff6cc",
+  "falls": [
+   {
+    "step": 2,
+    "tile": 2,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning right"
+   }
+  ],
+  "sags": 2,
+  "worstMm": 24,
+  "ms": 2407
+ },
+ "truck-little-ramp": {
+  "key": "f8adfefcd55b5454",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 827
+ },
+ "truck-mega-ramp-eight": {
+  "key": "8acbfd181a673dc1",
+  "falls": [
+   {
+    "step": 17,
+    "tile": 91,
+    "mm": 24,
+    "deg": 5,
+    "phase": "leaning away"
+   },
+   {
+    "step": 18,
+    "tile": 91,
+    "mm": 24,
+    "deg": 5,
+    "phase": "leaning away"
+   },
+   {
+    "step": 19,
+    "tile": 91,
+    "mm": 24,
+    "deg": 5,
+    "phase": "leaning away"
+   },
+   {
+    "step": 20,
+    "tile": 91,
+    "mm": 24,
+    "deg": 5,
+    "phase": "leaning away"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 24,
+  "ms": 113980
+ },
+ "truck-mega-ramp-four": {
+  "key": "053922a03584a803",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 6,
+  "ms": 18966
+ },
+ "truck-monster-garage": {
+  "key": "ca02818a63ba5a9b",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 5130
+ },
+ "truck-monster-stadium": {
+  "key": "03f834676f4e11e3",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 44676
+ },
+ "truck-ramp-and-drop": {
+  "key": "cb87da87fd9c361b",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1875
+ },
+ "truck-ramp-to-ramp": {
+  "key": "f3e3172548afe8ab",
+  "falls": [],
+  "sags": 16,
+  "worstMm": 6,
+  "ms": 34474
+ },
+ "truck-ramp-to-the-roof": {
+  "key": "fc5604e1f69170c8",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 15,
+  "ms": 4232
+ },
+ "truck-road-loop": {
+  "key": "6707f6e6dfb557e4",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 4539
+ },
+ "truck-rollover-pit": {
+  "key": "c472b19485ddd41e",
+  "falls": [
+   {
+    "step": 2,
+    "tile": 2,
+    "mm": 24,
+    "deg": 3,
+    "phase": "leaning right"
+   }
+  ],
+  "sags": 34,
+  "worstMm": 24,
+  "ms": 97311
+ },
+ "truck-skills-course": {
+  "key": "864bd3726ba5fea6",
+  "falls": [
+   {
+    "step": 13,
+    "tile": 39,
+    "mm": 21,
+    "deg": 8,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 14,
+    "tile": 39,
+    "mm": 21,
+    "deg": 8,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 15,
+    "tile": 39,
+    "mm": 21,
+    "deg": 8,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 16,
+    "tile": 39,
+    "mm": 21,
+    "deg": 8,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 17,
+    "tile": 39,
+    "mm": 21,
+    "deg": 8,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 18,
+    "tile": 39,
+    "mm": 21,
+    "deg": 8,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 19,
+    "tile": 39,
+    "mm": 21,
+    "deg": 8,
+    "phase": "upright after towards the child"
+   },
+   {
+    "step": 20,
+    "tile": 39,
+    "mm": 21,
+    "deg": 8,
+    "phase": "upright after towards the child"
+   }
+  ],
+  "sags": 0,
+  "worstMm": 21,
+  "ms": 9136
+ },
+ "truck-spiral-ramp": {
+  "key": "486c9d31ed1e9a34",
+  "falls": [
+   {
+    "step": 24,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 25,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 26,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 27,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 28,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 40,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 41,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 42,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 43,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 44,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 45,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 46,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   }
+  ],
+  "sags": 6,
+  "worstMm": 29,
+  "ms": 126332
+ },
+ "truck-stair-step-drops": {
+  "key": "1861adbacab6456c",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 15,
+  "ms": 24761
+ },
+ "truck-tower-drop-five": {
+  "key": "abdf75bae331b945",
+  "falls": [
+   {
+    "step": 7,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 8,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 9,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 10,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 11,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 12,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 13,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 14,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 15,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   },
+   {
+    "step": 16,
+    "tile": 27,
+    "mm": 25,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 25,
+  "ms": 34097
+ },
+ "truck-train-yard": {
+  "key": "fc7f1fda8468c9d6",
+  "falls": [],
+  "sags": 31,
+  "worstMm": 6,
+  "ms": 71139
+ },
+ "truck-triple-big-air": {
+  "key": "c886fc422891762a",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 4,
+  "ms": 123128
+ },
+ "truck-tunnel": {
+  "key": "e34a6bf919aa1ec4",
+  "falls": [],
+  "sags": 7,
+  "worstMm": 6,
+  "ms": 1746
+ },
+ "truck-two-lane-race-tunnel": {
+  "key": "b2b0c7631943daf9",
+  "falls": [],
+  "sags": 15,
+  "worstMm": 5,
+  "ms": 24089
+ },
+ "truck-two-lane-ramp": {
+  "key": "e0fc216bfcfa688a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1118
+ },
+ "truck-ultimate-arena": {
+  "key": "7421e7195ca26ffa",
+  "falls": [],
+  "sags": 23,
+  "worstMm": 7,
+  "ms": 180530
+ },
+ "truck-wall-of-doom": {
+  "key": "3d908974ee6bbb44",
+  "falls": [],
+  "sags": 13,
+  "worstMm": 4,
+  "ms": 47390
+ },
+ "truck-world-finals-freestyle": {
+  "key": "11d1a11ea4587e12",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 4,
+  "ms": 133160
+ },
+ "tuesday-flying-saucer": {
+  "key": "90f381d63bd026f0",
+  "falls": [
+   {
+    "step": 5,
+    "tile": 12,
+    "mm": 18,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 7,
+    "tile": 17,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 8,
+    "tile": 14,
+    "mm": 21,
+    "deg": 16,
+    "phase": "leaning left"
+   },
+   {
+    "step": 9,
+    "tile": 13,
+    "mm": 20,
+    "deg": 15,
+    "phase": "leaning left"
+   },
+   {
+    "step": 10,
+    "tile": 12,
+    "mm": 20,
+    "deg": 16,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 1,
+  "worstMm": 21,
+  "ms": 4491
+ },
+ "tunnel": {
+  "key": "1ed0dac483eabae3",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 4,
+  "ms": 151
+ },
+ "turbo-tractor-barn": {
+  "key": "018d9902eb82cfec",
+  "falls": [],
+  "sags": 10,
+  "worstMm": 9,
+  "ms": 72397
+ },
+ "twin-bridge": {
+  "key": "6c66b629a963d933",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 3236
+ },
+ "ufo-car-park": {
+  "key": "80655a73bde3fe93",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 76243
+ },
+ "undecided-butterfly": {
+  "key": "6e57fe1cef6abf74",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 6604
+ },
+ "underpants-factory": {
+  "key": "f7e3fe40c05a2ac2",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 7728
+ },
+ "unfinished-extension": {
+  "key": "69ebe3e0f2abde84",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 6,
+  "ms": 16426
+ },
+ "upside-down-bakery": {
+  "key": "f0c4293436d0e365",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 14,
+  "ms": 25190
+ },
+ "upside-down-bat-cave": {
+  "key": "341518eed1d4cd04",
+  "falls": [
+   {
+    "step": 2,
+    "tile": 5,
+    "mm": 29,
+    "deg": 22,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 2,
+  "worstMm": 29,
+  "ms": 16330
+ },
+ "upside-down-crown-castle": {
+  "key": "8afd0a96242d25e7",
+  "falls": [],
+  "sags": 10,
+  "worstMm": 10,
+  "ms": 41749
+ },
+ "very-small-plane-carrier": {
+  "key": "8ebd77c4860c6d2c",
+  "falls": [
+   {
+    "step": 12,
+    "tile": 27,
+    "mm": 15,
+    "deg": 15,
+    "phase": "leaning away"
+   },
+   {
+    "step": 15,
+    "tile": 28,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after away"
+   }
+  ],
+  "sags": 6,
+  "worstMm": 20,
+  "ms": 21803
+ },
+ "villain-shop": {
+  "key": "c1fe77fd549a8095",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 3,
+  "ms": 42323
+ },
+ "wall-that-says-hi": {
+  "key": "4271184d8dd7ae06",
+  "falls": [
+   {
+    "step": 18,
+    "tile": 81,
+    "mm": 33,
+    "deg": 4,
+    "phase": "leaning towards the child"
+   }
+  ],
+  "sags": 4,
+  "worstMm": 33,
+  "ms": 32242
+ },
+ "warm-lemonade-tower": {
+  "key": "029b37760b61b747",
+  "falls": [
+   {
+    "step": 7,
+    "tile": 13,
+    "mm": 21,
+    "deg": 12,
+    "phase": "upright after right"
+   }
+  ],
+  "sags": 2,
+  "worstMm": 21,
+  "ms": 71715
+ },
+ "wave-walls": {
+  "key": "5c34aa8b84301918",
+  "falls": [],
+  "sags": 11,
+  "worstMm": 7,
+  "ms": 53666
+ },
+ "whale-swallowed-lighthouse": {
+  "key": "534f1442ba252e78",
+  "falls": [],
+  "sags": 8,
+  "worstMm": 17,
+  "ms": 15638
+ },
+ "wifi-tower": {
+  "key": "0fa7bb998e952066",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 4,
+  "ms": 36436
+ },
+ "wiggly-fence": {
+  "key": "edefb9d1bc6b805b",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 12,
+  "ms": 1408
+ },
+ "wiggly-wall": {
+  "key": "95b66552e082fd5d",
+  "falls": [],
+  "sags": 7,
+  "worstMm": 5,
+  "ms": 12149
+ },
+ "wizard-academy": {
+  "key": "6fd0e77a218cec33",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 61096
+ },
+ "wizard-corkscrew-tower": {
+  "key": "0aa9d4069366cae1",
+  "falls": [],
+  "sags": 17,
+  "worstMm": 14,
+  "ms": 124350
+ },
+ "wobblebottom-fort": {
+  "key": "3fb2a51a21bb7a40",
+  "falls": [
+   {
+    "step": 11,
+    "tile": 34,
+    "mm": 20,
+    "deg": 15,
+    "phase": "upright after away"
+   }
+  ],
+  "sags": 7,
+  "worstMm": 20,
+  "ms": 47215
+ },
+ "wobbly-jelly": {
+  "key": "71c109b6a979432e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 0,
+  "ms": 467
+ },
+ "wobbly-pancake-tower": {
+  "key": "78e11f56aaabad5b",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 2,
+  "ms": 23494
+ },
+ "worm-farm-scraper": {
+  "key": "e4265ec39de068d7",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 115149
+ },
+ "worm-tunnel": {
+  "key": "0304431480a6bc96",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 3695
+ },
+ "worried-goblin-camp": {
+  "key": "3fa964149e7617b4",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 1095
+ },
+ "wrong-turn-mars-rover": {
+  "key": "f29ff9a46dc63216",
+  "falls": [
+   {
+    "step": 13,
+    "tile": 42,
+    "mm": 20,
+    "deg": 1,
+    "phase": "leaning left"
+   }
+  ],
+  "sags": 7,
+  "worstMm": 20,
+  "ms": 31741
+ },
+ "zebra-ziggurat": {
+  "key": "f8fc573175e6805a",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 206931
+ },
+ "zigzag-snake": {
+  "key": "b07d39fde274a5eb",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 16,
+  "ms": 1403
+ },
+ "zip-line-station": {
+  "key": "c14929731aa44412",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 23220
+ }
+}

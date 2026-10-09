@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-09
 
+- `2026-10-09-truck-runs-autobuild.md`: 4.0a merged; P1 built (68 builds fall, all allowed for now).
 - `2026-10-09-truck-runs-autobuild.md`: D11 (R14 blocks only real falls), D12 (auto-merge off); 4.1 merged; P0 spike results.
 - `2026-10-09-truck-runs-autobuild.md`: 4.2c build log (the finish's tiles fall for real, branch `falling-4-2c`).
 - `2026-10-09-truck-runs-autobuild.md`: 4.2d build log and the audit of every animation (branch `motion-4-2d`).
