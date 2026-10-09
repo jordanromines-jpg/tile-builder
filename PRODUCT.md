@@ -119,7 +119,8 @@ dogwood), the pollinators, the Venus flytrap growing wild only near Wilmington.
 1. **Library.** The age picker, the theme filter, shelves of project cards with their badges, the grown-ups door.
 2. **Build mode.** The 3D model, this step's tiles as pictures with counts, the spoken line, Next, Back, Hear again,
    the turn buttons, "It fell down". A fresh build opens on **Get your tiles** (3.7): every tile it takes, by shape and
-   colour, the total, and what's short; "Tiles you need" in the top bar opens it again.
+   colour, the total, and what's short; "Tiles you need" in the top bar opens it again. **All steps** (3.8) shows every step: a slider
+   that builds the model up and down in 3D, and a strip of pictures to tap; any child can also tap a step dot to jump.
 3. **Well done.** A short celebration, the build's own line ("You built the castle!"), then "Put the iPad down and
    play with what you made", and one button back to the shelf.
 4. **Grown-ups side**, behind the door: Tiles (start from a set, then − and +), Settings, Backup.

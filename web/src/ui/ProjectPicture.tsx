@@ -22,21 +22,23 @@ export interface Drawn {
   points: string;
   colour: string;
   depth: number;
+  /** the placed tile it draws */
+  index: number;
 }
 
 /** The tiles as flat polygons on the picture, farthest first, and the picture's box. */
 export function drawProject(project: Project, shown = project.placed.length, leg = DEFAULT_LEG, instead: Record<number, ShapeId> = {}) {
   const polys = project.placed.slice(0, shown).map((p, i) => ({ poly: worldPolygon(asBuilt(p, instead[i]), leg), colour: p.colour ?? "blue" }));
-  const flat = polys.map(({ poly, colour }) => {
+  const flat = polys.map(({ poly, colour }, index) => {
     const pts = poly.map((p) => [dot(p, right), -dot(p, up)] as [number, number]);
     const depth = poly.reduce((d, p) => d + dot(p, view), 0) / poly.length;
-    return { pts, colour, depth };
+    return { pts, colour, depth, index };
   });
   flat.sort((a, b) => a.depth - b.depth);
   const xs = flat.flatMap((f) => f.pts.map((p) => p[0]));
   const ys = flat.flatMap((f) => f.pts.map((p) => p[1]));
   const box = xs.length ? { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) } : { x: 0, y: 0, w: 1, h: 1 };
-  const drawn: Drawn[] = flat.map((f) => ({ points: f.pts.map((p) => `${p[0].toFixed(3)},${p[1].toFixed(3)}`).join(" "), colour: f.colour, depth: f.depth }));
+  const drawn: Drawn[] = flat.map((f) => ({ points: f.pts.map((p) => `${p[0].toFixed(3)},${p[1].toFixed(3)}`).join(" "), colour: f.colour, depth: f.depth, index: f.index }));
   return { drawn, box };
 }
 
@@ -65,17 +67,9 @@ export function ProjectPicture({ id, project, shown, label }: { id?: string; pro
 
 export function ProjectDrawing({ project, shown, label }: { project: Project; shown?: number; label?: string }) {
   const { drawn, box } = useMemo(() => drawProject(project, shown), [project, shown]);
-  // fit a 4:3 frame round the model with a margin
-  const pad = Math.max(box.w, box.h) * 0.12 + 0.3;
-  let w = box.w + 2 * pad;
-  let h = box.h + 2 * pad;
-  if (w / h < 4 / 3) w = (h * 4) / 3;
-  else h = (w * 3) / 4;
-  const x = box.x + box.w / 2 - w / 2;
-  const y = box.y + box.h / 2 - h / 2;
   return (
     <svg
-      viewBox={`${x} ${y} ${w} ${h}`}
+      viewBox={frame4x3(box)}
       className="block h-full w-full"
       style={{ background: "var(--stage)" }}
       role={label ? "img" : undefined}
@@ -95,6 +89,41 @@ export function ProjectDrawing({ project, shown, label }: { project: Project; sh
           strokeLinejoin="round"
         />
       ))}
+    </svg>
+  );
+}
+
+type Box = ReturnType<typeof drawProject>["box"];
+
+/** A 4:3 view box round the model, with a margin. */
+function frame4x3(box: Box): string {
+  const pad = Math.max(box.w, box.h) * 0.12 + 0.3;
+  let w = box.w + 2 * pad;
+  let h = box.h + 2 * pad;
+  if (w / h < 4 / 3) w = (h * 4) / 3;
+  else h = (w * 3) / 4;
+  return `${box.x + box.w / 2 - w / 2} ${box.y + box.h / 2 - h / 2} ${w} ${h}`;
+}
+
+/** One step of a build, for All steps (3.8): the tiles placed by then, this step's strong and the rest faint, framed
+    round the finished build (`box`, from drawing it whole) so the pictures don't jump from step to step. */
+export function StepDrawing({ drawn, box, upto, strong }: { drawn: Drawn[]; box: Box; upto: number; strong: Set<number> }) {
+  return (
+    <svg viewBox={frame4x3(box)} className="block h-full w-full" style={{ background: "var(--stage)" }} aria-hidden="true">
+      {drawn.map((d) =>
+        d.index < upto ? (
+          <polygon
+            key={d.index}
+            points={d.points}
+            fill={`var(--tile-${d.colour})`}
+            fillOpacity={strong.has(d.index) ? 0.85 : 0.3}
+            stroke={`var(--tile-${d.colour}-rim)`}
+            strokeWidth={strong.has(d.index) ? 3 : 1.5}
+            vectorEffect="non-scaling-stroke"
+            strokeLinejoin="round"
+          />
+        ) : null,
+      )}
     </svg>
   );
 }

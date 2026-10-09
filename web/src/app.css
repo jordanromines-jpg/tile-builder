@@ -77,3 +77,40 @@ button { font: inherit; color: inherit; }
 @media (max-width: 760px) {
   html[data-look] { --fs-kid-display-a: 40px; --fs-kid-display-b: 34px; --fs-kid-display-c: 30px; --fs-kid-label-a: 30px; --fs-kid-label-b: 26px; --fs-kid-label-c: 21px; }
 }
+
+/* All steps' slider (3.8): a thick track, the done part in the accent, and a thumb a small finger can't miss. */
+.ts-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 56px;
+  background: transparent;
+  touch-action: none;
+  cursor: pointer;
+}
+.ts-slider::-webkit-slider-runnable-track {
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent) var(--fill, 0%), var(--line) var(--fill, 0%));
+}
+.ts-slider::-moz-range-track { height: 14px; border-radius: 999px; background: var(--line); }
+.ts-slider::-moz-range-progress { height: 14px; border-radius: 999px; background: var(--accent); }
+.ts-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 56px;
+  height: 56px;
+  margin-top: -21px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 5px solid var(--surface-2);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ink-1) 30%, transparent);
+}
+.ts-slider::-moz-range-thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 5px solid var(--surface-2);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ink-1) 30%, transparent);
+}
+.ts-slider:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; border-radius: 999px; }
+.ts-filmstrip { scrollbar-width: thin; }

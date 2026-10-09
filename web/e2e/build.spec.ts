@@ -74,11 +74,49 @@ test("with a Magna-Tiles 100 the castle's spires are equilateral, marked instead
   await expect(page.getByText(/Four short triangles make a lower roof/).first()).toBeVisible();
 });
 
-test("9–10 can jump to any step by its dot", async ({ page }) => {
+test("every age can jump to a step by its dot (3.8)", async ({ page }) => {
+  await useSet(page, "PicassoTiles PT100 Classic Starter");
+  await page.goto("#/build/fish");
+  await startBuild(page);
+  await page.getByRole("button", { name: "Step 3 of 4" }).click();
+  await expect(page.getByRole("list", { name: "Step 3 of 4" })).toBeVisible();
+});
+
+test("All steps: the slider shows each step in 3D, and letting go keeps it", async ({ page }) => {
   await useSet(page, "PicassoTiles PT100 Classic Starter");
   await page.goto("#/build/castle");
-  await page.getByRole("button", { name: "Step 7 of 21" }).click();
-  await expect(page.getByRole("list", { name: "Step 7 of 21" })).toBeVisible();
+  await startBuild(page);
+  await page.getByRole("button", { name: "All steps" }).click();
+  const slider = page.getByRole("slider", { name: "Choose a step" });
+  await slider.focus();
+  const before = await page.evaluate(() => window.__viewer!.shown());
+  for (let i = 0; i < 6; i++) await page.keyboard.press("ArrowRight");
+  await expect(page.getByText("Step 7 of 21", { exact: true })).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.__viewer!.shown())).toBeGreaterThan(before);
+  await savedStep(page, "castle", 6);
+  // a drag most of the way along
+  const box = (await slider.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.29, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.9, box.y + box.height / 2, { steps: 10 });
+  await page.mouse.up();
+  const now = Number(await slider.inputValue());
+  expect(now).toBeGreaterThan(15);
+  await savedStep(page, "castle", now);
+  await page.getByRole("button", { name: "Build this step" }).click();
+  await expect(page.getByRole("list", { name: `Step ${now + 1} of 21` })).toBeVisible();
+});
+
+test("All steps: a tap on a step's picture goes there", async ({ page }) => {
+  await useSet(page, "PicassoTiles PT100 Classic Starter");
+  await page.goto("#/build/castle");
+  await startBuild(page);
+  await page.getByRole("button", { name: "All steps" }).click();
+  await page.getByRole("list", { name: "All steps" }).getByRole("button", { name: "Step 12 of 21" }).click();
+  await savedStep(page, "castle", 11);
+  await expect(page.getByText("Step 12 of 21", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Close all steps" }).click();
+  await expect(page.getByRole("list", { name: "Step 12 of 21" })).toBeVisible();
 });
 
 test("it fell down: calm help, then a grown-up after two falls on one step", async ({ page }) => {

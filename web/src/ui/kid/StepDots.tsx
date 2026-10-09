@@ -1,5 +1,5 @@
 /* Step dots (plan key 2o): one dot a step, countable, never a progress bar. Done steps are filled, this one is big and
-   ringed. For 9–10, a tap on a dot jumps there (key 7e). */
+   ringed. A tap on a dot jumps there (key 7e; every age since 3.8). */
 import { S } from "../../strings";
 
 export function StepDots({ count, current, onJump }: { count: number; current: number; onJump?: (i: number) => void }) {
