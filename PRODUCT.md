@@ -123,6 +123,11 @@ dogwood), the pollinators, the Venus flytrap growing wild only near Wilmington.
    that builds the model up and down in 3D, and a strip of pictures to tap; any child can also tap a step dot to jump.
    **Pip helps** (3.9): he carries each step's tiles to where they go, claps when they land, and gives a tip at the
    first step that needs one (a roof, a ramp, a crash wall, a big square standing, the third layer).
+   **Watch it build** (4.1, every age): the Watch button in the top bar plays the build one step at a time, Slow
+   (6 s), Medium (3.5 s) or Fast (1.5 s), with Pause and Play, "Step N of M" and Build from here. Watching keeps its
+   own place and never moves the child's saved step; Build from here makes the watched step the child's. A tap on the
+   model, the tiles list, All steps or the rest screen pauses it; at the end it goes to the finish. Pip hurries at
+   Fast, and the step's line is said only at Slow and Medium.
 3. **Well done.** A short celebration, the build's own line ("You built the castle!"), then "Put the iPad down and
    play with what you made", and one button back to the shelf.
 4. **Grown-ups side**, behind the door: Tiles (start from a set, then − and +), Settings, Backup.

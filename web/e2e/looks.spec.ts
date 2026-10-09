@@ -56,6 +56,18 @@ for (const look of ALL) {
     if (look === "classic") await expect(page).toHaveScreenshot("build-castle-steps-light.png");
   });
 
+  test(`${look}: the Watch it build bar passes axe`, async ({ page }) => {
+    await inLook(page, look, "light");
+    await page.goto("#/build/castle");
+    await startBuild(page);
+    await page.getByRole("button", { name: "Watch it build" }).click();
+    await page.getByRole("button", { name: "Pause" }).click();
+    await expect(page.getByRole("radiogroup", { name: "How fast" })).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const axe = await new AxeBuilder({ page }).analyze();
+    expect(axe.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);
+  });
+
   test(`${look}: the tiles list passes axe`, async ({ page }) => {
     await inLook(page, look, "light");
     await page.goto("#/build/castle");

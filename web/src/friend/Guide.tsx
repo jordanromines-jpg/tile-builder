@@ -9,16 +9,11 @@ import type { StepTile } from "../screens/build/stepTiles";
 import { useStill } from "../ui/motion";
 import { TilePicture } from "../ui/TileChip";
 import type { FriendPose } from "./Friend";
+import { guideTimes, type Pace } from "./pace";
 import { Pip } from "./Pip";
 
-/** Seconds the new tiles wait while Pip carries them over (the Model's `hold`). */
-export const GUIDE_HOLD_S = 0.9;
 const SIZE = 88;
-const HOP_MS = 600;
-const HOME_MS = 500;
-const TOSS_MS = 300;
 const POINT_MS = 1600;
-const CHEER_MS = 900;
 const OPEN_MS = 2000;
 const WAVE_MS = 1200;
 const TIP_MS = 5000;
@@ -64,14 +59,18 @@ export interface GuideProps {
   gaze: -1 | 0 | 1;
   falling: boolean;
   resting: boolean;
+  /** Watch it build at Fast (4.1): a shorter hop and hold; the Viewer's `hold` must be `guideTimes(pace).hold` */
+  pace?: Pace;
 }
 
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 /** Two frames: long enough for the 3D view to draw the new step and say where its tiles are. */
 const frames = () => new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
 
-export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finishesLayer, tray, gaze, falling, resting }: GuideProps) {
+export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finishesLayer, tray, gaze, falling, resting, pace = "normal" }: GuideProps) {
   const still = useStill();
+  const timesRef = useRef(guideTimes(pace));
+  timesRef.current = guideTimes(pace);
   const layer = useRef<HTMLDivElement>(null);
   const outer = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
@@ -179,7 +178,7 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
   const goHome = useCallback(
     async (id: number) => {
       phase.current = "away";
-      await hop(homeRef.current, HOME_MS);
+      await hop(homeRef.current, timesRef.current.homeMs);
       if (run.current !== id) return;
       phase.current = "home";
       place(homeRef.current);
@@ -218,11 +217,12 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
         if (live()) setPose("idle");
         return;
       }
+      const t = timesRef.current;
       setFlip(s.flip);
       phase.current = "away";
       if (arrival.kind === "jump") {
         setPose("point");
-        await hop(s.p, HOP_MS);
+        await hop(s.p, t.hopMs);
         if (!live()) return;
         arrive();
         await wait(POINT_MS);
@@ -232,29 +232,29 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
       // Next: he carries the step's tiles over, tosses them in as they drop, and claps when they land
       setHeld(tiles);
       setPose("hold");
-      await hop(s.p, HOP_MS);
+      await hop(s.p, t.hopMs);
       if (!live()) return;
       arrive();
-      await wait(GUIDE_HOLD_S * 1000 - HOP_MS);
+      await wait(t.hold * 1000 - t.hopMs);
       if (!live()) return;
-      const t = bus.at;
+      const at = bus.at;
       const h = heldEl.current?.getBoundingClientRect();
       const box = layer.current?.getBoundingClientRect();
-      if (t && h && box && heldEl.current) {
-        const dx = t.x - (h.left - box.left + h.width / 2);
-        const dy = t.y - (h.top - box.top + h.height / 2);
-        const a = heldEl.current.animate([{ transform: "translate(0, 0) scale(1)", opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.4)`, opacity: 0 }], { duration: TOSS_MS, easing: "ease-in", fill: "forwards" });
+      if (at && h && box && heldEl.current) {
+        const dx = at.x - (h.left - box.left + h.width / 2);
+        const dy = at.y - (h.top - box.top + h.height / 2);
+        const a = heldEl.current.animate([{ transform: "translate(0, 0) scale(1)", opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.4)`, opacity: 0 }], { duration: t.tossMs, easing: "ease-in", fill: "forwards" });
         anims.current.push(a);
       }
       setPose("point");
-      await wait(TOSS_MS);
+      await wait(t.tossMs);
       if (!live()) return;
       setHeld(null);
       await Promise.race([new Promise<void>((r) => (awaitLand.current = r)), wait(LAND_WAIT_MS)]);
       awaitLand.current = null;
       if (!live()) return;
       setPose(finishesLayer ? "cheer" : "clap");
-      await wait(CHEER_MS);
+      await wait(t.cheerMs);
       if (live()) await goHome(id);
     })();
     // a new arrival starts over; the rest is read when it is needed
