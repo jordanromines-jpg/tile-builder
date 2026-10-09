@@ -107,7 +107,7 @@ export class Studio extends Site {
     pts: P[],
     height: number,
     colours: Colour[],
-    o: { closed?: boolean; base?: number; gap?: number; what?: string; shape?: ShapeId } = {},
+    o: { closed?: boolean; base?: number; gap?: number; what?: string; shape?: ShapeId; level?: (y: number) => number } = {},
   ) {
     const base = o.base ?? 0;
     const segs: [P, P][] = pts.slice(0, -1).map((p, i) => [p, pts[i + 1]]);
@@ -128,8 +128,9 @@ export class Studio extends Site {
       const colour = colours[(y - base) % colours.length];
       const n = order.length;
       const door = o.gap !== undefined;
+      // (`level` builds a part out of the usual layer order: an arm both layers high before the next, R14)
       this.push(
-        2 * y,
+        o.level?.(y) ?? 2 * y,
         (b) => {
           order.forEach((i) => b.stand(shape, colour, segs[i][0], segs[i][1], y));
           return n;
@@ -180,9 +181,10 @@ export class Studio extends Site {
   }
 
   /** Three short triangles leaning together over the unit triangle `t` at height y, until their tips meet. */
-  tetra(name: string, t: Tri, y: number, colour: Colour) {
+  /** (`last`: on the final steps, after a roof that braces what it leans on, R14) */
+  tetra(name: string, t: Tri, y: number, colour: Colour, last = false) {
     this.push(
-      2 * y,
+      last ? 1000 : 2 * y,
       (b) => {
         for (let k = 0; k < 3; k++) {
           const p = t[k];

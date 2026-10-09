@@ -85,10 +85,12 @@ export interface RampOpts {
   say?: string;
   /** what the course calls it: a ramp (default) or a kicker */
   feature?: "ramp" | "kicker";
+  /** every tower first, then the whole ramp (R14: where a low ring, one by two, leans while the next tower goes up) */
+  towersFirst?: boolean;
 }
 
-/** A 30° ramp from `at`, rising `rise` squares towards `dir`, with support towers (built first) under every whole
-    height. Returns the left end of its top edge. */
+/** A 30° ramp from `at`, rising `rise` squares towards `dir`, with support towers under every whole height, each
+    followed by the stretch of ramp that rests on it. Returns the left end of its top edge. */
 export function ramp(b: Builder, colour: Colour, at: At, dir: Dir, rise: number, o: RampOpts = {}): At {
   const lanes = o.big ? 2 : (o.lanes ?? 1);
   const per = o.big ? 1 : 2;
@@ -101,37 +103,55 @@ export function ramp(b: Builder, colour: Colour, at: At, dir: Dir, rise: number,
   // a tower at every whole height: a big square rises a whole one, so every join of a big-square ramp sits on a tower;
   // squares join at half heights too, and those joins get a brace (below) (R11, 2.8)
   for (let h = 1; h <= rise; h++) if (h < rise || (h === rise && o.topTower)) heights.push(h);
-  for (const h of heights) {
-    const join = move(at, up, (h * per) * run, h);
-    // a tower at most four times as high as it is wide (R12): towers over four high are two squares across
-    const r = rect(join, up, 1, right, Math.max(lanes, Math.ceil((at.y + h) / 4)));
-    const c = o.support ?? "blue";
-    for (let k = 0; k < at.y + h; k++) {
-      b.room(c, r.x0, r.z0, r.w, r.d, k);
-      b.step(k === 0 ? `Stand a ring of ${2 * (r.w + r.d)} squares where the ramp will rest${at.y + h > 1 ? `: the first of ${at.y + h}` : ""}.` : `Another ring on top: ${k + 1} high.`);
-    }
-  }
+  // the ramp goes on as the towers go up (R14): each tower, then the stretch of ramp that rests on it and its brace, so
+  // no tower stands alone for long (a tall ring of squares on its own sways), and the child builds up the way the
+  // truck will go. A kicker (one tower) is as before: the ring, the ramp, the lock.
   const tiles: number[] = [];
-  for (let k = 0; k < rise * per; k++) {
-    const base = move(at, up, k * run, k * lift);
-    for (let l = 0; l < (o.big ? 1 : lanes); l++) {
-      const p = move(base, right, l);
-      tiles.push(b.add(o.big ? "square-large" : "square", colour, [p.x, p.y, p.z], [-(Q - SLOPE), RY[dir]], "ramp"));
+  const c = o.support ?? "blue";
+  let laid = 0;
+  const lay = (upto: number, say: string) => {
+    for (; laid < upto; laid++) {
+      const base = move(at, up, laid * run, laid * lift);
+      for (let l = 0; l < (o.big ? 1 : lanes); l++) {
+        const p = move(base, right, l);
+        tiles.push(b.add(o.big ? "square-large" : "square", colour, [p.x, p.y, p.z], [-(Q - SLOPE), RY[dir]], "ramp"));
+      }
     }
-  }
-  b.step(o.say ?? `Lean the ramp up from the bottom, ${o.big ? "big squares" : lanes === 2 ? "two squares side by side" : "one square"} at a time, each resting on the last, up to the top.`);
+    b.step(say);
+  };
   // a join in mid-air is a hinge, and a truck folds it: under each one, a brace leans from the face of the tower the
   // pair runs up to, one square below its top, so brace, upper ramp tile and tower wall make a triangle that can't fold
-  if (!o.big) {
-    const down = RY[OPPOSITE[dir]];
-    for (let k = 1; k < rise * per; k += 2) {
-      const foot = move(at, up, (k + 1) * run, (k + 1) * lift - 1);
+  const down = RY[OPPOSITE[dir]];
+  let braced = 1;
+  const brace = (upto: number) => {
+    if (o.big || braced >= upto) return;
+    for (; braced < upto; braced += 2) {
+      const foot = move(at, up, (braced + 1) * run, (braced + 1) * lift - 1);
       for (let l = 0; l < lanes; l++) {
         const p = move(foot, right, l + 1);
         b.add("square", colour, [p.x, p.y, p.z], [-(Q - SLOPE), down], "brace");
       }
     }
-    b.step(rise === 1 ? "Lock the ramp: lean one more square from the side of the tower up under the middle of the ramp. Now it holds a truck." : "Lock each pair: under every middle join, lean a square up from the side of the tower beyond. Now it holds a truck.");
+    b.step(rise === 1 ? "Lock the ramp: lean one more square from the side of the tower up under the middle of the ramp. Now it holds a truck." : "Lock it: under the middle join, lean a square up from the side of the tower beyond. Now it holds a truck.");
+  };
+  const piece = o.big ? "big squares" : lanes === 2 ? "two squares side by side" : "one square";
+  heights.forEach((h, n) => {
+    const join = move(at, up, (h * per) * run, h);
+    // a tower at most four times as high as it is wide (R12): towers over four high are two squares across
+    const r = rect(join, up, 1, right, Math.max(lanes, Math.ceil((at.y + h) / 4)));
+    for (let k = 0; k < at.y + h; k++) {
+      b.room(c, r.x0, r.z0, r.w, r.d, k);
+      b.step(k === 0 ? `Stand a ring of ${2 * (r.w + r.d)} squares where the ramp will rest${at.y + h > 1 ? `: the first of ${at.y + h}` : ""}.` : `Another ring on top: ${k + 1} high.`);
+    }
+    if (o.towersFirst) return;
+    const lastStretch = h === rise;
+    lay(h * per, lastStretch ? (o.say ?? `Lean the ramp up onto the ring, ${piece} at a time, each resting on the last.`) : n === 0 ? `Lean the ramp up from the table onto this tower, ${piece} at a time, each resting on the last.` : `Lean the ramp on up onto this tower, ${piece} at a time, each resting on the last.`);
+    brace(h * per);
+  });
+  // the stretch up to a deck (no tower under the top edge)
+  if (laid < rise * per) {
+    lay(rise * per, o.say ?? (o.towersFirst ? `Lean the ramp up from the bottom, ${piece} at a time, each resting on the last, up to the top.` : `Lean the ramp on up to the top, ${piece} at a time, each resting on the last.`));
+    brace(rise * per);
   }
   const top = move(at, up, rise * per * run, rise);
   // the course: the slope from the middle of the bottom edge to the middle of the top edge
@@ -258,7 +278,11 @@ export function arenaWall(b: Builder, colour: Colour, x0: number, z0: number, w:
     ["left", () => { for (let i = 0; i < d; i++) if (!skip("left", i)) b.wallZ("square-large", colour, x0, 0, z0 + 2 * i); }],
     ["front", () => { for (let i = 0; i < w; i++) if (!skip("front", i)) b.wallX("square-large", colour, x0 + 2 * i, 0, z0 + 2 * d); }],
   ];
-  for (const [side, f] of sides) {
+  // the right and the back go up together, joined at their corner: a long wall alone folds at its joins like a door (R14)
+  sides[0][1]();
+  sides[1][1]();
+  b.step("Stand big squares along the right and the back of the arena, edge to edge, joined at the corner.");
+  for (const [side, f] of sides.slice(2)) {
     f();
     b.step(`Stand big squares along the ${side} of the arena, edge to edge.`);
   }

@@ -1,5 +1,5 @@
 /* What the checker can find, in words a project's author reads (plan key 4f). */
-export type Rule = "R0" | "R1" | "R2" | "R3" | "R4" | "R5" | "R6" | "R7" | "R8" | "R9" | "R10" | "R11" | "R12" | "R13a" | "R13b" | "R13c" | "R13d" | "R13e";
+export type Rule = "R0" | "R1" | "R2" | "R3" | "R4" | "R5" | "R6" | "R7" | "R8" | "R9" | "R10" | "R11" | "R12" | "R13a" | "R13b" | "R13c" | "R13d" | "R13e" | "R13g";
 
 export interface Problem {
   rule: Rule;
@@ -29,6 +29,7 @@ export const RULES: Record<Rule, string> = {
   R13c: "a jump clears every tile, comes down well inside the surface it lands on, and needs no more than a toy truck can do",
   R13d: "a drive passes through no tile that is not part of the pieces it joins",
   R13e: "every tile built to be knocked down is part of something the route hits",
+  R13g: "every wheel has ground under it along the road",
 };
 
 export function describe(p: Problem, project = ""): string {

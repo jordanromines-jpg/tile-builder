@@ -1975,47 +1975,11 @@
   "ms": 1268
  },
  "polite-alien-embassy": {
-  "key": "c129da6a742f3e1d",
-  "falls": [
-   {
-    "step": 11,
-    "tile": 30,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after left"
-   },
-   {
-    "step": 15,
-    "tile": 33,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 16,
-    "tile": 34,
-    "mm": 18,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 18,
-    "tile": 30,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 21,
-    "tile": 30,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after away"
-   }
-  ],
-  "sags": 10,
-  "worstMm": 20,
-  "ms": 50188
+  "key": "e0fbc5c65e4303e6",
+  "falls": [],
+  "sags": 12,
+  "worstMm": 12,
+  "ms": 41115
  },
  "polite-mummy-tomb": {
   "key": "de8b0313a50bcdb6",
@@ -2025,19 +1989,11 @@
   "ms": 32751
  },
  "polite-pirate-paddle-steamer": {
-  "key": "daba5b9183fd07eb",
-  "falls": [
-   {
-    "step": 9,
-    "tile": 22,
-    "mm": 12,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   }
-  ],
-  "sags": 7,
+  "key": "41f4a4dca8b4489d",
+  "falls": [],
+  "sags": 2,
   "worstMm": 19,
-  "ms": 55410
+  "ms": 28980
  },
  "porcupine-pin-cushion": {
   "key": "8309e29f495256bb",
@@ -2054,19 +2010,11 @@
   "ms": 10151
  },
  "pumpkin-palace": {
-  "key": "44acf8b35fc25e77",
-  "falls": [
-   {
-    "step": 16,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after left"
-   }
-  ],
-  "sags": 9,
-  "worstMm": 20,
-  "ms": 125654
+  "key": "b1564a74bebb2dd7",
+  "falls": [],
+  "sags": 10,
+  "worstMm": 11,
+  "ms": 91213
  },
  "pyramid-garden": {
   "key": "dcab542684cdc4ba",
@@ -2083,54 +2031,11 @@
   "ms": 22966
  },
  "queen-hexabella-palace": {
-  "key": "15f953cb95f76196",
-  "falls": [
-   {
-    "step": 16,
-    "tile": 35,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after left"
-   },
-   {
-    "step": 20,
-    "tile": 38,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 21,
-    "tile": 39,
-    "mm": 18,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 23,
-    "tile": 35,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 26,
-    "tile": 35,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after away"
-   },
-   {
-    "step": 29,
-    "tile": 39,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 11,
-  "worstMm": 20,
-  "ms": 62690
+  "key": "47500ad9268c65f8",
+  "falls": [],
+  "sags": 12,
+  "worstMm": 12,
+  "ms": 51139
  },
  "queen-of-crumbs-crown": {
   "key": "33555d68375c89bf",
@@ -2176,19 +2081,11 @@
   "ms": 3567
  },
  "remote-museum": {
-  "key": "195fc7f2024172a0",
-  "falls": [
-   {
-    "step": 15,
-    "tile": 19,
-    "mm": 21,
-    "deg": 16,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 4,
-  "worstMm": 21,
-  "ms": 27295
+  "key": "fbbfcfc8eb3d7035",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 10,
+  "ms": 18686
  },
  "robot": {
   "key": "b13c5ce70847a64e",
@@ -2247,19 +2144,11 @@
   "ms": 5918
  },
  "screen-door-submarine": {
-  "key": "07c0b05613eab39f",
-  "falls": [
-   {
-    "step": 8,
-    "tile": 12,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 20,
-  "ms": 3862
+  "key": "5286409e0e40315d",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 7,
+  "ms": 5132
  },
  "sculpture": {
   "key": "aa809c49f60d1b18",
@@ -2276,76 +2165,18 @@
   "ms": 36555
  },
  "secret-shed": {
-  "key": "7a3110df0cc4e551",
-  "falls": [
-   {
-    "step": 12,
-    "tile": 17,
-    "mm": 21,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 5,
-  "worstMm": 21,
-  "ms": 30265
+  "key": "63c734a574228773",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 11,
+  "ms": 17599
  },
  "seven-stage-rocket": {
-  "key": "203a870482488eb4",
-  "falls": [
-   {
-    "step": 7,
-    "tile": 11,
-    "mm": 20,
-    "deg": 14,
-    "phase": "leaning away"
-   },
-   {
-    "step": 8,
-    "tile": 10,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 9,
-    "tile": 10,
-    "mm": 21,
-    "deg": 16,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 10,
-    "tile": 10,
-    "mm": 22,
-    "deg": 16,
-    "phase": "settling"
-   },
-   {
-    "step": 11,
-    "tile": 10,
-    "mm": 21,
-    "deg": 16,
-    "phase": "upright after right"
-   },
-   {
-    "step": 12,
-    "tile": 11,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 13,
-    "tile": 11,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 9,
-  "worstMm": 22,
-  "ms": 48026
+  "key": "5835b75376719143",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 8,
+  "ms": 38680
  },
  "show-off-peacock": {
   "key": "db34dd2b4536d564",
@@ -2388,7 +2219,7 @@
   ],
   "sags": 3,
   "worstMm": 20,
-  "ms": 19151
+  "ms": 13777
  },
  "silly-snail": {
   "key": "3e7c3cae99a407a6",
@@ -2426,19 +2257,11 @@
   "ms": 306
  },
  "slightly-worried-smiley": {
-  "key": "610a545c2a67b325",
-  "falls": [
-   {
-    "step": 17,
-    "tile": 65,
-    "mm": 29,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 6,
-  "worstMm": 29,
-  "ms": 19248
+  "key": "c22b65a48f841103",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 10,
+  "ms": 14428
  },
  "sloth-racing": {
   "key": "21315e2d98c4972e",
@@ -2448,19 +2271,11 @@
   "ms": 13436
  },
  "slow-spin-station": {
-  "key": "e074fd87729a4545",
-  "falls": [
-   {
-    "step": 9,
-    "tile": 11,
-    "mm": 14,
-    "deg": 15,
-    "phase": "leaning left"
-   }
-  ],
-  "sags": 7,
-  "worstMm": 18,
-  "ms": 5164
+  "key": "28380497f40cccd2",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 15,
+  "ms": 6566
  },
  "snack-castle": {
   "key": "453b110c9e102a00",
@@ -2554,26 +2369,11 @@
   "ms": 148026
  },
  "sore-stegosaurus": {
-  "key": "ea4867e5c2cd7aeb",
-  "falls": [
-   {
-    "step": 4,
-    "tile": 5,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   },
-   {
-    "step": 5,
-    "tile": 1,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning away"
-   }
-  ],
+  "key": "267347752846789b",
+  "falls": [],
   "sags": 1,
-  "worstMm": 20,
-  "ms": 1038
+  "worstMm": 4,
+  "ms": 1607
  },
  "space-burger-station": {
   "key": "f9b5e356605db311",
@@ -2749,7 +2549,7 @@
   ],
   "sags": 3,
   "worstMm": 43,
-  "ms": 18113
+  "ms": 13510
  },
  "space-toilet": {
   "key": "dcd03c08b773162a",
@@ -2836,33 +2636,11 @@
   "ms": 23045
  },
  "technically-illegal-rocket-car": {
-  "key": "519e374c2984f9d5",
-  "falls": [
-   {
-    "step": 18,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 19,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 20,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after left"
-   }
-  ],
-  "sags": 7,
-  "worstMm": 20,
-  "ms": 23799
+  "key": "2403122790ff5c5e",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 6,
+  "ms": 18856
  },
  "tidy-bee-hut": {
   "key": "585c34f346a30059",
@@ -2900,40 +2678,11 @@
   "ms": 46555
  },
  "tortoise-won-by-accident": {
-  "key": "44c7737ca989d786",
-  "falls": [
-   {
-    "step": 13,
-    "tile": 34,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 14,
-    "tile": 32,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 15,
-    "tile": 35,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after right"
-   },
-   {
-    "step": 16,
-    "tile": 32,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   }
-  ],
+  "key": "f4eb2213221a92fa",
+  "falls": [],
   "sags": 5,
-  "worstMm": 20,
-  "ms": 32810
+  "worstMm": 7,
+  "ms": 34944
  },
  "tower": {
   "key": "955a102a37922b21",
@@ -2943,40 +2692,11 @@
   "ms": 1006
  },
  "tower-of-pointy-opinions": {
-  "key": "4e02547b8b9fa5ce",
-  "falls": [
-   {
-    "step": 5,
-    "tile": 5,
-    "mm": 32,
-    "deg": 24,
-    "phase": "settling"
-   },
-   {
-    "step": 6,
-    "tile": 7,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 7,
-    "tile": 6,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 9,
-    "tile": 5,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 2,
-  "worstMm": 32,
-  "ms": 7571
+  "key": "7c418e7c837cfc92",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 2,
+  "ms": 6786
  },
  "town-hall": {
   "key": "87bac290f42a982e",
@@ -3043,47 +2763,11 @@
   "ms": 6955
  },
  "triple-decker-bus": {
-  "key": "816ab3abe9e2e48b",
-  "falls": [
-   {
-    "step": 10,
-    "tile": 19,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 11,
-    "tile": 21,
-    "mm": 25,
-    "deg": 19,
-    "phase": "settling"
-   },
-   {
-    "step": 12,
-    "tile": 19,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after left"
-   },
-   {
-    "step": 15,
-    "tile": 21,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 17,
-    "tile": 21,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   }
-  ],
-  "sags": 9,
-  "worstMm": 25,
-  "ms": 56741
+  "key": "745125896e758228",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 34640
  },
  "triple-trouble-bridge": {
   "key": "377136d73bb78b92",
@@ -3093,18 +2777,18 @@
   "ms": 37494
  },
  "truck-backflip-ramp": {
-  "key": "8b806a0cc09337f5",
+  "key": "cbb6365fd556e1de",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 68309
+  "ms": 54419
  },
  "truck-big-air-gap": {
-  "key": "7711148c7ded7661",
+  "key": "2e43af5916fc0d4b",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 19419
+  "ms": 14120
  },
  "truck-big-air-two-lanes": {
   "key": "99e4c499d79519ed",
@@ -3128,18 +2812,18 @@
   "ms": 12479
  },
  "truck-bounce-bridge": {
-  "key": "bbdcbf387ece9b1d",
+  "key": "c5279a0e609ff0f5",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 19131
+  "ms": 23290
  },
  "truck-bridge-to-bridge": {
-  "key": "6fa69201aa5c3f3a",
+  "key": "006f53d32ec7b847",
   "falls": [],
-  "sags": 32,
-  "worstMm": 6,
-  "ms": 186944
+  "sags": 36,
+  "worstMm": 9,
+  "ms": 129696
  },
  "truck-bumpy-road": {
   "key": "aca5aa52b7422b69",
@@ -3149,124 +2833,32 @@
   "ms": 1853
  },
  "truck-bus-jump": {
-  "key": "d18b82718144c10b",
+  "key": "112781f5c30553ce",
   "falls": [],
-  "sags": 0,
-  "worstMm": 1,
-  "ms": 20306
+  "sags": 13,
+  "worstMm": 2,
+  "ms": 18900
  },
  "truck-canyon-jump": {
-  "key": "ab4cd0d6c8c5c141",
+  "key": "aed3140a87a6a02a",
   "falls": [],
-  "sags": 5,
-  "worstMm": 3,
-  "ms": 107189
+  "sags": 1,
+  "worstMm": 9,
+  "ms": 81536
  },
  "truck-cliff-jump": {
-  "key": "447568778306a5fc",
-  "falls": [
-   {
-    "step": 17,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 18,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 19,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 20,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 21,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 22,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 23,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 24,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 25,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 26,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 27,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 28,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 29,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 10,
-  "worstMm": 24,
-  "ms": 130515
+  "key": "08623fe2ebda8119",
+  "falls": [],
+  "sags": 32,
+  "worstMm": 10,
+  "ms": 122421
  },
  "truck-crash-castle": {
-  "key": "0ac7fbf658d1cf2b",
+  "key": "a9b4b43944b7b82b",
   "falls": [],
   "sags": 0,
-  "worstMm": 1,
-  "ms": 4580
+  "worstMm": 2,
+  "ms": 6908
  },
  "truck-crash-test-city": {
   "key": "e0f7461c80495f8e",
@@ -3276,11 +2868,11 @@
   "ms": 20677
  },
  "truck-crash-zone-city": {
-  "key": "5fb97b72f4607e0d",
+  "key": "7857083e4dd5a2fa",
   "falls": [],
   "sags": 6,
   "worstMm": 7,
-  "ms": 33356
+  "ms": 24178
  },
  "truck-crush-car-jump": {
   "key": "23c834cda41e02bc",
@@ -3304,11 +2896,11 @@
   "ms": 1902
  },
  "truck-domino-run": {
-  "key": "e9eb651e21b98dfa",
+  "key": "01699a2875baca04",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 5296
+  "ms": 6152
  },
  "truck-donut-circle": {
   "key": "1d119ac64129d8ae",
@@ -3318,18 +2910,18 @@
   "ms": 34186
  },
  "truck-double-decker-race": {
-  "key": "d1e6a098ae184fb2",
+  "key": "e180454581d62739",
   "falls": [],
-  "sags": 4,
+  "sags": 5,
   "worstMm": 6,
-  "ms": 57261
+  "ms": 45765
  },
  "truck-drag-strip": {
-  "key": "d4ea78837e69314a",
+  "key": "e6d916ada3f67ad5",
   "falls": [],
   "sags": 0,
   "worstMm": 2,
-  "ms": 26358
+  "ms": 19587
  },
  "truck-drop-tower-eight": {
   "key": "732a9836a15d374a",
@@ -3339,11 +2931,11 @@
   "ms": 48024
  },
  "truck-figure-eight-bridge": {
-  "key": "8edbd5e33df8b22a",
+  "key": "f03796974672292f",
   "falls": [],
   "sags": 0,
   "worstMm": 2,
-  "ms": 39516
+  "ms": 22440
  },
  "truck-first-jump": {
   "key": "1e7f5932320f63d6",
@@ -3374,19 +2966,11 @@
   "ms": 380
  },
  "truck-little-arena": {
-  "key": "db87cc556fcff6cc",
-  "falls": [
-   {
-    "step": 2,
-    "tile": 2,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning right"
-   }
-  ],
+  "key": "c40ee15d0db70223",
+  "falls": [],
   "sags": 2,
-  "worstMm": 24,
-  "ms": 2407
+  "worstMm": 4,
+  "ms": 3496
  },
  "truck-little-ramp": {
   "key": "f8adfefcd55b5454",
@@ -3396,54 +2980,25 @@
   "ms": 827
  },
  "truck-mega-ramp-eight": {
-  "key": "8acbfd181a673dc1",
-  "falls": [
-   {
-    "step": 17,
-    "tile": 91,
-    "mm": 24,
-    "deg": 5,
-    "phase": "leaning away"
-   },
-   {
-    "step": 18,
-    "tile": 91,
-    "mm": 24,
-    "deg": 5,
-    "phase": "leaning away"
-   },
-   {
-    "step": 19,
-    "tile": 91,
-    "mm": 24,
-    "deg": 5,
-    "phase": "leaning away"
-   },
-   {
-    "step": 20,
-    "tile": 91,
-    "mm": 24,
-    "deg": 5,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 24,
-  "ms": 113980
+  "key": "c5e8fd6338609d6f",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 9,
+  "ms": 98251
  },
  "truck-mega-ramp-four": {
-  "key": "053922a03584a803",
+  "key": "9393fb4e063c4298",
   "falls": [],
-  "sags": 5,
-  "worstMm": 6,
-  "ms": 18966
+  "sags": 8,
+  "worstMm": 9,
+  "ms": 23418
  },
  "truck-monster-garage": {
-  "key": "ca02818a63ba5a9b",
+  "key": "4ff42f0c9b0536eb",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 5130
+  "ms": 6414
  },
  "truck-monster-stadium": {
   "key": "03f834676f4e11e3",
@@ -3460,18 +3015,18 @@
   "ms": 1875
  },
  "truck-ramp-to-ramp": {
-  "key": "f3e3172548afe8ab",
+  "key": "496821d3d75218ed",
   "falls": [],
-  "sags": 16,
-  "worstMm": 6,
-  "ms": 34474
+  "sags": 18,
+  "worstMm": 9,
+  "ms": 33118
  },
  "truck-ramp-to-the-roof": {
-  "key": "fc5604e1f69170c8",
+  "key": "560d0bfed160f4a9",
   "falls": [],
-  "sags": 2,
-  "worstMm": 15,
-  "ms": 4232
+  "sags": 8,
+  "worstMm": 7,
+  "ms": 8041
  },
  "truck-road-loop": {
   "key": "6707f6e6dfb557e4",
@@ -3481,115 +3036,22 @@
   "ms": 4539
  },
  "truck-rollover-pit": {
-  "key": "c472b19485ddd41e",
-  "falls": [
-   {
-    "step": 2,
-    "tile": 2,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning right"
-   }
-  ],
+  "key": "d824e355744604c1",
+  "falls": [],
   "sags": 34,
-  "worstMm": 24,
-  "ms": 97311
+  "worstMm": 15,
+  "ms": 64609
  },
  "truck-skills-course": {
-  "key": "864bd3726ba5fea6",
-  "falls": [
-   {
-    "step": 13,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 14,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 15,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 16,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 17,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 18,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 19,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 20,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   }
-  ],
+  "key": "99ecfb8bb25a92b7",
+  "falls": [],
   "sags": 0,
-  "worstMm": 21,
-  "ms": 9136
+  "worstMm": 0,
+  "ms": 12418
  },
  "truck-spiral-ramp": {
-  "key": "486c9d31ed1e9a34",
+  "key": "f739cff550172890",
   "falls": [
-   {
-    "step": 24,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 25,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 26,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 27,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
    {
     "step": 28,
     "tile": 77,
@@ -3598,44 +3060,44 @@
     "phase": "leaning right"
    },
    {
-    "step": 40,
-    "tile": 147,
-    "mm": 29,
+    "step": 29,
+    "tile": 77,
+    "mm": 27,
     "deg": 3,
     "phase": "leaning right"
    },
    {
-    "step": 41,
-    "tile": 147,
-    "mm": 29,
+    "step": 30,
+    "tile": 77,
+    "mm": 27,
     "deg": 3,
     "phase": "leaning right"
    },
    {
-    "step": 42,
-    "tile": 147,
-    "mm": 29,
+    "step": 31,
+    "tile": 77,
+    "mm": 27,
     "deg": 3,
     "phase": "leaning right"
    },
    {
-    "step": 43,
-    "tile": 147,
-    "mm": 29,
+    "step": 32,
+    "tile": 77,
+    "mm": 27,
     "deg": 3,
     "phase": "leaning right"
    },
    {
-    "step": 44,
-    "tile": 147,
-    "mm": 29,
+    "step": 33,
+    "tile": 77,
+    "mm": 27,
     "deg": 3,
     "phase": "leaning right"
    },
    {
-    "step": 45,
-    "tile": 147,
-    "mm": 29,
+    "step": 34,
+    "tile": 77,
+    "mm": 27,
     "deg": 3,
     "phase": "leaning right"
    },
@@ -3645,103 +3107,88 @@
     "mm": 29,
     "deg": 3,
     "phase": "leaning right"
+   },
+   {
+    "step": 47,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 48,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 49,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 50,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 51,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 52,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 53,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 54,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
    }
   ],
-  "sags": 6,
+  "sags": 4,
   "worstMm": 29,
-  "ms": 126332
+  "ms": 90028
  },
  "truck-stair-step-drops": {
-  "key": "1861adbacab6456c",
+  "key": "f7035511e73e27d5",
   "falls": [],
-  "sags": 2,
-  "worstMm": 15,
-  "ms": 24761
+  "sags": 12,
+  "worstMm": 9,
+  "ms": 19633
  },
  "truck-tower-drop-five": {
-  "key": "abdf75bae331b945",
-  "falls": [
-   {
-    "step": 7,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 8,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 9,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 10,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 11,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 12,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 13,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 14,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 15,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 16,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 25,
-  "ms": 34097
+  "key": "6e4beafdbf5cc483",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 7,
+  "ms": 48912
  },
  "truck-train-yard": {
-  "key": "fc7f1fda8468c9d6",
+  "key": "f37e554a4c849b72",
   "falls": [],
   "sags": 31,
-  "worstMm": 6,
-  "ms": 71139
+  "worstMm": 9,
+  "ms": 55724
  },
  "truck-triple-big-air": {
   "key": "c886fc422891762a",
@@ -3772,68 +3219,32 @@
   "ms": 1118
  },
  "truck-ultimate-arena": {
-  "key": "7421e7195ca26ffa",
+  "key": "86fc91c66b35cca6",
   "falls": [],
-  "sags": 23,
+  "sags": 28,
   "worstMm": 7,
-  "ms": 180530
+  "ms": 127493
  },
  "truck-wall-of-doom": {
-  "key": "3d908974ee6bbb44",
+  "key": "f8edf13beeb7ddfc",
   "falls": [],
   "sags": 13,
-  "worstMm": 4,
-  "ms": 47390
+  "worstMm": 9,
+  "ms": 39863
  },
  "truck-world-finals-freestyle": {
-  "key": "11d1a11ea4587e12",
+  "key": "a24aac95adb0f740",
   "falls": [],
   "sags": 0,
   "worstMm": 4,
-  "ms": 133160
+  "ms": 95037
  },
  "tuesday-flying-saucer": {
-  "key": "90f381d63bd026f0",
-  "falls": [
-   {
-    "step": 5,
-    "tile": 12,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 7,
-    "tile": 17,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   },
-   {
-    "step": 8,
-    "tile": 14,
-    "mm": 21,
-    "deg": 16,
-    "phase": "leaning left"
-   },
-   {
-    "step": 9,
-    "tile": 13,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   },
-   {
-    "step": 10,
-    "tile": 12,
-    "mm": 20,
-    "deg": 16,
-    "phase": "leaning left"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 21,
-  "ms": 4491
+  "key": "bf4d52a43934a0c1",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 16,
+  "ms": 8138
  },
  "tunnel": {
   "key": "1ed0dac483eabae3",
@@ -3892,19 +3303,11 @@
   "ms": 25190
  },
  "upside-down-bat-cave": {
-  "key": "341518eed1d4cd04",
-  "falls": [
-   {
-    "step": 2,
-    "tile": 5,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 2,
-  "worstMm": 29,
-  "ms": 16330
+  "key": "f06a32fe67abb69a",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 9,
+  "ms": 11268
  },
  "upside-down-crown-castle": {
   "key": "8afd0a96242d25e7",
@@ -3914,26 +3317,11 @@
   "ms": 41749
  },
  "very-small-plane-carrier": {
-  "key": "8ebd77c4860c6d2c",
-  "falls": [
-   {
-    "step": 12,
-    "tile": 27,
-    "mm": 15,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 15,
-    "tile": 28,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after away"
-   }
-  ],
-  "sags": 6,
-  "worstMm": 20,
-  "ms": 21803
+  "key": "78d4f3b974a2fef3",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 7,
+  "ms": 22349
  },
  "villain-shop": {
   "key": "c1fe77fd549a8095",
@@ -3943,34 +3331,18 @@
   "ms": 42323
  },
  "wall-that-says-hi": {
-  "key": "4271184d8dd7ae06",
-  "falls": [
-   {
-    "step": 18,
-    "tile": 81,
-    "mm": 33,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 4,
-  "worstMm": 33,
-  "ms": 32242
+  "key": "36d5e811f18e2f15",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 5,
+  "ms": 16309
  },
  "warm-lemonade-tower": {
-  "key": "029b37760b61b747",
-  "falls": [
-   {
-    "step": 7,
-    "tile": 13,
-    "mm": 21,
-    "deg": 12,
-    "phase": "upright after right"
-   }
-  ],
-  "sags": 2,
-  "worstMm": 21,
-  "ms": 71715
+  "key": "98fd305edf41201d",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 3,
+  "ms": 47967
  },
  "wave-walls": {
   "key": "5c34aa8b84301918",
@@ -4022,19 +3394,11 @@
   "ms": 124350
  },
  "wobblebottom-fort": {
-  "key": "3fb2a51a21bb7a40",
-  "falls": [
-   {
-    "step": 11,
-    "tile": 34,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after away"
-   }
-  ],
-  "sags": 7,
-  "worstMm": 20,
-  "ms": 47215
+  "key": "5ef70ade97f1b4e5",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 5,
+  "ms": 27742
  },
  "wobbly-jelly": {
   "key": "71c109b6a979432e",

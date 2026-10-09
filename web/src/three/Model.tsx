@@ -106,7 +106,9 @@ class Settled {
     return m;
   }
 
-  /** Show tiles 0 to n − 1 merged, each where it lands: keep the chunks below n, drop or trim the rest, add the new. */
+  /** Show tiles 0 to n − 1 merged, each where it lands: keep the chunks below n, drop or trim the rest, add the new.
+      Tiles in `skip` (a truck run's moving tiles, 4.0c) are left out: they're drawn one by one. */
+  skip: ReadonlySet<number> = new Set();
   rebuild(tiles: TileObj[], n: number, root: THREE.Group) {
     while (this.chunks.length && this.chunks.at(-1)!.from >= n) this.drop(this.chunks.pop()!);
     let from = this.chunks.at(-1)?.to ?? 0;
@@ -125,7 +127,9 @@ class Settled {
 
   private merge(tiles: TileObj[], from: number, to: number, toRoot: THREE.Matrix4): Chunk {
     const buckets = new Map<string, { geos: THREE.BufferGeometry[]; material: THREE.Material; part: "frame" | "glass" | "rivet" }>();
-    for (const tile of tiles.slice(from, to)) {
+    for (let i = from; i < to; i++) {
+      if (this.skip.has(i)) continue;
+      const tile = tiles[i];
       tile.group.position.copy(tile.pT);
       tile.group.quaternion.copy(tile.qT);
       tile.group.updateMatrixWorld(true);
@@ -189,13 +193,25 @@ export interface ModelProps {
   paint?: number;
   /** called when the tiles come to rest (built, or this step's landed): the contact shadow is drawn then (2.8.1) */
   onRest?: () => void;
+  /** a truck run (4.0c): these tiles are drawn one by one, each posed every frame by `pose` (its body's middle `p` and
+      its turn `q` since it was built, its middle as built `c`); null leaves a tile as built */
+  drive?: TileDrive;
 }
+
+export interface TileDrive {
+  tiles: ReadonlySet<number>;
+  pose: (i: number) => { p: readonly number[]; q: readonly number[]; c: readonly number[] } | null;
+}
+
+const NOWHERE: ReadonlySet<number> = new Set();
+const dq = new THREE.Quaternion();
+const dv = new THREE.Vector3();
 
 /** The default for `current`: one array, not a new one a render. A new one each render restarted the step's wait whenever
     the model came to rest (the rest bumps the shadow, which renders again), so the finish never stopped drawing (4.2c). */
 const NO_TILES: number[] = [];
 
-export function Model({ project, shown, leg, instead = {}, settled = 0, current = NO_TILES, still = false, browse = false, paint = 0, hold = GHOST_S, onRest }: ModelProps) {
+export function Model({ project, shown, leg, instead = {}, settled = 0, current = NO_TILES, still = false, browse = false, paint = 0, hold = GHOST_S, onRest, drive }: ModelProps) {
   const invalidate = useThree((s) => s.invalidate);
   const key = JSON.stringify(instead);
   const accent = useMemo(() => new THREE.Color(cssColour("accent", "#BF5409")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -233,6 +249,14 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tiles, root, settledMesh, invalidate]);
 
+  // a run's moving tiles leave the merged mesh (and come back to it when the run is gone)
+  const runTiles = drive?.tiles ?? NOWHERE;
+  useEffect(() => {
+    settledMesh.skip = runTiles;
+    settledMesh.rebuild(tiles, 0, root);
+    invalidate();
+  }, [runTiles, settledMesh, tiles, root, invalidate]);
+
   useEffect(() => {
     lit.current = new Set(current.filter((t) => t < shown));
     since.current = performance.now();
@@ -266,8 +290,22 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
     for (const g of settledMesh.glass) g.opacity = BASE_OPACITY.glass * (quiet ? 0.7 : 1);
     tiles.forEach((tile, i) => {
       if (i < cut) {
-        tile.group.visible = false;
         tile.ghost.visible = false;
+        tile.group.visible = runTiles.has(i);
+        if (!tile.group.visible) return;
+        // a run's tile: as built, then where the run has thrown it (turned about its middle, then moved)
+        const at = drive?.pose(i);
+        tile.group.position.copy(tile.pT);
+        tile.group.quaternion.copy(tile.qT);
+        if (at) {
+          dq.set(at.q[0], at.q[1], at.q[2], at.q[3]);
+          dv.set(tile.pT.x - at.c[0], tile.pT.y - at.c[1], tile.pT.z - at.c[2]).applyQuaternion(dq);
+          tile.group.position.set(dv.x + at.p[0], dv.y + at.p[1], dv.z + at.p[2]);
+          tile.group.quaternion.premultiply(dq);
+        }
+        tile.mats.frame.opacity = BASE_OPACITY.frame;
+        tile.mats.glass.opacity = BASE_OPACITY.glass;
+        tile.mats.frame.emissiveIntensity = 0;
         return;
       }
       const k = p[i] ?? 0;

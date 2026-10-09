@@ -55,8 +55,8 @@ function pit(): Project {
   arenaWall(b, "purple", 0, -6, 3, 3, [{ side: "front", at: 1 }]);
   why(b, "Where two walls meet at a corner they hold each other up.");
   lane(b, ["green", "yellow"], at(2, 3), "N", 3, 2, "In front of the gate, lay six squares flat. The way into the pit.");
-  ramp(b, "red", at(R6(-2 - 4 * RUN), -4), "E", 2, { lanes: 2, topTower: true, support: "blue", say: "On the left, lean a ramp up, two squares wide, onto its tower. Jump over the wall!" });
-  ramp(b, "orange", at(R6(8 + 4 * RUN), -2), "W", 2, { lanes: 2, topTower: true, support: "blue", say: "On the right, lean a matching ramp up onto its tower." });
+  ramp(b, "red", at(R6(-2 - 4 * RUN), -4), "E", 2, { lanes: 2, topTower: true, towersFirst: true, support: "blue", say: "On the left, lean a ramp up, two squares wide, onto its tower. Jump over the wall!" });
+  ramp(b, "orange", at(R6(8 + 4 * RUN), -2), "W", 2, { lanes: 2, topTower: true, towersFirst: true, support: "blue", say: "On the right, lean a matching ramp up onto its tower." });
   why(b, "Triangles don't fold: the brace locks the join.");
   crashWall(b, ["red", "yellow", "green"], at(0.6, -3), "N", 2, 3, (r) => (r === 0 ? "Inside the pit, stand two squares in a row, with a square turned at each end. A stack to smash. The turned squares make corners, so it stands until it's hit." : "Another row on top, just stacked."));
   crashWall(b, ["blue", "orange", "purple", "red"], at(3.4, -3.8), "N", 2, 4, (r) => (r === 0 ? "A second stack: two squares in a row." : "Another row on top, just stacked."));
@@ -109,8 +109,8 @@ function trainYard(): Project {
   ramp(b, "orange", at(2, R6(tz - 2 - Math.sqrt(3))), "S", 1, { big: true, topTower: true, support: "yellow", say: "On the far side of the train, a square away, lean a big square up onto its ring. The landing." });
   crushCar(b, "blue", 0.5, R6(tz - 5.6), "a crush car where the trucks land");
   crushCar(b, "red", 0.5, R6(tz - 7.2), "another to flatten");
-  // over the whole train and onto the landing, crunch the cars, then back along the track to flatten the train
-  b.route(["lane-1", "ramp-1", { jump: "ramp-2" }, { down: "ramp-2" }, { through: "car-1" }, { through: "car-2" }, { to: [11, 0, -16.5] }, { to: [11, 0, -9.7] }, { through: "wall-4" }, { through: "wall-3" }, { through: "wall-2" }, { through: "wall-1" }]);
+  // over the whole train and onto the landing, crunch the cars, then back across the train, wagon by wagon, side on (a truck driving along the track rides between the wagons' side walls and leaves them standing)
+  b.route(["lane-1", "ramp-1", { jump: "ramp-2" }, { down: "ramp-2" }, { through: "car-1" }, { through: "car-2" }, { to: [1, 0, -19] }, { to: [4, 0, -19] }, { to: [4, 0, -14.7] }, { through: "wall-4" }, { to: [11, 0, -7] }, { to: [11.5, 0, -14.7] }, { to: [5.2, 0, -14.7] }, { through: "wall-3" }, { to: [-0.5, 0, -6.8] }, { through: "wall-2" }, { to: [-5, 0, -13.5] }, { through: "wall-1" }]);
   return truck(b, { id: "truck-train-yard", title: "Train-yard crash", age: "d", done: "Up the ramp, over the whole train, and crunch! The train yard will never be the same." });
 }
 
@@ -184,7 +184,7 @@ function arena(): Project {
   pylon(b, ["blue"], "orange", -10.5, 4.5, 1, "a corner cone, front left");
   pylon(b, ["yellow"], "red", 12.5, -5.5, 1, "a corner cone, back right");
   pylon(b, ["orange"], "blue", 12.5, 4.5, 1, "a corner cone, front right");
-  b.route(["start", { jump: "ramp-1" }, { down: "ramp-1" }, "kicker-1", { jump: "ramp-2" }, { down: "ramp-2" }, { through: "car-1" }, { through: "car-2" }, { to: [-3.8, 0, 2.6] }, { through: "car-3" }]);
+  b.route(["start", { jump: "ramp-1" }, { down: "ramp-1" }, "kicker-1", { jump: "ramp-2" }, { down: "ramp-2" }, { through: "car-1" }, { through: "car-2" }, { to: [-3.73, 0, -0.9] }, { to: [-3.73, 0, 2.4] }, { through: "car-3" }]);
   return truck(b, { id: "truck-ultimate-arena", title: "The ultimate arena", age: "d", done: "Off the eight-high tower, down the mega ramp, over the jump and into the crush cars. The crowd goes wild!" });
 }
 

@@ -121,12 +121,12 @@ function worldFinals(): Project {
   b.deck("mat", [mat], "E", "lane");
   jump(b, at(2, -6), { dir: "E", gap: 4, kick: "orange", down: "orange", support: "yellow", say: ["Lean a big orange square up onto its ring: the first kicker.", "Past a gap of four squares, lean a big orange square up onto its ring: the landing."] });
   gapCars(b, at(2, -6), "E", 1, ["red", "green"], ["a crush car in the gap", "another, a row further on"]);
-  jump(b, at(14, -8), { dir: "S", gap: 1, kick: "green", down: "green", support: "purple", say: ["On the right, lean a big green square up onto its ring: a second kicker, pointing at you.", "Past a gap of one square, lean the green landing up onto its ring."] });
+  jump(b, at(14, -9), { dir: "S", gap: 2, kick: "green", down: "green", support: "purple", say: ["On the right, lean a big green square up onto its ring: a second kicker, pointing at you.", "Past a gap of two squares, lean the green landing up onto its ring."] });
   bigWall(b, ["red", "yellow"], 4, -3, 2, 1, "blue", () => "Near the front wall, stand two big squares side by side, and one at each end turning back towards you: the bottom of a wall to smash.", "Four blue squares in a row on top, with a small return at each end. Smash it!");
   why(b, "Another ring on top: 7 high.", "A wide tower doesn't tip: two squares across for up to eight high.");
   why(b, "so the deck has walls to rest on", "The deck rests on two opposite walls, so it can't tip into the corner.");
   why(b, "Near the front wall", "The returns make corners, so the wall stands until it's hit.");
-  b.route(["deck-1", { jump: "deck-2" }, "deck-2", { jump: "mat" }, { to: [8.5, 0, -7.5] }, { to: [1, 0, -7.5] }, { to: [1, 0, -4.7] }, { to: [1.7, 0, -4.7] }, "ramp-1", { jump: "ramp-2" }, { down: "ramp-2" }, { to: [12.1, 0, -4.8] }, { to: [14.8, 0, -4.8] }, { to: [14.8, 0, -9] }, { to: [13, 0, -9] }, { to: [13, 0, -8.2] }, "ramp-3", { jump: "ramp-4" }, { down: "ramp-4" }, { through: "wall-1" }]);
+  b.route(["deck-1", { jump: "deck-2" }, "deck-2", { jump: "mat" }, { to: [8.5, 0, -7.5] }, { to: [1, 0, -7.5] }, { to: [1, 0, -5.27] }, { to: [1.7, 0, -5.27] }, "ramp-1", { jump: "ramp-2" }, { down: "ramp-2" }, { to: [12.4, 0, -5.27] }, { to: [14.8, 0, -5.27] }, { to: [14.8, 0, -10] }, { to: [13, 0, -10] }, { to: [13, 0, -9.2] }, "ramp-3", { jump: "ramp-4" }, { down: "ramp-4" }, { through: "wall-1" }]);
   return truck(b, { id: "truck-world-finals-freestyle", title: "World finals freestyle", age: "d", done: "The crowd roars! Down from seven squares up, over the cars, and through the wall. Freestyle champion!" });
 }
 
@@ -158,12 +158,12 @@ function crashZone(): Project {
   const j = at(7, -2);
   jump(b, j, { dir: "N", gap: 4, kick: "orange", down: "red", support: "yellow", say: ["Lean a big orange square up onto its ring: the kicker, with the whole city ahead.", "Past a gap of four squares, lean the red landing up onto its ring."] });
   gapCars(b, j, "N", 1, ["red", "green"], ["a crush car parked in the street", "another, a row further on. Jump them!"]);
-  crashBox(b, ["red", "yellow", "blue"], 0, -5, 2, 2, 3, "green", "a bank");
-  crashBox(b, ["orange", "green", "purple"], 4, -5, 2, 1, 4, "yellow", "a tall shop");
+  crashBox(b, ["red", "yellow", "blue"], 0, -6, 2, 2, 3, "green", "a bank");
+  crashBox(b, ["orange", "green", "purple"], -4, -1, 2, 1, 4, "yellow", "a tall shop");
   crashBox(b, ["blue", "red", "yellow"], 10, -5, 2, 2, 3, "orange", "a town hall");
   crashBox(b, ["green", "purple", "orange"], 15, -8, 1, 2, 3, "red", "a corner tower");
   // a warehouse of big squares: four walls and a roof, two squares high
-  const [wx, wz] = [1, -12];
+  const [wx, wz] = [1, -13];
   const first = b.placed.length;
   b.wallX("square-large", "purple", wx, 0, wz + 2);
   b.wallZ("square-large", "purple", wx + 2, 0, wz);
@@ -179,7 +179,7 @@ function crashZone(): Project {
   crushCar(b, "purple", 14.5, -2, "a crush car beyond the kicker");
   pylon(b, ["yellow", "orange"], 13, -12, 1, "red", "a street-corner post");
   why(b, "a bank", "Walls joined in a ring hold each other square, so a building stands until it's hit.");
-  b.route(["lane-1", "ramp-1", { jump: "ramp-2" }, { down: "ramp-2" }, { to: [12.5, 0, -12.5] }, { through: "dominoes-1" }, { through: "wall-5" }, { to: [1, 0, -7.5] }, { through: "wall-1" }, { to: [3, 0, -4.5] }, { through: "wall-2" }, { to: [6.3, 0, -1] }, { to: [10.5, 0, -1] }, { through: "wall-3" }, { through: "wall-4" }, { to: [16.7, 0, 1] }, { to: [10, 0, 1] }, { to: [10, 0, -1.5] }, { to: [10.7, 0, -1.5] }, "kicker-1", { jump: "car-1" }, { through: "car-1" }]);
+  b.route(["lane-1", "ramp-1", { jump: "ramp-2" }, { down: "ramp-2" }, { to: [12.5, 0, -12.5] }, { through: "dominoes-1" }, { through: "wall-5" }, { to: [1, 0, -8.5] }, { through: "wall-1" }, { to: [-3, 0, -4.6] }, { to: [-3, 0, -3.2] }, { through: "wall-2" }, { to: [8, 0, -0.3] }, { to: [9.5, 0, -1.5] }, { to: [10.7, 0, -1.5] }, "kicker-1", { jump: "car-1" }, { through: "car-1" }, { to: [17.5, 0, -1.5] }, { to: [17.5, 0, -4.2] }, { to: [14, 0, -4.2] }, { through: "wall-3" }, { to: [10.6, 0, -7.5] }, { to: [12.5, 0, -7.5] }, { through: "wall-4" }]);
   return truck(b, { id: "truck-crash-zone-city", title: "Crash-zone city", age: "d", done: "Welcome to the Crash Zone! Jump the cars, flatten the shops, and topple the dominoes." });
 }
 

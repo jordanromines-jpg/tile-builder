@@ -100,7 +100,7 @@ function pajamaPalace(): Project {
 
 function remoteMuseum(): Project {
   const s = new Site();
-  const m = s.block("the museum", 0, 0, 6, 2, 2, ["green", "green"], { door: true, roof: "yellow" });
+  const m = s.block("the museum", 0, 0, 6, 2, 2, ["green", "green"], { door: true, roof: "yellow", deepPorch: true });
   s.roofs("the displays", [[0, 0], [2, 1], [4, 0], [3, 1]], m.top, "low", "red");
   s.roofs("the remote control", [[5, 1]], m.top, "tall", "blue");
   return s.build({ id: "remote-museum", title: "The Lost Remote Control Museum", theme: "homes", age: "d", done: "You built the Lost Remote Control Museum! Every remote ever lost is here. Check under the sofa first." });

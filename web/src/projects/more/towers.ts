@@ -79,7 +79,8 @@ function appleAqueduct(): Project {
 
 function lemonadeTower(): Project {
   const s = new Site();
-  for (const [x, z] of [[0, 0], [2, 0], [0, 2], [2, 2], [1, 1]] as const) s.tower("a leg", x, z, 2, ["blue", "blue"], { cap: "none" });
+  // each leg to its full height before the next: a ring of four alone skews like a diamond (R14)
+  ([[0, 0], [2, 0], [0, 2], [2, 2], [1, 1]] as const).forEach(([x, z], i) => s.tower("a leg", x, z, 2, ["blue", "blue"], { cap: "none", level: (y) => -1 + i * 0.1 + y * 0.01 }));
   const p = s.platform("the platform", 0, 0, 3, 3, 2, "yellow");
   const tank = s.block("the lemonade tank", 0, 0, 3, 3, 2, ["yellow", "orange"], { base: p.top, roof: "yellow" });
   s.roofs("the lid", [[1, 1]], tank.top, "tall", "green");
@@ -197,7 +198,7 @@ function sunflowerTower(): Project {
 
 function secretShed(): Project {
   const s = new Site();
-  const shed = s.block("the garden shed", 0, 0, 3, 2, 3, ["green", "orange"], { door: true, roof: "orange" });
+  const shed = s.block("the garden shed", 0, 0, 3, 2, 3, ["green", "orange"], { door: true, roof: "orange", deepPorch: true });
   s.roofs("the shed roof", [[0, 0], [2, 1]], shed.top, "tall", "red");
   s.plaza("the vegetable patch", 0, 3, 3, 2, "green");
   s.tower("the scarecrow", 4, 3, 3, ["yellow"], { cap: "low", capColour: "orange" });

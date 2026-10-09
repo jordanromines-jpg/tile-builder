@@ -14,9 +14,10 @@ function why(p: Project, from: string, text: string): Project {
 }
 
 /** Four corner towers, curtain walls between them, and something in the middle. */
-function corners(s: Site, w: number, d: number, h: number, tc: C[], wc: C, cren: C | undefined, cap: "tall" | "low" = "tall") {
+function corners(s: Site, w: number, d: number, h: number, tc: C[], wc: C, cren: C | undefined, cap: "tall" | "low" = "tall", byTower = false) {
   const spots: [number, number, string][] = [[0, 0, "the back left tower"], [w, 0, "the back right tower"], [0, d, "the front left tower"], [w, d, "the front right tower"]];
-  for (const [x, z, n] of spots) s.tower(n, x, z, h, tc, { cap });
+  // (`byTower`: each tower to its full height before the next, R14)
+  spots.forEach(([x, z, n], i) => s.tower(n, x, z, h, tc, { cap, ...(byTower ? { level: (y: number) => -1 + i * 0.1 + y * 0.01 } : {}) }));
   s.wall("the front wall", "x", 1, w, d + 1, 2, wc);
   s.wall("the back wall", "x", 1, w, 0, 2, wc);
   s.wall("the left wall", "z", 1, d, 0, 2, wc);
@@ -116,7 +117,7 @@ function hiccupHall(): Project {
 
 function wobblebottom(): Project {
   const s = new Site();
-  corners(s, 4, 3, 2, ["green", "green"], "yellow", undefined, "low");
+  corners(s, 4, 3, 2, ["green", "green"], "yellow", undefined, "low", true);
   s.plaza("the flower beds", 1, 1, 4, 3, "red");
   return s.build({ id: "wobblebottom-fort", title: "Queen Wobblebottom's Garden Fort", theme: "castles", age: "d", done: "You built Queen Wobblebottom's Garden Fort! The queen sits on the flowers. They are fine. Mostly." });
 }

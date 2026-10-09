@@ -1,7 +1,7 @@
 /* Build mode and the end of a build (plan keys 7a to 7h). */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { savedStep, startBuild, useSet } from "./helpers";
+import { savedStep, startBuild, tapParty, useSet } from "./helpers";
 
 const next = (page: Page) => page.getByRole("button", { name: "Next", exact: true });
 
@@ -180,10 +180,7 @@ test.describe("with motion", () => {
 
   test("the end: the celebration plays and a tap skips it", async ({ page }) => {
     await page.goto("#/done/fish");
-    const party = page.getByRole("button", { name: "Well done" });
-    await expect(party).toBeVisible();
-    await party.click();
-    await expect(party).toHaveCount(0);
+    await tapParty(page);
   });
 });
 

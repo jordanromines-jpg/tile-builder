@@ -1,6 +1,6 @@
 /* The building animation (sprint 2, change 4; 4.2d): a step's tiles show as ghosts for a moment, then each is tossed in
-   along a true ballistic arc (src/motion/arc.ts), turning as it flies, and the magnets catch it with a small damped
-   spring, one tile after another. In All steps, tiles drop 0.4 square under gravity with one bounce, and leave by
+   along a true ballistic arc (src/motion/arc.ts), turning as it flies, to 3 mm short of its place, and the magnets
+   pull it in with a stiff damped spring (4.2b), one tile after another. In All steps, tiles drop 0.4 square under gravity with one bounce, and leave by
    lifting and fading. Seeded, so it is the same every time. */
 import { arcAt, arcBetween, arcVelocity, type Arc, type Vec } from "../motion/arc";
 import { fall } from "../motion/fall";
@@ -38,8 +38,10 @@ export const SCENE_G = 128.7 / 3;
 export const FLIGHT_S = 0.36;
 /** The progress at which the tile touches down (the click is heard then). */
 export const LAND_K = FLIGHT_S / DROP_S;
-/** The magnets' catch: a damped spring (ω 40, ζ 0.45) that takes a quarter of the tile's landing speed. */
-const CATCH = spring(1600, 36);
+/** The magnets' pull (4.2b): the toss comes down 3 mm short of the tile's place, and the magnets pull it the rest of
+    the way, a stiff spring (ω 60, ζ 0.55: one small overshoot), keeping a quarter of the speed it came in with. */
+export const SNAP_GAP = 3 / 76.2;
+const CATCH = spring(3600, 66);
 const CATCH_SHARE = 0.25;
 
 export interface Flight {
@@ -52,9 +54,13 @@ export interface Flight {
 
 /** The toss from `from` to `to`: launch velocity solved to land on `to` at FLIGHT_S under SCENE_G. */
 export function makeFlight(from: Vec, to: Vec): Flight {
-  const arc = arcBetween(from, to, FLIGHT_S, [0, -SCENE_G, 0]);
+  // the way it comes in, then the same toss aimed SNAP_GAP short of its place along that way
+  const v0 = arcVelocity(arcBetween(from, to, FLIGHT_S, [0, -SCENE_G, 0]), FLIGHT_S);
+  const s0 = Math.hypot(...v0) || 1;
+  const short = to.map((c, i) => c - (v0[i] / s0) * SNAP_GAP) as Vec;
+  const arc = arcBetween(from, short, FLIGHT_S, [0, -SCENE_G, 0]);
   const v = arcVelocity(arc, FLIGHT_S);
-  const speed = Math.hypot(...v);
+  const speed = Math.hypot(...v) || 1;
   return { arc, dir: v.map((c) => c / speed), speed, to };
 }
 
@@ -65,8 +71,8 @@ export function flightAt(f: Flight, k: number, out: number[]): number {
     arcAt(f.arc, t, out);
     return t / FLIGHT_S;
   }
-  // caught: a little overshoot along the way it was going, then the magnets hold it exactly in place
-  const x = k >= 1 ? 0 : springAt(CATCH, t - FLIGHT_S, 0, f.speed * CATCH_SHARE).x;
+  // the magnets pull it in the last 3 mm, a little past along the way it was going, then hold it exactly in place
+  const x = k >= 1 ? 0 : springAt(CATCH, t - FLIGHT_S, -SNAP_GAP, f.speed * CATCH_SHARE).x;
   for (let i = 0; i < 3; i++) out[i] = f.to[i] + f.dir[i] * x;
   return 1;
 }

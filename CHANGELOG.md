@@ -1,5 +1,39 @@
 # Changelog
 
+## 4.2.0 · 9 Oct 2026
+
+Real physics. Jordan: "use real physics for the whole site", "EVERYWHERE".
+
+- **Every build is proved to stand.** Each step of all 445 builds is simulated with real magnet physics on the build
+  machine: after each step, everything built so far must stand while the child holds only that step's tiles, and the
+  finished build must stand with nothing held, even with the table leaned a little.
+- **61 builds fixed** that the physics found falling part-way through: fins, heads and tails go on last; ramps go up
+  stretch by stretch with their towers; a long wall is built from a corner; porches reach the back wall; tall picture
+  walls have feet both ways; some little details became small pyramids or U-shaped feet. Each build looks and builds
+  as before.
+- **Seven builds are still being worked on**: five need a better physics model of a pyramid standing on one flat tile,
+  two (the triangle truss bridge and the spiral ramp) need redesigns. A plan is waiting.
+- **Magnets pull tiles in.** As a tile lands in build mode, the magnets pull it the last 3 mm onto its place, with
+  one small bounce.
+- Motion everywhere follows exact physics formulas (4.2c, 4.2d, shipped earlier): the finish's falling tiles, the
+  tiles' toss, Pip's hops, the turntable and the screens' springs.
+
+## 4.0.0 · 9 Oct 2026
+
+The Pip truck runs the course. Jordan: "next I want to see the monster truck run the track and crash the courses as
+intended when it's complete."
+
+- **At the end of every Monster-truck build** the Pip truck drives the course: up the ramps, over the jumps, through
+  the tunnels and into the cars, walls and dominoes, which come down. Then **Run it again**.
+- **Real physics, worked out ahead.** Every run is simulated with real physics and proved before it ships: the truck
+  must follow its route, land every jump, knock down everything it is meant to and end on its wheels, and still do it
+  when it starts a little off or goes a little faster or slower. The iPad plays the proved run; it never simulates.
+- **Slow motion for the action:** each jump, landing and crash plays a little slower; the driving between is at speed.
+  The view follows the truck, and it sounds like a toy truck (engine, whoosh, thud, crunch).
+- **Courses fixed to be driven for real:** Stair-step drops now hops down three real steps; World finals freestyle's
+  channel is two squares wide; five routes go round tiles they used to clip (the truck is 7.5 cm across its tyres).
+- With motion reduced, the end of the run shows at once.
+
 ## 4.1.0 · 9 Oct 2026
 
 Watch it build. Jordan: "an auto build mode that has a speed selector that goes through it one step at a time."

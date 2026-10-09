@@ -127,7 +127,7 @@ function freestyleBowl(): Project {
   bowlSide(b, "W", at(0, 4), { ramp: "orange", rim: "blue" }, "left side");
   cones(b, ["orange", "yellow"], [[-2, -2], [4, -2], [-2, 5], [4, 5]], "In each corner outside the bowl, lean four tall triangles together until their tips meet: a cone.");
   crushCar(b, "red", 1.5, 1.5, "a crush car in the middle of the bowl");
-  b.route(["deck-1", { down: "ramp-1" }, { through: "car-1" }, { to: [3, 0, 3.9] }, "ramp-5", { down: "deck-3" }]);
+  b.route([{ to: [1, 1, -2.2] }, "deck-1", { down: "ramp-1" }, { through: "car-1" }, { to: [3, 0, 3.9] }, "ramp-5", { down: "deck-3" }]);
   return truck(b, { id: "truck-freestyle-bowl", title: "Freestyle bowl", age: "c", done: "Up one wall, over the middle, down the other side. Four ramps, one bowl, no rules!" });
 }
 
@@ -194,6 +194,13 @@ function skillsCourse(): Project {
   bigFlats(b, "purple", [[0, -14]], "At the end of the row, a big purple square flat: the corner. From here the course turns right.");
   cones(b, ["yellow", "orange"], [[5, -15], [5, -12], [8, -14], [8, -11]], "Two gates, each two squares wide: a cone either side. The second gate is a square nearer to you than the first.");
   tunnel(b, "red", "blue", at(11, -14), "E", 1);
+  // a one-square tunnel racks sideways like a parallelogram (R14): a big square turned back at each end of each wall,
+  // outside, makes every wall a corner that can't lean
+  for (const x of [11, 13]) {
+    b.wallZ("square-large", "orange", x, 0, -16);
+    b.wallZ("square-large", "orange", x, 0, -12);
+  }
+  b.step("Outside the tunnel, stand a big orange square at each end of both walls, turned back from the wall. Corners: now the tunnel can't lean.");
   ramp(b, "red", at(15, -14), "E", 1, { big: true, topTower: true, support: "blue", say: "A square past the tunnel, lean a big red square up onto its ring: a small kicker." });
   crushCar(b, "green", 19, -13.5, "a car to jump", true);
   bigFlats(b, "green", [[21, -14], [23, -14]], "Past the car, two big green squares flat: the landing.", "E");

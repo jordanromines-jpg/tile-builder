@@ -63,8 +63,9 @@ function crumbCrown(): Project {
 function soreStego(): Project {
   const s = new Studio();
   s.block("the body", 0, 0, 3, 1, 1, ["green"], { roof: "green" });
-  s.tetra("the head", triOn([3, 1], [3, 0], -1), 0, "green");
-  s.fins("the tail", [{ corner: [0, 1], out: [-1, 0] }, { corner: [0, 0], out: [-1, 0] }], "purple", "a pointy tail");
+  // the head and tail go on after the roof: a long ring skews like a parallelogram until its roof holds it (R14)
+  s.tetra("the head", triOn([3, 1], [3, 0], -1), 0, "green", true);
+  s.fins("the tail", [{ corner: [0, 1], out: [-1, 0] }, { corner: [0, 0], out: [-1, 0] }], "purple", "a pointy tail", true);
   return s.build({ id: "sore-stegosaurus", title: "The Stegosaurus with a Sore Back", theme: "animals", age: "b", done: "You built the stegosaurus! Its back is sore because of all the spiky plates. Gently does it." });
 }
 

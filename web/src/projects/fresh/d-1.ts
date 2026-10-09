@@ -119,7 +119,7 @@ function flamingoStilts(): Project {
 function tripleDecker(): Project {
   const s = new Studio();
   s.block("the bus", 0, 0, 5, 2, 3, ["red", "red", "yellow"], { door: true, floors: "orange", roof: "red" });
-  s.fins("the bumpers", [{ corner: [5, 2], out: [1, 0] }, { corner: [5, 0], out: [1, 0] }, { corner: [0, 2], out: [-1, 0] }, { corner: [0, 0], out: [-1, 0] }], "purple", "bumpers");
+  s.fins("the bumpers", [{ corner: [5, 2], out: [1, 0] }, { corner: [5, 0], out: [1, 0] }, { corner: [0, 2], out: [-1, 0] }, { corner: [0, 0], out: [-1, 0] }], "purple", "bumpers", true);
   return s.build({ id: "triple-decker-bus", title: "The Triple-Decker Bus (One Deck Too Many)", theme: "vehicles", age: "d", done: "You built the triple-decker bus! Mind the bridges. Mind the trees. Mind the birds, actually." });
 }
 
@@ -138,7 +138,9 @@ function sevenStages(): Project {
     s.walls("a booster", t, 3, ["blue", "purple", "blue"], { closed: true, what: "in a triangle against the side" });
     s.tetra("a booster", t, 3, "yellow");
   }
-  s.fins("the fins", [0, 3].map((k) => ({ corner: h.corners[k], out: away(h.centre, h.corners[k]) })), "green");
+  // the fins are little pyramids against the two free sides at the bottom: a fin hung on a corner by one edge swung
+  // (R14), and three triangles leaning together stand by themselves
+  for (const k of [2, 5]) s.tetra("a fin", triOut(h.centre, h.corners[k], h.corners[(k + 1) % 6]), 0, "green", true);
   return s.build({ id: "seven-stage-rocket", title: "The Rocket with Seven Stages (Six Too Many)", theme: "space", age: "d", done: "You built the seven-stage rocket! Stage one goes up. Stage seven is still waiting for its turn." });
 }
 
@@ -146,7 +148,7 @@ function smallPlaneCarrier(): Project {
   const s = new Studio();
   s.block("the ship", 0, 0, 7, 2, 2, ["blue", "purple"], { roof: "purple" });
   s.tower("the bridge", 5, 0, 3, ["yellow", "orange"], { base: 2, cap: "lid", capColour: "yellow" });
-  s.fins("the bow", [{ corner: [7, 2], out: [1, 0] }, { corner: [7, 0], out: [1, 0] }], "red", "a pointy front");
+  s.fins("the bow", [{ corner: [7, 2], out: [1, 0] }, { corner: [7, 0], out: [1, 0] }], "red", "a pointy front", true);
   [-0.3, 2.2, 4.7].forEach((x, i) => s.pad(`wave number ${i + 1}`, x, 2.2, "green", "a big square of sea"));
   return s.build({ id: "very-small-plane-carrier", title: "The Aircraft Carrier for Very Small Planes", theme: "vehicles", age: "d", done: "You built the aircraft carrier! The planes are so small they take off by sneezing." });
 }

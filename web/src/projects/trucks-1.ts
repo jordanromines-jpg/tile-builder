@@ -143,9 +143,10 @@ function megaRamp4(): Project {
 function towerDrop5(): Project {
   const b = new Builder();
   const deckZ = -5 * 2 * RUN - 1;
-  tower(b, ["red", "orange", "yellow", "green", "blue"], 0, deckZ, 2, 1, 5, "purple", (r) => (r === 0 ? "Far from you, stand a ring of six squares, two wide. The drop tower: two across holds it steady at five high." : `Another ring on top: ${r + 1} high.`));
+  // two by two (R14: two wide and one deep, five high, it leant over towards the child), growing away from the ramp
+  tower(b, ["red", "orange", "yellow", "green", "blue"], 0, deckZ - 1, 2, 2, 5, "purple", (r) => (r === 0 ? "Far from you, stand a ring of eight squares, two by two. The drop tower: two each way holds it steady at five high." : `Another ring on top: ${r + 1} high.`));
   ramp(b, "blue", at(0, 0), "N", 5, { support: "yellow", say: "Lean the ramp up from the table, square by square, onto each tower, to the deck at the top. The squares in the middle get a brace each next: triangles don't fold." });
-  lane(b, ["green", "yellow"], at(0, deckZ), "N", 3, 2, "Behind the drop tower, six squares flat on the table. That's where the trucks land.");
+  lane(b, ["green", "yellow"], at(0, deckZ - 1), "N", 3, 2, "Behind the drop tower, six squares flat on the table. That's where the trucks land.");
   b.route(["ramp-1", "deck-1", { jump: "lane-1" }, "lane-1"]);
   return truck(b, { id: "truck-tower-drop-five", title: "Tower drop, five high", age: "c", done: "Up the ramp to the top, and over the edge. A five-square drop!" });
 }
@@ -174,7 +175,7 @@ function dropTower8(): Project {
   crushCar(b, "blue", 3, 1.5, "another crush car");
   crushCar(b, "purple", -2, 1.5, "a third on the other side");
   crashWall(b, ["red", "yellow", "blue"], at(-1, 4), "N", 3, 3, (r) => (r === 0 ? "Past the landing zone, stand three squares in a row: a wall to smash." : "Another row on top, just stacked."));
-  b.route(["deck-1", { jump: "lane-1" }, { through: "car-2" }, { through: "car-1" }, { to: [1, 0, 1.2] }, { through: "car-3" }, { to: [0.5, 0, 2.2] }, { through: "wall-1" }]);
+  b.route(["deck-1", { jump: "lane-1" }, { through: "car-2" }, { through: "car-1" }, { to: [4.6, 0, 0.7] }, { to: [1, 0, 1.0] }, { through: "car-3" }, { to: [0.5, 0, 2.2] }, { through: "wall-1" }]);
   return truck(b, { id: "truck-drop-tower-eight", title: "The 8-high drop tower", age: "d", done: "From eight squares up, the drop of doom! Land it, and smash the wall." });
 }
 
