@@ -3,6 +3,10 @@
 Every change to a plan in this folder, newest first: the date, the plan, what changed, and the pull request. Add a
 line in the same commit as the plan change.
 
+## 2026-10-09
+
+- `2026-10-09-build-helpers.md`: new plan, approved (3.7–3.9); 3.7 build log. `README.md`: it is the plan in progress.
+
 ## 2026-10-08
 
 - `2026-10-08-design-polish.md`: 3.6 part two build log (the can't-load state; the toy start-up frame measured).

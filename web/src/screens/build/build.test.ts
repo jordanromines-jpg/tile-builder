@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 import { inventoryFromSet, matchProject } from "../../engine/match";
 import { setById } from "../../engine/sets";
 import { castle } from "../../projects/castle";
+import { PROJECTS } from "../../projects";
 import { fell, fellLines, layerStart } from "../../ui/kid/FellDown";
-import { firstSwapStep, shownAfter, stepTiles, swapsByStep } from "./stepTiles";
+import { allTiles, firstSwapStep, shownAfter, stepTiles, swapsByStep } from "./stepTiles";
 
 describe("it fell down (7d)", () => {
   it("counts falls on one step and asks a grown-up after two", () => {
@@ -46,5 +47,26 @@ describe("a step's tiles (7a, 7c)", () => {
     expect([...at.values()].flat().map((sw) => sw.to).sort()).toEqual(["tri-equilateral", "tri-right"]);
     const roofAt = [...at.entries()].find(([, sws]) => sws.some((sw) => sw.to === "tri-equilateral"))![0];
     expect(castle.steps[roofAt].tiles.every((t) => castle.placed[t].role === "roof")).toBe(true);
+  });
+});
+
+describe("get your tiles (3.7)", () => {
+  it("lists every tile of every build, once", () => {
+    for (const p of PROJECTS) {
+      const rows = allTiles(p);
+      expect(rows.reduce((n, r) => n + r.count, 0), p.id).toBe(p.placed.length);
+      expect(new Set(rows.map((r) => r.shape)).size, p.id).toBe(rows.length);
+    }
+  });
+
+  it("lists the castle by shape, then colour, and its swaps as what stands in", () => {
+    const rows = allTiles(castle);
+    expect(rows[0].shape).toBe("square");
+    expect(rows.map((r) => r.tiles.every((t) => t.shape === r.shape))).not.toContain(false);
+    const s = setById("magna-100")!;
+    const m = matchProject(castle, inventoryFromSet(s.pieces, s.brand, null));
+    const swapped = allTiles(castle, m.instead).flatMap((r) => r.tiles).filter((t) => t.instead);
+    // the spires' tall triangles stand in as equilateral ones, four a spire, each in its own colour
+    expect(swapped.filter((t) => t.shape === "tri-equilateral").map((t) => [t.colour, t.count])).toEqual([["red", 4], ["blue", 4]]);
   });
 });

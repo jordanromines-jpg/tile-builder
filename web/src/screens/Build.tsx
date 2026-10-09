@@ -26,8 +26,9 @@ import { StepDots } from "../ui/kid/StepDots";
 import { SwapNote } from "../ui/kid/SwapNote";
 import { TurnControls } from "../ui/kid/TurnControls";
 import { TileChip } from "../ui/TileChip";
-import { NeedNote } from "./build/NeedNote";
+import { TileList } from "./build/TileList";
 import { shownAfter, stepTiles, swapsByStep } from "./build/stepTiles";
+import { TilePicture } from "../ui/TileChip";
 
 export const REST_MS = 90_000;
 
@@ -46,7 +47,8 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
   const inv = useInventory();
   const [step, setStep] = useState<number | null>(null);
   const [settled, setSettled] = useState(0);
-  const [gate, setGate] = useState<"need" | null>(null);
+  // the tiles list (3.7): before step 1 of a fresh build ("start"), or opened from Tiles you need ("look")
+  const [gate, setGate] = useState<"start" | "look" | null>(null);
   const [turns, setTurns] = useState(0);
   const [hush, setHush] = useState(0);
   const [fall, setFall] = useState<FallState>({ step: -1, falls: 0 });
@@ -76,14 +78,14 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
     [lineOf, age],
   );
 
-  // first open: carry on from the saved step; a project short of tiles shows its note first
+  // first open: carry on from the saved step; a fresh build (step 1) shows its tiles first
   useEffect(() => {
     if (step !== null || inv === undefined) return;
     void getStep(pid).then((saved) => {
       const s = Math.min(saved, last);
       setStep(s);
       setSettled(shownAfter(project, s) - project.steps[s].tiles.length);
-      if (s === 0 && match?.state === "need") setGate("need");
+      if (s === 0) setGate("start");
       else speak(s);
     });
   }, [inv, step, pid, last, project, match, speak]);
@@ -121,6 +123,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
 
   const go = (n: number) => {
     const s = Math.max(0, Math.min(last, n));
+    setGate(null);
     setStep(s);
     setTurns(0);
     void saveStep(pid, s);
@@ -145,7 +148,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
         <div className="absolute inset-0">
           <Viewer
             project={project}
-            shown={gate ? 0 : shownAfter(project, step)}
+            shown={gate === "start" ? 0 : shownAfter(project, step)}
             leg={leg}
             instead={instead}
             current={project.steps[step].tiles}
@@ -157,14 +160,20 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
             spin={!resting}
             label={S.build.model(project.title)}
           />
-          {gate === "need" && match && (
-            <NeedNote
-              missing={match.missing}
+          {gate && (
+            <TileList
+              project={project}
+              instead={instead}
+              leg={leg}
+              missing={match?.missing ?? []}
+              mode={gate}
+              inset={{ top: 112, bottom: strip }}
               onStart={() => {
                 setGate(null);
                 speak(step);
               }}
               onPick={() => void navigate({ to: "/" })}
+              onClose={() => setGate(null)}
             />
           )}
         </div>
@@ -173,6 +182,23 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
             <KidBar
               onBack={() => void navigate({ to: "/" })}
               hear={<SpeakButton text={lineOf(step)} />}
+              extra={
+                <KidButton
+                  label={S.build.tilesButton}
+                  showLabel={false}
+                  icon={
+                    <span className="flex items-end gap-0.5" aria-hidden="true">
+                      <TilePicture shape="square" colour="blue" px={22} />
+                      <TilePicture shape="tri-equilateral" colour="yellow" px={22} />
+                    </span>
+                  }
+                  tone="plain"
+                  className="ts-tiles-button"
+                  onPress={() => setGate(gate === "look" ? null : "look")}
+                  pressed={gate === "look"}
+                  speak
+                />
+              }
               title={
                 <h1 className="ts-title soft inline-block max-w-full truncate rounded-full bg-surface-2 px-6 py-2 font-display text-[length:var(--fs-kid-label-b)] font-bold text-ink-1">
                   {project.title}

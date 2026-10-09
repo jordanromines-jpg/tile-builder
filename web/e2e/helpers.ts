@@ -79,3 +79,10 @@ export async function swipeTo(page: Page, shelf: string, card: RegExp) {
   }
   return button;
 }
+
+/** A fresh build opens on its tiles list (3.7): wait for the step panel, then Start (or Start anyway) if it shows. */
+export async function startBuild(page: Page) {
+  await expect(page.getByRole("button", { name: "Next", exact: true })).toBeVisible();
+  const go = page.getByRole("dialog", { name: "Get your tiles" }).getByRole("button", { name: /^Start( anyway)?$/ });
+  if (await go.count()) await go.click();
+}
