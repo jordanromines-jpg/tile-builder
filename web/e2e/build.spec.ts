@@ -182,7 +182,9 @@ test.describe("with motion", () => {
     await page.goto("#/done/fish");
     const party = page.getByRole("button", { name: "Well done" });
     await expect(party).toBeVisible();
-    await party.click();
+    // tapped as a child does, without waiting for the button to hold still (it moves with the party, and on a slow
+    // renderer the party could be over first)
+    await party.click({ force: true });
     await expect(party).toHaveCount(0);
   });
 });
