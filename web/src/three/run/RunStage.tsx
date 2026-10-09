@@ -5,11 +5,16 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
-import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { Engine, truckSound } from "../../sound/truck";
 import type { TileDrive } from "../Model";
 import { Truck } from "../truck/Truck";
 import type { Player } from "./playback";
+
+/** How a run moves the view (the camera rig applies it on top of its own view): slid by `shift`, brought `zoom` closer. */
+export interface Follow {
+  shift: THREE.Vector3;
+  zoom: number;
+}
 
 export interface RunPlay {
   player: Player;
@@ -48,21 +53,18 @@ export function tileDrive(play: RunPlay): TileDrive {
 }
 
 /** how far the view slides toward the truck, and how much closer it comes on a course bigger than BIG squares */
-const FOLLOW = 0.6;
-const CLOSER = 0.6;
+const FOLLOW = 0.85;
+const CLOSER = 0.75;
 const BIG = 6;
 /** how quickly the view catches up (per second), and seconds to go back to where it began after the run */
-const CATCH = 2.5;
+const CATCH = 4;
 const BACK_S = 1.2;
 
-export function RunStage({ play, paint, size }: { play: RunPlay; paint: number; size: number }) {
+export function RunStage({ play, paint, size, follow, aim, offset }: { play: RunPlay; paint: number; size: number; follow: Follow; aim: THREE.Vector3; offset: THREE.Vector3 }) {
   const invalidate = useThree((s) => s.invalidate);
-  const camera = useThree((s) => s.camera);
-  const controls = useThree((s) => s.controls) as OrbitControlsImpl | null;
-  const holder = useRef<THREE.Group>(null);
-  // the view follows the truck gently while it runs, and goes back to where it began
-  const view = useRef<{ pos: THREE.Vector3; aim: THREE.Vector3; shift: THREE.Vector3; zoom: number; endedAt: number } | null>(null);
   const ended = useRef(false);
+  // the view follows the truck gently while it runs, and goes back to where it began after (through the rig)
+  const endedAt = useRef(0);
   const end = useRef(play.onEnd);
   end.current = play.onEnd;
   useEffect(() => {
@@ -75,15 +77,12 @@ export function RunStage({ play, paint, size }: { play: RunPlay; paint: number; 
   const engine = useMemo(() => new Engine(), []);
   const heard = useRef({ t: 0, at: [0, 0, 0] as readonly number[] });
   useEffect(() => {
-    if (play.still || window.__runSeek !== undefined) return;
-    view.current = { pos: camera.position.clone(), aim: controls?.target.clone() ?? new THREE.Vector3(), shift: new THREE.Vector3(), zoom: 1, endedAt: 0 };
+    endedAt.current = 0;
     return () => {
-      const v = view.current;
-      if (v) camera.position.copy(v.pos);
-      if (v && controls) controls.target.copy(v.aim);
-      view.current = null;
+      follow.shift.set(0, 0, 0);
+      follow.zoom = 1;
     };
-  }, [play, camera, controls]);
+  }, [play, follow]);
   useEffect(() => {
     heard.current = { t: 0, at: play.player.truck(0).pos };
     if (!play.still) engine.start();
@@ -110,32 +109,22 @@ export function RunStage({ play, paint, size }: { play: RunPlay; paint: number; 
       engine.stop();
       end.current?.();
     }
-    const v = view.current;
     let easing = false;
-    if (v && holder.current?.children[0]) {
+    if (!play.still) {
       const now = performance.now();
-      if (done && !v.endedAt) v.endedAt = now;
-      const back = v.endedAt ? Math.min(1, (now - v.endedAt) / 1000 / BACK_S) : 0;
-      const truck = holder.current.children[0].getWorldPosition(new THREE.Vector3());
-      const want = truck.sub(v.aim).multiplyScalar(FOLLOW * (1 - back));
-      want.y = 0;
+      if (done && !endedAt.current) endedAt.current = now;
+      const back = endedAt.current ? Math.min(1, (now - endedAt.current) / 1000 / BACK_S) : 0;
+      // the truck in the turntable's frame (the stage is offset by the course's middle; a finish doesn't turn it)
+      const at = play.player.truck(t).pos;
+      const want = new THREE.Vector3(at[0] - offset.x - aim.x, 0, at[2] - offset.z - aim.z).multiplyScalar(FOLLOW * (1 - back));
       const wantZoom = 1 - (size > BIG ? 1 - CLOSER : 0) * (1 - back);
-      const k = v.endedAt ? 1 : 1 - Math.exp(-CATCH / 60);
-      v.shift.lerp(want, k);
-      v.zoom += (wantZoom - v.zoom) * k;
-      const aim = v.aim.clone().add(v.shift);
-      camera.position.copy(v.pos.clone().sub(v.aim).multiplyScalar(v.zoom).add(aim));
-      if (controls) {
-        controls.target.copy(aim);
-        controls.update();
-      } else camera.lookAt(aim);
+      // (a held moment, for the contact sheets, shows the view settled there)
+      const k = endedAt.current || window.__runSeek !== undefined ? 1 : 1 - Math.exp(-CATCH / 60);
+      follow.shift.lerp(want, k);
+      follow.zoom += (wantZoom - follow.zoom) * k;
       easing = back < 1;
     }
     if (!done || easing || window.__runSeek !== undefined) invalidate();
   });
-  return (
-    <group ref={holder}>
-      <Truck drive={drive} paint={paint} alive={!play.still} />
-    </group>
-  );
+  return <Truck drive={drive} paint={paint} alive={!play.still} />;
 }

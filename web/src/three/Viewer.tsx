@@ -19,7 +19,7 @@ import { useStill } from "../ui/motion";
 import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
 import { BIG_BUILD, frameOf, Model, releaseShared } from "./Model";
 import { FallingTiles } from "./FallingTiles";
-import { type RunPlay, RunStage, tileDrive } from "./run/RunStage";
+import { type Follow, type RunPlay, RunStage, tileDrive } from "./run/RunStage";
 import { FrameWatch } from "./FrameWatch";
 import { currentTier, faster, slower } from "./quality";
 import { Stage } from "./Stage";
@@ -87,7 +87,7 @@ function Turntable({ yaw, still, onRest, children }: { yaw: number; still: boole
 
 /** Eases the camera and where it looks (`target`, from `distance`) to each new view, from wherever it is now; `sweep`
     circles the model once and, ended early or not, eases back to the view. It owns the orbit controls' target. */
-function CameraRig({ target, distance, focusKey, sweep, still, look }: { target: THREE.Vector3; distance: number; focusKey: number; sweep: boolean; still: boolean; look: Look }) {
+function CameraRig({ target, distance, focusKey, sweep, still, look, follow }: { target: THREE.Vector3; distance: number; focusKey: number; sweep: boolean; still: boolean; look: Look; follow?: Follow }) {
   const camera = useThree((s) => s.camera);
   const controls = useThree((s) => s.controls) as OrbitControlsImpl | null;
   const invalidate = useThree((s) => s.invalidate);
@@ -101,6 +101,8 @@ function CameraRig({ target, distance, focusKey, sweep, still, look }: { target:
     curT: new THREE.Vector3(),
     sweepStart: 0,
     dirty: true,
+    /** the last frame was moved by a run's follow: the next one puts the view back */
+    followed: false,
   });
   const first = useRef(true);
   const aimKey = `${target.x.toFixed(3)},${target.y.toFixed(3)},${target.z.toFixed(3)}`;
@@ -151,8 +153,16 @@ function CameraRig({ target, distance, focusKey, sweep, still, look }: { target:
       } else invalidate();
     }
     a.curT.copy(t);
-    if (k < 1 || a.sweepStart || a.dirty) {
+    // a truck run's follow (4.0c): the view slid towards the truck and brought closer, on top of the rig's own view
+    const following = !!follow && (follow.zoom !== 1 || follow.shift.lengthSq() > 0);
+    if (following) {
+      p = p.sub(t).multiplyScalar(follow.zoom);
+      t.add(follow.shift);
+      p.add(t);
+    }
+    if (k < 1 || a.sweepStart || a.dirty || following || a.followed) {
       a.dirty = false;
+      a.followed = following;
       camera.position.copy(p);
       if (controls) {
         controls.target.copy(t);
@@ -371,6 +381,8 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   }, [age, autoRotate, shown]);
 
   const drive = useMemo(() => (run ? tileDrive(run) : undefined), [run]);
+  // a truck run moves the view through the rig (4.0c)
+  const follow = useMemo<Follow>(() => ({ shift: new THREE.Vector3(), zoom: 1 }), []);
   const start = viewFrom(aim, distance, 0, look);
   return (
     <div ref={wrap} className="h-full w-full" role="img" aria-label={label} style={{ touchAction: age === "a" ? "pan-y" : "none" }}>
@@ -390,7 +402,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
           </group>
           {run && (
             <group position={[-whole.center.x, 0, -whole.center.z]}>
-              <RunStage play={run} paint={tint} size={whole.size} />
+              <RunStage play={run} paint={tint} size={whole.size} follow={follow} aim={aim} offset={whole.center} />
             </group>
           )}
           {falling && (
@@ -412,7 +424,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
             makeDefault
           />
         )}
-        <CameraRig target={aim} distance={distance} focusKey={focusKey.current} sweep={sweep} still={still} look={look} />
+        <CameraRig target={aim} distance={distance} focusKey={focusKey.current} sweep={sweep} still={still} look={look} follow={follow} />
         <Offset y={offsetY} />
         {onTarget && <TargetWatch marker={marker} onTarget={onTarget} />}
         <Spin on={autoRotate} />

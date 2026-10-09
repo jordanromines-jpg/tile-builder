@@ -2,57 +2,57 @@
  "version": 1,
  "runs": {
   "truck-backflip-ramp": {
-   "key": "9fe1e1e0cd6ee319",
+   "key": "947b6b4f88a46172",
    "frames": 654,
    "bytes": 1595
   },
   "truck-big-air-gap": {
-   "key": "b32d461afc07f0d8",
-   "frames": 3218,
-   "bytes": 30412
+   "key": "986acb429cefa2c9",
+   "frames": 3221,
+   "bytes": 30230
   },
   "truck-big-air-two-lanes": {
-   "key": "c028834f0fdc501a",
+   "key": "5b19529509d6b88c",
    "frames": 430,
    "bytes": 1126
   },
   "truck-big-square-garage": {
-   "key": "dfb13fa647d39ffe",
+   "key": "cc99858db2f7e447",
    "frames": 563,
    "bytes": 3523
   },
   "truck-big-tunnel": {
-   "key": "872f94521196c1dc",
+   "key": "b64c4c4e3119b111",
    "frames": 769,
    "bytes": 15545
   },
   "truck-bounce-bridge": {
-   "key": "cf1807836131eb6e",
+   "key": "9ba4f10ef98f5bed",
    "frames": 819,
    "bytes": 10285
   },
   "truck-bridge-to-bridge": {
-   "key": "a2b6590d5d2ac6f4",
+   "key": "6e6e89b95bb5cbf7",
    "frames": 1279,
    "bytes": 10739
   },
   "truck-bumpy-road": {
-   "key": "0eb77dd06ae9ea92",
+   "key": "770e75a1de354a66",
    "frames": 422,
    "bytes": 1483
   },
   "truck-bus-jump": {
-   "key": "2db77ab93e6377e5",
+   "key": "db554d85172d8b5b",
    "frames": 2220,
-   "bytes": 14679
+   "bytes": 15106
   },
   "truck-canyon-jump": {
-   "key": "439f473bdf2e01d8",
-   "frames": 1202,
-   "bytes": 12441
+   "key": "4244d77da5f0c1ae",
+   "frames": 1204,
+   "bytes": 13124
   },
   "truck-cliff-jump": {
-   "key": "ef48c4a63af54d25",
+   "key": "88644a7b7ba8d7a8",
    "frames": 1608,
    "bytes": 13168
   },
@@ -62,7 +62,7 @@
    "bytes": 5861
   },
   "truck-crash-test-city": {
-   "key": "bc9d59bc02c1141a",
+   "key": "20d5af082f92278e",
    "frames": 1317,
    "bytes": 38710
   },
@@ -72,52 +72,52 @@
    "bytes": 133986
   },
   "truck-crush-car-jump": {
-   "key": "9695de4fedd88544",
+   "key": "21cf64a92756ac39",
    "frames": 286,
    "bytes": 3413
   },
   "truck-crush-car-row": {
-   "key": "7dad38a9eeb48365",
+   "key": "b233816a01785783",
    "frames": 506,
    "bytes": 12494
   },
   "truck-crush-the-cubes": {
-   "key": "97df4b0d01bfdf7a",
+   "key": "a847bc96448135a1",
    "frames": 394,
    "bytes": 6265
   },
   "truck-domino-run": {
-   "key": "67d0493f6528a1ca",
+   "key": "7b09181efe8e27aa",
    "frames": 1413,
    "bytes": 15575
   },
   "truck-donut-circle": {
-   "key": "693dfc1381fd1d8b",
+   "key": "dc18ceed711ef4a1",
    "frames": 1823,
    "bytes": 14928
   },
   "truck-double-decker-race": {
-   "key": "cc488a0aadfb505e",
+   "key": "0f6b4c9fecf0b1ab",
    "frames": 2159,
    "bytes": 4251
   },
   "truck-drag-strip": {
-   "key": "8ec18e8f55760f10",
+   "key": "52f067b423f36ee6",
    "frames": 840,
    "bytes": 9508
   },
   "truck-drop-tower-eight": {
-   "key": "79b71540ac617757",
+   "key": "cd2745d2a6fc0d41",
    "frames": 950,
    "bytes": 24728
   },
   "truck-figure-eight-bridge": {
-   "key": "352f93613bdcbcbc",
+   "key": "ddbb9a19c01dbde0",
    "frames": 2498,
    "bytes": 6539
   },
   "truck-first-jump": {
-   "key": "fa5d9b8d0c770a37",
+   "key": "06f86c89c2ae6e31",
    "frames": 364,
    "bytes": 834
   },
@@ -127,127 +127,127 @@
    "bytes": 7097
   },
   "truck-knock-down-tower": {
-   "key": "5b89d7fd26adf091",
+   "key": "07eb0c0cc677a20c",
    "frames": 418,
    "bytes": 12815
   },
   "truck-knock-down-wall": {
-   "key": "7a8db845c39b14ea",
+   "key": "f9c5c9eff11c2834",
    "frames": 301,
    "bytes": 3852
   },
   "truck-little-arena": {
-   "key": "d1d72f431afd2493",
+   "key": "acdb1bb370bb1295",
    "frames": 426,
    "bytes": 5904
   },
   "truck-little-ramp": {
-   "key": "d4aa2273a693696c",
+   "key": "d82648d13cd26fd8",
    "frames": 416,
    "bytes": 847
   },
   "truck-mega-ramp-eight": {
-   "key": "c7c93a19e6ec2367",
-   "frames": 1733,
-   "bytes": 23132
+   "key": "0750e0df2d297589",
+   "frames": 1735,
+   "bytes": 23705
   },
   "truck-mega-ramp-four": {
-   "key": "b9c47566b973d97b",
+   "key": "8e9a017a1d7868f8",
    "frames": 808,
    "bytes": 5647
   },
   "truck-monster-garage": {
-   "key": "6ab5b0c12ad7b38d",
+   "key": "96d329483bb6c9c7",
    "frames": 1379,
    "bytes": 15054
   },
   "truck-monster-stadium": {
-   "key": "5c22242a8d5f1ee0",
+   "key": "808ae45b522e10e1",
    "frames": 2148,
    "bytes": 41280
   },
   "truck-ramp-and-drop": {
-   "key": "d0a30ccd4d64f06f",
+   "key": "6eeacf45a2efd7b2",
    "frames": 380,
    "bytes": 1106
   },
   "truck-ramp-to-ramp": {
-   "key": "59a79996f4605639",
+   "key": "48847610a92cf00c",
    "frames": 886,
    "bytes": 2063
   },
   "truck-ramp-to-the-roof": {
-   "key": "22ab87b474da6dc8",
+   "key": "683111187c312e63",
    "frames": 480,
-   "bytes": 1252
+   "bytes": 1243
   },
   "truck-road-loop": {
-   "key": "72d0d4d604ee9e46",
+   "key": "fc5060ac8f3129ff",
    "frames": 920,
    "bytes": 3186
   },
   "truck-rollover-pit": {
-   "key": "8844946bf4371fdb",
+   "key": "724be8ddb5374fef",
    "frames": 1397,
    "bytes": 85651
   },
   "truck-skills-course": {
-   "key": "3b154a33c6216d8f",
+   "key": "7c5782613469ea9c",
    "frames": 2203,
-   "bytes": 12142
+   "bytes": 12141
   },
   "truck-spiral-ramp": {
-   "key": "8e2455a74dab0fca",
+   "key": "6f3882d666f34539",
    "frames": 1258,
    "bytes": 5313
   },
   "truck-stair-step-drops": {
-   "key": "c2e14f19281b851b",
-   "frames": 708,
-   "bytes": 7510
+   "key": "3f377ebebd866459",
+   "frames": 707,
+   "bytes": 7611
   },
   "truck-tower-drop-five": {
-   "key": "a9d210d9c51e6214",
-   "frames": 644,
-   "bytes": 1535
+   "key": "1b955c4d4e1a5cfa",
+   "frames": 682,
+   "bytes": 1678
   },
   "truck-train-yard": {
-   "key": "1743db390c27be89",
+   "key": "d073ba094f45c42f",
    "frames": 2956,
    "bytes": 75286
   },
   "truck-triple-big-air": {
-   "key": "7eada4bc81c779a2",
+   "key": "01fbf704309753a0",
    "frames": 1135,
    "bytes": 16559
   },
   "truck-tunnel": {
-   "key": "ee159a1786e205f1",
+   "key": "2630d2292b162f37",
    "frames": 419,
    "bytes": 4481
   },
   "truck-two-lane-race-tunnel": {
-   "key": "ca2a935e2e3df26e",
+   "key": "0e8216f0531dde43",
    "frames": 1270,
    "bytes": 11184
   },
   "truck-two-lane-ramp": {
-   "key": "3dff46c17d42c93a",
+   "key": "0c431c9e9b4effa0",
    "frames": 298,
    "bytes": 784
   },
   "truck-ultimate-arena": {
-   "key": "0503ecb3815f943f",
-   "frames": 1247,
-   "bytes": 17080
+   "key": "1e08edbe80b9d233",
+   "frames": 1254,
+   "bytes": 16834
   },
   "truck-wall-of-doom": {
-   "key": "15601e5d3a99f9dc",
-   "frames": 896,
-   "bytes": 33465
+   "key": "66f3bc0746335c3f",
+   "frames": 895,
+   "bytes": 34159
   },
   "truck-world-finals-freestyle": {
-   "key": "c895ecd19beeadcb",
+   "key": "d87c67b08b2f08b8",
    "frames": 1786,
    "bytes": 16119
   }
