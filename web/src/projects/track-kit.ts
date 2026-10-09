@@ -23,6 +23,7 @@ export const UP: Record<Dir, [number, number]> = { N: [0, -1], E: [1, 0], S: [0,
 export const RIGHT: Record<Dir, [number, number]> = { N: [1, 0], E: [0, 1], S: [-1, 0], W: [0, -1] };
 export const OPPOSITE: Record<Dir, Dir> = { N: "S", S: "N", E: "W", W: "E" };
 
+const r6 = (v: number) => Math.round(v * 1e6) / 1e6;
 const move = (p: At, d: [number, number], k: number, dy = 0): At => ({ x: p.x + d[0] * k, y: p.y + dy, z: p.z + d[1] * k });
 
 /** The w × d rectangle (in x and z) that starts at p and runs `along` for `len` and `across` for `wide`. */
@@ -37,7 +38,7 @@ function rect(p: At, along: [number, number], len: number, across: [number, numb
 /** A tower of `h` rings of walls on the w × d cell at (x0, z0), colour by ring, with an optional lid of flat squares on
     top (each lid square rests on two walls when the tower is one or two squares across). One step a ring; one for
     the lid. */
-export function tower(b: Builder, colours: Colour[], x0: number, z0: number, w: number, d: number, h: number, lid: Colour | null, say?: (ring: number) => string) {
+export function tower(b: Builder, colours: Colour[], x0: number, z0: number, w: number, d: number, h: number, lid: Colour | null, say?: (ring: number) => string, dir: Dir = "N") {
   for (let r = 0; r < h; r++) {
     b.room(colours[r % colours.length], x0, z0, w, d, r);
     b.step(say?.(r) ?? (r === 0 ? `Stand ${2 * (w + d)} squares in a ring, ${w} by ${d}. A support.` : `Another ring on top: ${r + 1} high.`));
@@ -49,14 +50,16 @@ export function tower(b: Builder, colours: Colour[], x0: number, z0: number, w: 
       for (let x = x0 + 1; x < x0 + w; x++) for (let z = z0; z < z0 + d; z++) b.wallZ("square", colours[(h - 1) % colours.length], x, h - 1, z);
       b.step(`Inside the top ring, stand ${(w - 1) * d} more squares across the middle, so the deck has walls to rest on.`);
     }
+    const deck = b.placed.length;
     for (let x = 0; x < w; x++) for (let z = 0; z < d; z++) b.lid("square", lid, x0 + x, h, z0 + z);
     b.step(`Lay ${w * d === 1 ? "a square" : `${w * d} squares`} flat on top. A deck to start from.`);
+    b.deck(null, b.since(deck), dir);
   }
 }
 
 /** A big tower: rings of four big squares (two high each) on the 2 × 2 cell at (x0, z0), then a big square on top as a
     deck. Four rings make the 8-high drop tower. */
-export function bigTower(b: Builder, colours: Colour[], x0: number, z0: number, rings: number, deck: Colour) {
+export function bigTower(b: Builder, colours: Colour[], x0: number, z0: number, rings: number, deck: Colour, dir: Dir = "N") {
   const Qr = Math.PI / 2;
   for (let r = 0; r < rings; r++) {
     const c = colours[r % colours.length];
@@ -66,8 +69,9 @@ export function bigTower(b: Builder, colours: Colour[], x0: number, z0: number, 
     b.wallZ("square-large", c, x0, 2 * r, z0);
     b.step(r === 0 ? "Stand four big squares in a ring. The bottom of the tower." : `Four more big squares on top: ${2 * (r + 1)} squares high.`);
   }
-  b.add("square-large", deck, [x0, 2 * rings, z0 + 2], [-Qr, 0]);
+  const lid = b.add("square-large", deck, [x0, 2 * rings, z0 + 2], [-Qr, 0]);
   b.step(`A big square flat on top: the deck, ${2 * rings} squares up. The truck starts here.`);
+  b.deck(null, [lid], dir);
 }
 
 export interface RampOpts {
@@ -79,6 +83,8 @@ export interface RampOpts {
   /** put a tower under the top edge too (a kicker or a ramp that ends in the air); false when it runs onto a deck */
   topTower?: boolean;
   say?: string;
+  /** what the course calls it: a ramp (default) or a kicker */
+  feature?: "ramp" | "kicker";
 }
 
 /** A 30° ramp from `at`, rising `rise` squares towards `dir`, with support towers (built first) under every whole
@@ -105,11 +111,12 @@ export function ramp(b: Builder, colour: Colour, at: At, dir: Dir, rise: number,
       b.step(k === 0 ? `Stand a ring of ${2 * (r.w + r.d)} squares where the ramp will rest${at.y + h > 1 ? `: the first of ${at.y + h}` : ""}.` : `Another ring on top: ${k + 1} high.`);
     }
   }
+  const tiles: number[] = [];
   for (let k = 0; k < rise * per; k++) {
     const base = move(at, up, k * run, k * lift);
     for (let l = 0; l < (o.big ? 1 : lanes); l++) {
       const p = move(base, right, l);
-      b.add(o.big ? "square-large" : "square", colour, [p.x, p.y, p.z], [-(Q - SLOPE), RY[dir]], "ramp");
+      tiles.push(b.add(o.big ? "square-large" : "square", colour, [p.x, p.y, p.z], [-(Q - SLOPE), RY[dir]], "ramp"));
     }
   }
   b.step(o.say ?? `Lean the ramp up from the bottom, ${o.big ? "big squares" : lanes === 2 ? "two squares side by side" : "one square"} at a time, each resting on the last, up to the top.`);
@@ -126,12 +133,16 @@ export function ramp(b: Builder, colour: Colour, at: At, dir: Dir, rise: number,
     }
     b.step(rise === 1 ? "Lock the ramp: lean one more square from the side of the tower up under the middle of the ramp. Now it holds a truck." : "Lock each pair: under every middle join, lean a square up from the side of the tower beyond. Now it holds a truck.");
   }
-  return move(at, up, rise * per * run, rise);
+  const top = move(at, up, rise * per * run, rise);
+  // the course: the slope from the middle of the bottom edge to the middle of the top edge
+  const mid = (p: At): [number, number, number] => [r6(p.x + (right[0] * lanes) / 2), r6(p.y), r6(p.z + (right[1] * lanes) / 2)];
+  b.feature({ kind: o.feature ?? "ramp", dir, tiles, surface: { kind: "slope", from: mid(at), to: mid(top), width: lanes } });
+  return top;
 }
 
 /** A kicker: a ramp one square high from the table with a tower under its lip, so a truck flies off the end. */
 export function kicker(b: Builder, colour: Colour, at: At, dir: Dir, o: RampOpts = {}): At {
-  return ramp(b, colour, at, dir, 1, { ...o, topTower: true, say: o.say ?? "Lean the kicker up onto the ring. Launch!" });
+  return ramp(b, colour, at, dir, 1, { ...o, topTower: true, feature: "kicker", say: o.say ?? "Lean the kicker up onto the ring. Launch!" });
 }
 
 /** A run of flat squares on the table: `len` long towards `dir`, `lanes` wide, from the left corner `at`; one step, or
@@ -139,6 +150,7 @@ export function kicker(b: Builder, colour: Colour, at: At, dir: Dir, o: RampOpts
 export function lane(b: Builder, colours: Colour[], at: At, dir: Dir, len: number, lanes: 1 | 2, say: string, each = false) {
   const up = UP[dir];
   const right = RIGHT[dir];
+  const from = b.placed.length;
   let i = 0;
   for (let k = 0; k < len; k++)
     for (let l = 0; l < lanes; l++) {
@@ -148,14 +160,18 @@ export function lane(b: Builder, colours: Colour[], at: At, dir: Dir, len: numbe
       if (each) b.step(k === 0 && l === 0 ? say : "One more square, flat on the table, next to the last.");
     }
   if (!each) b.step(say);
+  b.deck(null, b.since(from), dir, "lane");
 }
 
-/** A crush car: a cube of six squares, built to be flattened (role crash). Three steps: the floor, the sides, the roof. */
-export function crushCar(b: Builder, colour: Colour, x: number, z: number, name = "a crush car") {
+/** A crush car: a cube of six squares, built to be flattened (role crash). Three steps: the floor, the sides, the roof.
+    `solid` is a car to jump over, not to crush: the same cube, not built to fall, and not part of the course (the
+    truck has to clear it). */
+export function crushCar(b: Builder, colour: Colour, x: number, z: number, name = "a crush car", solid = false) {
   const mark = (from: number) => {
-    for (let i = from; i < b.placed.length; i++) b.placed[i].role = "crash";
+    if (!solid) for (let i = from; i < b.placed.length; i++) b.placed[i].role = "crash";
   };
   let first = b.placed.length;
+  const car = first;
   b.lid("square", colour, x, 0, z);
   mark(first);
   b.step(`For ${name}, lay a ${colour} square flat.`);
@@ -166,7 +182,8 @@ export function crushCar(b: Builder, colour: Colour, x: number, z: number, name 
   first = b.placed.length;
   b.lid("square", colour, x, 1, z);
   mark(first);
-  b.step(`A ${colour} square on top. Ready to crush!`);
+  b.step(`A ${colour} square on top. ${solid ? "Ready to leap over!" : "Ready to crush!"}`);
+  if (!solid) b.crash("car", car);
 }
 
 /** A fence of small squares one high round the w × d floor at (x0, z0), one step a side (front last); `skip` leaves out
@@ -199,20 +216,23 @@ export function fence(b: Builder, colour: Colour, x0: number, z0: number, w: num
 /** Dominoes: `n` squares standing on the table one square apart along `dir`, facing it (role crash). */
 export function dominoes(b: Builder, colours: Colour[], at: At, dir: Dir, n: number, say: string) {
   const up = UP[dir];
+  const from = b.placed.length;
   for (let i = 0; i < n; i++) {
     const p = move(at, up, 2 * i);
     b.add("square", colours[i % colours.length], [p.x, 0, p.z], [0, RY[dir]], "crash");
   }
   b.step(say);
+  b.crash("dominoes", from, dir);
 }
 
 /** A wall to smash: `len` squares long towards the right of `dir`, `h` high, stacked straight up (role crash), with a
     square turned back at each end of every row. A flat stack of squares is a stack of hinges and folds before a truck
     reaches it; the returns make each row a corner, so it stands until it is hit (R10c, 2.8). */
-export function crashWall(b: Builder, colours: Colour[], at: At, dir: Dir, len: number, h: number, say: (row: number) => string) {
+export function crashWall(b: Builder, colours: Colour[], at: At, dir: Dir, len: number, h: number, say: (row: number) => string, register = true) {
   const right = RIGHT[dir];
   const up = UP[dir];
   const end = move(at, right, len);
+  const from = b.placed.length;
   for (let r = 0; r < h; r++) {
     for (let i = 0; i < len; i++) {
       const p = move(at, right, i);
@@ -224,6 +244,7 @@ export function crashWall(b: Builder, colours: Colour[], at: At, dir: Dir, len: 
     }
     b.step(say(r));
   }
+  if (register) b.crash("wall", from, dir);
 }
 
 /** Arena walls: big squares standing round the w × d (in big squares) floor at (x0, z0), two squares high, braced at
@@ -245,9 +266,11 @@ export function arenaWall(b: Builder, colour: Colour, x0: number, z0: number, w:
 
 /** A two-lane tunnel `len` big squares long towards `dir` from the left corner `at`: big walls each side and big
     squares across the top, in one step a section (the walls stand once the roof joins them). */
-export function tunnel(b: Builder, wall: Colour, roof: Colour, at: At, dir: Dir, len: number) {
+export function tunnel(b: Builder, wall: Colour, roof: Colour, at: At, dir: Dir, len: number, roofDir?: Dir) {
   const up = UP[dir];
   const right = RIGHT[dir];
+  const from = b.placed.length;
+  const tops: number[] = [];
   for (let k = 0; k < len; k++) {
     const p = move(at, up, 2 * k);
     const r = rect(p, up, 2, right, 2);
@@ -258,7 +281,12 @@ export function tunnel(b: Builder, wall: Colour, roof: Colour, at: At, dir: Dir,
       b.wallX("square-large", wall, r.x0, 0, r.z0);
       b.wallX("square-large", wall, r.x0, 0, r.z0 + 2);
     }
-    b.add("square-large", roof, [r.x0, 2, r.z0 + 2], [-Q, 0]);
+    tops.push(b.add("square-large", roof, [r.x0, 2, r.z0 + 2], [-Q, 0]));
     b.step(k === 0 ? "Stand two big squares facing each other, two squares apart, and lay a big square across their tops. A tunnel!" : "The same again, end to end. A longer tunnel.");
   }
+  // the floor a truck drives on is the tunnel's footprint at ground height; with `roofDir`, the roof is a deck too
+  const tiles = b.since(from);
+  const floor = b.flatOver(tiles);
+  b.feature({ kind: "tunnel", dir, tiles, surface: floor.kind === "flat" ? { ...floor, y: 0 } : floor });
+  if (roofDir) b.deck(null, tops, roofDir);
 }

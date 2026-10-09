@@ -33,10 +33,13 @@ test("the roof step shows its tip by Pip, and it passes axe", async ({ page }) =
 test("with motion reduced Pip stays in his place", async ({ page }) => {
   await open(page);
   await page.getByRole("button", { name: "Next", exact: true }).click();
+  // he never sets off for the tiles (a trip moves him 80 px or more) …
   for (let i = 0; i < 6; i++) {
     await page.waitForTimeout(250);
-    expect(await fromHome(page)).toBeLessThan(2);
+    expect(await fromHome(page)).toBeLessThan(40);
   }
+  // … and his place follows the panel as it changes size with the step's words (a frame or two on a slow renderer)
+  await expect.poll(() => fromHome(page)).toBeLessThan(2);
 });
 
 test.describe("with motion", () => {

@@ -1,8 +1,11 @@
 /* Authoring helpers (plan key 4i): a Builder collects tiles and steps so a project reads like building instructions.
    Units are square edges; y is up; the child looks from +z (the front). Walls stand on their base edge. */
 import type { Colour, ShapeId } from "../engine/catalog";
-import type { Age, Placed, Project, Step, SwapRule } from "../engine/types";
+import { TALL_LEG_CHOICES } from "../engine/catalog";
+import { worldPolygon } from "../engine/geometry";
+import type { Age, Feature, Placed, Project, RouteItem, Step, Surface, SwapRule } from "../engine/types";
 import type { Theme } from "../engine/themes";
+import type { Dir } from "./track-kit";
 
 const Q = Math.PI / 2;
 
@@ -29,6 +32,9 @@ export const TALL_TO_LOW: SwapRule = {
 export class Builder {
   placed: Placed[] = [];
   steps: Step[] = [];
+  /** a Monster trucks course (4.0a): what a truck drives or crashes, and the route it takes */
+  features: Feature[] = [];
+  private routeItems: RouteItem[] = [];
   private open: number[] = [];
 
   add(shape: ShapeId, colour: Colour, pos: [number, number, number], rot: [number, number], role?: "roof" | "ramp" | "crash" | "brace"): number {
@@ -163,8 +169,55 @@ export class Builder {
     return this;
   }
 
+  /** Record a feature of the course, named `kind-n` (numbered by kind) unless `name` is given. Returns its name. */
+  feature(f: { kind: Feature["kind"]; dir: Dir; tiles: number[]; surface?: Surface; name?: string }): string {
+    const name = f.name ?? `${f.kind}-${this.features.filter((g) => g.kind === f.kind && g.name.startsWith(`${f.kind}-`)).length + 1}`;
+    if (this.features.some((g) => g.name === name)) throw new Error(`two features are called ${name}`);
+    this.features.push({ name, kind: f.kind, dir: f.dir, tiles: f.tiles, ...(f.surface ? { surface: f.surface } : {}) });
+    return name;
+  }
+
+  /** The tiles added from index `from` on. */
+  since(from: number): number[] {
+    return Array.from({ length: this.placed.length - from }, (_, i) => from + i);
+  }
+
+  /** The flat ground over the footprint of `tiles` (their rectangle in x and z), at the height of their top. */
+  flatOver(tiles: number[]): Surface {
+    const pts = tiles.flatMap((t) => worldPolygon(this.placed[t], TALL_LEG_CHOICES[1]));
+    const r6 = (v: number) => Math.round(v * 1e6) / 1e6;
+    const [x0, x1] = [r6(Math.min(...pts.map((p) => p[0]))), r6(Math.max(...pts.map((p) => p[0])))];
+    const [z0, z1] = [r6(Math.min(...pts.map((p) => p[2]))), r6(Math.max(...pts.map((p) => p[2])))];
+    return { kind: "flat", y: r6(Math.max(...pts.map((p) => p[1]))), poly: [[x0, z0], [x1, z0], [x1, z1], [x0, z1]] };
+  }
+
+  /** A deck (or, with `kind`, a lane): the flat tiles `tiles` laid as one rectangle that a truck drives on towards
+      `dir`. `name` null numbers it by kind. */
+  deck(name: string | null, tiles: number[], dir: Dir = "N", kind: "deck" | "lane" = "deck"): string {
+    return this.feature({ kind, dir, tiles, surface: this.flatOver(tiles), ...(name ? { name } : {}) });
+  }
+
+  /** The crash tiles added from index `from` on, as one thing to crash: a car (a cube; its roof is where a jump
+      lands), a wall, or a row of dominoes. */
+  crash(kind: "car" | "wall" | "dominoes", from: number, dir: Dir = "N", name?: string): string {
+    const tiles = this.since(from).filter((t) => this.placed[t].role === "crash");
+    if (!tiles.length) throw new Error(`no crash tiles from tile ${from}`);
+    const surface = kind === "car" ? this.flatOver(tiles.filter((t) => this.placed[t].rot[0] === -Q && this.placed[t].pos[1] === Math.max(...tiles.map((u) => this.placed[u].pos[1])))) : undefined;
+    return this.feature({ kind, dir, tiles, ...(surface ? { surface } : {}), ...(name ? { name } : {}) });
+  }
+
+  /** The route the truck takes over the features, in order (R13, 4.0a): "name" drives it along its way (up a ramp,
+      along a lane), {down} drives it the other way, {jump} flies to land on it (or into a wall; then drive on with its
+      name), {through} crashes into a car, wall or row of dominoes, {to} drives straight to a point (first: where the
+      truck is put down), {place} puts it on a deck to start a new run. See engine/README.md. */
+  route(items: RouteItem[]) {
+    this.routeItems = items;
+    return this;
+  }
+
   build(meta: Meta): Project {
     if (this.open.length) throw new Error(`${meta.id}: tiles added after the last step`);
-    return { ...meta, placed: this.placed, steps: this.steps };
+    const course = this.features.length || this.routeItems.length ? { course: { features: this.features, route: this.routeItems } } : {};
+    return { ...meta, placed: this.placed, steps: this.steps, ...course };
   }
 }
