@@ -1,2 +1,236 @@
-/* Clean studio (3.4): a photographer's studio; the tiles are the only colour. Overrides tokens and restyles the ts-*
-   hooks under [data-look="studio"]; dark under [data-look="studio"][data-theme="dark"] and the system's dark setting. */
+/* Clean studio (3.4): a photographer's studio. Quiet neutrals, hairlines, layered soft shadows, one accent (a clear blue,
+   used sparingly); the tiles are the only real colour. Generated from scratchpad/look-studio/gen.mjs, then hand-kept. */
+[data-look="studio"] {
+  --surface: #f4f3f0; --surface-2: #ffffff; --surface-3: #ebe9e5; --ink-1: #1d1d1f; --ink-2: #48484d; --ink-3: #68686e;
+  --line: #e4e2dd; --accent: #0b63e5; --accent-ink: #ffffff; --accent-soft: #e7effd; --focus: #0b63e5;
+  --can-bg: #e6f2ea; --can-ink: #1a5b32; --wait-bg: #f5edda; --wait-ink: #66460a; --stage: #f3f2ef; --ground: #eceae6;
+  --r-sm: 12px; --r-md: 18px; --r-lg: 28px; --rim: 1px; --t-press: 90ms; --t-ui: 260ms; --ease: cubic-bezier(.22, .8, .24, 1);
+  --display: "Fredoka Variable", Fredoka, system-ui, sans-serif;
+  --kid: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Andika, system-ui, sans-serif;
+  --st-glass: rgba(255, 255, 255, .66); --st-glass-edge: rgba(255, 255, 255, .85); --st-hair: rgba(29, 29, 31, .08);
+  --st-shadow: 29, 29, 31; --st-backdrop-a: #ffffff; --st-backdrop-b: #ecebe7; --st-fill: #ffffff;
+}
+:root[data-theme="dark"] [data-look="studio"], :root[data-theme="dark"][data-look="studio"] {
+  --surface: #1c1c1e; --surface-2: #2a2a2d; --surface-3: #39393d; --ink-1: #f5f5f7; --ink-2: #c9c9ce; --ink-3: #9c9ca3;
+  --line: #3b3b40; --accent: #5aa2ff; --accent-ink: #06101f; --accent-soft: #1f3150; --focus: #5aa2ff;
+  --can-bg: #213428; --can-ink: #a9dfb7; --wait-bg: #3a3322; --wait-ink: #efd08c; --stage: #242426; --ground: #2c2c2f;
+  --r-sm: 12px; --r-md: 18px; --r-lg: 28px; --rim: 1px; --t-press: 90ms; --t-ui: 260ms; --ease: cubic-bezier(.22, .8, .24, 1);
+  --display: "Fredoka Variable", Fredoka, system-ui, sans-serif;
+  --kid: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Andika, system-ui, sans-serif;
+  --st-glass: rgba(44, 44, 48, .62); --st-glass-edge: rgba(255, 255, 255, .1); --st-hair: rgba(255, 255, 255, .08);
+  --st-shadow: 0, 0, 0; --st-backdrop-a: #3d3d42; --st-backdrop-b: #28282b; --st-fill: #2a2a2d;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-look="studio"], :root:not([data-theme="light"])[data-look="studio"] {
+  --surface: #1c1c1e; --surface-2: #2a2a2d; --surface-3: #39393d; --ink-1: #f5f5f7; --ink-2: #c9c9ce; --ink-3: #9c9ca3;
+  --line: #3b3b40; --accent: #5aa2ff; --accent-ink: #06101f; --accent-soft: #1f3150; --focus: #5aa2ff;
+  --can-bg: #213428; --can-ink: #a9dfb7; --wait-bg: #3a3322; --wait-ink: #efd08c; --stage: #242426; --ground: #2c2c2f;
+  --r-sm: 12px; --r-md: 18px; --r-lg: 28px; --rim: 1px; --t-press: 90ms; --t-ui: 260ms; --ease: cubic-bezier(.22, .8, .24, 1);
+  --display: "Fredoka Variable", Fredoka, system-ui, sans-serif;
+  --kid: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Andika, system-ui, sans-serif;
+  --st-glass: rgba(44, 44, 48, .62); --st-glass-edge: rgba(255, 255, 255, .1); --st-hair: rgba(255, 255, 255, .08);
+  --st-shadow: 0, 0, 0; --st-backdrop-a: #3d3d42; --st-backdrop-b: #28282b; --st-fill: #2a2a2d;
+  }
+}
+/* ---- pages: a seamless light pool at the top, quiet everywhere else ---- */
+[data-look="studio"] .ts-library,
+[data-look="studio"] .ts-grownups {
+  background:
+    radial-gradient(120% 60% at 50% -8%, var(--st-fill), transparent 70%),
+    var(--surface);
+}
+[data-look="studio"].ts-library, [data-look="studio"] .ts-library { letter-spacing: -0.005em; }
+[data-look="studio"] .ts-wordmark {
+  font-weight: 600;
+  font-size: 40px;
+  letter-spacing: -0.025em;
+}
+[data-look="studio"] .ts-header { padding-top: 4px; }
+
+/* ---- age picker and theme chips: porcelain pills; the picked one is graphite (age) or ringed (theme) ---- */
+[data-look="studio"] .ts-age {
+  border: 0;
+  border-radius: 22px;
+  background: var(--surface-2);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .06), 0 6px 16px -8px rgba(var(--st-shadow), .18);
+  transition: transform var(--t-press) var(--ease), box-shadow var(--t-ui) var(--ease), background-color var(--t-ui) var(--ease);
+}
+[data-look="studio"] .ts-age:active { transform: scale(.96); }
+[data-look="studio"] .ts-age[aria-pressed="true"] {
+  background: var(--ink-1);
+  color: var(--surface);
+  box-shadow: 0 1px 2px rgba(var(--st-shadow), .2), 0 10px 22px -10px rgba(var(--st-shadow), .5);
+}
+[data-look="studio"] .ts-age[aria-pressed="true"] > span[aria-hidden] { color: var(--surface); }
+
+[data-look="studio"] .ts-chips { gap: 20px; }
+[data-look="studio"] .ts-chip,
+[data-look="studio"] .ts-chip-wrap {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+[data-look="studio"] .ts-chip {
+  background: var(--surface-2);
+  color: var(--ink-1);
+  box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .06), 0 6px 14px -8px rgba(var(--st-shadow), .18);
+  transition: transform var(--t-press) var(--ease), box-shadow var(--t-ui) var(--ease), background-color var(--t-ui) var(--ease);
+}
+[data-look="studio"] .ts-chip-wrap:active .ts-chip, [data-look="studio"] button.ts-chip:active { transform: scale(.94); }
+[data-look="studio"] .ts-chip[aria-pressed="true"],
+[data-look="studio"] .ts-chip-wrap[aria-pressed="true"] .ts-chip {
+  background: var(--accent-soft);
+  color: var(--ink-1);
+  box-shadow: 0 0 0 2.5px var(--accent), 0 8px 18px -8px rgba(var(--st-shadow), .3);
+}
+[data-look="studio"] .ts-chip-word {
+  font-family: var(--kid);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0;
+  color: var(--ink-2);
+}
+[data-look="studio"] .ts-chip-wrap[aria-pressed="true"] .ts-chip-word { color: var(--ink-1); }
+
+/* ---- shelves: implied by space and a faint floor shadow, not planks ---- */
+[data-look="studio"] .ts-shelf { gap: 18px; padding-top: 12px; }
+[data-look="studio"] .ts-shelf-title {
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  color: var(--ink-1);
+}
+[data-look="studio"] .ts-plank {
+  height: 26px;
+  margin-top: -6px;
+  border-radius: 0;
+  background: radial-gradient(60% 100% at 50% 0%, rgba(var(--st-shadow), .11), transparent 72%);
+  box-shadow: none;
+}
+[data-look="studio"] .ts-more {
+  border: 0;
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .08), 0 8px 18px -8px rgba(var(--st-shadow), .22);
+}
+
+/* ---- cards: borderless, the picture on a seamless backdrop ---- */
+[data-look="studio"] .ts-card {
+  border: 0;
+  border-radius: 26px;
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .05), 0 10px 28px -12px rgba(var(--st-shadow), .22);
+  transition: transform var(--t-ui) var(--ease), box-shadow var(--t-ui) var(--ease);
+}
+[data-look="studio"] .ts-card:active {
+  transform: scale(.97);
+  box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .06), 0 4px 12px -8px rgba(var(--st-shadow), .22);
+}
+[data-look="studio"] .ts-card-picture {
+  border-radius: 26px 26px 0 0;
+  background:
+    radial-gradient(80% 72% at 50% 46%, var(--st-backdrop-a) 0%, var(--st-backdrop-a) 30%, var(--st-backdrop-b) 100%);
+}
+[data-look="studio"] .ts-card-title {
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: -0.015em;
+}
+[data-look="studio"] .ts-resume {
+  background: var(--ink-1);
+  color: var(--surface);
+  font-weight: 700;
+  box-shadow: 0 6px 14px -6px rgba(var(--st-shadow), .5);
+}
+
+/* ---- badges ---- */
+[data-look="studio"] .ts-badge {
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+[data-look="studio"] .ts-badge-soft { background: var(--surface-3); color: var(--ink-2); }
+
+/* ---- buttons: clean, solid, a precise press ---- */
+[data-look="studio"] .ts-button {
+  border: 0;
+  font-weight: 700;
+  box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .07), 0 8px 18px -10px rgba(var(--st-shadow), .24);
+  transition: transform var(--t-press) var(--ease), box-shadow var(--t-press) var(--ease), filter var(--t-press) var(--ease), background-color var(--t-ui) var(--ease);
+}
+[data-look="studio"] .ts-button:active {
+  transform: scale(.955);
+  filter: brightness(.94);
+  box-shadow: 0 0 0 1px var(--st-hair), 0 1px 1px rgba(var(--st-shadow), .1);
+}
+[data-look="studio"] .ts-button-plain { background: var(--surface-2); color: var(--ink-1); }
+[data-look="studio"] .ts-button-soft { background: var(--surface-3); color: var(--ink-1); box-shadow: none; }
+[data-look="studio"] .ts-button-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 0 1px 2px rgba(var(--st-shadow), .18), 0 12px 24px -10px color-mix(in srgb, var(--accent) 75%, transparent);
+}
+[data-look="studio"] .ts-button-accent:active {
+  filter: brightness(.9);
+  box-shadow: 0 1px 1px rgba(var(--st-shadow), .2);
+}
+[data-look="studio"] .ts-button[aria-pressed="true"] { box-shadow: 0 0 0 2.5px var(--accent); }
+[data-look="studio"] .ts-next { border-radius: 36px; font-size: 30px; letter-spacing: -0.01em; }
+[data-look="studio"] .ts-door {
+  border: 0;
+  background: var(--surface-2);
+  color: var(--ink-3);
+  box-shadow: 0 0 0 1px var(--st-hair);
+}
+
+/* ---- build mode and finish: frosted glass floating over the model ---- */
+[data-look="studio"] .ts-title,
+[data-look="studio"] .ts-finish-words,
+[data-look="studio"] .ts-panel {
+  background: var(--st-glass);
+  -webkit-backdrop-filter: blur(26px) saturate(1.7);
+  backdrop-filter: blur(26px) saturate(1.7);
+  box-shadow:
+    inset 0 0 0 1px var(--st-glass-edge),
+    0 1px 2px rgba(var(--st-shadow), .06),
+    0 18px 40px -16px rgba(var(--st-shadow), .3);
+}
+[data-look="studio"] .ts-title { font-weight: 600; letter-spacing: -0.015em; padding-inline: 24px; }
+[data-look="studio"] .ts-finish-words { font-weight: 600; letter-spacing: -0.025em; }
+[data-look="studio"] .ts-panel { border-radius: 30px; }
+[data-look="studio"] .ts-panel p { letter-spacing: -0.003em; }
+[data-look="studio"] .ts-step-tiles li { filter: drop-shadow(0 2px 3px rgba(var(--st-shadow), .18)); }
+
+/* ---- step dots: graphite progress, one accent for now ---- */
+[data-look="studio"] .ts-dot { transition: background-color var(--t-ui) var(--ease), transform var(--t-ui) var(--ease); }
+[data-look="studio"] .ts-dot-done { background: var(--ink-3); opacity: .55; }
+[data-look="studio"] .ts-dot-todo { border-color: var(--ink-3); border-width: 1.5px; opacity: .55; }
+[data-look="studio"] .ts-dot-now { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+
+/* ---- turn buttons are plain buttons in a quiet group ---- */
+[data-look="studio"] .ts-turns { gap: 20px; }
+
+/* ---- empty states, rest, grown-ups ---- */
+[data-look="studio"] .ts-empty-banner {
+  border-radius: 24px;
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px var(--st-hair), 0 8px 22px -12px rgba(var(--st-shadow), .22);
+}
+[data-look="studio"] .ts-rest { background: color-mix(in srgb, var(--surface) 82%, transparent); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); }
+[data-look="studio"] .ts-rest > span:first-child { font-weight: 600; letter-spacing: -0.02em; }
+[data-look="studio"] .ts-gate > * {
+  background: var(--surface-2);
+  border: 0;
+  border-radius: 28px;
+  box-shadow: 0 0 0 1px var(--st-hair), 0 2px 4px rgba(var(--st-shadow), .05), 0 24px 48px -20px rgba(var(--st-shadow), .28);
+}
+[data-look="studio"] .ts-grownups h1, [data-look="studio"] .ts-grownups h2 { font-weight: 600; letter-spacing: -0.02em; }
+
+/* ---- the look picker ---- */
+[data-look="studio"] .ts-looks-panel {
+  border-radius: 28px;
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px var(--st-hair), 0 24px 48px -22px rgba(var(--st-shadow), .3);
+}
+[data-look="studio"] .ts-look { border-width: 1px; border-radius: 24px; }
