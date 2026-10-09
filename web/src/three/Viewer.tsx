@@ -19,6 +19,7 @@ import { useStill } from "../ui/motion";
 import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
 import { BIG_BUILD, frameOf, Model, releaseShared } from "./Model";
 import { FallingTiles } from "./FallingTiles";
+import { type RunPlay, RunStage, tileDrive } from "./run/RunStage";
 import { FrameWatch } from "./FrameWatch";
 import { currentTier, faster, slower } from "./quality";
 import { Stage } from "./Stage";
@@ -273,6 +274,8 @@ export interface ViewerProps {
   sweep?: boolean;
   /** let little tiles fall on the finished model and lie where they land (4.2c) */
   falling?: boolean;
+  /** a truck run plays on the finished course (4.0c) */
+  run?: RunPlay;
   /** px of the view covered by panels at the top and bottom: the model is framed in what is left */
   inset?: { top: number; bottom: number };
   /** let the 9–10 model turn by itself (off behind the rest screen and at the end, so the iPad can rest) */
@@ -289,7 +292,7 @@ export interface ViewerProps {
   label: string;
 }
 
-export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, falling = false, inset, spin = true, paint = 0, browse = false, hold, onTarget, onRest, label }: ViewerProps) {
+export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, falling = false, run, inset, spin = true, paint = 0, browse = false, hold, onTarget, onRest, label }: ViewerProps) {
   const age = project.age;
   const still = useStill();
   const wrap = useRef<HTMLDivElement>(null);
@@ -367,6 +370,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
     window.__viewer = { yaw: () => stats.yaw, age, autoRotate: () => autoRotate, frames: () => stats.frames, calls: () => stats.calls, shown: () => shown };
   }, [age, autoRotate, shown]);
 
+  const drive = useMemo(() => (run ? tileDrive(run) : undefined), [run]);
   const start = viewFrom(aim, distance, 0, look);
   return (
     <div ref={wrap} className="h-full w-full" role="img" aria-label={label} style={{ touchAction: age === "a" ? "pan-y" : "none" }}>
@@ -380,10 +384,15 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
         )}
         <Stage paint={tint} radius={whole.size} reach={older(age) ? distance * 1.8 : distance} shade={shade} />
         <Turntable yaw={(turns * Math.PI) / 2} still={still} onRest={rest}>
-          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} browse={browse} paint={tint} hold={hold} onRest={rest} />
+          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} browse={browse} paint={tint} hold={hold} onRest={rest} drive={drive} />
           <group position={[-whole.center.x, 0, -whole.center.z]}>
             <object3D ref={marker} position={point} />
           </group>
+          {run && (
+            <group position={[-whole.center.x, 0, -whole.center.z]}>
+              <RunStage play={run} paint={tint} size={whole.size} />
+            </group>
+          )}
           {falling && (
             <group position={[-whole.center.x, 0, -whole.center.z]}>
               <FallingTiles project={project} leg={leg} paint={tint} onRest={rest} />

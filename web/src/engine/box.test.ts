@@ -8,8 +8,8 @@ const floor = prepare([[-2, 0, 2], [2, 0, 2], [2, 0, -2], [-2, 0, -2]] as V3[], 
 const wall = prepare([[-2, 0, -3], [2, 0, -3], [2, 2, -3], [-2, 2, -3]] as V3[], [0, 0, 1]);
 
 describe("the truck as a box (4.0a)", () => {
-  it("is 1.0 long, 0.67 wide and 0.62 high, and rides half its height up", () => {
-    expect([TRUCK_LENGTH, TRUCK_WIDTH, TRUCK_HEIGHT]).toEqual([1.0, 0.67, 0.62]);
+  it("is 1.0 long, 0.98 wide across its tyres and 0.62 high, and rides half its height up", () => {
+    expect([TRUCK_LENGTH, TRUCK_WIDTH, TRUCK_HEIGHT]).toEqual([1.0, 0.98, 0.62]);
     expect(TRUCK_RIDE).toBeCloseTo(0.31);
   });
 
@@ -25,13 +25,14 @@ describe("the truck as a box (4.0a)", () => {
     expect(boxHits(poseOf([0, TRUCK_RIDE, -2.4], [0, -1], 0), wall)).toBe(false);
     expect(boxHits(poseOf([0, TRUCK_RIDE, -2.6], [0, -1], 0), wall)).toBe(true);
     expect(boxHits(poseOf([0, 2 + TRUCK_RIDE + 0.1, -3], [0, -1], 0), wall)).toBe(false);
-    // beside it: a wall one side of the truck's path, 0.4 clear
+    // beside it: a wall one side of the truck's path, 0.1 clear
     expect(boxHits(poseOf([2.6, TRUCK_RIDE, -3], [0, -1], 0), wall)).toBe(false);
   });
 
   it("turns with its heading: crosswise to the wall, the truck is as wide as it is long", () => {
-    const side = poseOf([0, TRUCK_RIDE, -2.55], [1, 0], 0);
+    // (0.98 across its tyres: crosswise it reaches 0.49 either side of its middle)
+    const side = poseOf([0, TRUCK_RIDE, -2.45], [1, 0], 0);
     expect(boxHits(side, wall)).toBe(false);
-    expect(boxHits(poseOf([0, TRUCK_RIDE, -2.7], [1, 0], 0), wall)).toBe(true);
+    expect(boxHits(poseOf([0, TRUCK_RIDE, -2.6], [1, 0], 0), wall)).toBe(true);
   });
 });

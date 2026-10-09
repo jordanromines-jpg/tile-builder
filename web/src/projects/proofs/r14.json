@@ -2854,11 +2854,11 @@
   "ms": 122421
  },
  "truck-crash-castle": {
-  "key": "0ac7fbf658d1cf2b",
+  "key": "a9b4b43944b7b82b",
   "falls": [],
   "sags": 0,
-  "worstMm": 1,
-  "ms": 4580
+  "worstMm": 2,
+  "ms": 6908
  },
  "truck-crash-test-city": {
   "key": "e0f7461c80495f8e",
@@ -2868,11 +2868,11 @@
   "ms": 20677
  },
  "truck-crash-zone-city": {
-  "key": "5fb97b72f4607e0d",
+  "key": "7857083e4dd5a2fa",
   "falls": [],
   "sags": 6,
   "worstMm": 7,
-  "ms": 33356
+  "ms": 24178
  },
  "truck-crush-car-jump": {
   "key": "23c834cda41e02bc",
@@ -3170,11 +3170,11 @@
   "ms": 90028
  },
  "truck-stair-step-drops": {
-  "key": "3aa6eba3b6718a87",
+  "key": "f7035511e73e27d5",
   "falls": [],
-  "sags": 7,
-  "worstMm": 5,
-  "ms": 20830
+  "sags": 12,
+  "worstMm": 9,
+  "ms": 19633
  },
  "truck-tower-drop-five": {
   "key": "6e4beafdbf5cc483",
@@ -3233,11 +3233,11 @@
   "ms": 39863
  },
  "truck-world-finals-freestyle": {
-  "key": "11d1a11ea4587e12",
+  "key": "a24aac95adb0f740",
   "falls": [],
   "sags": 0,
   "worstMm": 4,
-  "ms": 133160
+  "ms": 95037
  },
  "tuesday-flying-saucer": {
   "key": "bf4d52a43934a0c1",

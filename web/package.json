@@ -16,6 +16,7 @@
     "size": "node scripts/size.mjs",
     "icons": "node scripts/icons.mjs",
     "pictures": "node scripts/pictures.mjs",
+    "runs": "node scripts/runs.mjs",
     "projects": "vite-node scripts/projects.ts",
     "shots": "node scripts/shots.mjs"
   },

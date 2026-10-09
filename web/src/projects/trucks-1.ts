@@ -175,7 +175,7 @@ function dropTower8(): Project {
   crushCar(b, "blue", 3, 1.5, "another crush car");
   crushCar(b, "purple", -2, 1.5, "a third on the other side");
   crashWall(b, ["red", "yellow", "blue"], at(-1, 4), "N", 3, 3, (r) => (r === 0 ? "Past the landing zone, stand three squares in a row: a wall to smash." : "Another row on top, just stacked."));
-  b.route(["deck-1", { jump: "lane-1" }, { through: "car-2" }, { through: "car-1" }, { to: [1, 0, 1.2] }, { through: "car-3" }, { to: [0.5, 0, 2.2] }, { through: "wall-1" }]);
+  b.route(["deck-1", { jump: "lane-1" }, { through: "car-2" }, { through: "car-1" }, { to: [4.6, 0, 0.7] }, { to: [1, 0, 1.0] }, { through: "car-3" }, { to: [0.5, 0, 2.2] }, { through: "wall-1" }]);
   return truck(b, { id: "truck-drop-tower-eight", title: "The 8-high drop tower", age: "d", done: "From eight squares up, the drop of doom! Land it, and smash the wall." });
 }
 

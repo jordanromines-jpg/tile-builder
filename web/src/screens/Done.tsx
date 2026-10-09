@@ -15,7 +15,10 @@ import { useInventory } from "../store/hooks";
 import { effectiveLeg } from "../store/inventory";
 import { S } from "../strings";
 import { Viewer } from "../three/Viewer";
-import { ArrowLeft } from "../ui/icons";
+import { loadRun } from "../three/run/load";
+import { player } from "../three/run/playback";
+import type { RunPlay } from "../three/run/RunStage";
+import { ArrowLeft, Play } from "../ui/icons";
 import { AgeProvider } from "../ui/kid/AgeContext";
 import { TapToSkip } from "../ui/kid/TapToSkip";
 import { useStill } from "../ui/motion";
@@ -33,6 +36,11 @@ export function Done() {
   // the little tiles stay where they landed when the celebration ends; a tap that skips it sweeps them away
   const [skipped, setSkipped] = useState(false);
   const still = useStill();
+  // a Monster-truck build (4.0c): once the party is over, the Pip truck drives the course and crashes it; the words
+  // come after the run (straight away if it can't be played: offline before it was ever kept, or an older iPad)
+  const truck = !!project && project !== "unreachable" && project.theme === "trucks" && !!project.course;
+  const [run, setRun] = useState<RunPlay | null>(null);
+  const [ran, setRan] = useState(false);
 
   useEffect(() => {
     if (!project || project === "unreachable") return;
@@ -42,6 +50,23 @@ export function Done() {
     say(project.done);
     return () => stop();
   }, [project, watched]);
+
+  useEffect(() => {
+    if (!truck || celebrating) return;
+    let gone = false;
+    loadRun(project.id)
+      .then((rec) => !gone && setRun({ player: player(rec), startedAt: performance.now(), still, onEnd: () => setRan(true) }))
+      .catch(() => !gone && setRan(true));
+    return () => {
+      gone = true;
+    };
+  }, [truck, celebrating, project, still]);
+  const again = () => {
+    if (!run) return;
+    setRan(false);
+    setRun({ ...run, startedAt: performance.now() });
+  };
+  const panel = !celebrating && (!truck || ran);
 
   if (project === null) return <Navigate to="/" />;
   if (project === "unreachable") return <CantLoad title={infoById(pid)?.title ?? pid} />;
@@ -59,7 +84,8 @@ export function Done() {
             leg={effectiveLeg(inv)}
             instead={instead}
             sweep={celebrating}
-            falling={!still && !skipped}
+            falling={!truck && !still && !skipped}
+            run={run ?? undefined}
             spin={false}
             inset={{ top: 120, bottom: 230 }}
             label={S.build.model(project.title)}
@@ -87,9 +113,9 @@ export function Done() {
             <span className="relative">{project.done}</span>
           </h1>
         </div>
-        {!celebrating && (
+        {panel && (
           <section
-            className="ts-panel photo-in soft absolute inset-x-4 mx-auto flex max-w-4xl items-center gap-6 rounded-[32px] bg-surface-2 p-4 pr-6 max-[760px]:flex-wrap max-[760px]:gap-3 max-[760px]:pr-4"
+            className="ts-panel photo-in soft absolute inset-x-4 mx-auto flex max-w-4xl flex-wrap items-center gap-6 rounded-[32px] bg-surface-2 p-4 pr-6 max-[760px]:flex-wrap max-[760px]:gap-3 max-[760px]:pr-4"
             style={{ bottom: "max(env(safe-area-inset-bottom), 16px)" }}
           >
             <Pip pose="cheer" size={150} className="absolute -top-[132px] left-6" />
@@ -98,8 +124,12 @@ export function Done() {
                 <ProjectPicture project={project} />
               </span>
             </figure>
-            <p className="min-w-0 flex-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1 max-[760px]:basis-full">{S.done.putDown}</p>
-            <KidButton label={S.done.back} icon={<ArrowLeft size={36} weight="bold" />} tone="accent" primary onPress={() => void navigate({ to: "/" })} speak />
+            <p className="min-w-[13rem] flex-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1 max-[760px]:basis-full">{S.done.putDown}</p>
+            {/* a truck's run again beside the way back; under the words when there isn't room for both */}
+            <div className="ml-auto flex flex-wrap justify-end gap-3">
+              {run && !still && <KidButton label={S.done.runAgain} icon={<Play size={36} weight="fill" />} tone="accent" onPress={again} speak className="ts-run-again" />}
+              <KidButton label={S.done.back} icon={<ArrowLeft size={36} weight="bold" />} tone="accent" primary onPress={() => void navigate({ to: "/" })} speak />
+            </div>
           </section>
         )}
       </main>

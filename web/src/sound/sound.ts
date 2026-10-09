@@ -69,9 +69,20 @@ function noise(c: AudioContext): AudioBuffer {
 
 /** Plays an event in the look's voice, if sound is on and the iPad has been touched. */
 export function play(event: SoundEvent): void {
-  if (!ctx || !voicing || !soundOn() || ctx.state !== "running") return;
+  if (voicing) playTones(voicing[event]);
+}
+
+/** The audio context, once the iPad has been touched and while sound is on (the truck's engine voice uses it). */
+export function liveAudio(): { ctx: AudioContext; master: number } | null {
+  return ctx && soundOn() && ctx.state === "running" ? { ctx, master: MASTER } : null;
+}
+
+/** Plays tones (one of the shared sounds, the same in every look), if sound is on and the iPad has been touched. */
+export function playTones(tones: Tone[], loud = 1): void {
+  if (!ctx || !soundOn() || ctx.state !== "running") return;
   const now = ctx.currentTime;
-  for (const t of voicing[event]) {
+  for (const t0 of tones) {
+    const t = { ...t0, gain: t0.gain * loud };
     const start = now + (t.at ?? 0);
     const end = start + t.dur;
     const g = ctx.createGain();

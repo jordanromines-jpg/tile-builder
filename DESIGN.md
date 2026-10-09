@@ -192,6 +192,20 @@ The physics is a formula, worked out once from the build's top surface (a 0.25-s
 tap skips it (the tiles go too); with reduced motion nothing falls or turns. The stage draws only while they move. No
 sound, no points.
 
+### Truck runs (`three/run/`, 4.0c)
+A Monster-truck build's finish has no falling tiles: after the party circles the course, the Pip truck runs it. The run
+is a recording (`public/runs/<id>.bin.gz`, about 17 KB each, 853 KB for all 50), simulated and proved on the build
+machine (`npm run runs`, Rapier) and only played on the iPad, so what plays is exactly what was proved. It plays at
+full speed between the action and at 0.55 for a third of a second either side of each take-off, landing and crash,
+easing between, like a toy camera's slow motion. The view slides 60% of the way toward the truck as it goes (and 40%
+closer on a course over six squares), never turning, and eases back to where it began after the run; then the photo
+card, with **Run it again** (play icon) beside Back to the shelf, under the words when there isn't room for both. The
+knocked-down tiles stay where they fell. Sounds, the same in every look (a toy truck is the same toy): an engine (two
+sawtooths a fifth apart, filtered, rising with speed), a whoosh at a take-off, a thud on landing as loud as it was hard,
+a crunch as a crash piece's magnets let go (six a second at most). With motion reduced the run's end shows at once,
+silent, with no Run it again. A recording that can't be fetched (offline before it was kept) or unpacked (iPadOS before
+16.4) leaves the finish as it was.
+
 ### Tile chip (`TileChip`)
 See Tile pictures. Sizes 48, 72, 104 px; a count beside it in Fredoka; ⇄ when it stands in for another.
 

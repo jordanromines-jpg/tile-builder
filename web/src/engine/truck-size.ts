@@ -1,13 +1,14 @@
 /* The truck's size and the numbers a run is proved with (4.0a), in one place. Units are square edges (76.2 mm) and
    seconds. The Pip truck (4.0b, `three/truck/spec.ts`) and the physics (4.0c) import these. The truck is a box:
-   it is the 1:64 monster truck, 7–8 cm long and about 5 cm wide, on the biggest tyres. */
+   it is the 1:64 monster truck, 7–8 cm long and 7.5 cm wide across its tyres. */
 
 /** Gravity in squares per second squared (9.81 m/s² over 76.2 mm). */
 export const GRAVITY = 128.7;
 
 /** The box the route checker flies and drives: nose to tail, side to side, and tyre-tops to ground. */
 export const TRUCK_LENGTH = 1.0;
-export const TRUCK_WIDTH = 0.67;
+/** (0.98: the Pip truck across its tyres, three/truck/spec.ts track + tyreWidth) */
+export const TRUCK_WIDTH = 0.98;
 export const TRUCK_HEIGHT = 0.62;
 
 /** How far the middle of the box is above the surface it rolls on. */

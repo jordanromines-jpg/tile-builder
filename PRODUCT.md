@@ -90,6 +90,12 @@ drops and crashes for 1:64 Monster Jam trucks (about 7–8 cm long). One small s
 - **Engineering you can see (2.8).** Builds follow real principles: triangles don't fold, wide bases don't tip, load
   goes down through walls, decks rest on two opposite walls. For 9–16, the step that uses one says why, in a line.
 - **Big.** The biggest builds are wider than a metre and take up to four 100-piece sets.
+- **The Pip truck runs the course (4.0).** At the finish of every truck build, after the party, the Pip truck drives
+  the course the way its line says: up the ramps, over the jumps, through the tunnels, and into the cars and walls,
+  which come down. It plays a little slower around each jump and crash, the view follows it, and it sounds like a toy
+  truck (an engine, a whoosh, a thud, the crunch of magnets letting go). Then "Run it again" beside Back to the shelf.
+  Every run is worked out ahead of time with real physics, and proved: it must do what the build says, and still do it
+  when it starts a little off or goes a little faster or slower. With motion reduced the end shows at once.
 - **Safety.** Crashing is the point, but trucks are driven, not thrown. 0–3 builds are for a grown-up to build and
   drive, as for the rest of that band.
 
@@ -129,7 +135,8 @@ dogwood), the pollinators, the Venus flytrap growing wild only near Wilmington.
    model, the tiles list, All steps or the rest screen pauses it; at the end it goes to the finish. Pip hurries at
    Fast, and the step's line is said only at Slow and Medium.
 3. **Well done.** A short celebration, the build's own line ("You built the castle!"), then "Put the iPad down and
-   play with what you made", and one button back to the shelf.
+   play with what you made", and one button back to the shelf. A Monster-truck build's finish plays the Pip truck's
+   run first, and adds Run it again (4.0).
 4. **Grown-ups side**, behind the door: Tiles (start from a set, then − and +), Settings, Backup.
 
 Nothing else. A new screen is a decision with Jordan's word (D18).

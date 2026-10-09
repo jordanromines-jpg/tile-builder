@@ -68,3 +68,5 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci
       - run: npm run check:physics
+      # 4.0c: every truck run's recording is for its build as it is, and two at random come out the same again
+      - run: node scripts/runs.mjs --verify

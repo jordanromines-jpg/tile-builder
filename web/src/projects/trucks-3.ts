@@ -29,11 +29,9 @@ function cone(b: Builder, ring: Colour, top: Colour, x: number, z: number, name:
   b.step(`Lean four tall ${top} triangles together on top, tips touching. A cone!`);
 }
 
-/** Local helper: a ring of squares to be knocked down (role crash). */
-function crashRing(b: Builder, colour: Colour, x: number, z: number, y: number, say: string) {
-  const from = b.placed.length;
+/** Local helper: a ring of four squares at height y, one step. */
+function ring(b: Builder, colour: Colour, x: number, z: number, y: number, say: string) {
   b.room(colour, x, z, 1, 1, y);
-  for (let i = from; i < b.placed.length; i++) b.placed[i].role = "crash";
   b.step(say);
 }
 
@@ -75,34 +73,32 @@ function bigTunnel(): Project {
 
 function stairDrops(): Project {
   const b = new Builder();
-  const z0 = r6(-6 * RUN);
-  const h = [3, 2, 1]; // the heights of the three steps
-  const cross = [3, 3, 2, 1]; // the riser across the front of each step (and the last)
-  const zb = (j: number) => z0 - j;
-  for (let y = 0; y < 3; y++) {
-    for (let j = 0; j < 4; j++) {
-      if (cross[j] > y) b.wallX("square", y === 0 ? "blue" : y === 1 ? "purple" : "red", 0, y, zb(j));
-      if (j < 3 && h[j] > y) {
-        b.wallZ("square", y === 0 ? "blue" : y === 1 ? "purple" : "red", 0, y, zb(j) - 1);
-        b.wallZ("square", y === 0 ? "blue" : y === 1 ? "purple" : "red", 1, y, zb(j) - 1);
-      }
-    }
-    b.chunk(4, [y === 0 ? "Stand squares in a tidy staircase, four at a time: a wall across, and a wall down each side." : y === 1 ? "The second row goes on top, stepping down as before." : "The top row, just by the start.", "Keep going, edge to edge."]);
-  }
-  const decks = b.placed.length;
-  for (let i = 0; i < 3; i++) b.lid("square", ["green", "yellow", "orange"][i] as Colour, 0, h[i], zb(i) - 1);
-  b.step("Lay a square flat on top of each step: three decks, stepping down.");
-  // the top step is a deck; the truck bumps down the other two, whose noses make a slope as steep as the stairs
-  b.deck("top-step", [decks], "N");
-  b.feature({ name: "stairs", kind: "ramp", dir: "N", tiles: [decks + 1, decks + 2], surface: { kind: "slope", from: [0.5, 3, r6(zb(0) - 1)], to: [0.5, 1, r6(zb(2) - 1)], width: 1 } });
-  ramp(b, "red", at(0, 0), "N", 3, { support: "yellow", say: "Lean the ramp up from the table, square by square, onto each tower, to the top step." });
-  const mat = b.add("square-large", "green", [-0.5, 0, zb(3)], [-Q, 0]);
-  b.step("At the bottom of the stairs, a big green square flat on the table. A soft landing.");
+  // the way up: three big squares to a tower under the lip, three squares high
+  const top = ramp(b, "red", at(0, 0), "N", 3, { big: true, topTower: true, support: "yellow", say: "Lean three big red squares up from the table, end to end, each resting on a tower, to the top step." });
+  b.lid("square", "green", 0, 3, top.z - 1);
+  b.lid("square", "green", 1, 3, top.z - 1);
+  b.step("Two green squares flat on top of the last tower: the top step. The truck starts its drops from here.");
+  b.deck("top-step", b.since(b.placed.length - 2), "N");
+  // two more steps, each a square lower and a square further on, with air between: a truck hops from one to the next
+  const steps: { name: string; h: number; cols: Colour[]; deck: Colour; word: string }[] = [
+    { name: "step-2", h: 2, cols: ["blue", "purple"], deck: "orange", word: "second" },
+    { name: "step-3", h: 1, cols: ["purple"], deck: "yellow", word: "third" },
+  ];
+  steps.forEach((st, i) => {
+    const z0 = r6(top.z - 4 - 3 * i);
+    tower(b, st.cols, 0, z0, 2, 2, st.h, null, (r) => (r === 0 ? `A square past the last step, stand a ring of eight squares, two by two: the ${st.word} step.` : `Another ring on top: ${r + 1} high.`));
+    const lid = b.add("square-large", st.deck, [0, st.h, z0 + 2], [-Q, 0]);
+    b.step(`A big ${st.deck} square flat on top: the ${st.word} step, a square lower.`);
+    b.deck(st.name, [lid], "N");
+  });
+  const zm = r6(top.z - 10);
+  const mat = b.add("square-large", "green", [0, 0, zm + 2], [-Q, 0]);
+  b.step("A square past the last step, a big green square flat on the table. A soft landing.");
   b.deck("mat", [mat], "N", "lane");
-  crushCar(b, "red", -0.5, zb(3) - 4, "a crush car beyond the landing");
-  bigWall(b, "blue", -2, zb(3) - 6.5, 2, "Behind the car, stand two big squares side by side. A big wall to smash.");
-  b.route(["ramp-1", "top-step", "stairs", { jump: "mat" }, "mat", { through: "car-1" }, { through: "wall-1" }]);
-  return truck(b, { id: "truck-stair-step-drops", title: "Stair-step drops", age: "b", done: "Bump, bump, bump, down the stairs! Three drops, then a crash at the bottom." });
+  crushCar(b, "red", 0.5, zm - 3, "a crush car beyond the landing");
+  bigWall(b, "blue", -1, zm - 5.5, 2, "Behind the car, stand two big squares side by side. A big wall to smash.");
+  b.route(["ramp-1", "top-step", { jump: "step-2" }, "step-2", { jump: "step-3" }, "step-3", { jump: "mat" }, "mat", { through: "car-1" }, { through: "wall-1" }]);
+  return truck(b, { id: "truck-stair-step-drops", title: "Stair-step drops", age: "b", done: "Hop, hop, hop, down the stairs! Three drops, then a crash at the bottom." });
 }
 
 function monsterGarage(): Project {
@@ -148,27 +144,24 @@ function crashCastle(): Project {
   road(b, ["green", "yellow"], 0, -2, 2, 2, ["Lay four squares flat, two lanes side by side. The road to the castle."]);
   kicker(b, "orange", at(0, -2), "N", { big: true, support: "yellow", say: "Lean a big orange square up onto the ring. A kicker to launch the trucks at the castle!" });
   lane(b, ["blue", "orange"], at(0, r6(-2 - 2 * RUN - 1)), "N", 2, 2, "Past the kicker, lay four squares flat on the table. That's where the trucks land.");
-  const left = b.placed.length;
-  crashRing(b, "purple", -2, -8, 0, "Two squares past the kicker, on the left, stand four squares in a ring. A castle tower.");
-  crashRing(b, "purple", -2, -8, 1, "Another ring on top of it: two high.");
-  b.roof("red", -2, -8, 2);
-  b.step("Lean four tall red triangles together on top, tips touching. A pointy turret!");
-  b.crash("wall", left);
-  const right = b.placed.length;
-  crashRing(b, "purple", 3, -8, 0, "On the right, the same again: four squares in a ring. The second tower.");
-  crashRing(b, "purple", 3, -8, 1, "Another ring on top: two high.");
-  b.roof("red", 3, -8, 2);
-  b.step("Four tall red triangles on top, tips touching. The second turret!");
-  b.crash("wall", right);
+  ring(b, "purple", -2, -8, 0, "Two squares past the kicker, on the left, stand four squares in a ring. A castle tower.");
+  ring(b, "purple", -2, -8, 1, "Another ring on top of it: two high.");
+  b.lowRoof("red", -2, -8, 2);
+  b.step("Lean four red triangles together on top, tips touching. A pointy turret!");
+  ring(b, "purple", 2, -8, 0, "On the right, the same again: four squares in a ring. The second tower.");
+  ring(b, "purple", 2, -8, 1, "Another ring on top: two high.");
+  b.lowRoof("red", 2, -8, 2);
+  b.step("Four red triangles on top, tips touching. The second turret!");
   const rows = b.placed.length;
   for (let r = 0; r < 2; r++) {
-    for (let i = 0; i < 4; i++) b.add("square", (["blue", "green", "yellow", "orange"] as Colour[])[(r + i) % 4], [-1 + i, r, -7], [0, 0], "crash");
-    b.step(r === 0 ? "Between the towers, stand four squares side by side, edge to edge. The castle wall." : "Another row on top, just stacked.");
+    for (let i = 0; i < 3; i++) b.add("square", (["blue", "green", "yellow", "orange"] as Colour[])[(r + i) % 4], [-1 + i, r, -7], [0, 0], "crash");
+    b.step(r === 0 ? "Between the towers, stand three squares side by side, edge to edge. The castle wall." : "Another row on top, just stacked.");
   }
   b.crash("wall", rows);
   bigWall(b, "blue", 0, -11, 2, "Behind the wall, stand two big squares side by side. The castle keep.");
-  b.route(["lane-1", "kicker-1", { jump: "lane-2" }, { through: "wall-3" }, { through: "wall-4" }, { to: [5, 0, -11.9] }, { to: [5, 0, -7.5] }, { through: "wall-2" }, { through: "wall-1" }]);
-  return truck(b, { id: "truck-crash-castle", title: "Crash castle", age: "b", done: "Launch! Right over the wall and smash. The crash castle never stood a chance." });
+  // the towers stand: a roof (a pyramid, role roof) is held still in the truck run, so it would pin a tower that was meant to fall
+  b.route(["lane-1", "kicker-1", { jump: "lane-2" }, { through: "wall-1" }, { through: "wall-2" }]);
+  return truck(b, { id: "truck-crash-castle", title: "Crash castle", age: "b", done: "Launch! Over the gap and smash. Down came the wall and the keep; only the towers are left standing." });
 }
 
 function dominoRun(): Project {

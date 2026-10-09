@@ -6,6 +6,9 @@
    - R13c: a flight's arc, sampled every 0.02 s, touches no tile except the one it takes off from and the one it lands
      on, and comes down at least 0.3 square inside a surface, from a launch no faster than a toy truck can go.
    - R13d: a drive, a crush or a smash passes through no tile except those of the pieces it joins.
+   - R13g: along a drive, a climb or a descent, every wheel has ground under it: a piece of the course at the leg's
+     height (a tyre may hang half over an edge), or the table. (Found by the truck runs, 4.0c: a road along the very
+     edge of a deck narrower than its ramp left two wheels over nothing.)
    - R13e: every tile built to be knocked down belongs to a car, a wall or a row of dominoes that the route hits.
    Each problem says which leg, and which tile. */
 import { boxHits, poseOf, prepare, type Prepared } from "./box";
@@ -15,6 +18,18 @@ import type { Analysis } from "./check";
 import type { V3 } from "./geometry";
 import type { Problem } from "./problems";
 import type { Feature, Project } from "./types";
+import { TRUCK } from "../three/truck/spec";
+
+/** how far past a surface's edge a wheel may be: half a tyre */
+const WHEEL_OVER = TRUCK.tyreWidth / 2;
+/** how far a surface's height may be from the leg's at a wheel */
+const WHEEL_HEIGHT = 0.15;
+
+/** R13g: is there ground under this wheel point, at about this height? */
+function supported(features: Feature[], x: number, z: number, y: number): boolean {
+  if (Math.abs(y) < WHEEL_HEIGHT) return true;
+  return features.some((f) => f.surface && depthInside(footprint(f), [x, z]) >= -WHEEL_OVER && Math.abs(planeAt(f, x, z).y - y) < WHEEL_HEIGHT);
+}
 
 const HEIGHT_TOLERANCE = 0.15;
 const CAR_LIKE = ["car", "wall", "dominoes"];
@@ -138,6 +153,26 @@ export function runProblems(project: Project, a: Analysis, leg: number): Problem
       if (hit >= 0) {
         out.push({ rule: "R13d", tile: hit, message: `${label(l, k)}: the truck drives through this tile${namePart(hit)}, ${near(q * run)} squares along the leg, at ${near(p[0])}, ${near(p[2])}` });
         break;
+      }
+    }
+    // R13g: the leg's ends are left out (the truck is crossing from one piece to the next there)
+    if (l.kind === "drive" || l.kind === "climb" || l.kind === "descend") {
+      const side: [number, number] = [h[1], -h[0]];
+      for (let s = 0; s <= count; s++) {
+        const along = (s / count) * run;
+        if (along < TRUCK.wheelbase / 2 + 0.05 || along > run - TRUCK.wheelbase / 2 - 0.05) continue;
+        const q = along / run;
+        const mid: V3 = [l.from[0] + dx * q, l.from[1] + (l.to[1] - l.from[1]) * q, l.from[2] + dz * q];
+        const slope = (l.to[1] - l.from[1]) / run;
+        const bare = [-1, 1].flatMap((f) => [-1, 1].map((g) => [f, g] as const)).find(([f, g]) => {
+          const a = (f * TRUCK.wheelbase) / 2;
+          const b = (g * TRUCK.track) / 2;
+          return !supported(course.features, mid[0] + h[0] * a + side[0] * b, mid[2] + h[1] * a + side[1] * b, mid[1] + slope * a);
+        });
+        if (bare) {
+          out.push({ rule: "R13g", message: `${label(l, k)}: the truck's ${bare[0] > 0 ? "front" : "back"} ${bare[1] > 0 ? "left" : "right"} wheel has nothing under it ${near(along)} squares along the leg, at ${near(mid[0])}, ${near(mid[2])}: move the road onto the piece, or widen it` });
+          break;
+        }
       }
     }
   });

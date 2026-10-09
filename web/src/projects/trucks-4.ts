@@ -127,7 +127,7 @@ function freestyleBowl(): Project {
   bowlSide(b, "W", at(0, 4), { ramp: "orange", rim: "blue" }, "left side");
   cones(b, ["orange", "yellow"], [[-2, -2], [4, -2], [-2, 5], [4, 5]], "In each corner outside the bowl, lean four tall triangles together until their tips meet: a cone.");
   crushCar(b, "red", 1.5, 1.5, "a crush car in the middle of the bowl");
-  b.route(["deck-1", { down: "ramp-1" }, { through: "car-1" }, { to: [3, 0, 3.9] }, "ramp-5", { down: "deck-3" }]);
+  b.route([{ to: [1, 1, -2.2] }, "deck-1", { down: "ramp-1" }, { through: "car-1" }, { to: [3, 0, 3.9] }, "ramp-5", { down: "deck-3" }]);
   return truck(b, { id: "truck-freestyle-bowl", title: "Freestyle bowl", age: "c", done: "Up one wall, over the middle, down the other side. Four ramps, one bowl, no rules!" });
 }
 

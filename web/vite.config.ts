@@ -32,12 +32,18 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,woff2,webp,png,svg,json}"],
         // 2.4: the project pictures (most of the download) are not in the install; each is kept the first time it is
         // shown, and the rest are fetched quietly once the app is idle (src/pwa.ts), so they all work offline soon after
-        globIgnores: ["pictures/projects/**"],
+        globIgnores: ["pictures/projects/**", "runs/**"],
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.pathname.includes("/pictures/projects/"),
             handler: "CacheFirst",
             options: { cacheName: "project-pictures" },
+          },
+          // 4.0c: the truck runs' recordings, the same way (each asked for by its key, so a new recording is a new file)
+          {
+            urlPattern: ({ url }) => url.pathname.includes("/runs/"),
+            handler: "CacheFirst",
+            options: { cacheName: "project-runs" },
           },
         ],
         maximumFileSizeToCacheInBytes: 6e6,

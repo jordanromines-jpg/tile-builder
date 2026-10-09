@@ -82,6 +82,8 @@ export const S = {
     party: "Well done",
     putDown: "Put the iPad down and play with what you made.",
     back: "Back to the shelf",
+    /** a truck build's finish (4.0c): the Pip truck drives the course again */
+    runAgain: "Run it again",
   },
   library: {
     ready: "You can build these",
