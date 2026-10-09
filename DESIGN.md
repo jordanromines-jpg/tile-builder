@@ -90,6 +90,10 @@ reading is never required. Fonts are subset to Latin and cached for offline use.
   to his place on the step panel. He is always a little alive there: a blink, a breath, an ear and his tail now and
   then. That is the one movement allowed to run on: it is DOM only, so the 3D view never draws for it (a test checks),
   and it stops on the rest screen and with reduced motion, where he stays in his place and points.
+  **Pip is a rig, not a set of drawings (4.2.1).** Every part is always drawn. A new pose springs the arms, pupils and
+  body to their places (`friend-move`, `--spring-ui`), fades the eyes and mouth across (140 ms), and pops the extras in
+  (`--spring-settle`). Clap, wave and cheer then repeat a beat (`data-beat`). His hops are played a frame at a time and
+  aimed again each frame (`hopAt`), so a hop to tiles that move as the view turns lands on them.
 
 ### Sound
 

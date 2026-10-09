@@ -9,7 +9,7 @@ import type { StepTile } from "../screens/build/stepTiles";
 import { useStill } from "../ui/motion";
 import { TilePicture } from "../ui/TileChip";
 import type { FriendPose } from "./Friend";
-import { hopKeyframes, SQUASH_MS, squashKeyframes, tossKeyframes } from "./hop";
+import { hopAt, SQUASH_MS, squashKeyframes, tossKeyframes } from "./hop";
 import { guideTimes, type Pace } from "./pace";
 import { Pip } from "./Pip";
 
@@ -91,6 +91,9 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
   /** squashes: cancelled with the rest, but never committed (they would leave him squashed) */
   const fx = useRef<Animation[]>([]);
   const awaitLand = useRef<(() => void) | null>(null);
+  /** the frame of the hop in the air, and how to end it */
+  const raf = useRef(0);
+  const hopDone = useRef<(() => void) | null>(null);
 
   // Pip's place: the panel's top edge, above Next, read again whenever the panel changes size
   useLayoutEffect(() => {
@@ -153,25 +156,46 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
     anims.current = [];
     for (const a of fx.current) a.cancel();
     fx.current = [];
+    cancelAnimationFrame(raf.current);
+    raf.current = 0;
+    hopDone.current?.();
+    hopDone.current = null;
     awaitLand.current = null;
   }, []);
 
-  /** A hop along a ballistic arc to `to` (4.2d); he squashes as he lands and springs back. Resolves when he lands, or at
-      once with motion reduced. */
+  /** A hop along a ballistic arc (4.2d) to where `aim` says, asked again every frame: the view may still be easing
+      round to the tiles, so he lands where they are, not where they were. He squashes as he lands and springs back.
+      Resolves when he lands, when a new trip starts, or at once with motion reduced. */
   const hop = useCallback(
-    (to: P, ms: number) => {
-      const from = pos.current ?? to;
-      place(to);
-      if (still || !outer.current || !inner.current) return Promise.resolve();
-      const a = outer.current.animate(hopKeyframes(from, to, ms), { duration: ms, easing: "linear" });
-      anims.current.push(a);
+    (aim: () => P, ms: number) => {
+      const id = run.current;
+      if (still || !outer.current || !inner.current) {
+        place(aim());
+        return Promise.resolve();
+      }
+      const from = pos.current ?? aim();
       const squash = inner.current;
-      return a.finished.then(
-        () => {
+      return new Promise<void>((resolve) => {
+        const done = () => {
+          hopDone.current = null;
+          resolve();
+        };
+        hopDone.current = done;
+        const t0 = performance.now();
+        const frame = (now: number) => {
+          if (run.current !== id) return done();
+          const t = now - t0;
+          place(hopAt(from, aim(), ms, t));
+          if (t < ms) {
+            raf.current = requestAnimationFrame(frame);
+            return;
+          }
+          raf.current = 0;
           if (squash.isConnected) fx.current.push(squash.animate(squashKeyframes(), { duration: SQUASH_MS, easing: "linear" }));
-        },
-        () => undefined,
-      );
+          done();
+        };
+        raf.current = requestAnimationFrame(frame);
+      });
     },
     [place, still],
   );
@@ -186,7 +210,7 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
   const goHome = useCallback(
     async (id: number) => {
       phase.current = "away";
-      await hop(homeRef.current, timesRef.current.homeMs);
+      await hop(() => homeRef.current, timesRef.current.homeMs);
       if (run.current !== id) return;
       phase.current = "home";
       place(homeRef.current);
@@ -202,6 +226,8 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
     const id = ++run.current;
     const live = () => run.current === id;
     stopAll();
+    // he stops following the last step's tiles: he hops to the new ones from where he stands
+    if (phase.current === "there") phase.current = "away";
     setTipOpen(false);
     setHeld(null);
     void (async () => {
@@ -228,9 +254,11 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
       const t = timesRef.current;
       setFlip(s.flip);
       phase.current = "away";
+      const last = s.p;
+      const aim = () => spot()?.p ?? last;
       if (arrival.kind === "jump") {
         setPose("point");
-        await hop(s.p, t.hopMs);
+        await hop(aim, t.hopMs);
         if (!live()) return;
         arrive();
         await wait(POINT_MS);
@@ -240,7 +268,7 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
       // Next: he carries the step's tiles over, tosses them in as they drop, and claps when they land
       setHeld(tiles);
       setPose("hold");
-      await hop(s.p, t.hopMs);
+      await hop(aim, t.hopMs);
       if (!live()) return;
       arrive();
       await wait(t.hold * 1000 - t.hopMs);
@@ -270,6 +298,15 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
   }, [arrival.n]);
 
   useEffect(() => awaitLand.current?.(), [landed]);
+
+  // gone from the screen: nothing more moves
+  useEffect(
+    () => () => {
+      run.current++;
+      stopAll();
+    },
+    [stopAll],
+  );
 
   // All steps, a fall and a rest call him home to look, comfort or sleep
   const away = tray || falling || resting;

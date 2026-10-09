@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.2.1 · 9 Oct 2026
+
+Pip moves like a cartoon, not stop motion. Jordan: "this is stop motion not animation."
+
+- **His poses move.** Pip used to swap from one drawing to the next in a single frame. Now his arms swing to the new
+  pose, his eyes look across, his mouth and eyes fade from one face to the next, and his star, hearts and sparkles pop
+  in.
+- **Clap, wave and cheer are actions.** His hands clap together on a beat, a wave waves, a cheer pumps both arms and
+  the star twinkles.
+- **His hop goes all the way.** On the way out to a step's tiles he used to jump on the spot and then appear beside
+  them. Now he hops the whole way in one arc, aimed again every frame, so he lands beside the tiles even while the view
+  is still turning to them.
+
 ## 4.2.0 · 9 Oct 2026
 
 Real physics. Jordan: "use real physics for the whole site", "EVERYWHERE".

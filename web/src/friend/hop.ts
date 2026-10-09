@@ -1,7 +1,8 @@
-/* Pip's moves as keyframes sampled from exact formulas (4.2d): a hop is a ballistic arc (16 samples, gravity solved so
-   a level hop rises HOP_LIFT px), the landing squashes him and springs back, and the tiles he tosses fly on an arc and
-   spin. Pure: Guide plays them with the Web Animations API, linear between samples. */
-import { hopBetween, sampleArc } from "../motion/arc";
+/* Pip's moves from exact formulas (4.2d): a hop is a ballistic arc (gravity solved so a level hop rises HOP_LIFT px),
+   the landing squashes him and springs back, and the tiles he tosses fly on an arc and spin. Pure. Guide plays a hop a
+   frame at a time (`hopAt`), aimed again each frame, so it lands on tiles that move while he is in the air (the view
+   eases round to them); the squash and the toss are keyframes for the Web Animations API, linear between samples. */
+import { arcAt, hopBetween, sampleArc } from "../motion/arc";
 import { spring, springAt } from "../motion/spring";
 
 export const HOP_LIFT = 36;
@@ -15,10 +16,11 @@ export interface Pt {
   y: number;
 }
 
-/** The hop from `from` to `to` over `ms`: an arc on screen (y counts down), one `translate` a sample. */
-export function hopKeyframes(from: Pt, to: Pt, ms: number): { translate: string }[] {
-  const arc = hopBetween([from.x, from.y], [to.x, to.y], ms / 1000, HOP_LIFT, 1, true);
-  return sampleArc(arc, HOP_SAMPLES).map(([x, y]) => ({ translate: `${x.toFixed(2)}px ${y.toFixed(2)}px` }));
+/** Where a hop from `from` to `to` over `ms` is at `t` ms: on its arc on screen (y counts down); at `to` from `ms` on. */
+export function hopAt(from: Pt, to: Pt, ms: number, t: number): Pt {
+  if (t >= ms) return { x: to.x, y: to.y };
+  const [x, y] = arcAt(hopBetween([from.x, from.y], [to.x, to.y], ms / 1000, HOP_LIFT, 1, true), Math.max(0, t) / 1000);
+  return { x, y };
 }
 
 /** The squash when he lands: scaleY 0.86 and scaleX 1.08, springing back (a little past, as a stretch, once). */
