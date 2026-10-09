@@ -17,7 +17,7 @@ function terrace(s: Site, w: number, d: number, y: number, tall: Colour, low: Co
 
 function giraffeElevator(): Project {
   const s = new Site();
-  const base = s.block("the giraffe house", 0, 0, 4, 4, 2, ["yellow", "orange"], { door: true, roof: "yellow" });
+  const base = s.block("the giraffe house", 0, 0, 4, 4, 2, ["yellow", "orange"], { door: true, roof: "yellow", deepPorch: true });
   const neck = s.tower("the giraffe elevator", 1, 1, 4, ["yellow", "orange"], { base: base.top, size: 2, cap: "lid", capColour: "orange" });
   s.roofs("the giraffe's head", [[1, 1]], neck.top, "tall", "orange");
   terrace(s, 4, 4, base.top, "red", "green", () => false);

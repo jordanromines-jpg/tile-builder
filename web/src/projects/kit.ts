@@ -99,14 +99,21 @@ export class Site {
     );
   }
 
-  private porch(name: string, colour: Colour, x: number, z: number) {
+  /** A wall inside, beside the doorway, for the square over the door to rest on. `deep` runs it from the front wall
+      right back to the back wall, tied at both ends: a short one, hinged to the front wall alone, swings like a door
+      (R14) once the layers above are held. */
+  private porch(name: string, colour: Colour, x: number, z: number, deep = false, d = 1) {
+    const n = deep ? d : 1;
     this.push(
       0,
       (b) => {
-        b.wallZ("square", colour, x, 0, z);
-        return 1;
+        for (let k = 0; k < n; k++) b.wallZ("square", colour, x, 0, z - (n - 1) + k);
+        return n;
       },
-      () => `${cap(name)}: stand a square inside, beside the doorway, from the front wall in. The roof over the door rests on it.`,
+      () =>
+        n > 1
+          ? `${cap(name)}: stand squares inside, beside the doorway, from the front wall to the back wall. The roof over the door rests on them.`
+          : `${cap(name)}: stand a square inside, beside the doorway, from the front wall in. The roof over the door rests on it.`,
     );
   }
 
@@ -125,14 +132,14 @@ export class Site {
   }
 
   /** A building: `storeys` layers of walls round w × d, colours by layer, a flat roof on top (unless `roof` is false). */
-  block(name: string, x: number, z: number, w: number, d: number, storeys: number, colours: Colour[], o: { door?: boolean; roof?: Colour | false; floors?: Colour; base?: number } = {}): Box {
+  block(name: string, x: number, z: number, w: number, d: number, storeys: number, colours: Colour[], o: { door?: boolean; roof?: Colour | false; floors?: Colour; base?: number; deepPorch?: boolean } = {}): Box {
     const base = o.base ?? 0;
     const lidded = o.roof !== false || !!o.floors;
     for (let i = 0; i < storeys; i++) {
       this.ring(name, colours[i % colours.length], x, z, w, d, base + i, !!o.door && base === 0, base);
       if (lidded) this.inner(name, colours[i % colours.length], x, z, w, d, base + i);
       // the square over the doorway needs a second wall under it: a short wall beside the door makes a porch
-      if (lidded && o.door && base === 0 && i === 0 && w > 1 && d > 1) this.porch(name, colours[0], x + 1, z + d - 1);
+      if (lidded && o.door && base === 0 && i === 0 && w > 1 && d > 1) this.porch(name, colours[0], x + 1, z + d - 1, o.deepPorch, d);
       if (o.floors && i < storeys - 1) this.floor(name, o.floors, x, z, w, d, base + i + 1, `the ${ORD[i + 1]} floor`);
     }
     if (o.roof !== false) this.floor(name, o.roof ?? colours[0], x, z, w, d, base + storeys, "the roof");
@@ -171,12 +178,16 @@ export class Site {
   }
 
   /** A straight wall of squares on the table along x (from..to at line z) or z, `height` layers, joined to towers at both ends. */
-  wall(name: string, axis: "x" | "z", from: number, to: number, line: number, height: number, colour: Colour) {
+  wall(name: string, axis: "x" | "z", from: number, to: number, line: number, height: number, colour: Colour, backwards = false) {
     for (let y = 0; y < height; y++)
       this.push(
         2 * y,
         (b) => {
-          for (let t = from; t < to; t++) axis === "x" ? b.wallX("square", colour, t, y, line) : b.wallZ("square", colour, line, y, t);
+          // `backwards` starts at the far end, so a wall that meets another at its far end starts in the corner (R14)
+          for (let k = 0; k < to - from; k++) {
+            const t = backwards ? to - 1 - k : from + k;
+            axis === "x" ? b.wallX("square", colour, t, y, line) : b.wallZ("square", colour, line, y, t);
+          }
           return to - from;
         },
         (k, of) => (y === 0 ? (k === 0 ? `${cap(name)}: stand squares in a line, joined to the towers at each end.` : `${cap(name)}: keep going along.`) : k === 0 ? `${cap(name)}: stack another layer on top.` : `${cap(name)}: keep stacking${of > 1 && k === of - 1 ? " to the end" : ""}.`),

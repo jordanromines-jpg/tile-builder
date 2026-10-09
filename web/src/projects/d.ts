@@ -178,7 +178,7 @@ function spaceElevator(): Project {
 /** Mega Mall for Mice: two long storeys with a dividing wall and twin roofs. */
 function mouseMall(): Project {
   const b = new Builder();
-  b.room("red", 0, 0, 5, 3, 0, [2]);
+  b.room("red", 0, 0, 5, 3, 0, [2], "square", 3);
   b.chunk(6, ["Ground floor: squares round a five-by-three space, leaving a doorway in the middle of the front.", "Keep going round.", "Close the ground floor."]);
   b.inside("yellow", 0, 0, 5, 3, 0);
   b.chunk(6, ["Inside, dividing walls from wall to wall, so the floor has shops. They hold up the floor above.", "Finish the dividing walls."]);

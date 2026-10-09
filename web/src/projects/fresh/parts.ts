@@ -1,5 +1,6 @@
 /* Small helpers shared by the 2.3 plans. */
 import { EQ_H, type Colour } from "../../engine/catalog";
+import type { Builder } from "../helpers";
 import type { P, Studio, Tri } from "../studio";
 
 /** Fins out from the four corners of a w × d tower on the table at (x, z), diagonally. */
@@ -71,36 +72,34 @@ export function bigTriPath(L: (i: number, j: number) => P, i0: number, j0: numbe
   return pts;
 }
 
-/** A truss along x on the table, line z, n triangles the right way up from x0 and an upside-down one between each two;
-    each upside-down one goes on in the same step as the triangle after it. */
-export function truss(s: Studio, name: string, x0: number, z: number, n: number, up: Colour, down: Colour) {
-  const atoms = [3, ...Array<number>(n - 2).fill(2)];
-  s.part(
-    0,
-    (b) => {
-      b.wallX("tri-equilateral", up, x0, 0, z);
-      for (let i = 1; i < n; i++) {
-        b.wallX("tri-equilateral", up, x0 + i, 0, z);
-        b.add("tri-equilateral", down, [x0 + i - 0.5, EQ_H, z], [Math.PI, 0]);
-      }
-      return 2 * n - 1;
-    },
-    (k, of) => (k === 0 ? `${name}: stand two triangles, and one upside down between them, its point on the table.` : `${name}: keep going, up, down, up${k === of - 1 ? ", to the end" : ""}.`),
-    false,
-    atoms,
-  );
-}
-
-/** A road of squares flat on top of two trusses (lines z and z + 1), resting on the upside-down triangles. */
-export function trussDeck(s: Studio, name: string, x0: number, z: number, n: number, colour: Colour) {
-  s.part(
-    1,
-    (b) => {
-      for (let i = 1; i < n; i++) b.add("square", colour, [x0 + i - 0.5, EQ_H, z + 1], [-Math.PI / 2, 0]);
-      return n - 1;
-    },
-    (k, of) => (k === 0 ? `${name}: lay squares flat across, from the upside-down triangles at the front to the ones at the back.` : k === of - 1 ? `${name}: finish it.` : `${name}: keep going.`),
-  );
+/** A truss bridge along x on the table (lines z = 0 and 1): n triangles the right way up on each side from x0, an
+    upside-down one between each two and one past each end (so no triangle has a free slanted edge), and a road of
+    squares laid flat across on the upside-down ones. It goes up a bay at a time, both sides and the road across
+    together, so the two thin sides are tied before the hand lets go (R14). */
+export function trussBridge(s: Studio, name: string, x0: number, n: number, up: Colour, down: Colour, road: Colour) {
+  const deck = (b: Builder, j: number) => b.add("square", road, [x0 + j - 0.5, EQ_H, 1], [-Math.PI / 2, 0]);
+  const downTri = (b: Builder, j: number, z: number) => b.add("tri-equilateral", down, [x0 + j - 0.5, EQ_H, z], [Math.PI, 0]);
+  for (let j = 0; j <= n; j++) {
+    const end = j === n;
+    s.part(
+      0,
+      (b) => {
+        const before = b.placed.length;
+        for (const z of [1, 0]) {
+          if (!end) b.wallX("tri-equilateral", up, x0 + j, 0, z);
+          downTri(b, j, z);
+        }
+        deck(b, j);
+        return b.placed.length - before;
+      },
+      () =>
+        j === 0
+          ? `${name}: on each side stand a triangle with an upside-down one beside it, its point on the table, then lay a road square across the two upside-down ones.`
+          : end
+            ? `${name}: an upside-down triangle on each side to finish the end, and the last road square across.`
+            : `${name}: on each side one more triangle and an upside-down one beside it, then a road square across.`,
+    );
+  }
 }
 
 const PIXEL: Record<string, Colour> = { r: "red", o: "orange", y: "yellow", g: "green", b: "blue", p: "purple" };

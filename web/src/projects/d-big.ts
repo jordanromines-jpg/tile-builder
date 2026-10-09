@@ -61,7 +61,7 @@ function sockSkyscraper(): Project {
 /** The Grand Hotel for Retired Pirates: three storeys, a lookout, a roof of pyramids and gangplanks. 154 tiles. */
 function pirateHotel(): Project {
   const b = new Builder();
-  b.room("blue", 0, 0, 5, 3, 0, [3]);
+  b.room("blue", 0, 0, 5, 3, 0, [3], "square", 4);
   b.room("green", 0, 0, 5, 3, 1);
   b.chunk(5, ["The hotel: squares round a five-by-three space, with a gap at the front for the door.", "Keep going round.", "Close the ground floor.", "Second layer: the square over the door rests on its two neighbours.", "Keep going.", "Keep going.", "Close the ring with the last squares."]);
   b.inside("blue", 0, 0, 5, 3, 0);
