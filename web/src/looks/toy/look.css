@@ -1,0 +1,2 @@
+/* Toy studio (3.2): the app made of the toy. Overrides tokens and restyles the ts-* hooks under [data-look="toy"];
+   dark under [data-look="toy"][data-theme="dark"] and the system's dark setting (see classic for the pattern). */

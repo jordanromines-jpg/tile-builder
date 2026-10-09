@@ -1,6 +1,7 @@
 /* The kid button (plan key 2o): a picture first, the label under it, big enough for the age (88/80/64 px, or 112 for
    the one main action), a 12 px hit slop, pressed within a frame, and with `speak` it says its label on tap. */
 import type { ReactNode } from "react";
+import { play, type SoundEvent } from "../../sound/sound";
 import { say } from "../../speech/say";
 import { ageVars, PRIMARY, useAge } from "./AgeContext";
 
@@ -18,6 +19,8 @@ export interface KidButtonProps {
   disabled?: boolean;
   tone?: "accent" | "plain" | "soft";
   className?: string;
+  /** the sound a press makes (3.0) */
+  sound?: SoundEvent;
 }
 
 const TONE = {
@@ -26,7 +29,7 @@ const TONE = {
   soft: "bg-accent-soft text-ink-1",
 };
 
-export function KidButton({ label, icon, onPress, primary, showLabel = true, speak, sayText, pressed, disabled, tone = "plain", className = "" }: KidButtonProps) {
+export function KidButton({ label, icon, onPress, primary, showLabel = true, speak, sayText, pressed, disabled, tone = "plain", className = "", sound = "tap" }: KidButtonProps) {
   const age = useAge();
   const v = ageVars(age);
   const size = primary ? `${PRIMARY}px` : v.target;
@@ -37,10 +40,11 @@ export function KidButton({ label, icon, onPress, primary, showLabel = true, spe
       aria-pressed={pressed}
       disabled={disabled}
       onClick={() => {
+        play(sound);
         if (speak) say(sayText ?? label);
         onPress();
       }}
-      className={`kid press relative inline-flex flex-col items-center justify-center gap-1 ${showLabel ? (primary ? "rounded-[32px]" : "rounded-[24px]") : "rounded-full"} px-4 py-2 font-kid font-bold disabled:opacity-40 aria-pressed:ring-4 aria-pressed:ring-focus ${TONE[tone]} ${className}`}
+      className={`ts-button ts-button-${tone}${primary ? " ts-button-primary" : ""} kid press relative inline-flex flex-col items-center justify-center gap-1 ${showLabel ? (primary ? "rounded-[32px]" : "rounded-[24px]") : "rounded-full"} px-4 py-2 font-kid font-bold disabled:opacity-40 aria-pressed:ring-4 aria-pressed:ring-focus ${TONE[tone]} ${className}`}
       style={{ minWidth: size, minHeight: size, fontSize: v.label, lineHeight: 1.1 }}
     >
       <span aria-hidden="true" className="absolute -inset-3" />

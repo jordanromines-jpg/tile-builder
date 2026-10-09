@@ -14,7 +14,7 @@ export interface InventoryRow extends Inventory {
 export const DEFAULT_SETTINGS: Settings = {
   age: null,
   voice: false,
-  soundEffects: false,
+  soundEffects: true,
   lang: "en-US",
   theme: "system",
   firstRunSeen: false,
@@ -38,6 +38,11 @@ class TileDB extends Dexie {
     this.version(2)
       .stores({ settings: "id", inventory: "id", progress: "projectId" })
       .upgrade((tx) => tx.table("settings").toCollection().modify((r: SettingsRow) => void (r.voice = false)));
+    // 3.0: sound effects are on by default (Jordan: "Yes, with a mute"). An iPad that kept "off" from the old default
+    // gets them on once; a grown-up can turn them off in Settings and that choice stays
+    this.version(3)
+      .stores({ settings: "id", inventory: "id", progress: "projectId" })
+      .upgrade((tx) => tx.table("settings").toCollection().modify((r: SettingsRow) => void (r.soundEffects = true)));
   }
 }
 

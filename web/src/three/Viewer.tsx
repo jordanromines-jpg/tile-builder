@@ -17,6 +17,7 @@ import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
 import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
 import { BIG_BUILD, frameOf, Model, releaseShared } from "./Model";
+import { currentTier, faster, slower } from "./quality";
 import { Stage } from "./Stage";
 
 export const TURN_MS = 600;
@@ -171,7 +172,8 @@ function Counter() {
   return null;
 }
 
-/** Counts changes of the page's light or dark (the iPad's setting, or a grown-up's choice in Settings). */
+/** Counts changes of the page's light or dark (the iPad's setting, or a grown-up's choice in Settings) and of the
+    look (3.0), so the 3D reads its colours again. */
 function useGround(): number {
   const [n, setN] = useState(0);
   useEffect(() => {
@@ -179,7 +181,7 @@ function useGround(): number {
     const mq = typeof matchMedia === "function" ? matchMedia("(prefers-color-scheme: dark)") : null;
     mq?.addEventListener("change", bump);
     const mo = typeof MutationObserver === "function" ? new MutationObserver(bump) : null;
-    mo?.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    mo?.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-look"] });
     return () => {
       mq?.removeEventListener("change", bump);
       mo?.disconnect();
@@ -306,7 +308,13 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   return (
     <div ref={wrap} className="h-full w-full" role="img" aria-label={label} style={{ touchAction: age === "a" ? "pan-y" : "none" }}>
       <Canvas dpr={dpr} frameloop="demand" camera={{ position: start.toArray(), fov: FOV, near: 0.1, far: 200 }} gl={{ antialias: true }}>
-        {!soft && <PerformanceMonitor onDecline={() => setTop((t) => Math.max(1, t - 0.5))} onIncline={() => setTop((t) => Math.min(sharpest, t + 0.5))} />}
+        {/* frames dropping: the look's effects go first (3.0), then sharpness; keeping up: sharpness first, then effects */}
+        {!soft && (
+          <PerformanceMonitor
+            onDecline={() => (currentTier() !== "low" ? slower() : setTop((t) => Math.max(1, t - 0.5)))}
+            onIncline={() => (top < sharpest ? setTop((t) => Math.min(sharpest, t + 0.5)) : faster())}
+          />
+        )}
         <Stage paint={tint} radius={whole.size} reach={older(age) ? distance * 1.8 : distance} shade={shade} />
         <Turntable yaw={(turns * Math.PI) / 2} still={still} onRest={rest}>
           <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} paint={tint} onRest={rest} />

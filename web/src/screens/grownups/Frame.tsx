@@ -21,14 +21,14 @@ export function Frame({ title, children }: { title: string; children: ReactNode 
   const leave = () => void navigate({ to: "/" });
   if (!isOpen()) {
     return (
-      <main className="safe grid min-h-dvh place-items-center">
+      <main className="ts-grownups ts-gate safe grid min-h-dvh place-items-center">
         <GateDialog onOpen={() => open()} onLeave={leave} />
       </main>
     );
   }
   const tab = "inline-flex min-h-11 items-center rounded-md px-4 py-2 font-bold text-ink-2 [&.active]:bg-accent-soft [&.active]:text-ink-1";
   return (
-    <div className="safe mx-auto flex min-h-dvh max-w-3xl flex-col gap-6" onPointerDown={() => touch()} onKeyDown={() => touch()}>
+    <div className="ts-grownups safe mx-auto flex min-h-dvh max-w-3xl flex-col gap-6" onPointerDown={() => touch()} onKeyDown={() => touch()}>
       <header className="flex flex-wrap items-center gap-3">
         <button type="button" onClick={leave} className="inline-flex min-h-11 items-center gap-2 rounded-md px-2 font-bold text-ink-1">
           <ArrowLeft size={22} weight="bold" aria-hidden="true" /> Back to the shelf

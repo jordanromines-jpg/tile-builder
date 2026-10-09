@@ -28,7 +28,7 @@ export function BuildBadge({ state, missing = [], size = "sm" }: { state: BuildS
   const font = size === "sm" ? "var(--fs-parent-body)" : "var(--fs-kid-label-c)";
   if (state === "need") {
     return (
-      <span className="inline-flex flex-wrap items-center gap-2 rounded-md bg-wait-bg px-3 py-1 font-kid font-bold text-wait-ink" style={{ fontSize: font }}>
+      <span className="ts-badge ts-badge-need inline-flex flex-wrap items-center gap-2 rounded-md bg-wait-bg px-3 py-1 font-kid font-bold text-wait-ink" style={{ fontSize: font }}>
         <span>{text}</span>
         {missing.map((m) => (
           <TileChip key={m.shape} shape={m.shape} count={m.count} size="sm" className="[&_svg]:!h-7 [&_svg]:!w-7 [&>span:last-child]:!text-[20px]" />
@@ -37,7 +37,7 @@ export function BuildBadge({ state, missing = [], size = "sm" }: { state: BuildS
     );
   }
   return (
-    <span className={`inline-flex items-center gap-2 rounded-md px-3 py-1 font-kid font-bold ${state === "can" ? "bg-can-bg text-can-ink" : "bg-accent-soft text-ink-1"}`} style={{ fontSize: font }}>
+    <span className={`ts-badge ${state === "can" ? "ts-badge-can" : "ts-badge-soft"} inline-flex items-center gap-2 rounded-md px-3 py-1 font-kid font-bold ${state === "can" ? "bg-can-bg text-can-ink" : "bg-accent-soft text-ink-1"}`} style={{ fontSize: font }}>
       {state === "can" ? <Check size={20} weight="bold" aria-hidden="true" /> : <span aria-hidden="true">⇄</span>}
       <span>{text}</span>
     </span>
