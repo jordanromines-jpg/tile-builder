@@ -183,10 +183,14 @@ The tile you're short of → the one that stands in for it (marked ⇄), and the
 ### Empty state (`EmptyState`)
 Two "any colour" tiles and a line, which a tap on the picture says aloud.
 
-### Celebration (`TileConfetti`; `Celebration` stays on the design page)
-At the end of a build the view circles the finished model once while little tiles shower down, 3.6 s, the same every
-time; then a photo card of the model with "Put the iPad down…" and Back to the shelf. A tap skips it; with reduced
-motion nothing falls or turns. No sound, no points.
+### Celebration (`TapToSkip` and `three/FallingTiles`; `Celebration` stays on the design page)
+At the end of a build the view circles the finished model once while 28 little tiles (squares and triangles, the six
+tile colours, 70 to 100% of a real tile, made of the tile material) fall onto it in 3D, 3.6 s at most, the same every
+time. They tumble, bounce a little (restitution 0.3), slide off steep roofs and points, and come to rest lying flat on
+the model or the table, where they stay. Then a photo card of the model with "Put the iPad down…" and Back to the shelf.
+The physics is a formula, worked out once from the build's top surface (a 0.25-square height field), not an engine. A
+tap skips it (the tiles go too); with reduced motion nothing falls or turns. The stage draws only while they move. No
+sound, no points.
 
 ### Tile chip (`TileChip`)
 See Tile pictures. Sizes 48, 72, 104 px; a count beside it in Fredoka; ⇄ when it stands in for another.

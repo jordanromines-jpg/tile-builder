@@ -191,7 +191,11 @@ export interface ModelProps {
   onRest?: () => void;
 }
 
-export function Model({ project, shown, leg, instead = {}, settled = 0, current = [], still = false, browse = false, paint = 0, hold = GHOST_S, onRest }: ModelProps) {
+/** The default for `current`: one array, not a new one a render. A new one each render restarted the step's wait whenever
+    the model came to rest (the rest bumps the shadow, which renders again), so the finish never stopped drawing (4.2c). */
+const NO_TILES: number[] = [];
+
+export function Model({ project, shown, leg, instead = {}, settled = 0, current = NO_TILES, still = false, browse = false, paint = 0, hold = GHOST_S, onRest }: ModelProps) {
   const invalidate = useThree((s) => s.invalidate);
   const key = JSON.stringify(instead);
   const accent = useMemo(() => new THREE.Color(cssColour("accent", "#BF5409")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps

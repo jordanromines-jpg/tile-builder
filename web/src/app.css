@@ -67,14 +67,6 @@ button { font: inherit; color: inherit; }
 .lift:active { transform: translateY(-4px) rotate(-1deg) scale(0.98); }
 }
 
-/* The end's shower of little tiles (TileConfetti.tsx). */
-@keyframes confetti-fall {
-  0% { transform: translateY(-40px) rotate(0); opacity: 0; }
-  10% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translateY(105dvh) rotate(var(--spin)); opacity: 0; }
-}
-.confetti { opacity: 0; animation: confetti-fall 2.6s cubic-bezier(.3, .1, .7, 1) both; }
 @keyframes photo-in { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
 .photo-in { animation: photo-in var(--spring-settle-t) var(--spring-settle) both; }
 /* Pip (3.1): a gentle bob when a pose begins, a few hops when cheering; never running on */
