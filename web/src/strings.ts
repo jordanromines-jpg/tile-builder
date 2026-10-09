@@ -112,4 +112,13 @@ export const S = {
     bigStand: "Big squares are heavy. Hold it until the next tile clicks on.",
     layer3: "Going up! Finish each layer all the way round first.",
   },
+  /** the Pip truck (4.0b), on the design page */
+  truck: {
+    title: "Pip truck",
+    note: "Pip as a monster truck, made of tile panels in the six tile colours. Beside a tile on a 30° ramp for scale. Turning slowly; still under reduced motion.",
+    label: "The Pip truck in 3D",
+    views: { turn: "Turn", front: "Front", side: "Side", back: "Back", top: "Top" },
+    viewGroup: "Truck view",
+    bounce: "Bounce",
+  },
 } as const;
