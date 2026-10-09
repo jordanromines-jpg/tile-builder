@@ -1,20 +1,41 @@
 import { describe, expect, it } from "vitest";
-import { ARRIVE, ARRIVE_S, browseProgress, flightAt, LAND_K, LEAVE_S, makeFlight, SCENE_G } from "./anim";
+import { ARRIVE, ARRIVE_S, browseProgress, DROP_S, flightAt, LAND_K, LEAVE_S, makeFlight, SCENE_G, SNAP_GAP } from "./anim";
 
 describe("the tiles' flight (4.2d)", () => {
   const from = [1.2, 1.9, 1.1];
   const to = [0.5, 0.4, 0.2];
   const gap = (out: number[]) => Math.hypot(out[0] - to[0], out[1] - to[1], out[2] - to[2]);
 
-  it("lands on its point at FLIGHT_S, and the magnets hold it exactly at the end", () => {
+  it("comes down 3 mm short of its point at FLIGHT_S (4.2b), and the magnets hold it exactly at the end", () => {
     const f = makeFlight(from, to);
     const out = [0, 0, 0];
     expect(flightAt(f, 0, out)).toBe(0);
     expect(out).toEqual(from);
     expect(flightAt(f, LAND_K, out)).toBeCloseTo(1, 9);
-    expect(gap(out)).toBeLessThan(1e-6);
+    expect(gap(out)).toBeCloseTo(SNAP_GAP, 4);
     flightAt(f, 1, out);
     expect(out).toEqual(to);
+  });
+
+  it("the magnets pull it the last 3 mm in a moment, one small overshoot past its place (4.2b)", () => {
+    const f = makeFlight(from, to);
+    const out = [0, 0, 0];
+    // how far past its place, along the way it came (negative: still short)
+    const past = (k: number) => {
+      flightAt(f, k, out);
+      return (out[0] - to[0]) * f.dir[0] + (out[1] - to[1]) * f.dir[1] + (out[2] - to[2]) * f.dir[2];
+    };
+    let touch = -1;
+    let most = 0;
+    for (let k = LAND_K; k < 1; k += 0.0005) {
+      const x = past(k);
+      if (touch < 0 && x >= 0) touch = (k - LAND_K) * DROP_S;
+      most = Math.max(most, x);
+    }
+    expect(touch).toBeGreaterThan(0);
+    expect(touch).toBeLessThan(0.03);
+    expect(most).toBeGreaterThan(0);
+    expect(most).toBeLessThan(SNAP_GAP);
   });
 
   it("is a ballistic arc under the scene's gravity, never under its landing point", () => {
