@@ -1,6 +1,6 @@
 /* Quality tiers (3.0): how much 3D polish this iPad can afford. Jordan isn't sure which iPads families have (D3), so the
    tier chooses itself: it starts from what the device says (no GPU: low; four cores or fewer: mid; else high), steps
-   down when frames drop and back up when they recover (the viewer's PerformanceMonitor calls `slower` and `faster`).
+   down when frames drop and back up when they recover (the viewer's FrameWatch calls `slower` and `faster`).
    Looks read it for their effects (looks/stage.ts): `low` has none. */
 import { useSyncExternalStore } from "react";
 import type { Tier } from "../looks/stage";

@@ -3,6 +3,8 @@
    "one more?". The saved step is cleared. */
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Pip } from "../friend/Pip";
+import { Decor } from "../looks/decor";
 import { play } from "../sound/sound";
 import { matchProject } from "../engine/match";
 import { useProject } from "../projects/load";
@@ -55,12 +57,15 @@ export function Done() {
           />
           {celebrating && <TileConfetti onDone={() => setCelebrating(false)} />}
         </div>
+        {/* Pip cheers (3.1), in the corner, never over the model */}
+        <Pip pose="cheer" size={180} className="absolute bottom-[136px] left-6 z-[1]" />
         <div className="safe-top pointer-events-none absolute inset-x-0 top-0 flex items-start justify-center gap-4 px-4">
           <span className="pointer-events-auto">
             <SpeakButton text={`${project.done} ${S.done.putDown}`} />
           </span>
           <h1 className="ts-finish-words relative soft rounded-full bg-surface-2 px-8 py-3 text-center font-display text-[length:var(--fs-kid-display-c)] font-bold leading-tight text-ink-1">
-            {project.done}
+            <Decor at="finish" />
+            <span className="relative">{project.done}</span>
           </h1>
         </div>
         {!celebrating && (

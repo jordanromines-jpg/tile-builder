@@ -51,9 +51,10 @@ Atkinson Hyperlegible Next) unless the lead adds one; no images from the network
 | `ts-library`, `ts-build`, `ts-done`, `ts-grownups` (`ts-gate` for the lock screen) | each screen's root |
 | `ts-header`, `ts-wordmark` | the Library's top bar and the name |
 | `ts-ages`, `ts-age` (`[aria-pressed=true]` when picked) | the age picker |
-| `ts-chips`, `ts-chip` (`[aria-pressed=true]`) | the theme filter |
+| `ts-chips`; `ts-chip-wrap` (the button, `[aria-pressed=true]` when picked) holding `ts-chip` (the round picture) and `ts-chip-word` (its word); select the picked one with `.ts-chip-wrap[aria-pressed="true"] .ts-chip` (3.1) | the theme filter |
 | `ts-shelf`, `ts-shelf-title`, `ts-plank`, `ts-more` | a shelf, its heading, its plank, its ▶ button |
 | `ts-card`, `ts-card-picture`, `ts-card-title`, `ts-resume` | a project card |
+| `ts-hero`, `ts-hero-picture`, `ts-hero-eyebrow`, `ts-hero-title` (3.1) | the Library's first card: "Keep building" or "Try this one" (its button is a `ts-button ts-button-accent ts-button-primary`) |
 | `ts-badge` + `ts-badge-can` / `ts-badge-need` / `ts-badge-soft` | "You can build it" and friends |
 | `ts-button` + `ts-button-accent` / `-plain` / `-soft`, `ts-button-primary` | every kid button |
 | `ts-next` | the big Next button |
@@ -62,6 +63,7 @@ Atkinson Hyperlegible Next) unless the lead adds one; no images from the network
 | `ts-dots`, `ts-dot` + `ts-dot-done` / `ts-dot-now` / `ts-dot-todo` | the step dots |
 | `ts-turns` | the turn buttons |
 | `ts-finish-words` | the finish's headline |
+| `ts-pip` (3.1) | Pip, the tile friend: on the step panel's edge in build mode (88 px) and big on the finish (180 px); style its ground shadow or a glow, don't hide it |
 | `ts-door`, `ts-empty`, `ts-empty-banner`, `ts-rest` | the grown-ups door, empty states, the "keep building" rest screen |
 | `ts-looks-button`, `ts-looks-panel`, `ts-looks`, `ts-look`, `ts-preview` | the look picker |
 | `kid`, `soft`, `press`, `lift`, `plank` | older shared classes (shadow, press and lift motion, plank) |

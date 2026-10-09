@@ -284,8 +284,55 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
   return (
     <group position={[-frame.center.x, 0, -frame.center.z]}>
       <primitive object={root} />
+      {shown < tiles.length && <Footprint min={frame.min} max={frame.max} paint={paint} />}
     </group>
   );
+}
+
+/** Where the whole build will stand (3.1): a faint dashed outline on the table, so the first steps aren't a lone tile
+    on an empty table; it goes when the build is finished. Dashes are thin flat strips (WebGL lines are one pixel wide),
+    in the ink colour, which shows on any look's floor in light and dark. */
+function Footprint({ min, max, paint }: { min: THREE.Vector3; max: THREE.Vector3; paint: number }) {
+  const mesh = useMemo(() => {
+    const p = 0.35;
+    const y = 0.006;
+    const w = 0.08;
+    const dash = 0.4;
+    const gap = 0.28;
+    const corners: [number, number][] = [
+      [min.x - p, min.z - p],
+      [max.x + p, min.z - p],
+      [max.x + p, max.z + p],
+      [min.x - p, max.z + p],
+    ];
+    const parts: THREE.BufferGeometry[] = [];
+    corners.forEach(([x0, z0], k) => {
+      const [x1, z1] = corners[(k + 1) % 4];
+      const len = Math.hypot(x1 - x0, z1 - z0);
+      const ux = (x1 - x0) / len;
+      const uz = (z1 - z0) / len;
+      for (let t = 0; t < len; t += dash + gap) {
+        const l = Math.min(dash, len - t);
+        const g = new THREE.PlaneGeometry(l, w).rotateX(-Math.PI / 2).rotateY(-Math.atan2(uz, ux));
+        g.translate(x0 + ux * (t + l / 2), y, z0 + uz * (t + l / 2));
+        parts.push(g);
+      }
+    });
+    const geo = mergeGeometries(parts)!;
+    parts.forEach((g) => g.dispose());
+    const mat = new THREE.MeshBasicMaterial({ color: new THREE.Color(cssColour("ink-2", "#5a4a3a")), transparent: true, opacity: 0.4, depthWrite: false });
+    return new THREE.Mesh(geo, mat);
+    // paint: read the ink colour again when light or dark or the look changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [min, max, paint]);
+  useEffect(
+    () => () => {
+      mesh.geometry.dispose();
+      (mesh.material as THREE.Material).dispose();
+    },
+    [mesh],
+  );
+  return <primitive object={mesh} />;
 }
 
 /** Lets go of what every stage shares (the tile shapes, the ghost, the chrome and the textures); used again, three makes

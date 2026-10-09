@@ -12,6 +12,7 @@ import { KidRows } from "./design/KidRows";
 import { Row } from "./design/Row";
 import { TileTurntable } from "./design/TileTurntable";
 import { ViewerRow } from "./design/ViewerRow";
+import { FriendSheet } from "../friend/sheet";
 
 export function Design() {
   const [ground, setGround] = useState<Ground>(currentTheme());
@@ -78,6 +79,8 @@ export function Design() {
       </Row>
 
       <ViewerRow paint={paint} />
+
+      <Row title="Tile friend" note="Character sheet (gate G1): five poses."><FriendSheet /></Row>
 
       <KidRows />
 

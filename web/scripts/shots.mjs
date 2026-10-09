@@ -1,22 +1,23 @@
 // Screenshots of every screen in a look (3.0), to look at before and after a change, and a contact sheet of them.
-//   npm run shots -- <look> [port] [outdir]       e.g. npm run shots -- toy 5211 /tmp/toy
+//   npm run shots -- <look> [port] [outdir] [screens]   e.g. npm run shots -- toy 5211 /tmp/toy library,finish
 // Light and dark, iPad landscape (1180 × 820) and portrait (820 × 1180), at 2×, with the GPU (Metal on a Mac), motion
 // reduced so every screenshot is of a still screen. Serves the app with Vite, as `npm run pictures` does.
 import { chromium } from "@playwright/test";
 import sharp from "sharp";
 import { createServer } from "vite";
-import { mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { mkdirSync, realpathSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const [look = "classic", portArg = "5210", outArg] = process.argv.slice(2);
+const [look = "classic", portArg = "5210", outArg, only] = process.argv.slice(2);
 const port = Number(portArg);
 const root = fileURLToPath(new URL("..", import.meta.url));
 const out = outArg ?? join(root, "test-results", `shots-${look}`);
 mkdirSync(out, { recursive: true });
 
-const SCREENS = [
+const ALL = [
   ["library", "#/"],
+  ["library-age", "#/", 0, "3 to 5"],
   ["build-first", "#/build/castle"],
   ["build-middle", "#/build/castle", 10],
   ["build-last", "#/build/castle", 30],
@@ -26,8 +27,11 @@ const SCREENS = [
   ["gate", "#/grownups"],
   ["design", "#/design"],
 ];
+const SCREENS = only ? ALL.filter(([n]) => only.split(",").includes(n)) : ALL;
 
-const server = await createServer({ root, server: { port, strictPort: true, host: "127.0.0.1" }, logLevel: "error" });
+// in a git worktree node_modules may be a link to the main checkout's: let Vite serve files from where it really is
+const real = realpathSync(join(root, "node_modules"));
+const server = await createServer({ root, server: { port, strictPort: true, host: "127.0.0.1", fs: { allow: [root, dirname(real)] } }, logLevel: "error" });
 await server.listen();
 const browser = await chromium.launch({ args: ["--use-angle=metal", "--enable-gpu", "--ignore-gpu-blocklist"] });
 const shots = [];
@@ -40,7 +44,7 @@ try {
       }, look);
       const page = await ctx.newPage();
       page.on("pageerror", (e) => console.error(`page error (${orient} ${scheme}):`, e.message));
-      for (const [name, path, steps = 0] of SCREENS) {
+      for (const [name, path, steps = 0, age] of SCREENS) {
         await page.goto(`http://127.0.0.1:${port}/tile-builder/${path}`);
         await page.waitForTimeout(1800);
         // the first-run card, once
@@ -53,6 +57,10 @@ try {
           }
           await ok.first().click();
           await page.waitForTimeout(300);
+        }
+        if (age) {
+          await page.getByRole("group", { name: "How old is the builder?" }).getByRole("button", { name: new RegExp(age.replace(/ to /, ".*")) }).first().click();
+          await page.waitForTimeout(1200);
         }
         const next = page.getByRole("button", { name: "Next", exact: true });
         for (let i = 0; i < steps && (await next.count()); i++) {

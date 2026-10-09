@@ -17,6 +17,7 @@ import { ArrowLeft, Play } from "../ui/icons";
 import { AgeProvider, older } from "../ui/kid/AgeContext";
 import { fell, FellDown, layerStart, type FallState } from "../ui/kid/FellDown";
 import { KidBar } from "../ui/kid/KidBar";
+import { Pip, useStepPose } from "../friend/Pip";
 import { Decor } from "../looks/decor";
 import { KidButton } from "../ui/kid/KidButton";
 import { SpeakButton } from "../ui/kid/SpeakButton";
@@ -113,6 +114,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
     [project, leg],
   );
 
+  const pipPose = useStepPose(step ?? 0);
   if (step === null) return <main className="min-h-dvh" />;
 
   const go = (n: number) => {
@@ -193,6 +195,8 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
           aria-label={S.kid.step(step + 1, last + 1)}
         >
           <Decor at="panel" />
+          {/* Pip sits on the panel's top edge, above Next, and points left at this step's tiles */}
+          <Pip pose={pipPose} size={88} flip className="absolute -top-[76px] right-10" />
           <StepDots count={last + 1} current={step} onJump={older(age) ? go : undefined} />
           <div className="flex items-center gap-5">
             <KidButton label={S.kid.stepBack} showLabel={false} icon={<ArrowLeft size={36} weight="bold" />} onPress={() => go(step - 1)} disabled={step === 0} />

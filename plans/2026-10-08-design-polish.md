@@ -15,7 +15,9 @@ in the session scratchpad, not committed).
 children's app (Fredoka, Andika, Atkinson); accessibility basics (targets, contrast, labels).
 
 **Holds it at 3/10, worst first:**
-1. **Grown-ups screens look broken:** the gate is a 180-pixel card with 13-pixel text alone in an empty page.
+1. **Grown-ups screens are plain:** the gate is a sensible card (about 360 pixels wide, 28-pixel title) alone on an
+   empty page. (The first audit called it broken, from a scaled-down contact sheet; at full size it is only plain.
+   Corrected 8 Oct.)
 2. **The Library looks like a prototype:** a flat page; twelve identical round icon buttons with no words, cut off;
    small cards with small floating pictures; a 2-pixel "shelf"; no first thing to look at, no "keep building".
 3. **The 3D stage is cheap around good tiles:** the wood reads as stripes; flat light; no darkening where tiles meet,
@@ -95,7 +97,7 @@ hidden with "fewer moving things" (reduced motion keeps it still).
 
 | # | What | Done when | Time |
 |---|------|-----------|------|
-| 1a | Grown-ups screens laid out for an iPad: the gate, Tiles and Settings full-size, readable, in a two-column frame | before/after screenshots | 3 h |
+| 1a | Grown-ups screens: the gate given a friendly picture and a page around it (each look styles it); Tiles and Settings checked at full size | before/after screenshots | 1 h |
 | 1b | Library: a "keep building" hero card (the project in progress, or a suggestion); theme chips with words; bigger cards whose pictures fill them; shelves with room to breathe; the composed empty state | e2e and plates | 4 h |
 | 1c | Build mode: the step panel's layout (this step's tiles big, the words, Next), turn buttons grouped; first-step framing against the whole build's footprint, with a faint outline of where it all goes | screenshot of step 1 of five builds | 3 h |
 | 1d | The landing: squash, settle, `snap` sound, a glint; the ghost as a breathing outline (reduced motion: none) | | 2 h |
@@ -184,4 +186,6 @@ G1 (the character sheet), G2 (all three looks on his iPad with a child).
 ## Results
 None yet.
 | 2026-10-08 | 3.0 · 0a–0e | (this commit) | 13 · about 4 | Look system (`looks/`: `data-look` set before first paint; `stages.ts`, `voices.ts`, `decorations.ts` kept apart so three.js stays in the 3D chunk: the first chunk is 224 KB gzipped against 221 on main; the effects library, 102 KB, loads only when a look turns an effect on); `looks/README.md`, the contract the agents build to; `ts-*` hooks and `<Decor>` places on every shared component; the stage from the look, effects by tier (`three/quality.ts`, stepping with the frame monitor: effects first, then sharpness); the sound engine (`sound/`), on the existing "Sound effects" switch, now on by default (one store migration), voiced per look, snap on landing, step, turn, finish; the picker with live previews in Settings, the first-run card and on the Library; `npm run shots` (every screen of a look, light and dark, landscape and portrait). `classic` is today's design. All checks green. | Start the four agents (worktrees); 3.1 |
+| 2026-10-08 | 3.0 merged | `acdd00e` (#39) | — | CI green, merged, `pages.yml` succeeded. Four agents started in worktrees (three looks, the tile friend). | 3.1 |
+| 2026-10-08 | 3.1 · 1a–1f | (this commit) | 15 · about 3 | 1a: the gate is a sensible card, only plain (the audit's "broken" came from a scaled-down sheet; corrected above); the looks style it. 1b: a "Keep building" / "Try this one" card first on the Library; a word under every theme chip (`ts-chip-wrap` holds `ts-chip` and `ts-chip-word`); with no age yet, the age shelves now come before the trucks and wildflowers (a new family saw trucks first). 1c: kept the framing (zooming out to the whole footprint made a big build's first tile tiny); instead a dashed outline on the table of where the whole build will stand, in the ink colour, until it's done. 1d and 1e: the landing already eases and snaps, and now clicks (3.0); the finish has its sound and Pip; no more this PR. 1f: Pip (G1: \"Approve as is\", name \"Pip\") on the step panel's edge, pointing for a moment each step, and cheering big on the finish; a few movements, never a loop; still with reduced motion. Fixes the look agents found: `<Decor at=\"finish\">` rendered; `FrameWatch` replaces drei's monitor (it read a still, demand-drawn screen as slow, so effects were nearly always off); with effects on, tone mapping happens once, last (a dark floor drew twice as bright); `npm run shots` serves fonts through a linked node_modules, takes a screen list and shoots the Library with an age; the shelf row has room for card shadows. Plates: Library and design page updated after looking. All checks green. | Merge 3.1; then the three looks (3.2–3.4) on top of it, each checked with `npm run shots` |
 

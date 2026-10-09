@@ -5,7 +5,7 @@
    Each new step eases the view toward the tiles being placed. `sweep` circles the finished model once (the end of a
    build). Performance: pixel ratio at most 2 (1.5 on smaller devices and for builds over BIG_BUILD tiles, 1 without a
    GPU), frames drawn only when something moves; a big build turns once by itself and then rests (2.8.1). */
-import { OrbitControls, PerformanceMonitor } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
@@ -17,6 +17,7 @@ import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
 import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
 import { BIG_BUILD, frameOf, Model, releaseShared } from "./Model";
+import { FrameWatch } from "./FrameWatch";
 import { currentTier, faster, slower } from "./quality";
 import { Stage } from "./Stage";
 
@@ -284,7 +285,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   // a big build draws a lot a pixel: at most 1.5× (2.8.1), as on smaller devices
   const sharpest = big || (typeof navigator !== "undefined" && (navigator.hardwareConcurrency ?? 8) <= 4) ? 1.5 : 2;
   // 2.4: if turning the model drops frames, draw fewer pixels (down to the screen's own 1×), and sharpen again when it
-  // keeps up
+  // keeps up (3.1: FrameWatch, which counts only moving frames)
   const [top, setTop] = useState(sharpest);
   const dpr: [number, number] = soft ? [0.75, 0.75] : [1, top];
 
@@ -310,7 +311,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
       <Canvas dpr={dpr} frameloop="demand" camera={{ position: start.toArray(), fov: FOV, near: 0.1, far: 200 }} gl={{ antialias: true }}>
         {/* frames dropping: the look's effects go first (3.0), then sharpness; keeping up: sharpness first, then effects */}
         {!soft && (
-          <PerformanceMonitor
+          <FrameWatch
             onDecline={() => (currentTier() !== "low" ? slower() : setTop((t) => Math.max(1, t - 0.5)))}
             onIncline={() => (top < sharpest ? setTop((t) => Math.min(sharpest, t + 0.5)) : faster())}
           />

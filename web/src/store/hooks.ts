@@ -15,4 +15,13 @@ export function useProgress(): Record<string, number> | undefined {
   return useLiveQuery(async () => Object.fromEntries((await db.progress.toArray()).map((p: Progress) => [p.projectId, p.step])), [], undefined);
 }
 
+/** The build touched last and its step, for "keep building" (3.1); null when nothing is half done. */
+export function useLatestProgress(): { projectId: string; step: number } | null | undefined {
+  return useLiveQuery(async () => {
+    const rows = (await db.progress.toArray()) as (Progress & { updatedAt?: string })[];
+    const last = rows.sort((a, b) => (b.updatedAt ?? "").localeCompare(a.updatedAt ?? ""))[0];
+    return last ? { projectId: last.projectId, step: last.step } : null;
+  }, [], undefined);
+}
+
 export { DEFAULT_SETTINGS, EMPTY_INVENTORY };
