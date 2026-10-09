@@ -125,8 +125,10 @@ function littleArena(): Project {
     for (const [x, z] of cells) (along === "x" ? b.wallX : b.wallZ).call(b, "square-large", colour, x, 0, z);
     b.step(say);
   };
-  big("purple", "z", [[4, 0], [4, 2], [4, 4]], "Stand three big purple squares up in a row, side by side. The right wall of the arena!");
-  big("blue", "x", [[0, 0], [2, 0]], "Stand two big blue squares up in a row, joined to the right wall at the back.");
+  // the right wall and the back wall go up together: a long wall alone folds at its joins like a door (R14)
+  for (const z of [0, 2, 4]) b.wallZ("square-large", "purple", 4, 0, z);
+  for (const x of [0, 2]) b.wallX("square-large", "blue", x, 0, 0);
+  b.step("Stand three big purple squares up in a row for the right wall, and two big blue squares for the back wall, joined at the corner. The arena!");
   big("purple", "z", [[0, 0], [0, 2], [0, 4]], "Stand three more big purple squares up for the left wall, joined to the back.");
   big("blue", "x", [[0, 6]], "Stand one big blue square up at the front on the left. Leave a gap on the right: the gate!");
   lane(b, ["green"], at(2, 6), "N", 1, 1, "Put a green square flat on the table, just inside the gate.", true);

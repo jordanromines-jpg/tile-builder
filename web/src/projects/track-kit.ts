@@ -258,7 +258,11 @@ export function arenaWall(b: Builder, colour: Colour, x0: number, z0: number, w:
     ["left", () => { for (let i = 0; i < d; i++) if (!skip("left", i)) b.wallZ("square-large", colour, x0, 0, z0 + 2 * i); }],
     ["front", () => { for (let i = 0; i < w; i++) if (!skip("front", i)) b.wallX("square-large", colour, x0 + 2 * i, 0, z0 + 2 * d); }],
   ];
-  for (const [side, f] of sides) {
+  // the right and the back go up together, joined at their corner: a long wall alone folds at its joins like a door (R14)
+  sides[0][1]();
+  sides[1][1]();
+  b.step("Stand big squares along the right and the back of the arena, edge to edge, joined at the corner.");
+  for (const [side, f] of sides.slice(2)) {
     f();
     b.step(`Stand big squares along the ${side} of the arena, edge to edge.`);
   }
