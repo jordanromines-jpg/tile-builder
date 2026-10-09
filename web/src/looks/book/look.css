@@ -1,2 +1,216 @@
-/* Picture book (3.3): paper, crayon and watercolour. Overrides tokens and restyles the ts-* hooks under
-   [data-look="book"]; dark under [data-look="book"][data-theme="dark"] and the system's dark setting. */
+/* Picture book (3.3): a warm illustrated storybook. Paper with a grain and fibres (cream by day, ink-blue night paper in
+   the dark), edges drawn by hand (irregular radii, a pencil line, a second sketchy contour), watercolour washes behind
+   the shelves, cards taped to the page, painted buttons that press like paper, a deckled panel, stars on the finish.
+   Overrides tokens and restyles the ts-* hooks under [data-look="book"]; dark under [data-look="book"][data-theme="dark"]
+   and the system's dark setting. Decor shapes are in decor.tsx; the 3D sheet of drawing paper is in stage.ts. */
+
+/* ---------- tokens: light ---------- */
+[data-look="book"] {
+  color-scheme: light;
+  --surface: #fbf3e3; --surface-2: #fffaf0; --surface-3: #f2e4c8;
+  --ink-1: #2d2a3a; --ink-2: #4f4658; --ink-3: #66596a; --line: #dccaa8;
+  --accent: #b4461c; --accent-ink: #ffffff; --accent-soft: #f9dcc4; --focus: #b4461c;
+  --can-bg: #e1efdc; --can-ink: #24582f; --wait-bg: #fbe8c4; --wait-ink: #6b4300;
+  --stage: #f3e7d0; --ground: #e4d2b0;
+  --r-sm: 14px; --r-md: 22px; --r-lg: 32px;
+  --book-pencil: rgba(70, 55, 80, 0.5); --book-pencil-soft: rgba(70, 55, 80, 0.22);
+  --book-crayon: #e0693a; --book-star: #f4c51b; --book-star-2: #f5a04a;
+  --book-edge: rgba(100, 50, 20, 0.42); --book-shadow-rgb: 80, 55, 30;
+  --book-wash-sun: rgba(250, 205, 120, 0.5);
+  --book-wash-1: rgba(105, 180, 235, 0.36); --book-wash-2: rgba(240, 170, 130, 0.27);
+  --book-wash-3: rgba(150, 205, 160, 0.3); --book-wash-4: rgba(245, 210, 110, 0.32);
+  --book-tape-1: rgba(245, 196, 90, 0.8); --book-tape-2: rgba(130, 180, 235, 0.78); --book-tape-3: rgba(140, 205, 150, 0.78);
+  --book-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .30 0 0 0 0 .18 0 0 0 .9 -.35'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.55'/%3E%3Cg fill='none' stroke='%238a6a44' stroke-opacity='.16' stroke-linecap='round'%3E%3Cpath d='M20 40q8-6 16-2M120 90q10 4 18-3M200 30q6 8 15 6M60 180q9-5 17 1M170 210q8 6 17 0M230 140q-8 6-14 0M90 20q7 7 14 3M30 120q8 3 15-2'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- tokens: dark (ink-blue night paper) ---------- */
+:root[data-theme="dark"] [data-look="book"], :root[data-theme="dark"][data-look="book"] {
+  color-scheme: dark;
+  --surface: #121a33; --surface-2: #1c2644; --surface-3: #27325a;
+  --ink-1: #f6ecd8; --ink-2: #d5cbb8; --ink-3: #aea593; --line: #3b4770;
+  --accent: #f2a65a; --accent-ink: #1c1206; --accent-soft: #4b3422; --focus: #f2a65a;
+  --can-bg: #1f3a2c; --can-ink: #a9e0b6; --wait-bg: #3d3216; --wait-ink: #f3cb82;
+  --stage: #1a2240; --ground: #262f4d;
+  --book-pencil: rgba(246, 236, 216, 0.4); --book-pencil-soft: rgba(246, 236, 216, 0.17);
+  --book-crayon: #f2a65a; --book-star: #f4c51b; --book-star-2: #f5a04a;
+  --book-edge: rgba(0, 0, 8, 0.5); --book-shadow-rgb: 0, 0, 10;
+  --book-wash-sun: rgba(70, 95, 180, 0.4);
+  --book-wash-1: rgba(80, 120, 210, 0.24); --book-wash-2: rgba(150, 100, 200, 0.2);
+  --book-wash-3: rgba(70, 170, 140, 0.18); --book-wash-4: rgba(220, 160, 70, 0.17);
+  --book-tape-1: rgba(235, 180, 80, 0.72); --book-tape-2: rgba(110, 160, 225, 0.7); --book-tape-3: rgba(120, 190, 140, 0.68);
+  --book-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .9 0 0 0 0 .8 0 0 0 .9 -.4'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.3'/%3E%3Cg fill='none' stroke='%23f6ecd8' stroke-opacity='.07' stroke-linecap='round'%3E%3Cpath d='M20 40q8-6 16-2M120 90q10 4 18-3M200 30q6 8 15 6M60 180q9-5 17 1M170 210q8 6 17 0M230 140q-8 6-14 0M90 20q7 7 14 3M30 120q8 3 15-2'/%3E%3C/g%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-look="book"], :root:not([data-theme="light"])[data-look="book"] {
+    color-scheme: dark;
+    --surface: #121a33; --surface-2: #1c2644; --surface-3: #27325a;
+    --ink-1: #f6ecd8; --ink-2: #d5cbb8; --ink-3: #aea593; --line: #3b4770;
+    --accent: #f2a65a; --accent-ink: #1c1206; --accent-soft: #4b3422; --focus: #f2a65a;
+    --can-bg: #1f3a2c; --can-ink: #a9e0b6; --wait-bg: #3d3216; --wait-ink: #f3cb82;
+    --stage: #1a2240; --ground: #262f4d;
+    --book-pencil: rgba(246, 236, 216, 0.4); --book-pencil-soft: rgba(246, 236, 216, 0.17);
+    --book-crayon: #f2a65a; --book-star: #f4c51b; --book-star-2: #f5a04a;
+    --book-edge: rgba(0, 0, 8, 0.5); --book-shadow-rgb: 0, 0, 10;
+    --book-wash-sun: rgba(70, 95, 180, 0.4);
+    --book-wash-1: rgba(80, 120, 210, 0.24); --book-wash-2: rgba(150, 100, 200, 0.2);
+    --book-wash-3: rgba(70, 170, 140, 0.18); --book-wash-4: rgba(220, 160, 70, 0.17);
+    --book-tape-1: rgba(235, 180, 80, 0.72); --book-tape-2: rgba(110, 160, 225, 0.7); --book-tape-3: rgba(120, 190, 140, 0.68);
+    --book-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .9 0 0 0 0 .8 0 0 0 .9 -.4'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.3'/%3E%3Cg fill='none' stroke='%23f6ecd8' stroke-opacity='.07' stroke-linecap='round'%3E%3Cpath d='M20 40q8-6 16-2M120 90q10 4 18-3M200 30q6 8 15 6M60 180q9-5 17 1M170 210q8 6 17 0M230 140q-8 6-14 0M90 20q7 7 14 3M30 120q8 3 15-2'/%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+/* ---------- the page: paper ---------- */
+:root[data-look="book"] body {
+  background-color: var(--surface);
+  background-image: var(--book-grain);
+  background-attachment: fixed;
+}
+[data-look="book"] .ts-library, [data-look="book"] .ts-grownups { background: none; }
+[data-look="book"] .ts-build, [data-look="book"] .ts-done { background-color: var(--stage); }
+
+/* the shared shadow: soft, warm, never black */
+[data-look="book"] .soft {
+  box-shadow: 0 1px 1px rgba(var(--book-shadow-rgb), 0.14), 0 9px 20px -9px rgba(var(--book-shadow-rgb), 0.42);
+}
+
+/* paper surfaces: grain on top of the surface colour, a pencil edge, an irregular outline */
+[data-look="book"] .ts-card, [data-look="book"] .ts-panel, [data-look="book"] .ts-title, [data-look="book"] .ts-finish-words,
+[data-look="book"] .ts-empty-banner, [data-look="book"] .ts-looks-panel, [data-look="book"] .ts-look {
+  background-image: var(--book-grain);
+  border-color: var(--book-pencil);
+}
+
+/* ---------- type ---------- */
+[data-look="book"] .ts-wordmark { position: relative; letter-spacing: 0.005em; }
+[data-look="book"] .ts-wordmark::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -12px; height: 10px; background: var(--book-crayon); opacity: 0.85;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6 C 40 2 70 8 110 5 S 170 3 198 5' fill='none' stroke='black' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6 C 40 2 70 8 110 5 S 170 3 198 5' fill='none' stroke='black' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+[data-look="book"] .ts-shelf-title { letter-spacing: 0.005em; padding-bottom: 2px; }
+
+/* ---------- shelves: a band of watercolour wash, a drawn line for the shelf ---------- */
+[data-look="book"] .ts-shelf { position: relative; isolation: isolate; padding: 6px 18px 12px; margin: 0 -18px; }
+[data-look="book"] .ts-shelf::before {
+  content: ""; position: absolute; z-index: -1; inset: -4px -6px -2px; pointer-events: none;
+  border-radius: 46px 38px 52px 40px / 38px 50px 40px 48px;
+  background:
+    radial-gradient(ellipse 34% 50% at 16% 46%, var(--wash, var(--book-wash-1)) 30%, transparent 100%),
+    radial-gradient(ellipse 36% 46% at 50% 56%, var(--wash, var(--book-wash-1)) 30%, transparent 100%),
+    radial-gradient(ellipse 34% 50% at 84% 44%, var(--wash, var(--book-wash-1)) 30%, transparent 100%);
+}
+[data-look="book"] .ts-shelf:nth-of-type(4n+2) { --wash: var(--book-wash-2); }
+[data-look="book"] .ts-shelf:nth-of-type(4n+3) { --wash: var(--book-wash-3); }
+[data-look="book"] .ts-shelf:nth-of-type(4n+4) { --wash: var(--book-wash-4); }
+[data-look="book"] .ts-plank { height: 14px; background: none; box-shadow: none; border-radius: 0; }
+
+/* ---------- cards: illustrations taped onto the page ---------- */
+[data-look="book"] .ts-card {
+  --tape: var(--book-tape-1);
+  border-radius: 30px 26px 32px 24px / 26px 32px 24px 30px;
+  outline: 1.5px solid var(--book-pencil-soft); outline-offset: 3px;
+  transition: transform var(--t-ui) var(--ease), box-shadow var(--t-ui) var(--ease);
+}
+[data-look="book"] .ts-card:nth-child(odd) { rotate: -0.7deg; }
+[data-look="book"] .ts-card:nth-child(even) { rotate: 0.6deg; }
+[data-look="book"] .ts-card:nth-child(3n+2) { --tape: var(--book-tape-2); }
+[data-look="book"] .ts-card:nth-child(3n+3) { --tape: var(--book-tape-3); }
+[data-look="book"] .ts-card:active { transform: translateY(2px) scale(0.985); rotate: 0deg; }
+[data-look="book"] .ts-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+[data-look="book"] .ts-card-picture { border-radius: 26px 22px 0 0 / 22px 26px 0 0; background-image: none; }
+[data-look="book"] .ts-card-title { letter-spacing: 0.005em; }
+[data-look="book"] .ts-resume { border: 1.5px solid var(--book-edge); border-radius: 22px 18px 24px 16px / 18px 24px 16px 22px; }
+
+/* the picker's own preview (a card and a button, small) keeps its straight posture */
+[data-look="book"] .ts-preview .ts-card { rotate: 0deg; outline: none; }
+
+/* ---------- badges ---------- */
+[data-look="book"] .ts-badge { border: 1.5px solid var(--book-pencil-soft); border-radius: 18px 14px 20px 14px / 14px 20px 14px 18px; }
+
+/* ---------- buttons: painted shapes with a soft ink outline that press like paper ---------- */
+[data-look="book"] .ts-button {
+  border: 2px solid var(--book-edge);
+  background-image: var(--book-grain);
+  box-shadow: 0 3px 0 var(--book-edge), 0 10px 16px -10px rgba(var(--book-shadow-rgb), 0.5);
+  transition: transform var(--t-press) var(--ease), box-shadow var(--t-press) var(--ease);
+}
+[data-look="book"] .ts-button:not(.rounded-full) { border-radius: 26px 22px 28px 20px / 22px 28px 20px 26px; }
+[data-look="book"] .ts-button.rounded-full { border-radius: 52% 48% 50% 50% / 50% 53% 47% 50%; }
+[data-look="book"] .ts-button:active { transform: translateY(3px) scale(0.98); box-shadow: 0 0 0 var(--book-edge), 0 2px 4px -2px rgba(var(--book-shadow-rgb), 0.4); }
+[data-look="book"] .ts-button-accent {
+  background-image: var(--book-grain), radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.28), transparent 60%);
+}
+[data-look="book"] .ts-button-plain { background-color: var(--surface-2); }
+[data-look="book"] .ts-button-soft { background-color: var(--accent-soft); }
+[data-look="book"] .ts-button-primary { box-shadow: 0 5px 0 var(--book-edge), 0 14px 20px -12px rgba(var(--book-shadow-rgb), 0.55); border-width: 2.5px; }
+[data-look="book"] .ts-button-primary:active { transform: translateY(5px) scale(0.985); box-shadow: 0 0 0 var(--book-edge), 0 2px 4px -2px rgba(var(--book-shadow-rgb), 0.4); }
+[data-look="book"] .ts-button:disabled { box-shadow: none; }
+[data-look="book"] .ts-next { letter-spacing: 0.01em; }
+
+/* ---------- the age picker and the theme filter ---------- */
+[data-look="book"] .ts-age {
+  background-image: var(--book-grain);
+  border-color: var(--book-pencil);
+  border-radius: 26px 22px 28px 20px / 22px 28px 20px 26px;
+  box-shadow: 0 2px 0 var(--book-pencil-soft), 0 8px 14px -10px rgba(var(--book-shadow-rgb), 0.45);
+}
+[data-look="book"] .ts-age[aria-pressed="true"] {
+  background-color: var(--accent-soft); border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent), 0 8px 14px -8px rgba(var(--book-shadow-rgb), 0.5);
+  rotate: -1deg;
+}
+[data-look="book"] .ts-chip {
+  background-image: var(--book-grain);
+  border-color: var(--book-pencil);
+  border-radius: 52% 48% 50% 50% / 50% 53% 47% 50%;
+  box-shadow: 0 2px 0 var(--book-pencil-soft), 0 8px 12px -9px rgba(var(--book-shadow-rgb), 0.5);
+}
+[data-look="book"] .ts-chip-wrap[aria-pressed="true"] .ts-chip, [data-look="book"] .ts-chip[aria-pressed="true"] {
+  background-color: var(--accent); border-color: var(--book-edge); color: var(--accent-ink);
+  box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent), 0 8px 12px -8px rgba(var(--book-shadow-rgb), 0.5);
+}
+[data-look="book"] .ts-chip-word { font-family: var(--kid); font-weight: 700; font-size: 16px; line-height: 1.2; color: var(--ink-2); letter-spacing: 0.01em; }
+[data-look="book"] .ts-chip-wrap[aria-pressed="true"] .ts-chip-word {
+  color: var(--ink-1);
+  text-decoration: underline wavy var(--book-crayon) 2px; text-underline-offset: 5px;
+}
+
+/* ---------- build mode ---------- */
+[data-look="book"] .ts-title {
+  border: 2px solid var(--book-pencil); border-radius: 30px 26px 32px 24px / 26px 32px 24px 30px; rotate: -0.4deg; padding-inline: 28px;
+}
+[data-look="book"] .ts-panel {
+  border: 2px solid var(--book-pencil);
+  border-radius: 34px 30px 36px 28px / 30px 36px 28px 34px;
+  box-shadow: 0 -1px 0 var(--book-pencil-soft), 0 12px 26px -10px rgba(var(--book-shadow-rgb), 0.5);
+}
+[data-look="book"] .ts-dot-todo { border-color: var(--book-pencil); }
+[data-look="book"] .ts-dot-done { background-color: var(--ink-2); }
+[data-look="book"] .ts-dot-now { background-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft), 0 0 0 5.5px var(--book-edge); }
+[data-look="book"] .ts-step-tiles > * { filter: drop-shadow(0 2px 2px rgba(var(--book-shadow-rgb), 0.3)); }
+[data-look="book"] .ts-rest { background-image: var(--book-grain); }
+
+/* ---------- the finish: the end of the story ---------- */
+[data-look="book"] .ts-finish-words {
+  border: 2.5px solid var(--book-crayon);
+  border-radius: 46px 40px 50px 38px / 40px 50px 38px 46px;
+  rotate: -0.5deg;
+  box-shadow: 0 0 0 5px var(--surface-2), 0 0 0 6.5px var(--book-pencil-soft), 0 14px 26px -12px rgba(var(--book-shadow-rgb), 0.5);
+}
+
+/* stars drawn round the headline (the finish has no decoration place yet, so CSS draws them) */
+[data-look="book"] .ts-finish-words::before, [data-look="book"] .ts-finish-words::after {
+  content: ""; position: absolute; pointer-events: none; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 3 L24.5 14.5 L37 15.4 L27.5 23.6 L30.6 36 L20 29.4 L9.6 36 L12.6 23.6 L3 15.4 L15.4 14.5 Z' fill='%23f4c51b' stroke='%23d9602f' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+[data-look="book"] .ts-finish-words::before { width: 40px; height: 40px; left: 4%; top: -24px; rotate: -14deg; }
+[data-look="book"] .ts-finish-words::after { width: 56px; height: 56px; right: -8px; top: calc(100% - 22px); rotate: 12deg; }
+
+/* ---------- the grown-ups' pages ---------- */
+[data-look="book"] .ts-gate > * { background-image: var(--book-grain); }
+[data-look="book"] .ts-door { border-color: var(--book-pencil); background-image: var(--book-grain); }
+[data-look="book"] .ts-empty { color: var(--ink-1); }
+
+/* ---------- the look picker ---------- */
+[data-look="book"] .ts-look { border-radius: 30px 26px 32px 24px / 26px 32px 24px 30px; }
+[data-look="book"] .ts-preview { background-image: var(--book-grain); }
