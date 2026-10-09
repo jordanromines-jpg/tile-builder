@@ -55,7 +55,7 @@
   font-weight: 600;
   letter-spacing: -0.01em;
   box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .06), 0 6px 16px -8px rgba(var(--st-shadow), .18);
-  transition: transform var(--t-press) var(--ease), box-shadow var(--t-ui) var(--ease), background-color var(--t-ui) var(--ease);
+  transition: transform var(--spring-press-t) var(--spring-press), box-shadow var(--spring-ui-t) var(--spring-ui), background-color var(--t-ui) var(--ease);
 }
 [data-look="studio"] .ts-age:active { transform: scale(.96); }
 [data-look="studio"] .ts-age[aria-pressed="true"] {
@@ -76,7 +76,7 @@
   background: var(--surface-2);
   color: var(--ink-1);
   box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .06), 0 6px 14px -8px rgba(var(--st-shadow), .18);
-  transition: transform var(--t-press) var(--ease), box-shadow var(--t-ui) var(--ease), background-color var(--t-ui) var(--ease);
+  transition: transform var(--spring-press-t) var(--spring-press), box-shadow var(--spring-ui-t) var(--spring-ui), background-color var(--t-ui) var(--ease);
 }
 [data-look="studio"] .ts-chip-wrap:active .ts-chip, [data-look="studio"] button.ts-chip:active { transform: scale(.94); }
 [data-look="studio"] .ts-chip[aria-pressed="true"],
@@ -121,7 +121,7 @@
   border-radius: 26px;
   background: var(--surface-2);
   box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .05), 0 10px 28px -12px rgba(var(--st-shadow), .22);
-  transition: transform var(--t-ui) var(--ease), box-shadow var(--t-ui) var(--ease);
+  transition: transform var(--spring-ui-t) var(--spring-ui), box-shadow var(--spring-ui-t) var(--spring-ui);
 }
 [data-look="studio"] .ts-card:active {
   transform: scale(.97);
@@ -157,7 +157,7 @@
   border: 0;
   font-weight: 700;
   box-shadow: 0 0 0 1px var(--st-hair), 0 1px 2px rgba(var(--st-shadow), .07), 0 8px 18px -10px rgba(var(--st-shadow), .24);
-  transition: transform var(--t-press) var(--ease), box-shadow var(--t-press) var(--ease), filter var(--t-press) var(--ease), background-color var(--t-ui) var(--ease);
+  transition: transform var(--spring-press-t) var(--spring-press), box-shadow var(--spring-press-t) var(--spring-press), filter var(--t-press) var(--ease), background-color var(--t-ui) var(--ease);
 }
 [data-look="studio"] .ts-button:active {
   transform: scale(.955);
@@ -203,7 +203,7 @@
 [data-look="studio"] .ts-step-tiles li { filter: drop-shadow(0 2px 3px rgba(var(--st-shadow), .18)); }
 
 /* ---- step dots: graphite progress, one accent for now ---- */
-[data-look="studio"] .ts-dot { transition: background-color var(--t-ui) var(--ease), transform var(--t-ui) var(--ease); }
+[data-look="studio"] .ts-dot { transition: background-color var(--t-ui) var(--ease), transform var(--spring-ui-t) var(--spring-ui); }
 [data-look="studio"] .ts-dot-done { background: var(--ink-3); opacity: .55; }
 [data-look="studio"] .ts-dot-todo { border-color: var(--ink-3); border-width: 1.5px; opacity: .55; }
 [data-look="studio"] .ts-dot-now { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }

@@ -9,6 +9,7 @@ import type { StepTile } from "../screens/build/stepTiles";
 import { useStill } from "../ui/motion";
 import { TilePicture } from "../ui/TileChip";
 import type { FriendPose } from "./Friend";
+import { hopKeyframes, SQUASH_MS, squashKeyframes, tossKeyframes } from "./hop";
 import { guideTimes, type Pace } from "./pace";
 import { Pip } from "./Pip";
 
@@ -87,6 +88,8 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
   const phase = useRef<"home" | "away" | "there">("home");
   const run = useRef(0);
   const anims = useRef<Animation[]>([]);
+  /** squashes: cancelled with the rest, but never committed (they would leave him squashed) */
+  const fx = useRef<Animation[]>([]);
   const awaitLand = useRef<(() => void) | null>(null);
 
   // Pip's place: the panel's top edge, above Next, read again whenever the panel changes size
@@ -148,20 +151,25 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
       a.cancel();
     }
     anims.current = [];
+    for (const a of fx.current) a.cancel();
+    fx.current = [];
     awaitLand.current = null;
   }, []);
 
-  /** A hop along an arc to `to`; resolves when he lands, or at once with motion reduced. */
+  /** A hop along a ballistic arc to `to` (4.2d); he squashes as he lands and springs back. Resolves when he lands, or at
+      once with motion reduced. */
   const hop = useCallback(
     (to: P, ms: number) => {
       const from = pos.current ?? to;
       place(to);
       if (still || !outer.current || !inner.current) return Promise.resolve();
-      const a = outer.current.animate([{ translate: `${from.x}px ${from.y}px` }, { translate: `${to.x}px ${to.y}px` }], { duration: ms, easing: "cubic-bezier(.3,.7,.3,1)" });
-      const b = inner.current.animate([{ transform: "translateY(0)" }, { transform: "translateY(-36px)" }, { transform: "translateY(0)" }], { duration: ms, easing: "ease-in-out" });
-      anims.current.push(a, b);
+      const a = outer.current.animate(hopKeyframes(from, to, ms), { duration: ms, easing: "linear" });
+      anims.current.push(a);
+      const squash = inner.current;
       return a.finished.then(
-        () => undefined,
+        () => {
+          if (squash.isConnected) fx.current.push(squash.animate(squashKeyframes(), { duration: SQUASH_MS, easing: "linear" }));
+        },
         () => undefined,
       );
     },
@@ -243,7 +251,7 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
       if (at && h && box && heldEl.current) {
         const dx = at.x - (h.left - box.left + h.width / 2);
         const dy = at.y - (h.top - box.top + h.height / 2);
-        const a = heldEl.current.animate([{ transform: "translate(0, 0) scale(1)", opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.4)`, opacity: 0 }], { duration: t.tossMs, easing: "ease-in", fill: "forwards" });
+        const a = heldEl.current.animate(tossKeyframes(dx, dy, t.tossMs), { duration: t.tossMs, easing: "linear", fill: "forwards" });
         anims.current.push(a);
       }
       setPose("point");
@@ -300,7 +308,7 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
   return (
     <div ref={layer} className="ts-guide pointer-events-none absolute inset-0 z-40 overflow-hidden">
       <div ref={outer} className="absolute left-0 top-0" style={{ width: SIZE, height: SIZE }}>
-        <div ref={inner} className="relative h-full w-full">
+        <div ref={inner} className="relative h-full w-full" style={{ transformOrigin: "50% 100%" }}>
           {held && (
             <div ref={heldEl} className="absolute -top-7 left-1/2 flex -translate-x-1/2 items-end gap-0.5">
               {held.slice(0, 3).map((t) => (

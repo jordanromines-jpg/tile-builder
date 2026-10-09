@@ -45,7 +45,7 @@ export function Switch({ label, on, onChange, help, words = ["On", "Off"] }: { l
           onCheckedChange={onChange}
           className="relative h-8 w-14 shrink-0 rounded-full border-2 border-line bg-surface-3 data-[state=checked]:border-accent data-[state=checked]:bg-accent"
         >
-          <Sw.Thumb className="block h-6 w-6 translate-x-0.5 rounded-full bg-surface-2 shadow transition-transform duration-200 data-[state=checked]:translate-x-[26px]" />
+          <Sw.Thumb className="block h-6 w-6 translate-x-0.5 rounded-full bg-surface-2 shadow transition-transform duration-(--spring-ui-t) ease-(--spring-ui) data-[state=checked]:translate-x-[26px]" />
         </Sw.Root>
       </span>
     </div>

@@ -10,6 +10,17 @@
 @import "@fontsource/atkinson-hyperlegible-next/latin-400.css";
 @import "@fontsource/atkinson-hyperlegible-next/latin-700.css";
 
+/* Springs (4.2d): src/motion/css.ts sets these on :root at start as `linear()` easings sampled from closed-form springs.
+   Until then, and where `linear()` isn't understood, they are the old ease at the old durations. */
+:root {
+  --spring-press: var(--ease);
+  --spring-press-t: var(--t-press);
+  --spring-ui: var(--ease);
+  --spring-ui-t: var(--t-ui);
+  --spring-settle: var(--ease);
+  --spring-settle-t: var(--t-ui);
+}
+
 /* Base styles sit in Tailwind's base layer, so utilities on an element always win over them. */
 @layer base {
 /* The page: the table colour under everything, the grown-ups' face by default; kid screens set their own sizes. */
@@ -49,10 +60,10 @@ button { font: inherit; color: inherit; }
     0 1px 2px color-mix(in srgb, var(--ink-1) 10%, transparent),
     0 8px 24px -6px color-mix(in srgb, var(--ink-1) 22%, transparent);
 }
-.press { transition: transform var(--t-press) var(--ease), box-shadow var(--t-press) var(--ease); }
+.press { transition: transform var(--spring-press-t) var(--spring-press), box-shadow var(--spring-press-t) var(--spring-press); }
 .press:active { transform: translateY(2px) scale(0.97); }
 .safe-top { padding-top: max(env(safe-area-inset-top), 16px); }
-.lift { transition: transform var(--t-ui) var(--ease), box-shadow var(--t-ui) var(--ease); }
+.lift { transition: transform var(--spring-ui-t) var(--spring-ui), box-shadow var(--spring-ui-t) var(--spring-ui); }
 .lift:active { transform: translateY(-4px) rotate(-1deg) scale(0.98); }
 }
 
@@ -65,12 +76,12 @@ button { font: inherit; color: inherit; }
 }
 .confetti { opacity: 0; animation: confetti-fall 2.6s cubic-bezier(.3, .1, .7, 1) both; }
 @keyframes photo-in { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
-.photo-in { animation: photo-in var(--t-ui) var(--ease) both; }
+.photo-in { animation: photo-in var(--spring-settle-t) var(--spring-settle) both; }
 /* Pip (3.1): a gentle bob when a pose begins, a few hops when cheering; never running on */
 @keyframes pip-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5%); } }
 @keyframes pip-hop { 0%, 100% { transform: translateY(0) rotate(0); } 30% { transform: translateY(-14%) rotate(-4deg); } 60% { transform: translateY(0) rotate(3deg); } }
-.pip-bob { animation: pip-bob 1.2s var(--ease) 2; transform-origin: 50% 100%; }
-.pip-hop { animation: pip-hop 0.7s var(--ease) 4; transform-origin: 50% 100%; }
+.pip-bob { animation: pip-bob 1.2s var(--spring-ui) 2; transform-origin: 50% 100%; }
+.pip-hop { animation: pip-hop 0.7s var(--spring-settle) 4; transform-origin: 50% 100%; }
 @media (prefers-reduced-motion: reduce) { .pip-bob, .pip-hop { animation: none; } }
 /* Pip is always a little alive (3.9): a blink, a breath, an ear and the tail now and then. Long cycles that are still
    most of the time; DOM only, so the 3D view never draws for them. Off with motion reduced and on the rest screen. */

@@ -40,7 +40,7 @@ export function AgePicker({ value, onChange }: { value: Age | null; onChange: (a
             say(S.kid.ages[a]);
             onChange(a);
           }}
-          className="ts-age kid flex min-h-[88px] min-w-[104px] items-end justify-center gap-3 rounded-lg border-2 border-line bg-surface-2 px-3 py-2 font-display font-semibold text-ink-1 transition-transform duration-100 active:scale-95 aria-pressed:border-accent aria-pressed:bg-accent-soft aria-pressed:ring-4 aria-pressed:ring-focus"
+          className="ts-age kid flex min-h-[88px] min-w-[104px] items-end justify-center gap-3 rounded-lg border-2 border-line bg-surface-2 px-3 py-2 font-display font-semibold text-ink-1 transition-transform duration-(--spring-press-t) ease-(--spring-press) active:scale-95 aria-pressed:border-accent aria-pressed:bg-accent-soft aria-pressed:ring-4 aria-pressed:ring-focus"
           style={{ fontSize: "var(--fs-kid-label-b)" }}
         >
           <Stack n={TILES[a]} />

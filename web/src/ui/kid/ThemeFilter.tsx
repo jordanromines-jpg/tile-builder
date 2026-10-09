@@ -24,7 +24,7 @@ export function ThemeFilter({ value, onChange, themes = THEMES }: { value: Theme
           say(label);
           onChange(t);
         }}
-        className="ts-chip-wrap group kid flex shrink-0 flex-col items-center gap-1.5 transition-transform duration-100 active:scale-95"
+        className="ts-chip-wrap group kid flex shrink-0 flex-col items-center gap-1.5 transition-transform duration-(--spring-press-t) ease-(--spring-press) active:scale-95"
       >
         <span
           className="ts-chip grid place-items-center rounded-full border-2 border-line bg-surface-2 text-ink-1 group-aria-pressed:border-accent group-aria-pressed:bg-accent group-aria-pressed:text-accent-ink"

@@ -1,5 +1,5 @@
 /* A project in 3D (sprint 2, change 4): its tiles up to `shown`. This step's tiles first appear as a soft pulsing ghost
-   exactly where they go, then glide in along an arc and settle with a small magnetic snap; tiles from earlier steps
+   exactly where they go, then are tossed in along a ballistic arc (4.2d) and caught by the magnets; tiles from earlier steps
    quieten a little so the new ones read. Built imperatively, one THREE.Group a tile, so a frame changes transforms and
    opacity without re-rendering React. */
 import { useFrame, useThree } from "@react-three/fiber";
@@ -10,7 +10,7 @@ import type { Colour, ShapeId } from "../engine/catalog";
 import { worldPolygon } from "../engine/geometry";
 import type { Project } from "../engine/types";
 import { play } from "../sound/sound";
-import { DROP_S, DROP_S_REDUCED, fade, GHOST_S, GLOW_S, mulberry, snap, stepProgress } from "./anim";
+import { ARRIVE, ARRIVE_S, browseProgress, DROP_S, DROP_S_REDUCED, fade, flightAt, type Flight, GHOST_S, GLOW_S, LAND_K, LEAVE_LIFT, LEAVE_S, makeFlight, mulberry, snap, stepProgress } from "./anim";
 import { placeTile } from "./buildScene";
 import { BASE_OPACITY, makeTileMaterials, releaseTiles, rivetMaterial, type TileMaterials } from "./TileMesh";
 import { releaseTextures } from "./textures";
@@ -27,6 +27,8 @@ interface TileObj {
   qT: THREE.Quaternion;
   pS: THREE.Vector3;
   qS: THREE.Quaternion;
+  /** the toss from pS to pT: a ballistic arc (4.2d) */
+  flight: Flight;
 }
 
 /** The middle of the model's footprint and how big it is, so the camera can frame it. */
@@ -75,7 +77,7 @@ function buildTiles(project: Project, leg: number, instead: Record<number, Shape
     ghost.position.copy(pT);
     ghost.quaternion.copy(qT);
     ghost.visible = false;
-    return { colour: raw.colour ?? "blue", group, ghost, mats, pT, qT, pS, qS };
+    return { colour: raw.colour ?? "blue", group, ghost, mats, pT, qT, pS, qS, flight: makeFlight(pS.toArray(), pT.toArray()) };
   });
 }
 
@@ -181,13 +183,15 @@ export interface ModelProps {
   /** this step's tiles: ghosted first, then glided in, then softly lit */
   current?: number[];
   still?: boolean;
+  /** All steps (3.8): tiles drop in together and lift away as the child scrubs (instant with `still`) */
+  browse?: boolean;
   /** bumped when the theme changes, to read the colours again */
   paint?: number;
   /** called when the tiles come to rest (built, or this step's landed): the contact shadow is drawn then (2.8.1) */
   onRest?: () => void;
 }
 
-export function Model({ project, shown, leg, instead = {}, settled = 0, current = [], still = false, paint = 0, hold = GHOST_S, onRest }: ModelProps) {
+export function Model({ project, shown, leg, instead = {}, settled = 0, current = [], still = false, browse = false, paint = 0, hold = GHOST_S, onRest }: ModelProps) {
   const invalidate = useThree((s) => s.invalidate);
   const key = JSON.stringify(instead);
   const accent = useMemo(() => new THREE.Color(cssColour("accent", "#BF5409")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -200,6 +204,7 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
   const lit = useRef(new Set<number>());
   const since = useRef(0);
   const wasMoving = useRef(true);
+  const spot = useMemo(() => [0, 0, 0], []);
   const rest = useRef(onRest);
   rest.current = onRest;
 
@@ -232,18 +237,20 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
     if (still) progress.current = progress.current.map((_, i) => (i < shown ? 1 : 0));
     invalidate();
   }, [shown, current, still, invalidate]);
+  const calm = still || browse;
 
   useFrame((state, dt) => {
     const p = progress.current;
     const age = (performance.now() - since.current) / 1000;
-    const waiting = !still && age < hold;
+    const waiting = !calm && age < hold;
     // the new tiles' glow and the ghost pulse for a few seconds, then hold still, so an open step costs no frames
-    const pulsing = !still && age < GLOW_S;
+    const pulsing = !calm && age < GLOW_S;
     const startable = waiting ? Math.min(shown, Math.min(...[...lit.current, shown])) : shown;
-    const before = p.filter((k) => k >= 1).length;
-    const moving = stepProgress(p, shown, Math.min(dt, 0.05), still ? DROP_S_REDUCED : DROP_S, startable);
-    // a tile has landed: the magnets' click (3.0), once a frame however many land together
-    if (p.filter((k) => k >= 1).length > before && lit.current.size) play("snap");
+    const before = p.filter((k) => k >= LAND_K).length;
+    const step = Math.min(dt, 0.05);
+    const moving = browse && !still ? browseProgress(p, shown, step, ARRIVE_S, LEAVE_S) : stepProgress(p, shown, step, still ? DROP_S_REDUCED : DROP_S, startable);
+    // a tile has touched down: the magnets' click (3.0), once a frame however many land together (not while scrubbing)
+    if (!browse && p.filter((k) => k >= LAND_K).length > before && lit.current.size) play("snap");
     const t = state.clock.elapsedTime;
     const pulse = pulsing ? 0.16 + 0.1 * Math.sin(t * Math.PI * 2 * 0.7) : 0.16;
     const quiet = lit.current.size > 0 && shown < tiles.length;
@@ -264,12 +271,25 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
       tile.ghost.visible = mine && k < 1;
       tile.group.visible = k > 0.001;
       if (!tile.group.visible) return;
-      const e = snap(k);
-      tile.group.position.lerpVectors(tile.pS, tile.pT, e);
-      // a little lift along the way: an arc, not a straight line
-      tile.group.position.y += Math.sin(Math.min(1, k) * Math.PI) * 0.35;
-      tile.group.quaternion.copy(tile.qS).slerp(tile.qT, Math.min(1, e));
-      const f = fade(k);
+      let f = fade(k);
+      if (browse && !still) {
+        // scrubbing: arrive by a short drop with one bounce, leave by lifting and fading
+        const leaving = i >= shown;
+        tile.group.position.copy(tile.pT);
+        tile.group.position.y += leaving ? (1 - k) * LEAVE_LIFT : ARRIVE.at(k * ARRIVE_S).y;
+        tile.group.quaternion.copy(tile.qT);
+        if (leaving) f = k;
+      } else if (still) {
+        // motion reduced: a short fade, nearly in place
+        const e = snap(k);
+        tile.group.position.lerpVectors(tile.pS, tile.pT, e);
+        tile.group.quaternion.copy(tile.qS).slerp(tile.qT, Math.min(1, e));
+      } else {
+        // tossed in: a ballistic arc, turning as it flies, then the magnets' catch
+        const turn = flightAt(tile.flight, k, spot);
+        tile.group.position.set(spot[0], spot[1], spot[2]);
+        tile.group.quaternion.copy(tile.qS).slerp(tile.qT, turn);
+      }
       // frames stay transparent (at opacity 1 it looks the same): flipping the flag would need a new shader
       tile.mats.frame.opacity = BASE_OPACITY.frame * f;
       tile.mats.glass.opacity = BASE_OPACITY.glass * f * (quiet && !mine ? 0.7 : 1);

@@ -1,5 +1,11 @@
-/* The building animation (sprint 2, change 4): a step's tiles show as ghosts for a moment, then each glides in along an
-   arc and settles with a small magnetic snap, one after another. Seeded, so it is the same every time. */
+/* The building animation (sprint 2, change 4; 4.2d): a step's tiles show as ghosts for a moment, then each is tossed in
+   along a true ballistic arc (src/motion/arc.ts), turning as it flies, and the magnets catch it with a small damped
+   spring, one tile after another. In All steps, tiles drop 0.4 square under gravity with one bounce, and leave by
+   lifting and fading. Seeded, so it is the same every time. */
+import { arcAt, arcBetween, arcVelocity, type Arc, type Vec } from "../motion/arc";
+import { fall } from "../motion/fall";
+import { spring, springAt } from "../motion/spring";
+
 export function mulberry(seed: number): () => number {
   let a = seed | 0;
   return () => {
@@ -26,6 +32,51 @@ export function fade(k: number): number {
 }
 
 export const DROP_S = 0.5;
+/** The scene's gravity (squares/s²): a third of real (128.7), so a 0.36 s toss reads as a toss, not a slam. */
+export const SCENE_G = 128.7 / 3;
+/** The flight takes this much of DROP_S; the rest is the magnets catching the tile. */
+export const FLIGHT_S = 0.36;
+/** The progress at which the tile touches down (the click is heard then). */
+export const LAND_K = FLIGHT_S / DROP_S;
+/** The magnets' catch: a damped spring (ω 40, ζ 0.45) that takes a quarter of the tile's landing speed. */
+const CATCH = spring(1600, 36);
+const CATCH_SHARE = 0.25;
+
+export interface Flight {
+  arc: Arc;
+  /** the unit direction it was travelling at touch-down, and its speed */
+  dir: Vec;
+  speed: number;
+  to: Vec;
+}
+
+/** The toss from `from` to `to`: launch velocity solved to land on `to` at FLIGHT_S under SCENE_G. */
+export function makeFlight(from: Vec, to: Vec): Flight {
+  const arc = arcBetween(from, to, FLIGHT_S, [0, -SCENE_G, 0]);
+  const v = arcVelocity(arc, FLIGHT_S);
+  const speed = Math.hypot(...v);
+  return { arc, dir: v.map((c) => c / speed), speed, to };
+}
+
+/** Where the tile is at progress k of DROP_S, and how far through its turn (0 to 1). Writes the place into `out`. */
+export function flightAt(f: Flight, k: number, out: number[]): number {
+  const t = Math.min(1, Math.max(0, k)) * DROP_S;
+  if (t < FLIGHT_S) {
+    arcAt(f.arc, t, out);
+    return t / FLIGHT_S;
+  }
+  // caught: a little overshoot along the way it was going, then the magnets hold it exactly in place
+  const x = k >= 1 ? 0 : springAt(CATCH, t - FLIGHT_S, 0, f.speed * CATCH_SHARE).x;
+  for (let i = 0; i < 3; i++) out[i] = f.to[i] + f.dir[i] * x;
+  return 1;
+}
+
+/** All steps (3.8, 4.2d): an arriving tile drops from 0.4 square with one bounce (e 0.25), under 180 ms. */
+export const ARRIVE = fall({ height: 0.4, g: 128.7, e: 0.25 });
+export const ARRIVE_S = ARRIVE.duration;
+/** A leaving tile lifts this far and fades in LEAVE_S. */
+export const LEAVE_S = 0.12;
+export const LEAVE_LIFT = 0.3;
 export const DROP_S_REDUCED = 0.15;
 /** How long a step's ghosts show before its tiles glide in. */
 export const GHOST_S = 0.45;
@@ -58,6 +109,19 @@ export function stepProgress(progress: number[], shown: number, dt: number, dura
     progress[i] = Math.min(1, progress[i] + dt / duration);
     gate = progress[i];
     moving = true;
+  }
+  return moving;
+}
+
+/** All steps: tiles up to `shown` drop in together (progress to 1 in `arriveS`); the rest lift away (back to 0 in
+    `leaveS`). True while anything is still moving. */
+export function browseProgress(progress: number[], shown: number, dt: number, arriveS: number, leaveS: number): boolean {
+  let moving = false;
+  for (let i = 0; i < progress.length; i++) {
+    const p = progress[i];
+    const next = i < shown ? Math.min(1, p + dt / arriveS) : Math.max(0, p - dt / leaveS);
+    progress[i] = next;
+    if (next !== p || (i < shown ? next < 1 : next > 0)) moving = true;
   }
   return moving;
 }
