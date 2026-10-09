@@ -36,8 +36,9 @@ test.describe("the finish with motion", () => {
   test("a tap skips it", async ({ page }) => {
     await page.goto("#/done/castle");
     const party = page.getByRole("button", { name: "Well done" });
-    // tapped at once: on a slow renderer the shower could be over before the first frames are counted
-    await party.click();
+    // tapped at once, as a child does, without waiting for the button to hold still (it moves with the party, and on a
+    // slow renderer the shower could be over first)
+    await party.click({ force: true });
     await expect(party).toHaveCount(0);
     await expect(page.getByText("Put the iPad down and play with what you made.")).toBeVisible();
   });
