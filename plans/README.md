@@ -24,6 +24,7 @@ names, runs the checks, and starts the next key.
 | Plan | Status | Carries |
 |---|---|---|
 | `2026-10-09-truck-runs-autobuild.md` | approved 9 Oct 2026, in progress | 4.0 (truck runs: the Pip truck drives each finished truck course and crashes it, proved and recorded with Rapier), 4.1 (Watch it build), 4.2 (real physics everywhere: R14 proves every build stands; magnet snap; falling finish tiles; motion by physics formulas) |
+| `2026-10-09-set-colours.md` | approved 9 Oct 2026, built as 4.3 | Builds in the colours a family's tiles come in: each brand's colours (light blue and pink added), sets as an even mix, recolouring that keeps a design whole, step lines that follow |
 | `2026-10-09-r14-flat-tiles.md` | proposed 9 Oct 2026, waiting for Jordan | R14's model of a pyramid on one flat tile (five builds), and redesigns of the triangle truss bridge and the spiral ramp (seven left on the allow-list) |
 | `2026-10-09-build-helpers.md` | done 9 Oct 2026 (#43–#45) | 3.7 (Get your tiles: the materials list), 3.8 (All steps: a slider and a filmstrip, jumping for every age), 3.9 (Pip helps: shows where, hands over the tiles, reacts, tips; always a little alive) |
 | `2026-10-08-sound-structures.md` | approved 8 Oct 2026, in progress | 2.8 (all 50 trucks under R11 strict, braced crash walls and R12), 2.8.1 (the canvas copes with big builds), 2.8.2 (R12 for every project) |

@@ -44,6 +44,20 @@ One unit is the edge of the standard square. The geometry checker works in these
 | Connetix | Rainbow Starter Pack 60 | 24 | 6 | 6 | 6 | 6 | 6 windows, 6 doors | 60 | yes | [14] |
 | Connetix | Rainbow Creative Pack 102 | 36 | 6 | 12 | 12 | 12 | 6 windows, 6 doors, 6 rectangles, 6 fences | 102 | yes | [6] |
 
+### Colours (4.3, 9 Oct 2026)
+No maker lists a set's colours, by shape or at all; the Magna-Tiles box says its colours are "for illustrative
+purposes only". Read from the makers' own photos:
+
+| Brand | Colours | How many |
+|---|---|---|
+| Magna-Tiles (Classic / Clear Colors) | red, orange, yellow, green, blue, purple | 6 |
+| PicassoTiles (PT100) | red, orange, yellow, green, light blue, blue, purple, pink | 8 |
+| Connetix (Rainbow) | six rainbow colours ("six vibrant rainbow colours" in every listing) | 6 |
+
+The app takes each shape as spread evenly over its brand's colours (`engine/sets.ts` `spread`); a grown-up can
+change any colour count. Sources: magnatiles.com (Classic 100 box and photos), picassotiles.com (PT100 photos 01, 03,
+07), Connetix listings (Timbuktoys, Balancing Act Toys).
+
 Still to find: a Magna-Tiles 48 or 74 set, PicassoTiles 60, and one best-selling generic set. Presets are a starting
 point; the parent always adjusts the counts.
 

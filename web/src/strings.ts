@@ -60,6 +60,8 @@ export const S = {
     forBaby: "For a grown-up to build, for a baby to look at. Magnet tiles are made for ages 3 and up: stay close, and put away any cracked tile.",
     stepTiles: "This step's tiles",
     getTiles: "Get your tiles",
+    /** 4.3: some tiles are drawn in other colours than the picture's, to match the family's tiles */
+    yourColours: "Built in your colours. The picture shows the colours it was made in.",
     start: "Start",
     backToBuilding: "Back to building",
     tilesButton: "Tiles you need",

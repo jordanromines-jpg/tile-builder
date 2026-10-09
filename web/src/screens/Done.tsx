@@ -7,6 +7,7 @@ import { Pip } from "../friend/Pip";
 import { Decor } from "../looks/decor";
 import { play } from "../sound/sound";
 import { matchProject } from "../engine/match";
+import { inColours, recolour } from "../engine/recolour";
 import { infoById, useProject } from "../projects/load";
 import { CantLoad } from "./build/CantLoad";
 import { say, stop } from "../speech/say";
@@ -72,13 +73,15 @@ export function Done() {
   if (project === "unreachable") return <CantLoad title={infoById(pid)?.title ?? pid} />;
   if (!project) return <main className="h-dvh bg-stage" aria-busy="true" />;
   const instead = inv && Object.keys(inv.counts).length ? matchProject(project, inv).instead : {};
+  // 4.3: the finished build in the family's colours
+  const shown = inColours(project, inv && Object.keys(inv.counts).length ? recolour(project, inv, instead) : {});
 
   return (
     <AgeProvider age={project.age}>
       <main className="ts-done kid relative h-dvh overflow-hidden bg-stage">
         <div className="absolute inset-0">
           <Viewer
-            project={project}
+            project={shown}
             shown={project.placed.length}
             settled={project.placed.length}
             leg={effectiveLeg(inv)}

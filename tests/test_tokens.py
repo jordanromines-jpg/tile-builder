@@ -6,7 +6,7 @@ from pathlib import Path
 from design import tokens as T
 
 ROOT = Path(__file__).resolve().parent.parent
-TILES = ("red", "orange", "yellow", "green", "blue", "purple")
+TILES = ("red", "orange", "yellow", "green", "sky", "blue", "purple", "pink")
 
 
 def test_tokens_css_is_written_from_the_token_files():
@@ -21,13 +21,13 @@ def test_every_pair_passes_in_both_themes():
     assert [f"{c['fg']} on {c['bg']} ({c['theme']}): {c['ratio']} under {c['need']}" for c in pairs if not c["ok"]] == []
 
 
-def test_the_six_tiles_have_a_colour_a_rim_a_pattern_and_a_name_in_both_themes():
+def test_the_tiles_have_a_colour_a_rim_a_pattern_and_a_name_in_both_themes():
     colour = T.load()["color"]
     for t in TILES:
         tile, rim = colour[f"tile-{t}"], colour[f"tile-{t}-rim"]
         assert tile["light"] and tile["dark"] and rim["light"] and rim["dark"]
         assert tile["name"] == t and tile["pattern"]
-    assert len({colour[f"tile-{t}"]["pattern"] for t in TILES}) == 6
+    assert len({colour[f"tile-{t}"]["pattern"] for t in TILES}) == len(TILES)
 
 
 def test_every_token_says_what_it_is_for():

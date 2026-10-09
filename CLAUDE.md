@@ -87,8 +87,9 @@ restore with `git checkout -- web/public/pictures` and run it again. Only the ch
   - shelves by age, then a Monster trucks shelf and a Wildflowers shelf (`SECTIONS` in `engine/themes.ts`).
 
   Cards draw 12 at a time.
-- **Colours:** red, orange, yellow, green, blue and purple only (no white, pink or brown). Say so when a real thing's
-  colour isn't available.
+- **Colours:** design builds in red, orange, yellow, green, blue and purple only (no white, pink or brown). Say so when
+  a real thing's colour isn't available. The app also knows light blue (`sky`) and pink, because PicassoTiles makes
+  them: a family's builds are recoloured to its tiles' colours (`engine/recolour.ts`, 4.3), never designed in them.
 
 ## Gotchas learned
 - **Builds must stand like real tiles (2.8).** Every magnet join is a hinge. No ramp join in mid-air (R11); crash walls

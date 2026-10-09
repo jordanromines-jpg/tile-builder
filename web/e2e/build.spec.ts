@@ -64,13 +64,15 @@ test("a fresh build opens on its tiles; a resumed one doesn't; Tiles you need op
   await expect(list).toHaveCount(0);
 });
 
+// the spire's four triangles are one colour, the one the family has room for (4.3: with Magna-Tiles 100's even mix
+// of six colours, not the red it was made in)
 test("with a Magna-Tiles 100 the castle's spires are equilateral, marked instead", async ({ page }) => {
   await useSet(page, "Magna-Tiles Clear Colors 100");
   await page.goto("#/build/castle");
   await startBuild(page);
   for (let i = 0; i < 19; i++) await next(page).click();
   await expect(page.getByRole("list", { name: "Step 20 of 21" })).toBeVisible();
-  await expect(page.getByRole("list", { name: "This step's tiles" }).getByRole("img", { name: "4 red triangles" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "This step's tiles" }).getByRole("img", { name: /^4 [a-z ]+ triangles$/ })).toBeVisible();
   await expect(page.getByText(/Four short triangles make a lower roof/).first()).toBeVisible();
 });
 
