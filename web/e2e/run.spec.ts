@@ -10,7 +10,9 @@ test.describe("with motion", () => {
   test("the first jump's finish plays its run to the end, and Run it again plays it again", async ({ page }) => {
     await page.goto("#/done/truck-first-jump");
     // skip the party: the run starts
-    await page.getByRole("button", { name: "Well done" }).click({ force: true });
+    const party = page.getByRole("button", { name: "Well done" });
+    await expect(party).toBeVisible();
+    await party.click({ force: true });
     await expect.poll(async () => (await run(page))?.t ?? 0, { timeout: 30_000 }).toBeGreaterThan(0.2);
     expect((await run(page))!.done).toBe(false);
     // the words wait for the run's end
@@ -25,7 +27,9 @@ test.describe("with motion", () => {
 
   test("a build that isn't a truck's has no run", async ({ page }) => {
     await page.goto("#/done/castle");
-    await page.getByRole("button", { name: "Well done" }).click({ force: true });
+    const party = page.getByRole("button", { name: "Well done" });
+    await expect(party).toBeVisible();
+    await party.click({ force: true });
     await expect(page.getByText("Put the iPad down and play with what you made.")).toBeVisible();
     await expect(page.getByRole("button", { name: "Run it again" })).toHaveCount(0);
     expect(await run(page)).toBeNull();
