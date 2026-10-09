@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-09
 
+- `2026-10-09-truck-runs-autobuild.md`: D11 (R14 blocks only real falls), D12 (auto-merge off); 4.1 merged; P0 spike results.
 - `2026-10-09-truck-runs-autobuild.md`: 4.1 build log (Watch it build, branch `helpers-4-1-watch`).
 - `2026-10-09-truck-runs-autobuild.md`: 4.0b (the Pip truck) build log.
 - `2026-10-09-truck-runs-autobuild.md`: rewritten in full and approved (4.0–4.2, decisions D1–D10). `2026-10-09-build-helpers.md`: 3.8 and 3.9 merged; done. `README.md`: the new plan in progress.
