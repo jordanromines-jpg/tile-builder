@@ -216,6 +216,25 @@ function Offset({ y }: { y: number }) {
   return null;
 }
 
+/** Reports where the marker is on the screen whenever the view is drawn and it has moved. Mounted after the camera rig,
+    so it reads the camera as this frame draws it. */
+function TargetWatch({ marker, onTarget }: { marker: React.RefObject<THREE.Object3D | null>; onTarget: (x: number, y: number) => void }) {
+  const camera = useThree((s) => s.camera);
+  const size = useThree((s) => s.size);
+  const v = useMemo(() => new THREE.Vector3(), []);
+  const last = useRef({ x: NaN, y: NaN });
+  useFrame(() => {
+    if (!marker.current) return;
+    marker.current.getWorldPosition(v).project(camera);
+    const x = ((v.x + 1) / 2) * size.width;
+    const y = ((1 - v.y) / 2) * size.height;
+    if (Math.abs(x - last.current.x) < 0.5 && Math.abs(y - last.current.y) < 0.5) return;
+    last.current = { x, y };
+    onTarget(x, y);
+  });
+  return null;
+}
+
 export interface ViewerProps {
   project: Project;
   shown: number;
@@ -238,10 +257,16 @@ export interface ViewerProps {
   paint?: number;
   /** All steps is open (3.8): steps change at once as the child scrubs, and the view holds on the whole build */
   browse?: boolean;
+  /** seconds the new tiles wait before they drop (3.9: while Pip carries them over) */
+  hold?: number;
+  /** where this step's tiles are on the screen, in px from the view's top left, each time the view moves (3.9) */
+  onTarget?: (x: number, y: number) => void;
+  /** the model has come to rest: the tiles have landed, or a turn has ended (3.9) */
+  onRest?: () => void;
   label: string;
 }
 
-export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, inset, spin = true, paint = 0, browse = false, label }: ViewerProps) {
+export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, inset, spin = true, paint = 0, browse = false, hold, onTarget, onRest, label }: ViewerProps) {
   const age = project.age;
   const still = useStill();
   const wrap = useRef<HTMLDivElement>(null);
@@ -268,7 +293,15 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   const [touched, setTouched] = useState(false);
   // bumped when the model comes to rest: the contact shadow is drawn again then
   const [shade, setShade] = useState(0);
-  const rest = useCallback(() => setShade((n) => n + 1), []);
+  const restOut = useRef(onRest);
+  restOut.current = onRest;
+  const rest = useCallback(() => {
+    setShade((n) => n + 1);
+    restOut.current?.();
+  }, []);
+  // the middle of this step's tiles, where Pip points (3.9)
+  const marker = useRef<THREE.Object3D>(null);
+  const point = useMemo(() => (current?.length ? frameOf(project, leg, current) : whole).middle, [project, leg, current, whole]);
   const autoRotate = older(age) && spin && !still && !touched && !sweep;
   // the iPad's light or dark can change while a build is open: read the colours again
   const ground = useGround();
@@ -324,7 +357,10 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
         )}
         <Stage paint={tint} radius={whole.size} reach={older(age) ? distance * 1.8 : distance} shade={shade} />
         <Turntable yaw={(turns * Math.PI) / 2} still={still} onRest={rest}>
-          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still || browse} paint={tint} onRest={rest} />
+          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still || browse} paint={tint} hold={hold} onRest={rest} />
+          <group position={[-whole.center.x, 0, -whole.center.z]}>
+            <object3D ref={marker} position={point} />
+          </group>
         </Turntable>
         {age !== "a" && (
           <OrbitControls
@@ -341,6 +377,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
         )}
         <CameraRig target={aim} distance={distance} focusKey={focusKey.current} sweep={sweep} still={still} look={look} />
         <Offset y={offsetY} />
+        {onTarget && <TargetWatch marker={marker} onTarget={onTarget} />}
         <Spin on={autoRotate} />
         <Counter />
       </Canvas>

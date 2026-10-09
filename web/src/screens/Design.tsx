@@ -80,7 +80,7 @@ export function Design() {
 
       <ViewerRow paint={paint} />
 
-      <Row title="Tile friend" note="Character sheet (gate G1): five poses."><FriendSheet /></Row>
+      <Row title="Tile friend" note="Character sheet (gate G1; more poses in 3.9): eleven poses."><FriendSheet /></Row>
 
       <KidRows />
 

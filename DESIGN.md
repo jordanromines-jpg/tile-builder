@@ -79,6 +79,11 @@ reading is never required. Fonts are subset to Latin and cached for offline use.
 - With reduced motion, movement becomes a still or a short fade: the model appears, turns are instant, nothing falls or
   circles at the end, the 9–10 model doesn't turn by itself (`web/src/ui/motion.ts`).
 - The 3–5 model never turns by itself during a step (D10).
+- **Pip helps (3.9).** With Next, Pip carries the step's tiles to where they go and tosses them in as they drop (the
+  new tiles wait 0.9 s for him, their ghost showing), claps when they land (cheers when a layer is done), and hops back
+  to his place on the step panel. He is always a little alive there: a blink, a breath, an ear and his tail now and
+  then. That is the one movement allowed to run on: it is DOM only, so the 3D view never draws for it (a test checks),
+  and it stops on the rest screen and with reduced motion, where he stays in his place and points.
 
 ### Sound
 

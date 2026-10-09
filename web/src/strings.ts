@@ -96,4 +96,13 @@ export const S = {
     pickLook: "Pick a style. You can change it any time with the paint palette on the shelf.",
     ok: "Got it",
   },
+  /** Pip's tips (3.9), told once a build at the first step that needs one */
+  tips: {
+    crash: "This wall is built to fall. Crash into it!",
+    brace: "This square locks the ramp, so it can't fold.",
+    ramp: "A ramp leans on its tower. Push it in until it clicks.",
+    roof: "Hold the walls steady while the roof goes on.",
+    bigStand: "Big squares are heavy. Hold it until the next tile clicks on.",
+    layer3: "Going up! Finish each layer all the way round first.",
+  },
 } as const;

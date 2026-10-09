@@ -4,8 +4,8 @@
    the same on light and dark grounds. Decoration only: the screens already say everything in words. */
 import type { ReactNode } from "react";
 
-export type FriendPose = "idle" | "read" | "point" | "think" | "cheer";
-export const FRIEND_POSES: FriendPose[] = ["idle", "read", "point", "think", "cheer"];
+export type FriendPose = "idle" | "read" | "point" | "think" | "cheer" | "hold" | "clap" | "wave" | "comfort" | "look" | "sleep";
+export const FRIEND_POSES: FriendPose[] = ["idle", "read", "point", "think", "cheer", "hold", "clap", "wave", "comfort", "look", "sleep"];
 
 type Hue = "red" | "orange" | "yellow" | "green" | "blue" | "purple";
 const FALLBACK: Record<Hue, string> = { red: "#e5322e", orange: "#f5841f", yellow: "#f4c51b", green: "#39ad4a", blue: "#2a78dd", purple: "#8a4cc8" };
@@ -50,7 +50,13 @@ const BX = 60;
 const BY = 72;
 const BS = 80;
 
-export function Friend({ pose = "idle", size = 200, className }: { pose?: FriendPose; size?: number; className?: string }) {
+function ClosedEye({ x, y }: { x: number; y: number }) {
+  return <path d={`M${x - 8} ${y} Q${x} ${y + 7} ${x + 8} ${y}`} fill="none" stroke={INK} strokeWidth={5} strokeLinecap="round" />;
+}
+
+/** `gaze` turns the eyes left (−1) or right (1) in the look pose. The parts are named (friend-body, friend-ear,
+    friend-eyes, friend-tail) so Pip's idle life (app.css) can move them. */
+export function Friend({ pose = "idle", size = 200, gaze = 0, className }: { pose?: FriendPose; size?: number; gaze?: -1 | 0 | 1; className?: string }) {
   const dy = pose === "cheer" ? -8 : 0;
   let eyes: ReactNode;
   let mouth: ReactNode;
@@ -73,6 +79,31 @@ export function Friend({ pose = "idle", size = 200, className }: { pose?: Friend
       eyes = (<><HappyEye x={86} y={100} /><HappyEye x={114} y={100} /></>);
       mouth = <path d="M86 113 H114 Q112 133 100 133 Q88 133 86 113 Z" fill={INK} stroke={INK} strokeWidth={3} strokeLinejoin="round" />;
       break;
+    case "hold":
+      eyes = (<><Eye x={86} y={100} dy={-3.5} /><Eye x={114} y={100} dy={-3.5} /></>);
+      mouth = <path d="M89 114 H111 Q109 128 100 128 Q91 128 89 114 Z" fill={INK} stroke={INK} strokeWidth={3} strokeLinejoin="round" />;
+      break;
+    case "clap":
+      eyes = (<><HappyEye x={86} y={100} /><HappyEye x={114} y={100} /></>);
+      mouth = smile("M90 113 Q100 124 110 113");
+      break;
+    case "wave":
+      eyes = (<><Eye x={86} y={100} dx={1.5} /><Eye x={114} y={100} dx={1.5} /></>);
+      mouth = smile("M88 115 Q100 129 112 115");
+      break;
+    case "comfort":
+      eyes = (<><Eye x={86} y={101} dy={2} /><Eye x={114} y={101} dy={2} /></>);
+      mouth = smile("M93 118 Q100 124 107 118");
+      break;
+    case "look":
+      eyes = (<><Eye x={86} y={100} dx={4 * gaze} /><Eye x={114} y={100} dx={4 * gaze} /></>);
+      mouth = smile("M91 116 Q100 125 109 116");
+      break;
+    case "sleep":
+      eyes = (<><ClosedEye x={86} y={101} /><ClosedEye x={114} y={101} /></>);
+      mouth = <circle cx={100} cy={121} r={4.5} fill="none" stroke={INK} strokeWidth={3.5} />;
+      cheeks = false;
+      break;
     default:
       eyes = (<><Eye x={86} y={100} /><Eye x={114} y={100} /></>);
       mouth = smile("M90 116 Q100 127 110 116");
@@ -90,14 +121,44 @@ export function Friend({ pose = "idle", size = 200, className }: { pose?: Friend
         <g className="friend-tail"><Tile hue="purple" pts="136,146 168,146 168,114" /></g>
         <Tile hue="purple" pts={rect(66, 148, 26, 20)} />
         <Tile hue="purple" pts={rect(108, 148, 26, 20)} />
-        <Tile hue="yellow" pts={`${BX},${BY} ${BX + 26},${BY} ${BX},${BY - 36}`} />
-        <Tile hue="yellow" pts={`${BX + BS},${BY} ${BX + BS - 26},${BY} ${BX + BS},${BY - 36}`} />
+        <g className="friend-body" transform={pose === "comfort" ? "rotate(-6 100 150)" : undefined}>
+        <g className="friend-ear"><Tile hue="yellow" pts={`${BX},${BY} ${BX + 26},${BY} ${BX},${BY - 36}`} /></g>
+        <g className="friend-ear friend-ear-r"><Tile hue="yellow" pts={`${BX + BS},${BY} ${BX + BS - 26},${BY} ${BX + BS},${BY - 36}`} /></g>
         <Tile hue="orange" pts={rect(BX, BY, BS, BS)} />
         {cheeks && (<><circle cx={74} cy={116} r={6} fill={fillOf("red")} fillOpacity={0.45} /><circle cx={126} cy={116} r={6} fill={fillOf("red")} fillOpacity={0.45} /></>)}
-        {eyes}
+        <g className="friend-eyes">{eyes}</g>
         {mouth}
+        </g>
 
-        {pose === "idle" && (<>{armL(0)}{armR(0)}</>)}
+        {(pose === "idle" || pose === "look" || pose === "sleep") && (<>{armL(0)}{armR(0)}</>)}
+        {pose === "sleep" && (
+          <g fill="none" stroke={rimOf("blue")} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M150 52 h12 l-12 12 h12" />
+            <path d="M168 30 h9 l-9 9 h9" strokeWidth={3} />
+          </g>
+        )}
+        {pose === "hold" && (<>{armL(78)}{armR(-78)}</>)}
+        {pose === "clap" && (
+          <>
+            <g transform="rotate(14 92 133)"><Tile hue="green" pts={rect(82, 126, 18, 15)} /></g>
+            <g transform="rotate(-14 108 133)"><Tile hue="green" pts={rect(100, 126, 18, 15)} /></g>
+            <g stroke={rimOf("orange")} strokeWidth={3.5} strokeLinecap="round"><path d="M76 132 L66 128 M124 132 L134 128 M100 148 V156" /></g>
+          </>
+        )}
+        {pose === "wave" && (
+          <>
+            {armL(0)}
+            <g transform="rotate(-72 138 98)"><Tile hue="green" pts={rect(138, 90, 22, 17)} /></g>
+            <g fill="none" stroke={rimOf("orange")} strokeWidth={3.5} strokeLinecap="round"><path d="M164 44 Q176 56 170 70" /><path d="M176 36 Q192 54 184 74" /></g>
+          </>
+        )}
+        {pose === "comfort" && (
+          <>
+            {armL(0)}
+            <g transform="rotate(34 138 98)"><Tile hue="green" pts={rect(138, 90, 22, 17)} /></g>
+            <path d="M166 58 c-6 -8 -16 -2 -10 6 l10 10 l10 -10 c6 -8 -4 -14 -10 -6 z" fill={fillOf("red")} fillOpacity={0.7} stroke={rimOf("red")} strokeWidth={2.5} strokeLinejoin="round" />
+          </>
+        )}
         {pose === "read" && (
           <>
             {armL(-22)}{armR(22)}

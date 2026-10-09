@@ -175,6 +175,8 @@ export interface ModelProps {
   leg: number;
   instead?: Record<number, ShapeId>;
   /** tiles before this index are already in place when the model first appears */
+  /** seconds the new tiles wait (their ghost showing) before they drop: longer while Pip carries them over (3.9) */
+  hold?: number;
   settled?: number;
   /** this step's tiles: ghosted first, then glided in, then softly lit */
   current?: number[];
@@ -185,7 +187,7 @@ export interface ModelProps {
   onRest?: () => void;
 }
 
-export function Model({ project, shown, leg, instead = {}, settled = 0, current = [], still = false, paint = 0, onRest }: ModelProps) {
+export function Model({ project, shown, leg, instead = {}, settled = 0, current = [], still = false, paint = 0, hold = GHOST_S, onRest }: ModelProps) {
   const invalidate = useThree((s) => s.invalidate);
   const key = JSON.stringify(instead);
   const accent = useMemo(() => new THREE.Color(cssColour("accent", "#BF5409")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -234,7 +236,7 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
   useFrame((state, dt) => {
     const p = progress.current;
     const age = (performance.now() - since.current) / 1000;
-    const waiting = !still && age < GHOST_S;
+    const waiting = !still && age < hold;
     // the new tiles' glow and the ghost pulse for a few seconds, then hold still, so an open step costs no frames
     const pulsing = !still && age < GLOW_S;
     const startable = waiting ? Math.min(shown, Math.min(...[...lit.current, shown])) : shown;
