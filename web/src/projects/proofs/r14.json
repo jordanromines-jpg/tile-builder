@@ -3093,18 +3093,18 @@
   "ms": 37494
  },
  "truck-backflip-ramp": {
-  "key": "8b806a0cc09337f5",
+  "key": "cbb6365fd556e1de",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 68309
+  "ms": 54419
  },
  "truck-big-air-gap": {
-  "key": "7711148c7ded7661",
+  "key": "2e43af5916fc0d4b",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 19419
+  "ms": 14120
  },
  "truck-big-air-two-lanes": {
   "key": "99e4c499d79519ed",
@@ -3128,18 +3128,18 @@
   "ms": 12479
  },
  "truck-bounce-bridge": {
-  "key": "bbdcbf387ece9b1d",
+  "key": "c5279a0e609ff0f5",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 19131
+  "ms": 23290
  },
  "truck-bridge-to-bridge": {
-  "key": "6fa69201aa5c3f3a",
+  "key": "006f53d32ec7b847",
   "falls": [],
-  "sags": 32,
-  "worstMm": 6,
-  "ms": 186944
+  "sags": 36,
+  "worstMm": 9,
+  "ms": 129696
  },
  "truck-bumpy-road": {
   "key": "aca5aa52b7422b69",
@@ -3149,117 +3149,25 @@
   "ms": 1853
  },
  "truck-bus-jump": {
-  "key": "d18b82718144c10b",
+  "key": "112781f5c30553ce",
   "falls": [],
-  "sags": 0,
-  "worstMm": 1,
-  "ms": 20306
+  "sags": 13,
+  "worstMm": 2,
+  "ms": 18900
  },
  "truck-canyon-jump": {
-  "key": "ab4cd0d6c8c5c141",
+  "key": "aed3140a87a6a02a",
   "falls": [],
-  "sags": 5,
-  "worstMm": 3,
-  "ms": 107189
+  "sags": 1,
+  "worstMm": 9,
+  "ms": 81536
  },
  "truck-cliff-jump": {
-  "key": "447568778306a5fc",
-  "falls": [
-   {
-    "step": 17,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 18,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 19,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 20,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 21,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 22,
-    "tile": 88,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 23,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 24,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 25,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 26,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 27,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 28,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 29,
-    "tile": 124,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 10,
-  "worstMm": 24,
-  "ms": 130515
+  "key": "08623fe2ebda8119",
+  "falls": [],
+  "sags": 32,
+  "worstMm": 10,
+  "ms": 122421
  },
  "truck-crash-castle": {
   "key": "0ac7fbf658d1cf2b",
@@ -3304,11 +3212,11 @@
   "ms": 1902
  },
  "truck-domino-run": {
-  "key": "e9eb651e21b98dfa",
+  "key": "01699a2875baca04",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 5296
+  "ms": 6152
  },
  "truck-donut-circle": {
   "key": "1d119ac64129d8ae",
@@ -3318,18 +3226,18 @@
   "ms": 34186
  },
  "truck-double-decker-race": {
-  "key": "d1e6a098ae184fb2",
+  "key": "e180454581d62739",
   "falls": [],
-  "sags": 4,
+  "sags": 5,
   "worstMm": 6,
-  "ms": 57261
+  "ms": 45765
  },
  "truck-drag-strip": {
-  "key": "d4ea78837e69314a",
+  "key": "e6d916ada3f67ad5",
   "falls": [],
   "sags": 0,
   "worstMm": 2,
-  "ms": 26358
+  "ms": 19587
  },
  "truck-drop-tower-eight": {
   "key": "732a9836a15d374a",
@@ -3339,11 +3247,11 @@
   "ms": 48024
  },
  "truck-figure-eight-bridge": {
-  "key": "8edbd5e33df8b22a",
+  "key": "f03796974672292f",
   "falls": [],
   "sags": 0,
   "worstMm": 2,
-  "ms": 39516
+  "ms": 22440
  },
  "truck-first-jump": {
   "key": "1e7f5932320f63d6",
@@ -3374,19 +3282,11 @@
   "ms": 380
  },
  "truck-little-arena": {
-  "key": "db87cc556fcff6cc",
-  "falls": [
-   {
-    "step": 2,
-    "tile": 2,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning right"
-   }
-  ],
+  "key": "c40ee15d0db70223",
+  "falls": [],
   "sags": 2,
-  "worstMm": 24,
-  "ms": 2407
+  "worstMm": 4,
+  "ms": 3496
  },
  "truck-little-ramp": {
   "key": "f8adfefcd55b5454",
@@ -3396,54 +3296,25 @@
   "ms": 827
  },
  "truck-mega-ramp-eight": {
-  "key": "8acbfd181a673dc1",
-  "falls": [
-   {
-    "step": 17,
-    "tile": 91,
-    "mm": 24,
-    "deg": 5,
-    "phase": "leaning away"
-   },
-   {
-    "step": 18,
-    "tile": 91,
-    "mm": 24,
-    "deg": 5,
-    "phase": "leaning away"
-   },
-   {
-    "step": 19,
-    "tile": 91,
-    "mm": 24,
-    "deg": 5,
-    "phase": "leaning away"
-   },
-   {
-    "step": 20,
-    "tile": 91,
-    "mm": 24,
-    "deg": 5,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 24,
-  "ms": 113980
+  "key": "c5e8fd6338609d6f",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 9,
+  "ms": 98251
  },
  "truck-mega-ramp-four": {
-  "key": "053922a03584a803",
+  "key": "9393fb4e063c4298",
   "falls": [],
-  "sags": 5,
-  "worstMm": 6,
-  "ms": 18966
+  "sags": 8,
+  "worstMm": 9,
+  "ms": 23418
  },
  "truck-monster-garage": {
-  "key": "ca02818a63ba5a9b",
+  "key": "4ff42f0c9b0536eb",
   "falls": [],
   "sags": 0,
   "worstMm": 1,
-  "ms": 5130
+  "ms": 6414
  },
  "truck-monster-stadium": {
   "key": "03f834676f4e11e3",
@@ -3460,18 +3331,18 @@
   "ms": 1875
  },
  "truck-ramp-to-ramp": {
-  "key": "f3e3172548afe8ab",
+  "key": "496821d3d75218ed",
   "falls": [],
-  "sags": 16,
-  "worstMm": 6,
-  "ms": 34474
+  "sags": 18,
+  "worstMm": 9,
+  "ms": 33118
  },
  "truck-ramp-to-the-roof": {
-  "key": "fc5604e1f69170c8",
+  "key": "560d0bfed160f4a9",
   "falls": [],
-  "sags": 2,
-  "worstMm": 15,
-  "ms": 4232
+  "sags": 8,
+  "worstMm": 7,
+  "ms": 8041
  },
  "truck-road-loop": {
   "key": "6707f6e6dfb557e4",
@@ -3481,267 +3352,46 @@
   "ms": 4539
  },
  "truck-rollover-pit": {
-  "key": "c472b19485ddd41e",
-  "falls": [
-   {
-    "step": 2,
-    "tile": 2,
-    "mm": 24,
-    "deg": 3,
-    "phase": "leaning right"
-   }
-  ],
+  "key": "d824e355744604c1",
+  "falls": [],
   "sags": 34,
-  "worstMm": 24,
-  "ms": 97311
+  "worstMm": 15,
+  "ms": 64609
  },
  "truck-skills-course": {
-  "key": "864bd3726ba5fea6",
-  "falls": [
-   {
-    "step": 13,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 14,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 15,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 16,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 17,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 18,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 19,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 20,
-    "tile": 39,
-    "mm": 21,
-    "deg": 8,
-    "phase": "upright after towards the child"
-   }
-  ],
+  "key": "99ecfb8bb25a92b7",
+  "falls": [],
   "sags": 0,
-  "worstMm": 21,
-  "ms": 9136
+  "worstMm": 0,
+  "ms": 12418
  },
  "truck-spiral-ramp": {
-  "key": "486c9d31ed1e9a34",
-  "falls": [
-   {
-    "step": 24,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 25,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 26,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 27,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 28,
-    "tile": 77,
-    "mm": 27,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 40,
-    "tile": 147,
-    "mm": 29,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 41,
-    "tile": 147,
-    "mm": 29,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 42,
-    "tile": 147,
-    "mm": 29,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 43,
-    "tile": 147,
-    "mm": 29,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 44,
-    "tile": 147,
-    "mm": 29,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 45,
-    "tile": 147,
-    "mm": 29,
-    "deg": 3,
-    "phase": "leaning right"
-   },
-   {
-    "step": 46,
-    "tile": 147,
-    "mm": 29,
-    "deg": 3,
-    "phase": "leaning right"
-   }
-  ],
-  "sags": 6,
-  "worstMm": 29,
-  "ms": 126332
+  "key": "b010e5375fb76eed",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 9,
+  "ms": 190616
  },
  "truck-stair-step-drops": {
-  "key": "1861adbacab6456c",
+  "key": "3aa6eba3b6718a87",
   "falls": [],
-  "sags": 2,
-  "worstMm": 15,
-  "ms": 24761
+  "sags": 7,
+  "worstMm": 5,
+  "ms": 20830
  },
  "truck-tower-drop-five": {
-  "key": "abdf75bae331b945",
-  "falls": [
-   {
-    "step": 7,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 8,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 9,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 10,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 11,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 12,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 13,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 14,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 15,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 16,
-    "tile": 27,
-    "mm": 25,
-    "deg": 4,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 25,
-  "ms": 34097
+  "key": "6e4beafdbf5cc483",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 7,
+  "ms": 48912
  },
  "truck-train-yard": {
-  "key": "fc7f1fda8468c9d6",
+  "key": "f37e554a4c849b72",
   "falls": [],
   "sags": 31,
-  "worstMm": 6,
-  "ms": 71139
+  "worstMm": 9,
+  "ms": 55724
  },
  "truck-triple-big-air": {
   "key": "c886fc422891762a",
@@ -3772,18 +3422,18 @@
   "ms": 1118
  },
  "truck-ultimate-arena": {
-  "key": "7421e7195ca26ffa",
+  "key": "86fc91c66b35cca6",
   "falls": [],
-  "sags": 23,
+  "sags": 28,
   "worstMm": 7,
-  "ms": 180530
+  "ms": 127493
  },
  "truck-wall-of-doom": {
-  "key": "3d908974ee6bbb44",
+  "key": "f8edf13beeb7ddfc",
   "falls": [],
   "sags": 13,
-  "worstMm": 4,
-  "ms": 47390
+  "worstMm": 9,
+  "ms": 39863
  },
  "truck-world-finals-freestyle": {
   "key": "11d1a11ea4587e12",

@@ -180,9 +180,10 @@ export class Studio extends Site {
   }
 
   /** Three short triangles leaning together over the unit triangle `t` at height y, until their tips meet. */
-  tetra(name: string, t: Tri, y: number, colour: Colour) {
+  /** (`last`: on the final steps, after a roof that braces what it leans on, R14) */
+  tetra(name: string, t: Tri, y: number, colour: Colour, last = false) {
     this.push(
-      2 * y,
+      last ? 1000 : 2 * y,
       (b) => {
         for (let k = 0; k < 3; k++) {
           const p = t[k];
