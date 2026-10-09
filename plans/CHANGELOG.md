@@ -7,6 +7,7 @@ line in the same commit as the plan change.
 
 - `2026-10-09-truck-runs-autobuild.md`: 4.2a batch B (27 of 34 stand; 7 left, see the new plan). `2026-10-09-r14-flat-tiles.md`: new, proposed.
 - `2026-10-09-truck-runs-autobuild.md`: 4.2a batch A build log (34 of the 68 falling builds fixed; their causes and the kit options added).
+- `2026-10-09-truck-runs-autobuild.md`: 4.2b's fall replays dropped (measured: nothing falls without the hand once R14's falls are fixed).
 - `2026-10-09-truck-runs-autobuild.md`: 4.0c built (the hand-guided truck, 6 of 8 nudges, slow motion around the action; differences logged); P1 merged.
 - `2026-10-09-truck-runs-autobuild.md`: 4.0a merged; P1 built (68 builds fall, all allowed for now).
 - `2026-10-09-truck-runs-autobuild.md`: 4.0c build log: four truck builds made robust (8 of 8 nudged runs): routes, and the castle's towers and the city's bank and shop moved (branch `truck-robust-4-0c`).
