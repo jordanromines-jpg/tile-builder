@@ -87,12 +87,13 @@ export async function startBuild(page: Page) {
   if (await go.count()) await go.click();
 }
 
-/** Taps the finish's party away as soon as it shows, as a child does. On a slow renderer the party can end on its own
- *  while the tap is on its way (the button leaves mid-click): that is fine, as long as the party is gone after. */
+/** Taps the finish's party away as soon as it shows, as a child does. The click goes straight to the button's handler:
+ *  on CI's software renderer a real pointer event waits for a frame, and the party's frames are slow. The party can end
+ *  on its own while the tap is on its way (the button leaves): that is fine, as long as the party is gone after. */
 export async function tapParty(page: Page) {
   const party = page.getByRole("button", { name: "Well done" });
   await expect(party).toBeVisible();
-  await party.click({ force: true, timeout: 3_000 }).catch(async (e: unknown) => {
+  await party.dispatchEvent("click", undefined, { timeout: 10_000 }).catch(async (e: unknown) => {
     if ((await party.count()) > 0) throw e;
   });
   await expect(party).toHaveCount(0);
