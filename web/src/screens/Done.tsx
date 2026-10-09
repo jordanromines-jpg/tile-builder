@@ -7,7 +7,8 @@ import { Pip } from "../friend/Pip";
 import { Decor } from "../looks/decor";
 import { play } from "../sound/sound";
 import { matchProject } from "../engine/match";
-import { useProject } from "../projects/load";
+import { infoById, useProject } from "../projects/load";
+import { CantLoad } from "./build/CantLoad";
 import { say, stop } from "../speech/say";
 import { clearStep } from "../store/db";
 import { useInventory } from "../store/hooks";
@@ -29,7 +30,7 @@ export function Done() {
   const [celebrating, setCelebrating] = useState(true);
 
   useEffect(() => {
-    if (!project) return;
+    if (!project || project === "unreachable") return;
     void clearStep(project.id);
     play("finish");
     say(project.done);
@@ -37,6 +38,7 @@ export function Done() {
   }, [project]);
 
   if (project === null) return <Navigate to="/" />;
+  if (project === "unreachable") return <CantLoad title={infoById(pid)?.title ?? pid} />;
   if (!project) return <main className="h-dvh bg-stage" aria-busy="true" />;
   const instead = inv && Object.keys(inv.counts).length ? matchProject(project, inv).instead : {};
 

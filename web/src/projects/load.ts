@@ -35,9 +35,10 @@ export function loadProject(id: string): Promise<Project> {
   return p;
 }
 
-/** The project with this id: undefined while it loads, null when there is no such project (or it cannot be had). */
-export function useProject(id: string): Project | null | undefined {
-  const [state, setState] = useState<{ id: string; project: Project | null } | null>(null);
+/** The project with this id: undefined while it loads, null when there is no such project, "unreachable" when it
+    exists but its tiles could not be fetched (offline before it was ever kept, 3.6). */
+export function useProject(id: string): Project | null | "unreachable" | undefined {
+  const [state, setState] = useState<{ id: string; project: Project | null | "unreachable" } | null>(null);
   useEffect(() => {
     let live = true;
     if (!byId.has(id)) {
@@ -46,7 +47,10 @@ export function useProject(id: string): Project | null | undefined {
     }
     loadProject(id).then(
       (project) => live && setState({ id, project }),
-      () => live && setState({ id, project: null }),
+      (err: unknown) => {
+        console.error(`could not load project ${id}`, err);
+        if (live) setState({ id, project: "unreachable" });
+      },
     );
     return () => {
       live = false;

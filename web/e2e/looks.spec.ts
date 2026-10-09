@@ -6,6 +6,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { useSet } from "./helpers";
 
 const LOOKS = ["toy", "book", "studio"] as const;
+const ALL = ["classic", ...LOOKS] as const;
 
 async function inLook(page: Page, look: string, ground: "light" | "dark") {
   await page.addInitScript(
@@ -41,5 +42,20 @@ for (const look of LOOKS) {
     if (await start.isVisible()) await start.click();
     await page.evaluate(() => document.fonts.ready);
     await expect(page).toHaveScreenshot(`look-${look}-build.png`);
+  });
+}
+
+for (const look of ALL) {
+  test(`${look}: a project that can't be had says so, and passes axe`, async ({ page }) => {
+    await inLook(page, look, "light");
+    await page.route("**/projects/castle.json", (r) => r.abort());
+    await page.goto("#/build/castle");
+    await expect(page.getByText("This one isn't on the iPad yet.", { exact: false })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Try again" })).toBeVisible();
+    const axe = await new AxeBuilder({ page }).analyze();
+    expect(axe.violations.map((v) => v.id)).toEqual([]);
+    if (process.env.STATE_SHOTS) await page.screenshot({ path: `${process.env.STATE_SHOTS}/cant-${look}.png` });
+    await page.getByRole("button", { name: "Back to the shelf" }).click();
+    await expect(page).toHaveURL(/#\/$/);
   });
 }

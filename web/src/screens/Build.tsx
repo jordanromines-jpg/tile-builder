@@ -6,7 +6,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { layerOf, worldPolygon } from "../engine/geometry";
 import { matchProject, type Match } from "../engine/match";
 import type { Project } from "../engine/types";
-import { useProject } from "../projects/load";
+import { infoById, useProject } from "../projects/load";
+import { CantLoad } from "./build/CantLoad";
 import { say, speechEnabled, stop } from "../speech/say";
 import { getStep, saveStep } from "../store/db";
 import { useInventory } from "../store/hooks";
@@ -34,6 +35,7 @@ export function Build() {
   const { pid } = useParams({ strict: false }) as { pid: string };
   const project = useProject(pid);
   if (project === null) return <Navigate to="/" />;
+  if (project === "unreachable") return <CantLoad title={infoById(pid)?.title ?? pid} />;
   // the tiles are loading (a moment, from the iPad's own copy): the empty stage
   if (!project) return <main className="h-dvh bg-stage" aria-busy="true" />;
   return <BuildProject key={pid} pid={pid} project={project} />;
