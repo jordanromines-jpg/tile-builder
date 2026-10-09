@@ -21,6 +21,7 @@ import {
 } from "./geometry";
 import { holdsProblems } from "./hold";
 import { rampProblems } from "./ramps";
+import { runProblems } from "./run-rules";
 import { stabilityProblems } from "./stability";
 import type { Problem } from "./problems";
 import type { Project } from "./types";
@@ -209,6 +210,8 @@ function checkWithLeg(project: Project, leg: number): Problem[] {
   out.push(...rampProblems(project, a));
   // R12: it stands firm
   out.push(...stabilityProblems(project, a));
+  // R13: a truck can drive the course (Monster trucks only)
+  out.push(...runProblems(project, a, leg));
 
   return out.map((p) => ({ ...p, leg }));
 }

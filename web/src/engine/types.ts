@@ -1,6 +1,6 @@
 // The engine's types, inferred from the schema (plan key 4c).
 import type { z } from "zod";
-import type { BackupZ, InventoryZ, PlacedZ, ProgressZ, ProjectZ, SettingsZ, StepZ, SwapRuleZ } from "./schema";
+import type { BackupZ, CourseZ, FeatureZ, InventoryZ, PlacedZ, ProgressZ, ProjectZ, RouteItemZ, SettingsZ, StepZ, SurfaceZ, SwapRuleZ } from "./schema";
 import type { BrandId, Colour, ShapeId } from "./catalog";
 import type { Theme } from "./themes";
 
@@ -8,7 +8,12 @@ type Fix<T> = Omit<T, "shape" | "colour"> & { shape: ShapeId; colour?: Colour };
 export type Placed = Fix<z.infer<typeof PlacedZ>>;
 export type Step = z.infer<typeof StepZ>;
 export type SwapRule = Omit<z.infer<typeof SwapRuleZ>, "from" | "to"> & { from: ShapeId; to: ShapeId };
-export type Project = Omit<z.infer<typeof ProjectZ>, "placed" | "theme" | "swaps" | "needs"> & {
+export type Surface = z.infer<typeof SurfaceZ>;
+export type Feature = z.infer<typeof FeatureZ>;
+export type RouteItem = z.infer<typeof RouteItemZ>;
+export type Course = Omit<z.infer<typeof CourseZ>, "truck"> & { truck?: Colour };
+export type Project = Omit<z.infer<typeof ProjectZ>, "placed" | "theme" | "swaps" | "needs" | "course"> & {
+  course?: Course;
   theme: Theme;
   placed: Placed[];
   swaps?: SwapRule[];

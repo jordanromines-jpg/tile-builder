@@ -4,7 +4,7 @@ import { Builder } from "../projects/helpers";
 import { crashWall, tower } from "../projects/track-kit";
 
 const meta = { id: "t", title: "T", theme: "trucks" as const, age: "d" as const, stars: 1 as const, done: "Done!" };
-const rules = (b: Builder) => checkProject(b.build(meta)).problems.filter((p) => p.rule !== "R9");
+const rules = (b: Builder) => checkProject(b.build(meta)).problems.filter((p) => p.rule !== "R9" && !p.rule.startsWith("R13"));
 const r12 = (b: Builder) => rules(b).filter((p) => p.rule === "R12");
 
 describe("R12, it stands firm (2.8)", () => {

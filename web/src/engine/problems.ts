@@ -1,5 +1,5 @@
 /* What the checker can find, in words a project's author reads (plan key 4f). */
-export type Rule = "R0" | "R1" | "R2" | "R3" | "R4" | "R5" | "R6" | "R7" | "R8" | "R9" | "R10" | "R11" | "R12";
+export type Rule = "R0" | "R1" | "R2" | "R3" | "R4" | "R5" | "R6" | "R7" | "R8" | "R9" | "R10" | "R11" | "R12" | "R13a" | "R13b" | "R13c" | "R13d" | "R13e";
 
 export interface Problem {
   rule: Rule;
@@ -24,6 +24,11 @@ export const RULES: Record<Rule, string> = {
   R10: "it holds up like real tiles: lids rest on walls, every tile is held by two others, walls are braced",
   R11: "ramps hold a truck: each end rests on the table, a support or the next ramp, and every join has a support or a brace under it",
   R12: "it stands firm: nothing is too tall for its base, and a truck's deck rests on two opposite edges",
+  R13a: "a Monster trucks build names its course and a route that can be driven: every name is there and every leg compiles",
+  R13b: "each leg of the route begins within half a square, at the same height, of where the last one ended",
+  R13c: "a jump clears every tile, comes down well inside the surface it lands on, and needs no more than a toy truck can do",
+  R13d: "a drive passes through no tile that is not part of the pieces it joins",
+  R13e: "every tile built to be knocked down is part of something the route hits",
 };
 
 export function describe(p: Problem, project = ""): string {

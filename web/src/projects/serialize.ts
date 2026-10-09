@@ -2,7 +2,7 @@
    iPad: each project is saved as JSON under public/projects/, and a small catalogue of them all (catalog.json, next to
    this file) is what the Library reads. Numbers are rounded to six places, as for the pictures' fingerprints. */
 import type { ShapeId } from "../engine/catalog";
-import type { Placed, Project, SwapRule } from "../engine/types";
+import type { Course, Placed, Project, SwapRule } from "../engine/types";
 import type { Theme } from "../engine/themes";
 import type { Age } from "../engine/types";
 
@@ -27,11 +27,27 @@ const round = (v: number) => {
   return Object.is(r, -0) ? 0 : r;
 };
 
+const round3 = (v: [number, number, number]): [number, number, number] => [round(v[0]), round(v[1]), round(v[2])];
+
+/** A Monster trucks course with its numbers rounded. */
+function roundCourse(c: Course): Course {
+  return {
+    ...c,
+    features: c.features.map((f) => {
+      const s = f.surface;
+      if (!s) return f;
+      return { ...f, surface: s.kind === "flat" ? { ...s, y: round(s.y), poly: s.poly.map(([x, z]): [number, number] => [round(x), round(z)]) } : { ...s, from: round3(s.from), to: round3(s.to), width: round(s.width) } };
+    }),
+    route: c.route.map((r) => (typeof r === "object" && "to" in r ? { to: round3(r.to) } : r)),
+  };
+}
+
 /** The project with its numbers rounded, ready to save. */
 export function serialize(p: Project): Project {
   return {
     ...p,
     placed: p.placed.map((t): Placed => ({ ...t, pos: t.pos.map(round) as Placed["pos"], rot: t.rot.map(round) as Placed["rot"] })),
+    ...(p.course ? { course: roundCourse(p.course) } : {}),
   };
 }
 

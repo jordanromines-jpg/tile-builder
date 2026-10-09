@@ -36,6 +36,43 @@ export const SwapRuleZ = z.object({
   say: z.string(),
 });
 
+/* A Monster trucks course (4.0a): the pieces a truck drives or crashes (features), and the route it takes. R13
+   (run-rules.ts) proves the route; route.ts compiles it into legs for the truck runs. */
+const Dir = z.enum(["N", "E", "S", "W"]);
+const Pt2 = z.tuple([z.number(), z.number()]);
+
+/** Where a truck drives: flat ground at height y inside a polygon (x, z), or a slope from one point to another (the
+    middle of the bottom edge to the middle of the top edge), as wide as its tiles. */
+export const SurfaceZ = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("flat"), y: z.number(), poly: z.array(Pt2).min(3) }),
+  z.object({ kind: z.literal("slope"), from: Vec3, to: Vec3, width: z.number().positive() }),
+]);
+
+export const FEATURE_KINDS = ["lane", "ramp", "kicker", "deck", "tunnel", "car", "wall", "dominoes"] as const;
+
+export const FeatureZ = z.object({
+  /** numbered by kind: lane-1, ramp-2, car-1 */
+  name: z.string().min(1),
+  kind: z.enum(FEATURE_KINDS),
+  /** to drive on (lane, ramp, kicker, deck, tunnel floor) or to land on (a crush car's roof) */
+  surface: SurfaceZ.optional(),
+  /** uphill for a ramp, along the road for a lane, the way a wall or a row of dominoes faces */
+  dir: Dir,
+  /** the tiles that make it: what the route may touch */
+  tiles: z.array(z.number().int().nonnegative()),
+});
+
+/** "name": drive it (up a ramp, along a lane); {down}: drive it the other way; {jump}: fly to land on it; {through}: crash
+    into it; {to}: drive straight to a point; {place}: the child puts the truck on a deck, starting a new run */
+export const RouteItemZ = z.union([z.string(), z.object({ down: z.string() }), z.object({ jump: z.string() }), z.object({ through: z.string() }), z.object({ to: Vec3 }), z.object({ place: z.string() })]);
+
+export const CourseZ = z.object({
+  features: z.array(FeatureZ),
+  route: z.array(RouteItemZ),
+  /** the truck's colour for this course, when it is not the default (a tile colour) */
+  truck: ColourZ.optional(),
+});
+
 export const ProjectZ = z
   .object({
     id: z.string().regex(/^[a-z0-9-]+$/),
@@ -51,11 +88,17 @@ export const ProjectZ = z
     placed: z.array(PlacedZ).min(1),
     steps: z.array(StepZ).min(1),
     swaps: z.array(SwapRuleZ).optional(),
+    course: CourseZ.optional(),
   })
   .superRefine((p, ctx) => {
     p.steps.forEach((s, i) =>
       s.tiles.forEach((t) => {
         if (t >= p.placed.length) ctx.addIssue({ code: "custom", path: ["steps", i, "tiles"], message: `step ${i + 1} points at tile ${t}, past the last tile` });
+      }),
+    );
+    p.course?.features.forEach((f, i) =>
+      f.tiles.forEach((t) => {
+        if (t >= p.placed.length) ctx.addIssue({ code: "custom", path: ["course", "features", i, "tiles"], message: `${f.name} points at tile ${t}, past the last tile` });
       }),
     );
   });
