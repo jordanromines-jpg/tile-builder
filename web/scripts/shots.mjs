@@ -22,6 +22,7 @@ const ALL = [
   ["build-first", "#/build/castle"],
   ["build-tiles-big", "#/build/truck-ultimate-arena"],
   ["build-middle", "#/build/castle", 10],
+  ["build-steps", "#/build/castle", 0, undefined, "All steps"],
   ["build-last", "#/build/castle", 30],
   ["build-big", "#/build/truck-ultimate-arena", 20],
   ["build-flower", "#/build/flower-kansas-sunflower-vase", 8],
@@ -48,7 +49,7 @@ try {
       }, look);
       const page = await ctx.newPage();
       page.on("pageerror", (e) => console.error(`page error (${orient} ${scheme}):`, e.message));
-      for (const [name, path, steps = 0, age] of SCREENS) {
+      for (const [name, path, steps = 0, age, press] of SCREENS) {
         await page.goto(`http://127.0.0.1:${port}/tile-builder/${path}`);
         await page.waitForTimeout(1800);
         // the first-run card, once
@@ -72,6 +73,11 @@ try {
           await page.waitForTimeout(120);
         }
         if (steps) await page.waitForTimeout(1200);
+        // a button to press first (All steps)
+        if (press) {
+          await page.getByRole("button", { name: press, exact: true }).first().click();
+          await page.waitForTimeout(1200);
+        }
         const file = join(out, `${orient}-${scheme}-${name}.png`);
         await page.screenshot({ path: file });
         shots.push(file);

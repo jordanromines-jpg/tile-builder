@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.8.0 · 9 Oct 2026
+
+All steps. Jordan: "I should be able to see all the steps for a project and scroll through them to jump ahead or see
+and surf without having to go through next every time."
+
+- **All steps** in the top bar opens every step at once: a slider that builds and unbuilds the model in 3D as it moves
+  (letting go keeps that step), and a strip of little pictures, one a step, to swipe through and tap.
+- **Every age can tap a step dot** to go straight there (it was 9–10 and up).
+
 ## 3.7.0 · 9 Oct 2026
 
 Get your tiles. Jordan: "There should also be a materials list when you start a project."

@@ -64,6 +64,11 @@ export const S = {
     backToBuilding: "Back to building",
     tilesButton: "Tiles you need",
     total: (n: number) => `${n} ${n === 1 ? "tile" : "tiles"} in all.`,
+    allSteps: "All steps",
+    buildThis: "Build this step",
+    closeSteps: "Close all steps",
+    chooseStep: "Choose a step",
+    stepNumber: (n: number) => `Step ${n}`,
   },
   oops: "That didn't work. Let's go back.",
   done: {

@@ -44,6 +44,18 @@ for (const look of LOOKS) {
 }
 
 for (const look of ALL) {
+  test(`${look}: All steps passes axe`, async ({ page }) => {
+    await inLook(page, look, "light");
+    await page.goto("#/build/castle");
+    await startBuild(page);
+    await page.getByRole("button", { name: "All steps" }).click();
+    await expect(page.getByRole("slider", { name: "Choose a step" })).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const axe = await new AxeBuilder({ page }).analyze();
+    expect(axe.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);
+    if (look === "classic") await expect(page).toHaveScreenshot("build-castle-steps-light.png");
+  });
+
   test(`${look}: the tiles list passes axe`, async ({ page }) => {
     await inLook(page, look, "light");
     await page.goto("#/build/castle");

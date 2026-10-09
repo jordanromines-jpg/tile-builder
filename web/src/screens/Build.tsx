@@ -14,7 +14,7 @@ import { useInventory } from "../store/hooks";
 import { effectiveLeg } from "../store/inventory";
 import { S } from "../strings";
 import { Viewer } from "../three/Viewer";
-import { ArrowLeft, Play } from "../ui/icons";
+import { ArrowLeft, GridFour, Play } from "../ui/icons";
 import { AgeProvider, older } from "../ui/kid/AgeContext";
 import { fell, FellDown, layerStart, type FallState } from "../ui/kid/FellDown";
 import { KidBar } from "../ui/kid/KidBar";
@@ -26,6 +26,7 @@ import { StepDots } from "../ui/kid/StepDots";
 import { SwapNote } from "../ui/kid/SwapNote";
 import { TurnControls } from "../ui/kid/TurnControls";
 import { TileChip } from "../ui/TileChip";
+import { StepTray } from "./build/StepTray";
 import { TileList } from "./build/TileList";
 import { shownAfter, stepTiles, swapsByStep } from "./build/stepTiles";
 import { TilePicture } from "../ui/TileChip";
@@ -49,6 +50,9 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
   const [settled, setSettled] = useState(0);
   // the tiles list (3.7): before step 1 of a fresh build ("start"), or opened from Tiles you need ("look")
   const [gate, setGate] = useState<"start" | "look" | null>(null);
+  // All steps (3.8): open, and the step it shows while the child scrubs
+  const [tray, setTray] = useState(false);
+  const [preview, setPreview] = useState<number | null>(null);
   const [turns, setTurns] = useState(0);
   const [hush, setHush] = useState(0);
   const [fall, setFall] = useState<FallState>({ step: -1, falls: 0 });
@@ -137,6 +141,15 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
     go(step + 1);
   };
 
+  const view = tray ? (preview ?? step) : step;
+  const commit = (i: number) => {
+    if (i !== step) go(i);
+  };
+  const closeTray = () => {
+    if (preview !== null) commit(preview);
+    setTray(false);
+    setPreview(null);
+  };
   const tiles = stepTiles(project, step, instead);
   const showWords = age !== "a";
   const chip = age === "a" ? "lg" : "md";
@@ -148,13 +161,14 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
         <div className="absolute inset-0">
           <Viewer
             project={project}
-            shown={gate === "start" ? 0 : shownAfter(project, step)}
+            shown={gate === "start" ? 0 : shownAfter(project, view)}
             leg={leg}
             instead={instead}
-            current={project.steps[step].tiles}
+            current={project.steps[view].tiles}
             settled={settled}
             turns={turns}
-            stepKey={step}
+            stepKey={view}
+            browse={tray}
             hush={hush}
             inset={{ top: 112, bottom: strip }}
             spin={!resting}
@@ -199,6 +213,25 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
                   speak
                 />
               }
+              more={
+                <KidButton
+                  label={S.build.allSteps}
+                  showLabel={false}
+                  icon={<GridFour size={36} weight="bold" />}
+                  tone="plain"
+                  className="ts-steps-button"
+                  onPress={() => {
+                    if (tray) closeTray();
+                    else {
+                      setGate(null);
+                      setPreview(step);
+                      setTray(true);
+                    }
+                  }}
+                  pressed={tray}
+                  speak
+                />
+              }
               title={
                 <h1 className="ts-title soft inline-block max-w-full truncate rounded-full bg-surface-2 px-6 py-2 font-display text-[length:var(--fs-kid-label-b)] font-bold text-ink-1">
                   {project.title}
@@ -225,29 +258,35 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
           <Decor at="panel" />
           {/* Pip sits on the panel's top edge, above Next, and points left at this step's tiles */}
           <Pip pose={pipPose} size={88} flip className="absolute -top-[76px] right-10" />
-          <StepDots count={last + 1} current={step} onJump={older(age) ? go : undefined} />
-          {/* narrow (Split View, 3.6): this step's tiles and words take the whole first row; Back and Next the second */}
-          <div className="flex items-center gap-5 max-[760px]:flex-wrap max-[760px]:gap-3">
-            <KidButton label={S.kid.stepBack} showLabel={false} icon={<ArrowLeft size={36} weight="bold" />} onPress={() => go(step - 1)} disabled={step === 0} />
-            <div className="flex min-w-0 flex-1 flex-col gap-2 max-[760px]:order-first max-[760px]:basis-full">
-              <div className="flex min-w-0 items-center gap-5 max-[760px]:gap-3">
-                <ul className="ts-step-tiles flex shrink-0 flex-wrap items-center gap-3" aria-label={S.build.stepTiles}>
-                  {tiles.map((t) => (
-                    <li key={`${t.shape}-${t.colour}-${t.instead}`}>
-                      <TileChip shape={t.shape} colour={t.colour} count={t.count} size={chip} leg={leg} instead={t.instead} speak />
-                    </li>
-                  ))}
-                </ul>
-                <p className={showWords ? "min-w-0 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1" : "sr-only"}>{lineOf(step)}</p>
+          {tray ? (
+            <StepTray project={project} leg={leg} instead={instead} step={step} preview={view} onPreview={setPreview} onCommit={commit} onClose={closeTray} />
+          ) : (
+            <>
+            <StepDots count={last + 1} current={step} onJump={go} />
+            {/* narrow (Split View, 3.6): this step's tiles and words take the whole first row; Back and Next the second */}
+            <div className="flex items-center gap-5 max-[760px]:flex-wrap max-[760px]:gap-3">
+              <KidButton label={S.kid.stepBack} showLabel={false} icon={<ArrowLeft size={36} weight="bold" />} onPress={() => go(step - 1)} disabled={step === 0} />
+              <div className="flex min-w-0 flex-1 flex-col gap-2 max-[760px]:order-first max-[760px]:basis-full">
+                <div className="flex min-w-0 items-center gap-5 max-[760px]:gap-3">
+                  <ul className="ts-step-tiles flex shrink-0 flex-wrap items-center gap-3" aria-label={S.build.stepTiles}>
+                    {tiles.map((t) => (
+                      <li key={`${t.shape}-${t.colour}-${t.instead}`}>
+                        <TileChip shape={t.shape} colour={t.colour} count={t.count} size={chip} leg={leg} instead={t.instead} speak />
+                      </li>
+                    ))}
+                  </ul>
+                  <p className={showWords ? "min-w-0 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1" : "sr-only"}>{lineOf(step)}</p>
+                </div>
+                {(swapAt.get(step) ?? []).map((sw) => (
+                  <SwapNote key={sw.from} from={sw.from} to={sw.to} text={sw.say} />
+                ))}
+                {match?.note === "best-with-one-brand" && step === 0 && <p className="text-ink-2">{S.build.bestWithOneBrand}</p>}
+                {age === "t" && step === 0 && <p className="text-ink-2">{S.build.forBaby}</p>}
               </div>
-              {(swapAt.get(step) ?? []).map((sw) => (
-                <SwapNote key={sw.from} from={sw.from} to={sw.to} text={sw.say} />
-              ))}
-              {match?.note === "best-with-one-brand" && step === 0 && <p className="text-ink-2">{S.build.bestWithOneBrand}</p>}
-              {age === "t" && step === 0 && <p className="text-ink-2">{S.build.forBaby}</p>}
+              <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} sound="step" className="ts-next min-w-[148px] max-[760px]:ml-auto" />
             </div>
-            <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} sound="step" className="ts-next min-w-[148px] max-[760px]:ml-auto" />
-          </div>
+            </>
+          )}
         </aside>
         {resting && (
           <button type="button" onClick={wake} className="ts-rest fixed inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-surface/95" aria-label={S.build.keepBuilding}>

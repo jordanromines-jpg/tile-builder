@@ -33,7 +33,7 @@ const stats = { yaw: 0, frames: 0, calls: 0 };
 
 declare global {
   interface Window {
-    __viewer?: { yaw: () => number; age: Age; autoRotate: () => boolean; frames: () => number; calls: () => number };
+    __viewer?: { yaw: () => number; age: Age; autoRotate: () => boolean; frames: () => number; calls: () => number; shown: () => number };
   }
 }
 
@@ -236,10 +236,12 @@ export interface ViewerProps {
   /** let the 9–10 model turn by itself (off behind the rest screen and at the end, so the iPad can rest) */
   spin?: boolean;
   paint?: number;
+  /** All steps is open (3.8): steps change at once as the child scrubs, and the view holds on the whole build */
+  browse?: boolean;
   label: string;
 }
 
-export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, inset, spin = true, paint = 0, label }: ViewerProps) {
+export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, inset, spin = true, paint = 0, browse = false, label }: ViewerProps) {
   const age = project.age;
   const still = useStill();
   const wrap = useRef<HTMLDivElement>(null);
@@ -249,16 +251,20 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   const offsetY = ((inset?.bottom ?? 0) - (inset?.top ?? 0)) / 2;
   const whole = useMemo(() => frameOf(project, leg), [project, leg]);
   const built = useMemo(() => {
+    if (browse) return whole;
     const upto = Array.from({ length: Math.max(1, Math.min(shown, project.placed.length)) }, (_, i) => i);
     return frameOf(project, leg, upto);
-  }, [project, leg, shown]);
+  }, [project, leg, shown, browse, whole]);
   const focus = useMemo(() => {
     const mid = built.middle.clone().sub(whole.center);
     mid.y = Math.min(built.height * 0.38, 2.4);
-    if (!current?.length || shown >= project.placed.length) return mid;
+    if (browse || !current?.length || shown >= project.placed.length) return mid;
     const step = frameOf(project, leg, current).middle.sub(whole.center);
     return mid.lerp(new THREE.Vector3(step.x, Math.min(step.y, built.height * 0.6), step.z), 0.2);
-  }, [project, leg, current, shown, whole, built]);
+  }, [project, leg, current, shown, whole, built, browse]);
+  // while browsing, the view doesn't ease to each step: it holds on the whole build
+  const focusKey = useRef(stepKey);
+  if (!browse) focusKey.current = stepKey;
   const [touched, setTouched] = useState(false);
   // bumped when the model comes to rest: the contact shadow is drawn again then
   const [shade, setShade] = useState(0);
@@ -302,8 +308,8 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
     if (hush) setTouched(true);
   }, [hush]);
   useEffect(() => {
-    window.__viewer = { yaw: () => stats.yaw, age, autoRotate: () => autoRotate, frames: () => stats.frames, calls: () => stats.calls };
-  }, [age, autoRotate]);
+    window.__viewer = { yaw: () => stats.yaw, age, autoRotate: () => autoRotate, frames: () => stats.frames, calls: () => stats.calls, shown: () => shown };
+  }, [age, autoRotate, shown]);
 
   const start = viewFrom(aim, distance, 0, look);
   return (
@@ -318,7 +324,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
         )}
         <Stage paint={tint} radius={whole.size} reach={older(age) ? distance * 1.8 : distance} shade={shade} />
         <Turntable yaw={(turns * Math.PI) / 2} still={still} onRest={rest}>
-          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} paint={tint} onRest={rest} />
+          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still || browse} paint={tint} onRest={rest} />
         </Turntable>
         {age !== "a" && (
           <OrbitControls
@@ -333,7 +339,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
             makeDefault
           />
         )}
-        <CameraRig target={aim} distance={distance} focusKey={stepKey} sweep={sweep} still={still} look={look} />
+        <CameraRig target={aim} distance={distance} focusKey={focusKey.current} sweep={sweep} still={still} look={look} />
         <Offset y={offsetY} />
         <Spin on={autoRotate} />
         <Counter />
