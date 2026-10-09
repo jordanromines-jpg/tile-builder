@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 import { applyTheme } from "./ground";
 import { startLook } from "./looks/apply";
+import { installSprings } from "./motion/css";
 import { router } from "./router";
 import { startPwa, warmPictures } from "./pwa";
 import { OfflineNote, showOfflineNote } from "./OfflineNote";
@@ -12,6 +13,7 @@ import "./app.css";
 
 applyTheme();
 startLook();
+installSprings();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

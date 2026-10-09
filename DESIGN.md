@@ -79,6 +79,12 @@ reading is never required. Fonts are subset to Latin and cached for offline use.
 - With reduced motion, movement becomes a still or a short fade: the model appears, turns are instant, nothing falls or
   circles at the end, the 9–10 model doesn't turn by itself (`web/src/ui/motion.ts`).
 - The 3–5 model never turns by itself during a step (D10).
+- **Springs, not eases (4.2d).** Movement uses exact physics formulas from `web/src/motion/` (no engine, never stepped):
+  tiles are tossed on a ballistic arc and caught by the magnets (a damped spring); in All steps they drop 0.4 square
+  with one bounce and lift away; the turn and the camera are critically damped springs that land exactly on their
+  quarter; Pip's hops are arcs with a squash on landing. Screens use `--spring-press`, `--spring-ui` and
+  `--spring-settle` (`linear()` easings sampled from springs, with the old ease where unsupported). Colours keep a
+  plain ease. Reduced motion still gives stills and short fades.
 - **Pip helps (3.9).** With Next, Pip carries the step's tiles to where they go and tosses them in as they drop (the
   new tiles wait 0.9 s for him, their ghost showing), claps when they land (cheers when a layer is done), and hops back
   to his place on the step panel. He is always a little alive there: a blink, a breath, an ear and his tail now and

@@ -94,12 +94,12 @@
     inset 0 -8px 12px color-mix(in srgb, var(--tr) 55%, transparent),
     0 var(--depth) 0 var(--tr),
     0 calc(var(--depth) + 8px) 16px rgba(var(--toy-shade), .28);
-  transition: transform var(--t-press) ease-out, box-shadow var(--t-press) ease-out, background-color 160ms;
+  transition: transform var(--spring-press-t) var(--spring-press), box-shadow var(--spring-press-t) var(--spring-press), background-color 160ms;
 }
 [data-look="toy"] .ts-button-accent, [data-look="toy"] .ts-button-primary { --tc: var(--toy-orange); --tx: var(--accent-ink); --depth: 8px; }
 [data-look="toy"] .ts-button-soft { --tc: var(--toy-soft); --tx: var(--toy-ink-on-soft); }
 [data-look="toy"] .ts-button-primary { --depth: 10px; }
-[data-look="toy"] .ts-button.press { transition: transform var(--t-press) ease-out, box-shadow var(--t-press) ease-out; }
+[data-look="toy"] .ts-button.press { transition: transform var(--spring-press-t) var(--spring-press), box-shadow var(--spring-press-t) var(--spring-press); }
 /* the press: sink the whole depth, lose the lift, a tighter shadow: the click you can see */
 [data-look="toy"] .ts-button:active, [data-look="toy"] .ts-age:active, [data-look="toy"] .ts-chip:active,
 [data-look="toy"] .ts-chip-wrap:active .ts-chip, [data-look="toy"] .ts-door:active {
@@ -176,7 +176,7 @@
     inset 0 3px 0 rgba(255, 255, 255, .8),
     0 6px 0 color-mix(in srgb, var(--line) 80%, #7a5a30),
     0 14px 22px -4px rgba(var(--toy-shade), .3);
-  transition: transform var(--t-press) ease-out, box-shadow var(--t-press) ease-out;
+  transition: transform var(--spring-press-t) var(--spring-press), box-shadow var(--spring-press-t) var(--spring-press);
 }
 [data-look="toy"] .ts-card:active {
   transform: translateY(6px) scale(.99);
@@ -228,7 +228,7 @@
 [data-look="toy"] .ts-dots { gap: 8px; }
 [data-look="toy"] .ts-dot {
   border-radius: 5px; border: 0;
-  transition: background-color 280ms, transform 200ms cubic-bezier(.3, 1.6, .5, 1), box-shadow 200ms;
+  transition: background-color 280ms, transform var(--spring-settle-t) var(--spring-settle), box-shadow 200ms;
 }
 [data-look="toy"] .ts-dot-todo { background: var(--toy-dot-todo); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ink-3) 55%, transparent), inset 0 2px 0 rgba(255, 255, 255, .35); }
 [data-look="toy"] .ts-dot-done, [data-look="toy"] .ts-dot-now {

@@ -13,6 +13,7 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { ShapeId } from "../engine/catalog";
 import type { Age, Project } from "../engine/types";
 import { softwareGL } from "../gpu";
+import { atRest, springAt, springFor, springStep } from "../motion/spring";
 import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
 import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
@@ -23,6 +24,9 @@ import { Stage } from "./Stage";
 
 export const TURN_MS = 600;
 const FOCUS_MS = 700;
+// 4.2d: both are critically damped springs, closed form; the turn lands on its quarter when within 0.1° of rest
+const TURN = springFor(TURN_MS / 1000, 1, 0.001);
+const FOCUS = springFor(FOCUS_MS / 1000, 1, 0.002);
 // the circle at the end finishes before the shower does (TileConfetti's 3.6 s)
 const SWEEP_MS = 3400;
 // one whole turn at autoRotateSpeed 60 / 25 (one turn in 25 s)
@@ -40,26 +44,41 @@ declare global {
 function Turntable({ yaw, still, onRest, children }: { yaw: number; still: boolean; onRest: () => void; children: React.ReactNode }) {
   const g = useRef<THREE.Group>(null);
   const invalidate = useThree((s) => s.invalidate);
-  const from = useRef({ start: 0, from: 0, to: 0 });
+  // a turn is a spring pulling the angle to `to`: let go at `x0` away from it, moving at `v0`; `v` is how fast it goes now
+  const turn = useRef({ start: 0, x0: 0, v0: 0, to: 0, v: 0 });
   useEffect(() => {
     if (!g.current) return;
+    const t = turn.current;
     // with motion reduced the turn is instant: nothing to ease from
-    from.current = still ? { start: 0, from: yaw, to: yaw } : { start: performance.now(), from: g.current.rotation.y, to: yaw };
-    // an instant turn is at rest at once
-    if (still) onRest();
+    if (still) {
+      t.start = 0;
+      t.to = yaw;
+      g.current.rotation.y = yaw;
+      stats.yaw = yaw;
+      onRest();
+    } else {
+      // a turn that was moving carries its speed into the next, so tapping again feels continuous
+      turn.current = { start: performance.now(), x0: g.current.rotation.y - yaw, v0: t.start ? t.v : 0, to: yaw, v: 0 };
+    }
     invalidate();
   }, [yaw, still, invalidate, onRest]);
   useFrame(() => {
     if (!g.current) return;
-    const f = from.current;
-    const k = f.start ? Math.min(1, (performance.now() - f.start) / TURN_MS) : 1;
-    g.current.rotation.y = f.from + (f.to - f.from) * (1 - Math.pow(1 - k, 3));
-    stats.yaw = g.current.rotation.y;
-    if (k < 1) invalidate();
-    else if (f.start) {
-      f.start = 0;
+    const t = turn.current;
+    if (!t.start) return;
+    const st = springAt(TURN, (performance.now() - t.start) / 1000, t.x0, t.v0);
+    t.v = st.v;
+    if (atRest(st, 0.002, 0.02)) {
+      // exactly on its quarter
+      t.start = 0;
+      g.current.rotation.y = t.to;
+      stats.yaw = t.to;
       onRest();
+      return;
     }
+    g.current.rotation.y = t.to + st.x;
+    stats.yaw = g.current.rotation.y;
+    invalidate();
   });
   return <group ref={g}>{children}</group>;
 }
@@ -115,8 +134,9 @@ function CameraRig({ target, distance, focusKey, sweep, still, look }: { target:
 
   useFrame(() => {
     const a = anim.current;
-    const k = a.start ? Math.min(1, (performance.now() - a.start) / FOCUS_MS) : 1;
-    const e = easeInOut(k);
+    const secs = a.start ? (performance.now() - a.start) / 1000 : 1e3;
+    const k = a.start ? Math.min(1, secs / (FOCUS_MS / 1000)) : 1;
+    const e = k >= 1 ? 1 : springStep(FOCUS, secs);
     const t = a.fromT.clone().lerp(a.toT, e);
     let p = a.fromP.clone().lerp(a.toP, e);
     if (a.sweepStart) {
@@ -357,7 +377,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
         )}
         <Stage paint={tint} radius={whole.size} reach={older(age) ? distance * 1.8 : distance} shade={shade} />
         <Turntable yaw={(turns * Math.PI) / 2} still={still} onRest={rest}>
-          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still || browse} paint={tint} hold={hold} onRest={rest} />
+          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} browse={browse} paint={tint} hold={hold} onRest={rest} />
           <group position={[-whole.center.x, 0, -whole.center.z]}>
             <object3D ref={marker} position={point} />
           </group>

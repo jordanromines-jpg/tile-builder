@@ -109,7 +109,7 @@
   --tape: var(--book-tape-1);
   border-radius: 30px 26px 32px 24px / 26px 32px 24px 30px;
   outline: 1.5px solid var(--book-pencil-soft); outline-offset: 3px;
-  transition: transform var(--t-ui) var(--ease), box-shadow var(--t-ui) var(--ease);
+  transition: transform var(--spring-ui-t) var(--spring-ui), box-shadow var(--spring-ui-t) var(--spring-ui);
 }
 [data-look="book"] .ts-card:nth-child(odd) { rotate: -0.7deg; }
 [data-look="book"] .ts-card:nth-child(even) { rotate: 0.6deg; }
@@ -132,7 +132,7 @@
   border: 2px solid var(--book-edge);
   background-image: var(--book-grain);
   box-shadow: 0 3px 0 var(--book-edge), 0 10px 16px -10px rgba(var(--book-shadow-rgb), 0.5);
-  transition: transform var(--t-press) var(--ease), box-shadow var(--t-press) var(--ease);
+  transition: transform var(--spring-press-t) var(--spring-press), box-shadow var(--spring-press-t) var(--spring-press);
 }
 [data-look="book"] .ts-button:not(.rounded-full) { border-radius: 26px 22px 28px 20px / 22px 28px 20px 26px; }
 [data-look="book"] .ts-button.rounded-full { border-radius: 52% 48% 50% 50% / 50% 53% 47% 50%; }

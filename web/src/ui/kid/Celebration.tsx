@@ -4,7 +4,7 @@
 import { motion } from "motion/react";
 import { useEffect, useId } from "react";
 import { COLOURS } from "../../engine/catalog";
-import { useStill } from "../motion";
+import { settleSpring, useStill } from "../motion";
 import { PATTERN_OF, TilePattern } from "../patterns";
 import { S } from "../../strings";
 
@@ -49,7 +49,7 @@ export function Celebration({ onDone, size = 280 }: { onDone?: () => void; size?
         className="block"
         initial={still ? false : { scale: 0.3, rotate: -120, opacity: 0 }}
         animate={{ scale: 1, rotate: 0, opacity: 1 }}
-        transition={{ duration: 1.1, ease: [0.2, 0.7, 0.2, 1] }}
+        transition={settleSpring(1.1)}
       >
         <Hexagon size={size} />
       </motion.span>

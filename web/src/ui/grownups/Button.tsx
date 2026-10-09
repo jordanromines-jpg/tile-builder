@@ -15,7 +15,7 @@ export function Button({ kind = "line", className = "", children, ...rest }: But
   return (
     <button
       type="button"
-      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 font-parent font-bold transition-transform duration-100 active:scale-[0.98] disabled:opacity-40 ${KIND[kind]} ${className}`}
+      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 font-parent font-bold transition-transform duration-(--spring-press-t) ease-(--spring-press) active:scale-[0.98] disabled:opacity-40 ${KIND[kind]} ${className}`}
       {...rest}
     >
       {children}
