@@ -2,6 +2,7 @@
    triangle towers, a carpet of hexagons, squares and triangles, a spiral staircase. */
 import type { Colour } from "../../engine/catalog";
 import type { Project } from "../../engine/types";
+import { reorderSteps } from "../helpers";
 import { Studio, hexagon, lattice, polygon, star, type P, type Tri } from "../studio";
 
 const L = lattice(0, 0);
@@ -14,7 +15,9 @@ function beeFlats(): Project {
   const colours: Colour[] = ["yellow", "orange", "yellow"];
   cells.forEach((h, i) => s.walls(`flat number ${i + 1}`, h.corners, 2, [colours[i], "orange"], { closed: true, what: "in a hexagon, sharing walls with the flats next door" }));
   cells.forEach((h, i) => s.triLid(`flat number ${i + 1}`, h.tris, 2, i === 1 ? "yellow" : "orange", "a hexagon roof"));
-  return s.build({ id: "bee-block-of-flats", title: "The Bee Block of Flats", theme: "homes", age: "c", done: "You built the Bee Block of Flats! Three flats, no corners, and the neighbours keep buzzing." });
+  const flats = s.build({ id: "bee-block-of-flats", title: "The Bee Block of Flats", theme: "homes", age: "c", done: "You built the Bee Block of Flats! Three flats, no corners, and the neighbours keep buzzing." });
+  // the first flat's roof starts with its last two tiles (the words stay in place), so it is let go with its walls closed in (R14)
+  return reorderSteps(flats, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 10, 12, 13, 14, 15], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
 }
 
 function loudDucks(): Project {
@@ -73,7 +76,7 @@ function hatBeetle(): Project {
   s.triLid("the beetle's back", h.tris, 2, (i) => (i % 2 ? "green" : "purple"));
   s.tetra("the hat", h.tris[1], 2, "red");
   s.tetra("the other hat", h.tris[4], 2, "orange");
-  s.fins("the legs", h.corners.map((p) => ({ corner: p, out: [p[0] - h.centre[0], p[1] - h.centre[1]] as P })), "yellow", "six legs");
+  s.fins("the legs", h.corners.map((p) => ({ corner: p, out: [p[0] - h.centre[0], p[1] - h.centre[1]] as P })), "yellow", "six legs", true);
   return s.build({ id: "beetle-in-two-hats", title: "The Beetle Who Wears Two Hats", theme: "animals", age: "c", done: "You built the beetle! It wears two hats. One for Mondays. One for all the other days." });
 }
 
@@ -119,7 +122,8 @@ function grumpyGnomes(): Project {
   s.rug("the lawn", cells, (i) => (i % 2 ? "green" : "yellow"), "a lawn of squares");
   s.pad("the pond", 3, 0.5, "blue", "a big square pond");
   s.walls("the hedge", [[0, 3], [0, 2], [0, 1], [0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [3, 2], [3, 3]], 1, ["green"], { what: "round three sides of the lawn" });
-  [[0.3, 1.2], [1.7, 1.3], [0.3, 2.8], [1.7, 2.8]].forEach(([x, z], i) => s.tetra(`gnome number ${i + 1}`, [[x, z], [x + 1, z], [x + 0.5, z - EQH]], 0, (["red", "purple", "red", "blue"] as Colour[])[i]));
+  // the gnomes stand on the table in front of the lawn: a tile can't stand in the middle of another (R14)
+  [0, 1.1, 2.2, 3.3].forEach((x, i) => s.tetra(`gnome number ${i + 1}`, [[x, 4], [x + 1, 4], [x + 0.5, 4 - EQH]], 0, (["red", "purple", "red", "blue"] as Colour[])[i]));
   return s.build({ id: "grumpy-gnome-garden", title: "The Garden of Grumpy Gnomes", theme: "gardens", age: "c", done: "You built the gnome garden! Four gnomes, four grumps. They are grumpy because you are too nice." });
 }
 

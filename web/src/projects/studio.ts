@@ -150,9 +150,9 @@ export class Studio extends Site {
   }
 
   /** Flat tiles, each laid by its base edge on the side of a point: a lid of triangles, a picture on the table. */
-  flats(name: string, tiles: Flat[], y: number, what = "a lid", atoms?: number[]) {
+  flats(name: string, tiles: Flat[], y: number, what = "a lid", atoms?: number[], last = false) {
     this.push(
-      y === 0 ? -1 : 2 * y - 1,
+      last ? 1000 : y === 0 ? -1 : 2 * y - 1,
       (b) => {
         for (const t of tiles) {
           const d: P = [t.b[0] - t.a[0], t.b[1] - t.a[1]];
@@ -199,10 +199,12 @@ export class Studio extends Site {
     );
   }
 
-  /** Corner triangles standing out from a tower's corners on the table, upright side against the corner: fins. */
-  fins(name: string, at: { corner: P; out: P }[], colour: Colour, what = "fins") {
+  /** Corner triangles standing out from a tower's corners on the table, upright side against the corner: fins. A fin
+      swings on its corner and creeps when the walls it hangs from are held from above by a hand (R14), so on a build
+      with storeys put them `last`: the final step, with nothing above to hold. */
+  fins(name: string, at: { corner: P; out: P }[], colour: Colour, what = "fins", last = false) {
     this.push(
-      0,
+      last ? 1000 : 0,
       (b) => {
         at.forEach(({ corner, out }) => {
           const l = Math.hypot(out[0], out[1]);

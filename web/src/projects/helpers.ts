@@ -29,6 +29,21 @@ export const TALL_TO_LOW: SwapRule = {
   say: "Short on tall triangles? Four short triangles make a lower roof.",
 };
 
+/** The same build with its steps in another order (R14, 4.2a): the i-th step takes the tiles of the old step
+    `order[i]`, and the tiles are numbered again to match. Its words are the old step `words[i]`'s (by default the
+    same step's, so words and tiles move together; give `words` where two steps of one kind swap their tiles but
+    not their sentences: "lay a hexagon roof", then "finish it"). Not for Monster trucks (a course names its tiles). */
+export function reorderSteps(p: Project, order: number[], words: number[] = order): Project {
+  if (p.course) throw new Error(`${p.id}: reorderSteps can't renumber the tiles of a course`);
+  for (const o of [order, words]) if (o.length !== p.steps.length || new Set(o).size !== o.length) throw new Error(`${p.id}: reorderSteps wants every step once`);
+  const placed: Project["placed"] = [];
+  const steps = order.map((from, i) => {
+    const tiles = p.steps[from].tiles.map((t) => placed.push(p.placed[t]) - 1);
+    return { ...p.steps[words[i]], tiles };
+  });
+  return { ...p, placed, steps };
+}
+
 export class Builder {
   placed: Placed[] = [];
   steps: Step[] = [];
@@ -83,14 +98,18 @@ export class Builder {
   }
 
   /** The walls round a w × d room from (x0, z0) at height y: front left to right, right side, back, left side.
-      `skip` leaves out walls by their index in that order (a doorway). */
-  room(colour: Colour, x0: number, z0: number, w: number, d: number, y: number, skip: number[] = [], shape: ShapeId = "square") {
+      `skip` leaves out walls by their index in that order (a doorway); `from` is the index to start at. */
+  room(colour: Colour, x0: number, z0: number, w: number, d: number, y: number, skip: number[] = [], shape: ShapeId = "square", from = 0) {
     const walls: (() => number)[] = [];
     for (let x = x0; x < x0 + w; x++) walls.push(() => this.wallX(shape, colour, x, y, z0 + d));
     for (let z = z0 + d - 1; z >= z0; z--) walls.push(() => this.wallZ(shape, colour, x0 + w, y, z));
     for (let x = x0 + w - 1; x >= x0; x--) walls.push(() => this.wallX(shape, colour, x, y, z0));
     for (let z = z0; z < z0 + d; z++) walls.push(() => this.wallZ(shape, colour, x0, y, z));
-    return walls.filter((_, i) => !skip.includes(i)).map((f) => f());
+    // `from` starts the ring at that wall (the rest follow, the earlier ones last): a ring started just after a doorway
+    // is made of corners, not of a lone wall at the gap that nothing holds up (R14)
+    const order = [...walls.keys()].filter((i) => !skip.includes(i));
+    const at = order.findIndex((i) => i >= from);
+    return [...order.slice(at < 0 ? 0 : at), ...order.slice(0, at < 0 ? 0 : at)].map((i) => walls[i]());
   }
 
   /** Walls inside a w × d room at height y, on every second grid line, so every square of a floor or roof laid on

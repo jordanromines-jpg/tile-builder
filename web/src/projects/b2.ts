@@ -34,12 +34,14 @@ function hamsterKennel(): Project {
 
 function pickleShip(): Project {
   const b = new Builder();
-  for (let x = 0; x < 4; x++) b.wallX("square", "green", x, 0, 1);
-  for (let x = 0; x < 4; x++) b.wallX("square", "green", x, 0, 0);
-  b.chunk(3, ["Stand three squares in a row: one side of Captain Pickle's ship.", "One more, then start the other side behind it.", "Finish the other side: two parallel rows."]);
   b.wallZ("square", "green", 0, 0, 0);
+  for (let x = 0; x < 4; x++) {
+    b.wallX("square", "green", x, 0, 1);
+    b.wallX("square", "green", x, 0, 0);
+  }
+  b.chunk(3, ["Stand three squares in a U: the back of Captain Pickle's ship and the start of its two sides.", "Keep both sides going.", "Finish the sides: two parallel rows, closed at the back."]);
   b.wallZ("tri-right", "green", 4, 0, 0);
-  b.step("Close the back with a square and the front with a small triangle.");
+  b.step("Close the front with a small triangle.");
   b.lids("yellow", 0, 0, 4, 1, 1);
   b.chunk(3, ["Lay three squares flat on top: the deck.", "One more square finishes it."]);
   b.roof("purple", 1, 0, 1);

@@ -46,7 +46,7 @@ function hippoHotel(): Project {
 
 function noisyFlats(): Project {
   const s = new Site();
-  const a = s.block("the noisy flats", 0, 0, 3, 2, 3, ["red", "orange", "yellow"], { door: true, roof: "red" });
+  const a = s.block("the noisy flats", 0, 0, 3, 2, 3, ["red", "orange", "yellow"], { door: true, roof: "red", deepPorch: true });
   const b = s.block("the even noisier flats", 4, 0, 3, 2, 4, ["green", "blue", "purple", "green"], { roof: "blue" });
   s.roofs("the drum kit", [[0, 0]], a.top, "tall", "purple");
   s.roofs("the trumpet", [[6, 1]], b.top, "tall", "yellow");
@@ -80,11 +80,12 @@ function overdueLibrary(): Project {
 function decisionHall(): Project {
   const s = new Site();
   const hall = s.block("the very small town hall", 0, 0, 3, 2, 2, ["yellow", "orange"], { door: true, roof: "blue" });
+  // the dome goes on before the tower: the roof is let go with the dome on it, not with a half-built ring beside it (R14)
+  s.roofs("the very small dome", [[0, 0]], hall.top, "low", "green");
   // the clock tower is two squares across for its lower two layers, then narrows (a stepped tower)
   s.tower("the very big clock tower base", 1, 0, 2, ["blue", "purple"], { base: hall.top, size: 2, cap: "none" });
   s.tower("the very big clock tower", 1, 0, 3, ["blue", "purple"], { base: hall.top + 2, cap: "tall", capColour: "red" });
   s.plaza("the square", 0, 3, 3, 3, "green");
-  s.roofs("the very small dome", [[0, 0]], hall.top, "low", "green");
   return why(s.build({ id: "big-decisions-hall", title: "The Very Small Town Hall of Very Big Decisions", theme: "homes", age: "d", done: "You built the Town Hall! Today's big decision: should Tuesday be pancake day? Yes." }), "The very big clock tower base", "A wide base doesn't tip: two squares across holds a tall tower steady.");
 }
 
@@ -128,7 +129,7 @@ function cottageRow(): Project {
   const s = new Site();
   const cols = [["red", "orange"], ["blue", "purple"], ["green", "yellow"]] as const;
   cols.forEach(([a, b], i) => {
-    const c = s.block(`cottage number ${i + 1}`, i * 3, 0, 2, 2, 2, [a, b], { door: true, roof: b });
+    const c = s.block(`cottage number ${i + 1}`, i * 3, 0, 2, 2, 2, [a, b], { door: true, roof: b, deepPorch: true });
     s.roofs(`cottage number ${i + 1}`, [[i * 3, 0]], c.top, i === 1 ? "low" : "tall", a);
   });
   s.plaza("the street", 0, 3, 8, 1, "yellow");

@@ -2,7 +2,7 @@
    planet, a snowflake, a honeycomb hotel, a butterfly, pancakes of hexagons. */
 import { EQ_H, type Colour } from "../../engine/catalog";
 import type { Project } from "../../engine/types";
-import type { Builder } from "../helpers";
+import { reorderSteps, type Builder } from "../helpers";
 import { Studio, hexagon, lattice, polygon, star, triOn, turtle, type P, type Tri } from "../studio";
 import { corners } from "./parts";
 
@@ -27,7 +27,7 @@ function moonHotDogs(): Project {
   s.tetra("the ketchup", h.tris[0], 3, "red");
   s.tetra("the mustard", h.tris[3], 3, "yellow");
   s.tower("the delivery rocket", 4, -2, 4, ["blue", "green"], { cap: "tall", capColour: "red" });
-  s.fins("the delivery rocket", corners(4, -2), "orange");
+  s.fins("the delivery rocket", corners(4, -2), "orange", "fins", true);
   return s.build({ id: "moon-hot-dog-stand", title: "The Hot Dog Stand on the Moon", theme: "space", age: "c", done: "You built the Hot Dog Stand on the Moon! The hot dogs float. Catch one quick, before it goes into orbit." });
 }
 
@@ -44,7 +44,9 @@ function livingRooms(): Project {
   const o = polygon([0, 0], 8);
   s.walls("the octagon house", o, 4, ["green", "blue"], { closed: true, gap: 0, what: "in an octagon" });
   s.tower("the fireplace", 0, -1.707107, 3, ["orange", "red"], { cap: "low", capColour: "yellow" });
-  return s.build({ id: "every-room-living-room", title: "The Octagon House Where Every Room Is the Living Room", theme: "homes", age: "c", done: "You built the Octagon House! Eight walls, one room, one sofa, and everyone wants it." });
+  const house = s.build({ id: "every-room-living-room", title: "The Octagon House Where Every Room Is the Living Room", theme: "homes", age: "c", done: "You built the Octagon House! Eight walls, one room, one sofa, and everyone wants it." });
+  // the third layer of the octagon starts from the other side of the ring (the words stay in place), so it is let go of closed (R14)
+  return reorderSteps(house, [0, 1, 2, 3, 4, 5, 7, 6, 8, 9, 10, 11], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
 }
 
 function rainedIndoors(): Project {
@@ -137,7 +139,9 @@ function dragonWall(): Project {
   const pts = turtle([0, 0], 30, [-60, 60, -60, 60, -60, 60, -60, 60]);
   s.tower("the gate tower", -1, 0, 3, ["purple", "blue"], { cap: "tall", capColour: "red" });
   s.walls("the dragon wall", pts, 3, ["green", "green", "yellow"], { what: "in a zigzag from the tower" });
-  return s.build({ id: "dragon-zigzag-wall", title: "The Great Zigzag Wall of the Dragon Kingdom", theme: "castles", age: "c", done: "You built the Great Zigzag Wall! It zigs, it zags, and the dragon sleeps on top. Shh." });
+  const wall = s.build({ id: "dragon-zigzag-wall", title: "The Great Zigzag Wall of the Dragon Kingdom", theme: "castles", age: "c", done: "You built the Great Zigzag Wall! It zigs, it zags, and the dragon sleeps on top. Shh." });
+  // the tower's second ring waits until the wall's second layer is on: let go of with the tower one ring low, the wall holds it (R14)
+  return reorderSteps(wall, [0, 1, 2, 3, 5, 6, 7, 4, 8, 9, 10, 11, 12]);
 }
 
 function trussBridge(): Project {
@@ -167,10 +171,12 @@ function trussBridge(): Project {
 function antPicnic(): Project {
   const s = new Studio();
   const cells: [number, number][] = [];
-  for (let x = 0; x < 4; x++) for (let z = 0; z < 3; z++) cells.push([x, z]);
-  s.rug("the blanket", cells, (i) => ((Math.floor(i / 3) + (i % 3)) % 2 ? "red" : "yellow"), "a checked blanket");
+  // the ants stand in three squares of the blanket left bare: a tile can't stand in the middle of another (R14)
+  const ants: [number, number][] = [[0, 0], [2, 1], [0, 2]];
+  for (let x = 0; x < 4; x++) for (let z = 0; z < 3; z++) if (!ants.some(([a, b]) => a === x && b === z)) cells.push([x, z]);
+  s.rug("the blanket", cells, (i) => (i % 2 ? "red" : "yellow"), "a checked blanket, with three squares left bare");
   s.tower("the basket", 3, 0, 2, ["orange", "yellow"], { cap: "low", capColour: "green" });
-  [[0.2, 1.1], [1.6, 2.8], [0.2, 2.8]].forEach(([x, z], i) => s.tetra(`ant number ${i + 1}`, tri(x, z), 0, "purple"));
+  ants.forEach(([x, z], i) => s.tetra(`ant number ${i + 1}`, tri(x, z + 1), 0, "purple"));
   return s.build({ id: "ant-invaded-picnic", title: "The Picnic Blanket Invaded by Ants", theme: "gardens", age: "c", done: "You built the picnic! Three ants came. Then three hundred. Then they ate the basket." });
 }
 
@@ -200,7 +206,7 @@ function honeycombHotel(): Project {
   const all = cells.flatMap((h) => h.corners);
   all.forEach((p) => seen.set(p.join(), (seen.get(p.join()) ?? 0) + 1));
   const outer = all.filter((p) => seen.get(p.join()) === 1).filter((_, i) => i % 2 === 0);
-  s.fins("the props", outer.map((p) => ({ corner: p, out: [p[0] - 3, p[1] + 0.866025] as P })), "purple", "props");
+  s.fins("the props", outer.map((p) => ({ corner: p, out: [p[0] - 3, p[1] + 0.866025] as P })), "purple", "props", true);
   [-1.5, 0.7, 2.9, 5.1].forEach((x, i) => s.pad(`garden number ${i + 1}`, x, 2, (["green", "blue", "green", "blue"] as Colour[])[i], "a big square"));
   return s.build({ id: "honeycomb-hotel", title: "The Honeycomb Hotel (Bees Only)", theme: "homes", age: "c", done: "You built the Honeycomb Hotel! Four rooms, no corners, and a sign on the door: bees only, no wasps." });
 }

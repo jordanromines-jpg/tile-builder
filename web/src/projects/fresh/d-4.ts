@@ -33,7 +33,7 @@ function hamsterFlats(): Project {
   flats.forEach((h, k) => s.walls(`flat number ${k + 1}`, h.corners, 3, [RAINBOW[k], "yellow", RAINBOW[(k + 2) % 6]], { closed: true, gap: k < 3 ? 4 : undefined, what: "in a hexagon, sharing walls" }));
   flats.forEach((h, k) => s.triLid(`flat number ${k + 1}`, h.tris, 3, k % 2 ? "orange" : "yellow", "a hexagon roof"));
   const cs = outsideCorners(flats).filter((_, i) => i % 3 === 0);
-  s.fins("the props", cs.map((p) => ({ corner: p, out: away([4.5, -0.43], p) })), "purple", "props");
+  s.fins("the props", cs.map((p) => ({ corner: p, out: away([4.5, -0.43], p) })), "purple", "props", true);
   return s.build({ id: "hexagonal-hamster-flats", title: "The Apartment Block for Hexagonal Hamsters", theme: "homes", age: "d", done: "You built the hamster flats! Six flats, three floors, and a lot of wheels going round at night." });
 }
 
@@ -55,7 +55,7 @@ function sevenHats(): Project {
   s.block("the mansion", 0, 0, 4, 3, 2, ["blue", "purple"], { door: true, floors: "yellow", roof: "orange" });
   s.roofs("the hats", [[0, 0], [2, 0], [1, 1], [3, 1], [0, 2], [2, 2]], 2, "tall", "red");
   s.roofs("the biggest hat", [[3, 2]], 2, "low", "yellow");
-  s.fins("the steps", corners(0, 0, 4, 3), "green", "steps at the corners");
+  s.fins("the steps", corners(0, 0, 4, 3), "green", "steps at the corners", true);
   return s.build({ id: "mansion-seven-pointy-hats", title: "The Mansion of Seven Pointy Hats", theme: "homes", age: "d", done: "You built the mansion! Seven pointy hats on the roof. One for each day of the week." });
 }
 
@@ -112,11 +112,11 @@ function marathonSnail(): Project {
 function competitiveMarrows(): Project {
   const s = new Studio();
   const plot: [number, number][] = [];
-  for (let x = 0; x < 6; x++) for (let z = 0; z < 4; z++) plot.push([x, z]);
-  s.rug("the allotment", plot, (i) => (Math.floor(i / 4) % 2 ? "green" : "orange"), "an allotment of squares");
-  const rows: [P, P][] = [];
-  for (let x = 0; x < 6; x++) rows.push([[x, 1], [x + 1, 1]], [[x, 3], [x + 1, 3]]);
-  ([[0.2, 1.95], [2.2, 1.95], [4.2, 1.95], [1.2, 3.95], [3.2, 3.95], [5.0, 3.95]] as [number, number][]).forEach(([x, z], i) => s.tetra(`marrow number ${i + 1}`, tri(x, z), 0, i % 2 ? "yellow" : "green"));
+  // each marrow stands in a square of the plot left bare: a tile can't stand in the middle of another (R14)
+  const marrows: [number, number][] = [[0, 1], [2, 1], [4, 1], [1, 3], [3, 3], [5, 3]];
+  for (let x = 0; x < 6; x++) for (let z = 0; z < 5; z++) if (!marrows.some(([a, b]) => a === x && b === z)) plot.push([x, z]);
+  s.rug("the allotment", plot, (i) => (plot[i][0] % 2 ? "green" : "orange"), "an allotment of squares, with six squares left bare");
+  marrows.forEach(([x, z], i) => s.tetra(`marrow number ${i + 1}`, tri(x, z + 1), 0, i % 2 ? "yellow" : "green"));
   const shed = triOn([7, 2], [8, 2]);
   s.walls("the shed", shed, 2, ["blue", "purple"], { closed: true, what: "in a triangle" });
   s.tetra("the shed", shed, 2, "red");
@@ -132,12 +132,18 @@ function topiaryZoo(): Project {
   s.walls("the hedge tortoise", t.corners, 1, ["green"], { closed: true, what: "in a hexagon" });
   s.triLid("the hedge tortoise", t.tris, 1, "green", "a shell of triangles");
   s.tetra("the hedge tortoise", t.tris[2], 1, "yellow");
-  s.fins("the hedge tortoise", [0, 2, 3, 5].map((k) => ({ corner: t.corners[k], out: away(t.centre, t.corners[k]) })), "green", "legs");
   s.tower("the hedge giraffe", 7, 0, 4, ["green", "green"], { cap: "lid", capColour: "green" });
-  s.fins("the hedge giraffe", corners(7, 0), "green", "legs");
+  // flat feet laid last, one on each side of the tower and of the shell, where standing legs creep (R14)
+  const foot = (a: P, b: P, c: P) => {
+    const m: P = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const d = Math.hypot(m[0] - c[0], m[1] - c[1]);
+    return { shape: "tri-equilateral" as const, colour: "green" as Colour, a, b, toward: [m[0] + (m[0] - c[0]) / d, m[1] + (m[1] - c[1]) / d] as P };
+  };
+  s.flats("the hedge giraffe", [foot([7, 1], [8, 1], [7.5, 0.5]), foot([8, 1], [8, 0], [7.5, 0.5]), foot([8, 0], [7, 0], [7.5, 0.5]), foot([7, 0], [7, 1], [7.5, 0.5])], 0, "four feet", undefined, true);
+  s.flats("the hedge tortoise", [0, 2, 3, 5].map((k) => foot(t.corners[k], t.corners[(k + 1) % 6], t.centre)), 0, "four feet", undefined, true);
   s.block("the hedge elephant", 5, 3, 2, 1, 2, ["green", "green"], { roof: "green" });
-  s.fins("the hedge elephant", [{ corner: [7, 4], out: [1, 0] }], "green", "a trunk");
-  s.pad("the pond", 4.6, 0.3, "blue", "a big square");
+  s.fins("the hedge elephant", [{ corner: [7, 4], out: [1, 0] }], "green", "a trunk", true);
+  s.pad("the pond", 3.9, 0.3, "blue", "a big square");
   return s.build({ id: "hedge-topiary-zoo", title: "The Topiary Zoo of Hedge Animals", theme: "gardens", age: "d", done: "You built the hedge zoo! A snake, a tortoise, a giraffe and an elephant. Nobody needs to feed them. Just water." });
 }
 
@@ -159,7 +165,7 @@ function eiffelCousin(): Project {
   s.tower("the bottom", 0, 0, 3, ["purple", "blue", "purple"], { size: 2, cap: "none" });
   s.tower("the left spire", 0, 0, 3, ["blue", "purple"], { base: 3, cap: "tall", capColour: "red" });
   s.tower("the right spire", 1, 1, 3, ["blue", "purple"], { base: 3, cap: "tall", capColour: "red" });
-  s.fins("the feet", corners(0, 0, 2, 2), "yellow", "feet");
+  s.fins("the feet", corners(0, 0, 2, 2), "yellow", "feet", true);
   return s.build({ id: "eiffel-tower-wobbly-cousin", title: "The Eiffel Tower's Wobbly Cousin (with Two Tops)", theme: "bridges", age: "d", done: "You built the Eiffel Tower's cousin! It is from a small town and it is very proud. And slightly wobbly." });
 }
 

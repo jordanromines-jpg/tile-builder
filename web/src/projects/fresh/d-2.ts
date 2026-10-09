@@ -2,8 +2,9 @@
    gardens of hexagons and mushrooms, a long truss bridge, a corkscrew tower. */
 import type { Colour } from "../../engine/catalog";
 import type { Project } from "../../engine/types";
+import { reorderSteps } from "../helpers";
 import { Studio, hexagon, lattice, polygon, triOn, turtle, type P, type Tri } from "../studio";
-import { away, sides, triOut, truss, trussDeck } from "./parts";
+import { away, sides, triOut, trussBridge } from "./parts";
 
 const L = lattice(0, 0);
 const H = Math.sqrt(3) / 2;
@@ -33,10 +34,10 @@ function mouseScaredDragon(): Project {
   const pts = turtle([0, 0], 30, [-60, 60, -60, 60, -60, 60, -60, 60, -60]);
   s.tower("the head", -1, 0, 3, ["red", "orange"], { cap: "tall", capColour: "yellow" });
   s.walls("the dragon", pts, 4, ["green", "green", "yellow", "green"], { what: "in a zigzag from the head" });
-  s.fins("the wings", [2, 4, 6, 8].map((k) => ({ corner: pts[k], out: [k % 4 ? 0.3 : -0.3, k % 4 ? 1 : -1] as P })), "purple", "little wings");
+  s.fins("the wings", [2, 4, 6, 8].map((k) => ({ corner: pts[k], out: [k % 4 ? 0.3 : -0.3, k % 4 ? 1 : -1] as P })), "purple", "little wings", true);
   const end = pts[pts.length - 1];
   const before = pts[pts.length - 2];
-  s.fins("the tail", [{ corner: end, out: [end[0] - before[0], end[1] - before[1]] }], "orange", "a pointy tail");
+  s.fins("the tail", [{ corner: end, out: [end[0] - before[0], end[1] - before[1]] }], "orange", "a pointy tail", true);
   s.tetra("the mouse", tri(-1.4, 2.4), 0, "blue");
   return s.build({ id: "dragon-scared-of-mice", title: "The Dragon Who Is Scared of Mice", theme: "animals", age: "d", done: "You built the dragon! Fire, spikes, wings, the lot. And there is the mouse. EEEK, says the dragon." });
 }
@@ -50,12 +51,14 @@ function lostCountOctopus(): Project {
     const u = unit(away(c, p));
     const leg: P[] = [p, [p[0] + u[0], p[1] + u[1]], [p[0] + 2 * u[0], p[1] + 2 * u[1]]];
     s.walls(`leg number ${k + 1}`, leg, 1, [RAINBOW[k % 6]], { what: "straight out from a corner" });
-    s.fins(`leg number ${k + 1}`, [{ corner: leg[2], out: u }], "yellow", "a curly tip");
+    s.fins(`leg number ${k + 1}`, [{ corner: leg[2], out: u }], "yellow", "a curly tip", true);
   });
   s.pad("the ink puddle", 4.3, 1, "purple", "a big square");
   s.pad("the other ink puddle", 4.3, -1.4, "blue", "a big square");
   s.tetra("the crab", tri(4.8, 2.6), 0, "red");
-  return s.build({ id: "octopus-lost-count", title: "The Octopus Who Lost Count of Its Legs", theme: "animals", age: "d", done: "You built the octopus! Count the legs. Eight? The octopus says seven. Or nine. It keeps losing count." });
+  const octopus = s.build({ id: "octopus-lost-count", title: "The Octopus Who Lost Count of Its Legs", theme: "animals", age: "d", done: "You built the octopus! Count the legs. Eight? The octopus says seven. Or nine. It keeps losing count." });
+  // body first, then the legs: a leg swings on its corner while the walls above it are held (R14)
+  return reorderSteps(octopus, [0, 1, 2, 3, 12, 13, 14, 15, 16, 17, 18, 4, 5, 6, 7, 8, 9, 10, 11, 19, 20, 21, 22, 23, 24, 25, 26]);
 }
 
 function accidentalTortoise(): Project {
@@ -169,11 +172,9 @@ function custardRiver(): Project {
   const river: [number, number][] = [];
   for (let z = -2; z < 4; z++) river.push([3, z], [4, z]);
   s.rug("the custard river", river, "yellow", "a river of squares under where the bridge goes");
-  truss(s, "The front side", 0, 1, 8, "red", "orange");
-  truss(s, "The back side", 0, 0, 8, "red", "orange");
-  trussDeck(s, "The road", 0, 0, 8, "green");
-  s.tower("the left gate", -1.2, 0, 3, ["blue", "purple"], { cap: "tall", capColour: "red" });
-  s.tower("the right gate", 8.2, 0, 3, ["blue", "purple"], { cap: "tall", capColour: "red" });
+  trussBridge(s, "The bridge", 0, 8, "red", "orange", "green");
+  s.tower("the left gate", -1.7, 0, 3, ["blue", "purple"], { cap: "tall", capColour: "red" });
+  s.tower("the right gate", 8.7, 0, 3, ["blue", "purple"], { cap: "tall", capColour: "red" });
   return s.build({ id: "custard-river-truss-bridge", title: "The Long Truss Bridge Over the Custard River", theme: "bridges", age: "d", done: "You built the truss bridge! Up, down, up, down, all the way across. Don't fall in. It's custard." });
 }
 
@@ -187,7 +188,7 @@ function upForAges(): Project {
   s.triLid("the top", h.tris, 10, "orange", "a hexagon top");
   s.tetra("the top", h.tris[0], 10, "red");
   s.tetra("the top", h.tris[3], 10, "purple");
-  s.fins("the feet", h.corners.map((c) => ({ corner: c, out: away(h.centre, c) })), "blue", "six feet");
+  s.fins("the feet", h.corners.map((c) => ({ corner: c, out: away(h.centre, c) })), "blue", "six feet", true);
   return s.build({ id: "hexagon-tower-up-for-ages", title: "The Hexagon Tower That Goes Up for Ages", theme: "bridges", age: "d", done: "You built the tower that goes up for ages! Ten floors. The lift is broken. Good luck." });
 }
 

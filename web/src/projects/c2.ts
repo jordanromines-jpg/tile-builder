@@ -55,7 +55,7 @@ function cheeseLighthouse(): Project {
 
 function butlerMansion(): Project {
   const b = new Builder();
-  b.room("blue", 0, 0, 3, 2, 0, [2]);
+  b.room("blue", 0, 0, 3, 2, 0, [2], "square", 3);
   b.chunk(4, ["The ground floor: squares round a three-by-two space, with a doorway at the front right.", "Keep going round.", "Close the ring with the last squares."]);
   for (let z = 0; z < 2; z++) b.wallZ("square", "blue", 2, 0, z);
   b.step("Two squares across the inside, from the back to the front. They hold the floor up.");

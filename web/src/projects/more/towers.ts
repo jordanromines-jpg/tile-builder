@@ -2,6 +2,7 @@
    The biggest here use almost every square and triangle in two 100-piece sets. */
 import type { Colour } from "../../engine/catalog";
 import type { Project } from "../../engine/types";
+import { reorderSteps } from "../helpers";
 import { Site } from "../kit";
 
 /** Pyramids on the cells of a w × d roof that are not under the smaller block on top of it (x0..x0+iw, z0..z0+id). */
@@ -118,15 +119,18 @@ function zebraZiggurat(): Project {
 
 function maze(): Project {
   const s = new Site();
-  s.wall("the outer wall, front", "x", 0, 6, 6, 2, "blue");
+  // front and right first: they meet in a corner, so no wall is let go on its own (R14)
+  s.wall("the outer wall, front", "x", 0, 6, 6, 2, "blue", true);
+  s.wall("the outer wall, right", "z", 1, 6, 6, 2, "blue", true);
   s.wall("the outer wall, back", "x", 0, 6, 0, 2, "blue");
   s.wall("the outer wall, left", "z", 0, 5, 0, 2, "blue");
-  s.wall("the outer wall, right", "z", 1, 6, 6, 2, "blue");
   s.wall("a tricky wall", "x", 0, 4, 2, 2, "red");
   s.wall("another tricky wall", "x", 2, 6, 4, 2, "green");
   s.wall("a sneaky wall", "z", 2, 4, 2, 1, "yellow");
   s.tent("the prize in the middle", 4, 2, "low", "purple");
-  return s.build({ id: "mild-confusion-maze", title: "The Maze of Mild Confusion", theme: "patterns", age: "c", done: "You built the Maze of Mild Confusion! Can a marble find its way to the prize?" });
+  const built = s.build({ id: "mild-confusion-maze", title: "The Maze of Mild Confusion", theme: "patterns", age: "c", done: "You built the Maze of Mild Confusion! Can a marble find its way to the prize?" });
+  // the tricky wall's top layer goes on before the left wall's, which then ends the maze's top layer with the entrance (R14)
+  return reorderSteps(built, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 18, 19, 21]);
 }
 
 function pyramidParty(): Project {

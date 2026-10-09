@@ -160,6 +160,8 @@ function illegalRocketCar(): Project {
   return s.build({ id: "technically-illegal-rocket-car", title: "The Rocket Car That Is Technically Illegal", theme: "vehicles", age: "d", done: "You built the rocket car! It goes from nought to sixty in no seconds. The police are very confused." });
 }
 
+const triKey = (t: Tri) => t.map((p) => p.map((v) => v.toFixed(3)).join(",")).sort().join("|");
+
 function bananaMountain(): Project {
   const s = new Studio();
   const colours: Colour[] = ["green", "yellow"];
@@ -167,11 +169,14 @@ function bananaMountain(): Project {
     const level = bigTri(L, 0, 0, n).tris;
     // a wall under every edge of every triangle, so each triangle of the floor above rests on three walls (R10)
     level.forEach((t) => s.walls(`the mountain, level ${y + 1}`, t, 1, [colours[y]], { closed: true, base: y, what: "in a triangle, next to the last one" }));
-    s.triLid(`the mountain, level ${y + 1}`, level, y + 1, colours[y], "a floor of triangles, one on each little room");
+    // no floor under the rooms of the level above: its walls stand on the walls below, not on the seams between floor
+    // tiles, which a hand holding them would set swinging (R14)
+    const above = new Set((y === 0 ? bigTri(L, 0, 0, 2).tris : []).map(triKey));
+    s.triLid(`the mountain, level ${y + 1}`, level.filter((t) => !above.has(triKey(t))), y + 1, colours[y], "a floor of triangles, one on each little room");
   });
   s.tetra("the peak", up(0, 0), 2, "orange");
   s.tower("the cable car station", 5, 0.5, 3, ["blue", "purple"], { cap: "tall", capColour: "red" });
-  s.rug("the path", [[4, 1.5], [4, 2.5], [3, 2.5], [2, 2.5]], "orange", "a path to the station");
+  s.rug("the path", [[4, 1.5], [4, 2.5], [3, 2.5], [2, 2.5], [1, 2.5]], "orange", "a path to the station");
   return s.build({ id: "banana-mountain-cable-car", title: "The Cable Car Station on Banana Mountain", theme: "vehicles", age: "d", done: "You built Banana Mountain! The cable car goes up to the top. Nobody knows why it's called Banana Mountain. Nobody asks." });
 }
 
@@ -184,7 +189,7 @@ function headfirstLander(): Project {
   s.triLid("the lander", h.tris, 5, "blue");
   s.tetra("the lander", h.tris[0], 5, "red");
   s.tetra("the lander", h.tris[3], 5, "red");
-  s.fins("the legs", h.corners.map((c) => ({ corner: c, out: away(h.centre, c) })), "orange", "legs");
+  s.fins("the legs", h.corners.map((c) => ({ corner: c, out: away(h.centre, c) })), "orange", "legs", true);
   [-2.6, 5.6, 1.5].forEach((x, i) => s.pad(`moon rock ${i + 1}`, x, i === 2 ? 1.8 : -1.5, "purple", "a big square"));
   return s.build({ id: "lander-landed-on-its-head", title: "The Lunar Lander That Landed on Its Head", theme: "space", age: "d", done: "You built the lunar lander! Is it the right way up? The astronauts aren't sure either." });
 }

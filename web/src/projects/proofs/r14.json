@@ -14,26 +14,11 @@
   "ms": 86467
  },
  "ant-invaded-picnic": {
-  "key": "633d684c6140d227",
-  "falls": [
-   {
-    "step": 6,
-    "tile": 18,
-    "mm": 89,
-    "deg": 8,
-    "phase": "settling"
-   },
-   {
-    "step": 7,
-    "tile": 19,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 3,
-  "worstMm": 89,
-  "ms": 4569
+  "key": "9ad22a2bcb16c281",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 6,
+  "ms": 10980
  },
  "apple-aqueduct": {
   "key": "fd5e189efb48b09c",
@@ -505,33 +490,11 @@
   "ms": 227
  },
  "banana-mountain-cable-car": {
-  "key": "3c78b1db35664d0a",
-  "falls": [
-   {
-    "step": 18,
-    "tile": 12,
-    "mm": 27,
-    "deg": 6,
-    "phase": "settling"
-   },
-   {
-    "step": 21,
-    "tile": 21,
-    "mm": 23,
-    "deg": 3,
-    "phase": "settling"
-   },
-   {
-    "step": 22,
-    "tile": 21,
-    "mm": 23,
-    "deg": 3,
-    "phase": "settling"
-   }
-  ],
-  "sags": 4,
-  "worstMm": 27,
-  "ms": 35582
+  "key": "2b5a1fb13526d575",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 6,
+  "ms": 52416
  },
  "barn": {
   "key": "9d20b8b59edc4a9a",
@@ -548,19 +511,11 @@
   "ms": 92789
  },
  "bee-block-of-flats": {
-  "key": "6c89b388daeb4082",
-  "falls": [
-   {
-    "step": 11,
-    "tile": 11,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 8,
-  "worstMm": 20,
-  "ms": 11563
+  "key": "9f8b4d35d81235e0",
+  "falls": [],
+  "sags": 10,
+  "worstMm": 15,
+  "ms": 31775
  },
  "bee-hotel": {
   "key": "bf861804c56a3a71",
@@ -577,34 +532,18 @@
   "ms": 3127
  },
  "beetle-in-two-hats": {
-  "key": "3f3817188b1e0efe",
-  "falls": [
-   {
-    "step": 10,
-    "tile": 8,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after left"
-   }
-  ],
-  "sags": 6,
-  "worstMm": 20,
-  "ms": 4485
+  "key": "723be5bdb3e26904",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 19,
+  "ms": 11602
  },
  "big-decisions-hall": {
-  "key": "56d8c649fc42b975",
-  "falls": [
-   {
-    "step": 15,
-    "tile": 20,
-    "mm": 21,
-    "deg": 16,
-    "phase": "leaning left"
-   }
-  ],
-  "sags": 4,
-  "worstMm": 21,
-  "ms": 22756
+  "key": "7097ac5b7b8122e1",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 7,
+  "ms": 54597
  },
  "boat": {
   "key": "f82fa591edae0a59",
@@ -698,19 +637,11 @@
   "ms": 883
  },
  "butler-mansion": {
-  "key": "e354fa8cf1dbd938",
-  "falls": [
-   {
-    "step": 2,
-    "tile": 1,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   }
-  ],
+  "key": "66b3ae18e87c85f7",
+  "falls": [],
   "sags": 0,
-  "worstMm": 29,
-  "ms": 11703
+  "worstMm": 2,
+  "ms": 32961
  },
  "captain-custard-star-fortress": {
   "key": "14da5e20773b83e3",
@@ -804,26 +735,11 @@
   "ms": 69312
  },
  "competitive-marrow-allotment": {
-  "key": "4bcba39a2fc409eb",
-  "falls": [
-   {
-    "step": 7,
-    "tile": 25,
-    "mm": 27,
-    "deg": 7,
-    "phase": "settling"
-   },
-   {
-    "step": 9,
-    "tile": 31,
-    "mm": 22,
-    "deg": 6,
-    "phase": "settling"
-   }
-  ],
-  "sags": 10,
-  "worstMm": 27,
-  "ms": 17326
+  "key": "a7a8632c44c5c5cb",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 6,
+  "ms": 35329
  },
  "compost-castle": {
   "key": "d8f2770c4fe057ce",
@@ -854,103 +770,11 @@
   "ms": 13345
  },
  "custard-river-truss-bridge": {
-  "key": "741cfb0260fd0584",
-  "falls": [
-   {
-    "step": 5,
-    "tile": 14,
-    "mm": 24,
-    "deg": 24,
-    "phase": "settling"
-   },
-   {
-    "step": 6,
-    "tile": 16,
-    "mm": 14,
-    "deg": 17,
-    "phase": "settling"
-   },
-   {
-    "step": 7,
-    "tile": 16,
-    "mm": 21,
-    "deg": 18,
-    "phase": "settling"
-   },
-   {
-    "step": 8,
-    "tile": 14,
-    "mm": 16,
-    "deg": 19,
-    "phase": "settling"
-   },
-   {
-    "step": 9,
-    "tile": 40,
-    "mm": 30,
-    "deg": 19,
-    "phase": "settling"
-   },
-   {
-    "step": 10,
-    "tile": 40,
-    "mm": 30,
-    "deg": 19,
-    "phase": "settling"
-   },
-   {
-    "step": 12,
-    "tile": 27,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 13,
-    "tile": 40,
-    "mm": 20,
-    "deg": 14,
-    "phase": "leaning away"
-   },
-   {
-    "step": 14,
-    "tile": 40,
-    "mm": 20,
-    "deg": 14,
-    "phase": "leaning away"
-   },
-   {
-    "step": 15,
-    "tile": 40,
-    "mm": 20,
-    "deg": 14,
-    "phase": "leaning away"
-   },
-   {
-    "step": 16,
-    "tile": 40,
-    "mm": 20,
-    "deg": 14,
-    "phase": "leaning away"
-   },
-   {
-    "step": 17,
-    "tile": 40,
-    "mm": 20,
-    "deg": 14,
-    "phase": "leaning away"
-   },
-   {
-    "step": 18,
-    "tile": 40,
-    "mm": 20,
-    "deg": 14,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 30,
-  "ms": 23088
+  "key": "da3c0f94036f0ab0",
+  "falls": [],
+  "sags": 15,
+  "worstMm": 9,
+  "ms": 59189
  },
  "dino-museum": {
   "key": "c77383f5ac51b7a0",
@@ -1016,62 +840,18 @@
   "ms": 64040
  },
  "dragon-scared-of-mice": {
-  "key": "d80f9ff89da729aa",
-  "falls": [
-   {
-    "step": 9,
-    "tile": 16,
-    "mm": 19,
-    "deg": 16,
-    "phase": "leaning left"
-   },
-   {
-    "step": 11,
-    "tile": 15,
-    "mm": 21,
-    "deg": 16,
-    "phase": "leaning left"
-   },
-   {
-    "step": 12,
-    "tile": 15,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after away"
-   },
-   {
-    "step": 13,
-    "tile": 14,
-    "mm": 19,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 14,
-    "tile": 14,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   }
-  ],
-  "sags": 3,
-  "worstMm": 21,
-  "ms": 8899
+  "key": "59e2bd611f142eca",
+  "falls": [],
+  "sags": 9,
+  "worstMm": 16,
+  "ms": 33056
  },
  "dragon-zigzag-wall": {
-  "key": "7013a5268243216b",
-  "falls": [
-   {
-    "step": 6,
-    "tile": 16,
-    "mm": 20,
-    "deg": 12,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 5,
-  "worstMm": 20,
-  "ms": 6824
+  "key": "412353200227d4d2",
+  "falls": [],
+  "sags": 6,
+  "worstMm": 12,
+  "ms": 18776
  },
  "drawbridge-gate": {
   "key": "5c0bdda9386f1b1c",
@@ -1095,19 +875,11 @@
   "ms": 9786
  },
  "eiffel-tower-wobbly-cousin": {
-  "key": "cf8126b7272d8694",
-  "falls": [
-   {
-    "step": 4,
-    "tile": 11,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 10,
-  "worstMm": 20,
-  "ms": 32553
+  "key": "ff627c0b54b4313d",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 3,
+  "ms": 41334
  },
  "elephant-bungee": {
   "key": "47f38fc17010dc4e",
@@ -1131,19 +903,11 @@
   "ms": 104956
  },
  "every-room-living-room": {
-  "key": "5a2f14f659a25183",
-  "falls": [
-   {
-    "step": 8,
-    "tile": 13,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   }
-  ],
-  "sags": 5,
-  "worstMm": 20,
-  "ms": 9651
+  "key": "7fef2bd2c7dbbe76",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 3,
+  "ms": 18251
  },
  "everything-tower": {
   "key": "9fbd336a1a32dedb",
@@ -1188,19 +952,11 @@
   "ms": 8388
  },
  "flower-carolina-bog-garden": {
-  "key": "0c7c9402b861465c",
-  "falls": [
-   {
-    "step": 29,
-    "tile": 55,
-    "mm": 63,
-    "deg": 11,
-    "phase": "leaning left"
-   }
-  ],
+  "key": "bff9d136f7863ca9",
+  "falls": [],
   "sags": 0,
-  "worstMm": 63,
-  "ms": 71164
+  "worstMm": 1,
+  "ms": 78726
  },
  "flower-carolina-cardinal-flower": {
   "key": "af3fcab9ee3bd34a",
@@ -1245,19 +1001,11 @@
   "ms": 22574
  },
  "flower-carolina-state-flowers": {
-  "key": "9e219423e055dd46",
-  "falls": [
-   {
-    "step": 19,
-    "tile": 65,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 20,
-  "ms": 54956
+  "key": "5df7e54426e3e344",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 8,
+  "ms": 67299
  },
  "flower-carolina-trumpet-creeper": {
   "key": "ab9d5496d717810f",
@@ -1267,19 +1015,11 @@
   "ms": 511
  },
  "flower-carolina-trumpet-creeper-trellis": {
-  "key": "e51b8ca267fef876",
-  "falls": [
-   {
-    "step": 12,
-    "tile": 39,
-    "mm": 21,
-    "deg": 3,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 2,
-  "worstMm": 21,
-  "ms": 7391
+  "key": "ae805d4f8f6cb5aa",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 9,
+  "ms": 27759
  },
  "flower-carolina-turks-cap-lily": {
   "key": "17ac71ae07536427",
@@ -1415,26 +1155,11 @@
   "ms": 15738
  },
  "flower-kansas-compass-plant": {
-  "key": "becb23f88db386f1",
-  "falls": [
-   {
-    "step": 8,
-    "tile": 1,
-    "mm": 22,
-    "deg": 19,
-    "phase": "settling"
-   },
-   {
-    "step": 18,
-    "tile": 1,
-    "mm": 18,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   }
-  ],
-  "sags": 2,
-  "worstMm": 22,
-  "ms": 24390
+  "key": "a73c16eae7e4bcca",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 11,
+  "ms": 46958
  },
  "flower-kansas-coneflower-pot": {
   "key": "88cf4b4d1a3d5d41",
@@ -1619,33 +1344,11 @@
   "ms": 13799
  },
  "giraffe-elevator": {
-  "key": "871441bc5b2deef9",
-  "falls": [
-   {
-    "step": 16,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after left"
-   },
-   {
-    "step": 33,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after away"
-   },
-   {
-    "step": 34,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 10,
-  "worstMm": 20,
-  "ms": 185586
+  "key": "04269bec0f39fcd0",
+  "falls": [],
+  "sags": 11,
+  "worstMm": 11,
+  "ms": 186766
  },
  "gnome-parliament": {
   "key": "df526bb59dc32207",
@@ -1676,26 +1379,11 @@
   "ms": 36984
  },
  "grumpy-gnome-garden": {
-  "key": "fa45cc20788fb4b8",
-  "falls": [
-   {
-    "step": 9,
-    "tile": 20,
-    "mm": 21,
-    "deg": 6,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 10,
-    "tile": 22,
-    "mm": 22,
-    "deg": 6,
-    "phase": "leaning left"
-   }
-  ],
-  "sags": 1,
-  "worstMm": 22,
-  "ms": 3966
+  "key": "7a02e37c7e22da5e",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 1,
+  "ms": 4201
  },
  "grumpy-robot": {
   "key": "27fb23b3a142e5fb",
@@ -1740,89 +1428,11 @@
   "ms": 28033
  },
  "hedge-topiary-zoo": {
-  "key": "982dfda966963092",
-  "falls": [
-   {
-    "step": 7,
-    "tile": 21,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 8,
-    "tile": 21,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 9,
-    "tile": 16,
-    "mm": 21,
-    "deg": 16,
-    "phase": "leaning left"
-   },
-   {
-    "step": 10,
-    "tile": 21,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 11,
-    "tile": 13,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 12,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   },
-   {
-    "step": 13,
-    "tile": 13,
-    "mm": 19,
-    "deg": 15,
-    "phase": "upright after left"
-   },
-   {
-    "step": 14,
-    "tile": 13,
-    "mm": 19,
-    "deg": 15,
-    "phase": "upright after left"
-   },
-   {
-    "step": 15,
-    "tile": 23,
-    "mm": 21,
-    "deg": 16,
-    "phase": "leaning left"
-   },
-   {
-    "step": 16,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   },
-   {
-    "step": 17,
-    "tile": 13,
-    "mm": 19,
-    "deg": 15,
-    "phase": "upright after left"
-   }
-  ],
+  "key": "237a065c10a7f10c",
+  "falls": [],
   "sags": 1,
-  "worstMm": 21,
-  "ms": 13365
+  "worstMm": 2,
+  "ms": 40684
  },
  "hedgehog-hotel": {
   "key": "d2bbe7ba9318dcf3",
@@ -1846,97 +1456,18 @@
   "ms": 47542
  },
  "hexagon-tower-up-for-ages": {
-  "key": "cb21c712c6622de5",
-  "falls": [
-   {
-    "step": 5,
-    "tile": 7,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   }
-  ],
-  "sags": 13,
-  "worstMm": 20,
-  "ms": 38585
+  "key": "1934688079c6a97e",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 14,
+  "ms": 56841
  },
  "hexagonal-hamster-flats": {
-  "key": "efccf9dcdbfc7ed5",
-  "falls": [
-   {
-    "step": 12,
-    "tile": 26,
-    "mm": 19,
-    "deg": 15,
-    "phase": "leaning left"
-   },
-   {
-    "step": 13,
-    "tile": 26,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 15,
-    "tile": 26,
-    "mm": 17,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 16,
-    "tile": 26,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 18,
-    "tile": 26,
-    "mm": 17,
-    "deg": 16,
-    "phase": "leaning left"
-   },
-   {
-    "step": 19,
-    "tile": 26,
-    "mm": 16,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 20,
-    "tile": 26,
-    "mm": 17,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 21,
-    "tile": 26,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 23,
-    "tile": 26,
-    "mm": 21,
-    "deg": 15,
-    "phase": "upright after left"
-   },
-   {
-    "step": 24,
-    "tile": 26,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 8,
-  "worstMm": 21,
-  "ms": 48386
+  "key": "281b4a9a615abb5d",
+  "falls": [],
+  "sags": 18,
+  "worstMm": 14,
+  "ms": 90263
  },
  "hiccup-hall": {
   "key": "fab6e736e7bc7663",
@@ -1960,40 +1491,11 @@
   "ms": 47871
  },
  "honeycomb-hotel": {
-  "key": "0bf1b7247df1eaf9",
-  "falls": [
-   {
-    "step": 15,
-    "tile": 24,
-    "mm": 21,
-    "deg": 10,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 17,
-    "tile": 24,
-    "mm": 15,
-    "deg": 15,
-    "phase": "upright after towards the child"
-   },
-   {
-    "step": 19,
-    "tile": 25,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 20,
-    "tile": 27,
-    "mm": 18,
-    "deg": 15,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 8,
-  "worstMm": 21,
-  "ms": 28941
+  "key": "6ececfbfa0c63c51",
+  "falls": [],
+  "sags": 11,
+  "worstMm": 18,
+  "ms": 48863
  },
  "house": {
   "key": "91453f88a73a8dfd",
@@ -2059,40 +1561,11 @@
   "ms": 25003
  },
  "lander-landed-on-its-head": {
-  "key": "d94c2daf2881d07e",
-  "falls": [
-   {
-    "step": 10,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 11,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 12,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after away"
-   },
-   {
-    "step": 13,
-    "tile": 21,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 3,
-  "worstMm": 20,
-  "ms": 20236
+  "key": "1a5bc4592df6d65e",
+  "falls": [],
+  "sags": 1,
+  "worstMm": 8,
+  "ms": 36977
  },
  "late-train-station": {
   "key": "c570bf68c21b2b69",
@@ -2193,61 +1666,11 @@
   "ms": 79477
  },
  "mansion-seven-pointy-hats": {
-  "key": "f11baa543a521e90",
-  "falls": [
-   {
-    "step": 10,
-    "tile": 21,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 11,
-    "tile": 24,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 12,
-    "tile": 22,
-    "mm": 21,
-    "deg": 16,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 14,
-    "tile": 21,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning left"
-   },
-   {
-    "step": 15,
-    "tile": 21,
-    "mm": 21,
-    "deg": 16,
-    "phase": "upright after left"
-   },
-   {
-    "step": 17,
-    "tile": 23,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after away"
-   },
-   {
-    "step": 19,
-    "tile": 21,
-    "mm": 20,
-    "deg": 15,
-    "phase": "upright after left"
-   }
-  ],
-  "sags": 7,
-  "worstMm": 21,
-  "ms": 72075
+  "key": "e0fd85f014e96313",
+  "falls": [],
+  "sags": 0,
+  "worstMm": 2,
+  "ms": 101602
  },
  "marathon-snail": {
   "key": "17e1dcbb61989984",
@@ -2271,54 +1694,11 @@
   "ms": 38338
  },
  "mild-confusion-maze": {
-  "key": "fa3c867bdc0ab21f",
-  "falls": [
-   {
-    "step": 3,
-    "tile": 0,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 4,
-    "tile": 0,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 5,
-    "tile": 0,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 6,
-    "tile": 0,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 7,
-    "tile": 0,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   },
-   {
-    "step": 21,
-    "tile": 52,
-    "mm": 20,
-    "deg": 6,
-    "phase": "upright after right"
-   }
-  ],
-  "sags": 3,
-  "worstMm": 29,
-  "ms": 11419
+  "key": "88a29e23a3bb5b84",
+  "falls": [],
+  "sags": 4,
+  "worstMm": 13,
+  "ms": 34520
  },
  "mirror-palace": {
   "key": "177ba9917cb0d8a5",
@@ -2356,40 +1736,11 @@
   "ms": 16360
  },
  "moon-hot-dog-stand": {
-  "key": "70157fde3d8fa3fa",
-  "falls": [
-   {
-    "step": 13,
-    "tile": 11,
-    "mm": 20,
-    "deg": 16,
-    "phase": "upright after away"
-   },
-   {
-    "step": 14,
-    "tile": 11,
-    "mm": 20,
-    "deg": 16,
-    "phase": "upright after away"
-   },
-   {
-    "step": 15,
-    "tile": 11,
-    "mm": 20,
-    "deg": 16,
-    "phase": "upright after away"
-   },
-   {
-    "step": 16,
-    "tile": 11,
-    "mm": 20,
-    "deg": 16,
-    "phase": "upright after away"
-   }
-  ],
-  "sags": 3,
-  "worstMm": 20,
-  "ms": 31096
+  "key": "f263cd62578e09e0",
+  "falls": [],
+  "sags": 2,
+  "worstMm": 5,
+  "ms": 31786
  },
  "mostly-lid-chest": {
   "key": "af790032dd31c524",
@@ -2413,19 +1764,11 @@
   "ms": 3446
  },
  "mouse-mall": {
-  "key": "1e34c6811c147a21",
-  "falls": [
-   {
-    "step": 2,
-    "tile": 1,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   }
-  ],
+  "key": "7080d5c224a7761f",
+  "falls": [],
   "sags": 0,
-  "worstMm": 29,
-  "ms": 44809
+  "worstMm": 2,
+  "ms": 68858
  },
  "mushroom-village": {
   "key": "75e18c9c8d960540",
@@ -2449,19 +1792,11 @@
   "ms": 1919
  },
  "nervous-flamingo-stilt-house": {
-  "key": "0e98565a983f0b9b",
-  "falls": [
-   {
-    "step": 8,
-    "tile": 23,
-    "mm": 21,
-    "deg": 8,
-    "phase": "leaning right"
-   }
-  ],
-  "sags": 16,
-  "worstMm": 21,
-  "ms": 98882
+  "key": "90d580926201f2ac",
+  "falls": [],
+  "sags": 3,
+  "worstMm": 3,
+  "ms": 121533
  },
  "no-homework-school": {
   "key": "e6595b4198f8d28f",
@@ -2471,34 +1806,18 @@
   "ms": 84319
  },
  "noisy-flats": {
-  "key": "efbe399f66677670",
-  "falls": [
-   {
-    "step": 15,
-    "tile": 11,
-    "mm": 21,
-    "deg": 15,
-    "phase": "leaning towards the child"
-   }
-  ],
+  "key": "88a2ac6d6a379421",
+  "falls": [],
   "sags": 11,
-  "worstMm": 21,
-  "ms": 43802
+  "worstMm": 11,
+  "ms": 70275
  },
  "nosy-street": {
-  "key": "73862eeb8e1d9250",
-  "falls": [
-   {
-    "step": 13,
-    "tile": 15,
-    "mm": 20,
-    "deg": 16,
-    "phase": "leaning left"
-   }
-  ],
-  "sags": 8,
-  "worstMm": 20,
-  "ms": 29302
+  "key": "9d5d3f8e76bcb1bc",
+  "falls": [],
+  "sags": 7,
+  "worstMm": 12,
+  "ms": 46209
  },
  "not-bouncy-castle": {
   "key": "18273643078658cd",
@@ -2508,54 +1827,11 @@
   "ms": 6041
  },
  "octopus-lost-count": {
-  "key": "a6611419dd0145a3",
-  "falls": [
-   {
-    "step": 22,
-    "tile": 30,
-    "mm": 23,
-    "deg": 9,
-    "phase": "leaning right"
-   },
-   {
-    "step": 23,
-    "tile": 15,
-    "mm": 21,
-    "deg": 7,
-    "phase": "leaning left"
-   },
-   {
-    "step": 24,
-    "tile": 31,
-    "mm": 20,
-    "deg": 15,
-    "phase": "leaning away"
-   },
-   {
-    "step": 25,
-    "tile": 21,
-    "mm": 22,
-    "deg": 6,
-    "phase": "leaning left"
-   },
-   {
-    "step": 26,
-    "tile": 21,
-    "mm": 21,
-    "deg": 7,
-    "phase": "leaning away"
-   },
-   {
-    "step": 27,
-    "tile": 21,
-    "mm": 20,
-    "deg": 11,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 11,
-  "worstMm": 23,
-  "ms": 10355
+  "key": "3af519f6739fdb91",
+  "falls": [],
+  "sags": 19,
+  "worstMm": 19,
+  "ms": 53000
  },
  "overdue-library": {
   "key": "e9426b3925d3ebfc",
@@ -2593,33 +1869,11 @@
   "ms": 37239
  },
  "pawns-won-chess-set": {
-  "key": "5528c884932dc3ad",
-  "falls": [
-   {
-    "step": 10,
-    "tile": 36,
-    "mm": 35,
-    "deg": 19,
-    "phase": "settling"
-   },
-   {
-    "step": 11,
-    "tile": 39,
-    "mm": 31,
-    "deg": 9,
-    "phase": "settling"
-   },
-   {
-    "step": 12,
-    "tile": 39,
-    "mm": 21,
-    "deg": 6,
-    "phase": "leaning away"
-   }
-  ],
-  "sags": 8,
-  "worstMm": 35,
-  "ms": 27142
+  "key": "21acc4a49e58be71",
+  "falls": [],
+  "sags": 7,
+  "worstMm": 8,
+  "ms": 48887
  },
  "penguin-parlour": {
   "key": "b51304e95b143a71",
@@ -2636,19 +1890,11 @@
   "ms": 4041
  },
  "pickle-ship": {
-  "key": "816f95ee5f8fc06a",
-  "falls": [
-   {
-    "step": 3,
-    "tile": 3,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   }
-  ],
+  "key": "58a935bf78651025",
+  "falls": [],
   "sags": 1,
-  "worstMm": 29,
-  "ms": 3335
+  "worstMm": 3,
+  "ms": 3215
  },
  "pig-palace": {
   "key": "c226aa9bb88da0e2",
@@ -2658,19 +1904,11 @@
   "ms": 87187
  },
  "pirate-hotel": {
-  "key": "dd730f8b97e6462a",
-  "falls": [
-   {
-    "step": 2,
-    "tile": 1,
-    "mm": 29,
-    "deg": 22,
-    "phase": "leaning towards the child"
-   }
-  ],
-  "sags": 8,
-  "worstMm": 29,
-  "ms": 152567
+  "key": "d66a48c80cdc7891",
+  "falls": [],
+  "sags": 5,
+  "worstMm": 13,
+  "ms": 167137
  },
  "pitched-house": {
   "key": "aa5947878805152f",

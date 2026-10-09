@@ -24,7 +24,7 @@ const bloomRings = (stem: Colour, bloom: Colour, n: number, h: number) => (y: nu
 const SIX = 6;
 
 /** Walls round the stems (squares shared where two stems touch), a layer at a time, six squares a step. */
-function bunch(b: Builder, stems: Stem[], y0: number, words: (layer: number, first: boolean, n: number, c: Colour) => string) {
+function bunch(b: Builder, stems: Stem[], y0: number, words: (layer: number, first: boolean, n: number, c: Colour) => string, byStem = false) {
   const top = Math.max(...stems.map((s) => s.h));
   for (let y = 0; y < top; y++) {
     const seen = new Set<string>();
@@ -40,8 +40,9 @@ function bunch(b: Builder, stems: Stem[], y0: number, words: (layer: number, fir
     }
     // order so that each square touches one already down (they share a corner post)
     const ends = (w: (typeof walls)[number]) => (w.o === "x" ? [`${w.x},${w.z}`, `${w.x + 1},${w.z}`] : [`${w.x},${w.z}`, `${w.x},${w.z + 1}`]);
-    const order: typeof walls = [walls[0]];
-    const rest = walls.slice(1);
+    // `byStem`: one stem's ring after another, so a step ends as near a closed ring as it can (R14)
+    const order: typeof walls = byStem ? [...walls] : [walls[0]];
+    const rest = byStem ? [] : walls.slice(1);
     while (rest.length) {
       const posts = new Set(order.flatMap(ends));
       const i = rest.findIndex((w) => ends(w).some((p) => posts.has(p)));
@@ -313,7 +314,7 @@ function carolinaBouquet(): Project {
 
 function carolinaBog(): Project {
   const b = new Builder();
-  floor(b, "blue", 0, 0, 4, 2, "Big squares flat on the table: the shallow water of the bog.");
+  floor(b, "blue", 0, 4, 4, 2, "Big squares flat on the table in front: the shallow water of the bog."); // not under the plants: a wall stood on the middle of a big square is pushed about by it (R14)
   [0, 2, 4].forEach((x, i) => plant(b, x, 0, ["green", "green", "green", "yellow"], null, 0, `Yellow pitcher plant ${i + 1}`));
   plant(b, 7, 0, ["green", "green", "green"], low("yellow"), 0, "Flytrap in flower");
   [1, 3, 5, 7].forEach((x, i) => plant(b, x, 2, ["green", "red"], low("green"), 0, `Venus flytrap ${i + 1}`));
@@ -330,7 +331,7 @@ function trio(): Project {
   const arm = (name: string, x: number, z: number): Stem => ({ name, x, z, h: 2, ring: (y) => (y === 0 ? "green" : "yellow"), head: low("yellow") });
   const centre: Stem = { name: "Dogwood centre", x: 8, z: 1, h: 2, ring: () => "green", head: low("green") };
   bunch(b, [arm("Dogwood petal left", 7, 1), arm("Dogwood petal back", 8, 0), centre, arm("Dogwood petal right", 9, 1), arm("Dogwood petal front", 8, 2)], 0, (y, first, n, c) =>
-    first ? `Dogwood blossom, layer ${y + 1}: ${n} ${c} squares go up as walls in a plus shape, shared where two touch.` : `${n} more ${c} squares to finish the layer.`);
+    first ? `Dogwood blossom, layer ${y + 1}: ${n} ${c} squares go up as walls in a plus shape, shared where two touch.` : `${n} more ${c} squares to finish the layer.`, true);
   const p = b.build({ id: "flower-carolina-state-flowers", title: "North Carolina dogwood and two more state flowers", theme: "flowers", age: "d", stars: 1, done: "You built three state flowers! The sunflower is Kansas's, the violet is Illinois's and the dogwood is North Carolina's." });
   why(p, "Sunflower stem", "The sunflower of Kansas stands on a stem two squares across, so its heavy head doesn't tip.");
   why(p, "Dogwood blossom, layer 1", "Dogwood flowers are white; we use yellow. The four white petals are really bracts, leaves that look like petals.");

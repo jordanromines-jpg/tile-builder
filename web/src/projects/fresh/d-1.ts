@@ -2,6 +2,7 @@
    a hill of triangles, a honeycomb citadel, a chess set, a crown of upside-down triangles, a street of hexagons. */
 import type { Colour } from "../../engine/catalog";
 import type { Project } from "../../engine/types";
+import { reorderSteps } from "../helpers";
 import { Studio, hexagon, lattice, polygon, star, triOn, type P, type Tri } from "../studio";
 import { away, bigTri, bigTriPath, sides, triOut } from "./parts";
 
@@ -60,14 +61,16 @@ function sixKnights(): Project {
 function pawnsWon(): Project {
   const s = new Studio();
   const board: [number, number][] = [];
-  for (let x = 0; x < 5; x++) for (let z = 0; z < 4; z++) board.push([x, z]);
-  s.rug("the board", board, (i) => ((Math.floor(i / 4) + (i % 4)) % 2 ? "blue" : "yellow"), "a chessboard");
+  // a pawn stands in a square of the board left bare: a tile can't stand in the middle of another (R14)
+  const pawns: [number, number][] = [[0, 1], [1, 2], [3, 2], [4, 1]];
+  for (let x = 0; x < 5; x++) for (let z = 0; z < 4; z++) if (!pawns.some(([a, b]) => a === x && b === z)) board.push([x, z]);
+  s.rug("the board", board, (i) => ((board[i][0] + board[i][1]) % 2 ? "blue" : "yellow"), "a chessboard, with four squares left bare");
   for (const x of [0, 4]) {
     s.tower(`the rook`, x, 0, 2, ["red", "orange"], { cap: "none" });
   }
   s.tower("the king", 2, 0, 3, ["purple", "red"], { cap: "tall", capColour: "yellow" });
   s.tower("the queen", 2, 2, 2, ["purple", "red"], { cap: "low", capColour: "yellow" });
-  ([[0, 1.95], [1, 2.95], [3, 2.95], [4, 1.95]] as [number, number][]).forEach(([x, z], i) => s.tetra(`pawn number ${i + 1}`, tri(x, z), 0, "green"));
+  pawns.forEach(([x, z], i) => s.tetra(`pawn number ${i + 1}`, tri(x, z + 1), 0, "green"));
   return s.build({ id: "pawns-won-chess-set", title: "The Chess Set Where the Pawns Won", theme: "castles", age: "d", done: "You built the chess set! The pawns won. Nobody expected it. The king is still sulking in the corner." });
 }
 
@@ -103,12 +106,14 @@ function giantDollHouse(): Project {
 function flamingoStilts(): Project {
   const s = new Studio();
   for (const [x, z] of [[0, 0], [2, 0], [0, 2], [2, 2], [1, 1]] as [number, number][]) s.tower("a stilt", x, z, 2, ["purple", "red"], { cap: "none" });
-  s.fins("the feet", [{ corner: [0, 0], out: [-1, -1] }, { corner: [3, 0], out: [1, -1] }, { corner: [0, 3], out: [-1, 1] }, { corner: [3, 3], out: [1, 1] }], "orange", "feet");
+  s.fins("the feet", [{ corner: [0, 0], out: [-1, -1] }, { corner: [3, 0], out: [1, -1] }, { corner: [0, 3], out: [-1, 1] }, { corner: [3, 3], out: [1, 1] }], "orange", "feet", true);
   s.platform("the floor", 0, 0, 3, 3, 2, "yellow");
   s.block("the house", 0, 0, 3, 3, 2, ["orange", "red"], { base: 2, roof: "orange" });
   s.roofs("the roof", [[0, 0], [2, 0], [0, 2], [2, 2]], 4, "tall", "red");
   s.roofs("the roof", [[1, 1]], 4, "low", "yellow");
-  return s.build({ id: "nervous-flamingo-stilt-house", title: "The Stilt House for a Nervous Flamingo", theme: "homes", age: "d", done: "You built the stilt house! The flamingo stands on one leg. The house stands on four. Much safer." });
+  const house = s.build({ id: "nervous-flamingo-stilt-house", title: "The Stilt House for a Nervous Flamingo", theme: "homes", age: "d", done: "You built the stilt house! The flamingo stands on one leg. The house stands on four. Much safer." });
+  // the second stilt's top ring goes on before the first's, so the first is let go beside a closed tower (R14)
+  return reorderSteps(house, [0, 1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]);
 }
 
 function tripleDecker(): Project {

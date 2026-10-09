@@ -30,6 +30,8 @@ interface Spec {
   base?: { w: number; d: number; rings: Colour[]; lid: Colour; what: string };
   stems: Stem[];
   leaves?: Leaf[];
+  /** the leaves go on last, not first: flat leaves hinged to a pot's feet are dragged about while the walls above are held (R14) */
+  leavesLast?: boolean;
   /** the "why" line, said with the first stem ring */
   why: string;
   /** the colour note, said once with the first head */
@@ -45,17 +47,20 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
 function garden(s: Spec): Project {
   const b = new Builder();
   const H = s.base ? s.base.rings.length : 0;
-  if (s.leaves?.length) {
+  const leaves = () => {
+    if (!s.leaves?.length) return;
     for (const l of s.leaves) {
       if (l.dir === "N") b.on("tri-equilateral", G, [l.x, l.y], [l.x + 1, l.y]);
       else if (l.dir === "S") b.on("tri-equilateral", G, [l.x + 1, l.y], [l.x, l.y]);
       else b.flat("square", G, l.x, l.y);
     }
+    const first = s.leavesLast ? "Lay a green triangle flat on the table beside the pot: a leaf. Leaves last." : "Lay a green triangle flat on the table: a leaf. Leaves first.";
     b.chunkBy(
       s.leaves.map(() => 1),
-      s.leaves.map((l, i) => (i === 0 ? `Lay a green ${l.dir === "sq" ? "square" : "triangle"} flat on the table: a leaf. Leaves first.` : "Another leaf, flat on the table.")),
+      s.leaves.map((l, i) => (i === 0 ? first.replace("triangle", l.dir === "sq" ? "square" : "triangle") : "Another leaf, flat on the table.")),
     );
-  }
+  };
+  if (!s.leavesLast) leaves();
   if (s.base) {
     const { w, d, rings, lid, what } = s.base;
     rings.forEach((c, r) => {
@@ -117,6 +122,7 @@ function garden(s: Spec): Project {
     const how = t.head === "tall" ? "four tall triangles" : "four short triangles";
     b.step(`Lean ${how} together on top of ${i === 0 ? `a stem, tips meeting: the first ${s.bloom}` : "the next stem: another flower"}.${i === 0 && s.note ? ` ${s.note}` : ""}`);
   });
+  if (s.leavesLast) leaves();
   return b.build({ id: s.id, title: s.title, theme: "flowers", age: "c", stars: starsFor(b.placed.length), done: s.done, swaps: [TALL_TO_LOW] });
 }
 
@@ -194,6 +200,7 @@ const compassPlant = () =>
       { x: 1, y: -2, dir: "S" },
     ],
     why: "Two stems side by side lean on each other, so the tall plant stands.",
+    leavesLast: true,
     bloom: "yellow flower",
   });
 
@@ -314,11 +321,22 @@ function trellis(): Project {
     for (let x = 0; x < W; x++) b.wallX("square", COL[row[x]], x, r, 0);
     b.wallZ("square", "yellow", 0, r, -1);
     b.wallZ("square", "yellow", W, r, -1);
+    // feet two squares deep: a five-high wall with one-square feet tips forward when the table is leaned (R14)
+    b.wallZ("square", "yellow", 0, r, -2);
+    b.wallZ("square", "yellow", W, r, -2);
     b.chunkBy(
-      [4, 3],
+      [4, 3, 2],
       r === 0
-        ? [`Stand the bottom row of the wall, left to right: ${names(row, 0, 4)}. The yellow ones are the posts.`, `The last one: ${names(row, 4, 5)}. Then a yellow square going back at each end: the feet. A tall, thin wall needs them, or it tips.`]
-        : [`Row ${r + 1} of the wall, left to right: ${names(row, 0, 4)}.${r === 1 ? " A trellis is wood; we use blue and yellow." : ""}`, `The last one: ${names(row, 4, 5)}. Then a yellow square going back at each end, on the feet below. They stop the wall folding over.`],
+        ? [
+            `Stand the bottom row of the wall, left to right: ${names(row, 0, 4)}. The yellow ones are the posts.`,
+            `The last one: ${names(row, 4, 5)}. Then a yellow square going back at each end: the feet.`,
+            "Another yellow square going back behind each foot: long feet. A tall, thin wall needs them, or it tips.",
+          ]
+        : [
+            `Row ${r + 1} of the wall, left to right: ${names(row, 0, 4)}.${r === 1 ? " A trellis is wood; we use blue and yellow." : ""}`,
+            `The last one: ${names(row, 4, 5)}. Then a yellow square going back at each end, on the feet below.`,
+            "Another yellow square behind each foot, on the long feet below. They stop the wall folding over and tipping.",
+          ],
     );
   }
   return b.build({ id: "flower-carolina-trumpet-creeper-trellis", title: "North Carolina trumpet creeper on a trellis", theme: "flowers", age: "c", stars: starsFor(b.placed.length), done: "You built a trumpet creeper on a trellis! Hummingbirds are the main visitors to its red trumpet flowers." });
