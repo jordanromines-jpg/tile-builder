@@ -44,6 +44,17 @@ export function triOut(c: P, p: P, q: P): Tri {
 /** Out from the middle c through the point p, as a direction for a fin. */
 export const away = (c: P, p: P): P => [p[0] - c[0], p[1] - c[1]];
 
+/** Three squares in a U on the side p → q of a shape, sticking out away from its middle c: a foot or a leg joined to
+    the side at both ends, so it can't swing as a fin on one edge does (R14). */
+export function uOut(c: P, p: P, q: P): P[] {
+  const [, , apex] = triOut(c, p, q);
+  // the side's outward normal, from the triangle's apex over the side's middle
+  const h = Math.sqrt(3) / 2;
+  const n: P = [(apex[0] - (p[0] + q[0]) / 2) / h, (apex[1] - (p[1] + q[1]) / 2) / h];
+  const r = (v: number) => Math.round(v * 1e9) / 1e9;
+  return [p, [r(p[0] + n[0]), r(p[1] + n[1])], [r(q[0] + n[0]), r(q[1] + n[1])], q];
+}
+
 /** The unit triangles inside a big triangle of side n on the triangle grid L, corner (i, j), row by row, with the
     tiles that must go on together (`atoms`): each upside-down one goes on with the one before it, so that every tile
     rests on two edges at the end of its step. */

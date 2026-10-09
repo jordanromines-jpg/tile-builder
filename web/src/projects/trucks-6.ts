@@ -18,11 +18,9 @@ function why(b: Builder, text: string) {
   last.say = `${last.say} ${text}`;
 }
 
-/** A 1-lane landing: a tower of `h` rings with squares flat on top, where a ramp ends and the next one starts; one
-    square across, or `wide` two by two (growing right and towards the child), when it stands alone too tall (R14). */
-function landing(b: Builder, colours: Colour[], x0: number, z0: number, h: number, lid: Colour, name: string, wide = false) {
-  const n = wide ? 2 : 1;
-  tower(b, colours, R6(x0), R6(z0), n, n, h, lid, (r) => (r === 0 ? `Stand a ring of ${4 * n} squares${wide ? ", two by two" : ""}. ${name}` : `Another ring on top: ${r + 1} high.`));
+/** A 1-lane landing: a 1 × 1 tower of `h` rings with a square flat on top, where a ramp ends and the next one starts. */
+function landing(b: Builder, colours: Colour[], x0: number, z0: number, h: number, lid: Colour, name: string) {
+  tower(b, colours, R6(x0), R6(z0), 1, 1, h, lid, (r) => (r === 0 ? `Stand a ring of four squares. ${name}` : `Another ring on top: ${r + 1} high.`));
 }
 
 function spiral(): Project {
@@ -33,11 +31,9 @@ function spiral(): Project {
   why(b, "Triangles don't fold: the brace locks the join.");
   landing(b, ["orange", "purple", "red", "yellow"], 1 + L, -L - 1, 4, "yellow", "The second landing, four squares up.");
   ramp(b, "orange", at(1, -L - 1, 2), "E", 2, { support: "purple", say: "From the first landing, lean four squares up, going right, to the second landing." });
-  landing(b, ["green", "red", "blue", "orange", "purple", "yellow"], 1 + L, 0, 6, "yellow", "The third landing, six squares up: two across each way, as it stands alone until the ramps reach it.", true);
+  landing(b, ["green", "red", "blue", "orange", "purple", "yellow"], 1 + L, 0, 6, "yellow", "The third landing, six squares up.");
   ramp(b, "green", at(2 + L, -L, 4), "S", 2, { support: "red", say: "Lean four squares up, coming back towards you, to the third landing." });
-  // two by two (R14: one across and eight high, it swayed over until the last ramp reached it), its right face where
-  // the last ramp arrives
-  tower(b, ["red", "orange", "yellow", "green", "blue", "purple", "red", "orange"], -1, 0, 2, 2, 8, "purple", (r) => (r === 0 ? "Stand a ring of eight squares, two by two, at the front left. The tall tower starts here." : `Another ring on top: ${r + 1} squares high.`), "E");
+  tower(b, ["red", "orange", "yellow", "green", "blue", "purple", "red", "orange"], 0, 0, 1, 1, 8, "purple", (r) => (r === 0 ? "Stand a ring of four squares at the front left. The tall tower starts here." : `Another ring on top: ${r + 1} squares high.`), "E");
   ramp(b, "blue", at(1 + L, 1, 6), "W", 2, { support: "green", say: "From the third landing, lean the last four squares up, going left, onto the tall tower." });
   why(b, "The ramps tie the landings to the tower, so the whole spiral stands as one wide shape and doesn't tip.");
   lane(b, ["green", "yellow"], at(-L, 0.5 - L), "W", 1, 2, "At the bottom of the first ramp, in line with it, lay two squares flat: the landing zone.");

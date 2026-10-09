@@ -4,7 +4,7 @@ import type { Colour } from "../../engine/catalog";
 import type { Project } from "../../engine/types";
 import { reorderSteps } from "../helpers";
 import { Studio, hexagon, lattice, polygon, triOn, turtle, type P, type Tri } from "../studio";
-import { away, sides, triOut, trussBridge } from "./parts";
+import { away, sides, triOut, trussBridge, uOut } from "./parts";
 
 const L = lattice(0, 0);
 const H = Math.sqrt(3) / 2;
@@ -72,11 +72,11 @@ function accidentalTortoise(): Project {
   const head = triOut(hc.centre, hc.corners[5], hc.corners[0]);
   s.walls("the head", head, 2, ["yellow", "green"], { closed: true, what: "in a triangle against the shell" });
   s.tetra("the head", head, 2, "green");
-  // the feet are little pyramids against the outside of four shell pieces: a foot hung on a corner by one edge swung
-  // (R14), and three triangles leaning together stand by themselves
+  // the feet are three squares in a U against the outside of four shell pieces, last: a foot hung on a corner by one
+  // edge swung (R14), and a U is joined at both ends
   ([[0, 0], [2, 4], [3, 3], [5, 1]] as [number, number][]).forEach(([r, k], i) => {
     const h = ring[r];
-    s.tetra(`foot number ${i + 1}`, triOut(h.centre, h.corners[k], h.corners[(k + 1) % 6]), 0, "yellow", true);
+    s.walls(`foot number ${i + 1}`, uOut(h.centre, h.corners[k], h.corners[(k + 1) % 6]), 1, ["yellow"], { what: "in a U against the shell", level: () => 1000 + i });
   });
   return s.build({ id: "tortoise-won-by-accident", title: "The Tortoise Who Won by Accident", theme: "animals", age: "d", done: "You built the tortoise! It won the race by accident. It was going the other way. Still counts." });
 }

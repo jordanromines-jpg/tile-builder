@@ -2678,11 +2678,11 @@
   "ms": 46555
  },
  "tortoise-won-by-accident": {
-  "key": "0689d8274f7c08fa",
+  "key": "f4eb2213221a92fa",
   "falls": [],
-  "sags": 4,
+  "sags": 5,
   "worstMm": 7,
-  "ms": 35757
+  "ms": 34944
  },
  "tower": {
   "key": "955a102a37922b21",
@@ -3050,11 +3050,124 @@
   "ms": 12418
  },
  "truck-spiral-ramp": {
-  "key": "b010e5375fb76eed",
-  "falls": [],
-  "sags": 9,
-  "worstMm": 9,
-  "ms": 190616
+  "key": "f739cff550172890",
+  "falls": [
+   {
+    "step": 28,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 29,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 30,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 31,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 32,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 33,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 34,
+    "tile": 77,
+    "mm": 27,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 46,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 47,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 48,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 49,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 50,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 51,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 52,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 53,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   },
+   {
+    "step": 54,
+    "tile": 147,
+    "mm": 29,
+    "deg": 3,
+    "phase": "leaning right"
+   }
+  ],
+  "sags": 4,
+  "worstMm": 29,
+  "ms": 90028
  },
  "truck-stair-step-drops": {
   "key": "3aa6eba3b6718a87",
@@ -3127,11 +3240,11 @@
   "ms": 133160
  },
  "tuesday-flying-saucer": {
-  "key": "7c0809016d07e82e",
+  "key": "bf4d52a43934a0c1",
   "falls": [],
-  "sags": 1,
-  "worstMm": 3,
-  "ms": 8117
+  "sags": 2,
+  "worstMm": 16,
+  "ms": 8138
  },
  "tunnel": {
   "key": "1ed0dac483eabae3",
