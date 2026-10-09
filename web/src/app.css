@@ -88,6 +88,27 @@ button { font: inherit; color: inherit; }
 @keyframes friend-ear { 0%, 96%, 100% { transform: rotate(0); } 97.5% { transform: rotate(-6deg); } 99% { transform: rotate(4deg); } }
 @keyframes friend-tail { 0%, 92%, 100% { transform: rotate(0); } 96% { transform: rotate(9deg); } }
 @media (prefers-reduced-motion: reduce) { .friend-alive * { animation: none !important; } }
+/* Pip's poses move, not swap (Jordan: "this is stop motion not animation"): the arms, pupils and body spring to the
+   new pose's place, the eyes and mouth fade across, the extras pop in. Then the pose's beat: a clap claps, a wave
+   waves, a cheer pumps and the star twinkles. Origins are in the drawing's own units (Friend.tsx). */
+.friend-move { transition: transform var(--spring-ui-t) var(--spring-ui), opacity 140ms ease-out; }
+.friend-fade { transition: opacity 140ms ease-out; }
+.friend-pop { transform-box: fill-box; transform-origin: center; transition: transform var(--spring-settle-t) var(--spring-settle), opacity 140ms ease-out; }
+.friend-alive [data-beat="pump"].friend-arm-l { transform-origin: 62px 98px; animation: friend-pump-l 0.32s ease-in-out 0.12s infinite alternate; }
+.friend-alive [data-beat="pump"].friend-arm-r { transform-origin: 138px 98px; animation: friend-pump-r 0.32s ease-in-out 0.12s infinite alternate; }
+.friend-alive [data-beat="wave"] { transform-origin: 138px 98px; animation: friend-wave 0.36s ease-in-out 0.1s infinite alternate; }
+.friend-alive [data-beat="clap"].friend-hand-l { transform-origin: 92px 133px; animation: friend-clap-l 0.4s ease-in 0.1s infinite; }
+.friend-alive [data-beat="clap"].friend-hand-r { transform-origin: 108px 133px; animation: friend-clap-r 0.4s ease-in 0.1s infinite; }
+.friend-alive [data-beat="clap"].friend-marks { animation: friend-marks 0.4s linear 0.1s infinite; }
+.friend-alive [data-beat="twinkle"] { transform-box: fill-box; transform-origin: center; animation: friend-twinkle 0.64s ease-in-out infinite alternate; }
+@keyframes friend-pump-l { to { transform: rotate(16deg); } }
+@keyframes friend-pump-r { to { transform: rotate(-16deg); } }
+@keyframes friend-wave { to { transform: rotate(24deg); } }
+@keyframes friend-clap-l { 0%, 100% { transform: rotate(0); } 50% { transform: translateX(-9px) rotate(-18deg); } }
+@keyframes friend-clap-r { 0%, 100% { transform: rotate(0); } 50% { transform: translateX(9px) rotate(18deg); } }
+@keyframes friend-marks { 0%, 15%, 100% { opacity: 1; } 35%, 85% { opacity: 0; } }
+@keyframes friend-twinkle { to { transform: scale(1.12) rotate(10deg); } }
+@media (prefers-reduced-motion: reduce) { .friend-move, .friend-fade, .friend-pop { transition: none; } }
 /* Split View and Slide Over (3.6): under 760 px wide the kid type steps down a size in every look (html[data-look]
    outranks a look's [data-look="…"] token block, which is where every look sets its sizes) */
 @media (max-width: 760px) {

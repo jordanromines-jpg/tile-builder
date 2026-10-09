@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-09
 
+- `2026-10-09-truck-runs-autobuild.md`: 4.2.1, Pip moves (build-log row).
 - `2026-10-09-truck-runs-autobuild.md`: 4.2a batch B (27 of 34 stand; 7 left, see the new plan). `2026-10-09-r14-flat-tiles.md`: new, proposed.
 - `2026-10-09-truck-runs-autobuild.md`: 4.2a batch A build log (34 of the 68 falling builds fixed; their causes and the kit options added).
 - `2026-10-09-truck-runs-autobuild.md`: 4.2b's fall replays dropped (measured: nothing falls without the hand once R14's falls are fixed).
