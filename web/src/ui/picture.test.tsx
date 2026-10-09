@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { castle } from "../projects/castle";
 import { ProjectPicture } from "./ProjectPicture";
 import { TileChip } from "./TileChip";
-import { TileConfetti } from "./kid/TileConfetti";
+import { TapToSkip } from "./kid/TapToSkip";
 
 afterEach(cleanup);
 
@@ -37,8 +37,10 @@ describe("pictures", () => {
 describe("the end's celebration", () => {
   it("is skipped by a tap", () => {
     const done = vi.fn();
-    render(<TileConfetti onDone={done} />);
+    const skip = vi.fn();
+    render(<TapToSkip onDone={done} onSkip={skip} still={false} />);
     screen.getByRole("button", { name: "Well done" }).click();
-    expect(done).toHaveBeenCalledOnce();
+    expect(skip).toHaveBeenCalledOnce();
+    expect(done).not.toHaveBeenCalled();
   });
 });

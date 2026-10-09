@@ -18,6 +18,7 @@ import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
 import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
 import { BIG_BUILD, frameOf, Model, releaseShared } from "./Model";
+import { FallingTiles } from "./FallingTiles";
 import { FrameWatch } from "./FrameWatch";
 import { currentTier, faster, slower } from "./quality";
 import { Stage } from "./Stage";
@@ -27,7 +28,7 @@ const FOCUS_MS = 700;
 // 4.2d: both are critically damped springs, closed form; the turn lands on its quarter when within 0.1° of rest
 const TURN = springFor(TURN_MS / 1000, 1, 0.001);
 const FOCUS = springFor(FOCUS_MS / 1000, 1, 0.002);
-// the circle at the end finishes before the shower does (TileConfetti's 3.6 s)
+// the circle at the end finishes before the shower does (CONFETTI_MS, 3.6 s)
 const SWEEP_MS = 3400;
 // one whole turn at autoRotateSpeed 60 / 25 (one turn in 25 s)
 const TURN_ONCE_MS = 25_000;
@@ -270,6 +271,8 @@ export interface ViewerProps {
   hush?: number;
   /** circle the finished model once */
   sweep?: boolean;
+  /** let little tiles fall on the finished model and lie where they land (4.2c) */
+  falling?: boolean;
   /** px of the view covered by panels at the top and bottom: the model is framed in what is left */
   inset?: { top: number; bottom: number };
   /** let the 9–10 model turn by itself (off behind the rest screen and at the end, so the iPad can rest) */
@@ -286,7 +289,7 @@ export interface ViewerProps {
   label: string;
 }
 
-export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, inset, spin = true, paint = 0, browse = false, hold, onTarget, onRest, label }: ViewerProps) {
+export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, falling = false, inset, spin = true, paint = 0, browse = false, hold, onTarget, onRest, label }: ViewerProps) {
   const age = project.age;
   const still = useStill();
   const wrap = useRef<HTMLDivElement>(null);
@@ -381,6 +384,11 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
           <group position={[-whole.center.x, 0, -whole.center.z]}>
             <object3D ref={marker} position={point} />
           </group>
+          {falling && (
+            <group position={[-whole.center.x, 0, -whole.center.z]}>
+              <FallingTiles project={project} leg={leg} paint={tint} onRest={rest} />
+            </group>
+          )}
         </Turntable>
         {age !== "a" && (
           <OrbitControls

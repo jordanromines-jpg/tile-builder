@@ -17,7 +17,8 @@ import { S } from "../strings";
 import { Viewer } from "../three/Viewer";
 import { ArrowLeft } from "../ui/icons";
 import { AgeProvider } from "../ui/kid/AgeContext";
-import { TileConfetti } from "../ui/kid/TileConfetti";
+import { TapToSkip } from "../ui/kid/TapToSkip";
+import { useStill } from "../ui/motion";
 import { ProjectPicture } from "../ui/ProjectPicture";
 import { KidButton } from "../ui/kid/KidButton";
 import { SpeakButton } from "../ui/kid/SpeakButton";
@@ -29,6 +30,9 @@ export function Done() {
   const navigate = useNavigate();
   const inv = useInventory();
   const [celebrating, setCelebrating] = useState(true);
+  // the little tiles stay where they landed when the celebration ends; a tap that skips it sweeps them away
+  const [skipped, setSkipped] = useState(false);
+  const still = useStill();
 
   useEffect(() => {
     if (!project || project === "unreachable") return;
@@ -55,11 +59,21 @@ export function Done() {
             leg={effectiveLeg(inv)}
             instead={instead}
             sweep={celebrating}
+            falling={!still && !skipped}
             spin={false}
             inset={{ top: 120, bottom: 230 }}
             label={S.build.model(project.title)}
           />
-          {celebrating && <TileConfetti onDone={() => setCelebrating(false)} />}
+          {celebrating && (
+            <TapToSkip
+              still={still}
+              onDone={() => setCelebrating(false)}
+              onSkip={() => {
+                setSkipped(true);
+                setCelebrating(false);
+              }}
+            />
+          )}
         </div>
         {/* Pip cheers (3.1): in the corner while the tiles shower, then on the panel's top edge (3.6: standing over it in
             portrait, Pip covered the panel's photo) */}
