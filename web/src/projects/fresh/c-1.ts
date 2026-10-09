@@ -46,7 +46,7 @@ function pointyOpinions(): Project {
   }
   s.tetra("the short tower", t2, 3, "red");
   s.tetra("the tall tower", t1, 5, "red");
-  s.fins("the towers", [L(0, 0), L(1, 0), L(1, 1), L(0, 1)].map((p) => ({ corner: p, out: [p[0] - 0.75, p[1] + EQH / 2] as P })), "yellow", "feet");
+  s.fins("the towers", [L(0, 0), L(1, 0), L(1, 1), L(0, 1)].map((p) => ({ corner: p, out: [p[0] - 0.75, p[1] + EQH / 2] as P })), "yellow", "feet", true);
   return s.build({ id: "tower-of-pointy-opinions", title: "The Tower of Pointy Opinions", theme: "bridges", age: "c", done: "You built the Tower of Pointy Opinions! The tall one thinks it is right. The short one thinks so too." });
 }
 function ownWind(): Project {
@@ -95,7 +95,7 @@ function tuesdaySaucer(): Project {
   s.triLid("the saucer", st.tris, 1, (i) => (i < 6 ? "blue" : "green"), "a star-shaped deck");
   s.tetra("the cockpit", st.tris[6], 1, "yellow");
   s.tetra("the radar", st.tris[9], 1, "red");
-  s.fins("the landing legs", st.corners.filter((_, i) => i % 2 === 1).map((p) => ({ corner: p, out: [p[0] - st.centre[0], p[1] - st.centre[1]] as P })), "orange", "landing legs");
+  s.fins("the landing legs", st.corners.filter((_, i) => i % 2 === 1).map((p) => ({ corner: p, out: [p[0] - st.centre[0], p[1] - st.centre[1]] as P })), "orange", "landing legs", true);
   return s.build({ id: "tuesday-flying-saucer", title: "The Flying Saucer That Only Flies on Tuesdays", theme: "space", age: "c", done: "You built the flying saucer! Is it Tuesday? No? Then it just sits there, looking shiny." });
 }
 
@@ -103,8 +103,8 @@ function screenDoorSub(): Project {
   const s = new Studio();
   s.block("the submarine", 0, 0, 4, 1, 2, ["yellow", "orange"], { roof: "yellow" });
   s.tower("the lookout", 1, 0, 1, ["red"], { base: 2, cap: "none" });
-  s.fins("the front", [{ corner: [4, 1], out: [1, 0] }, { corner: [4, 0], out: [1, 0] }], "red", "a pointy nose");
-  s.fins("the tail", [{ corner: [0, 1], out: [-1, 1] }, { corner: [0, 0], out: [-1, -1] }], "green", "tail fins");
+  s.fins("the front", [{ corner: [4, 1], out: [1, 0] }, { corner: [4, 0], out: [1, 0] }], "red", "a pointy nose", true);
+  s.fins("the tail", [{ corner: [0, 1], out: [-1, 1] }, { corner: [0, 0], out: [-1, -1] }], "green", "tail fins", true);
   return s.build({ id: "screen-door-submarine", title: "The Submarine with a Screen Door", theme: "vehicles", age: "c", done: "You built the submarine! It has a screen door to keep the fish out. The fish are not impressed." });
 }
 

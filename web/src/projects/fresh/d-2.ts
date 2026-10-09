@@ -73,7 +73,7 @@ function accidentalTortoise(): Project {
   s.walls("the head", head, 2, ["yellow", "green"], { closed: true, what: "in a triangle against the shell" });
   s.tetra("the head", head, 2, "green");
   const feet = [ring[0].corners[0], ring[2].corners[4], ring[3].corners[3], ring[5].corners[1]];
-  s.fins("the feet", feet.map((p) => ({ corner: p, out: away(middle.centre, p) })), "yellow", "four feet");
+  s.fins("the feet", feet.map((p) => ({ corner: p, out: away(middle.centre, p) })), "yellow", "four feet", true);
   return s.build({ id: "tortoise-won-by-accident", title: "The Tortoise Who Won by Accident", theme: "animals", age: "d", done: "You built the tortoise! It won the race by accident. It was going the other way. Still counts." });
 }
 

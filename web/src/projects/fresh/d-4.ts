@@ -44,7 +44,7 @@ function hexabellaPalace(): Project {
   s.walls("the throne room", middle.corners, 6, ["purple", "blue", "purple", "yellow", "purple", "blue"], { closed: true, what: "in a hexagon" });
   ring.forEach((h, k) => s.walls(`wing ${k + 1}`, h.corners, 2, [RAINBOW[k], "yellow"], { closed: true, gap: k === 2 ? 4 : undefined, what: "in a hexagon, sharing walls" }));
   ring.forEach((h, k) => s.triLid(`wing ${k + 1}`, h.tris, 2, k % 2 ? "orange" : "yellow", "a hexagon roof"));
-  s.fins("the palace", outsideCorners([middle, ...ring]).filter((_, i) => i % 2 === 0).map((p) => ({ corner: p, out: away(middle.centre, p) })), "blue", "banners");
+  s.fins("the palace", outsideCorners([middle, ...ring]).filter((_, i) => i % 2 === 0).map((p) => ({ corner: p, out: away(middle.centre, p) })), "blue", "banners", true);
   [-3.4, -1.2, 4.6, 6.8].forEach((x, i) => s.pad(`garden number ${i + 1}`, x, 1.6, i % 2 ? "green" : "blue", "a big square garden"));
   s.pad("the fountain", 1.7, 2.6, "blue", "a big square");
   return s.build({ id: "queen-hexabella-palace", title: "The Grand Hexagon Palace of Queen Hexabella", theme: "castles", age: "d", done: "You built Queen Hexabella's palace! Seven hexagons, not one single corner. The queen hates corners." });
@@ -197,11 +197,13 @@ function everythingStation(): Project {
     .filter((_, i) => i % 2 === 1)
     .forEach((t, k) => {
       const u = unit(away(st.centre, t));
-      const arm: P[] = [t, [r9(t[0] + u[0]), r9(t[1] + u[1])], [r9(t[0] + 2 * u[0]), r9(t[1] + 2 * u[1])]];
-      s.walls(`arm number ${k + 1}`, arm, 2, ["orange", "red"], { what: "straight out from a point" });
-      s.fins(`arm number ${k + 1}`, [{ corner: arm[2], out: u }], "yellow", "a docking rocket");
+      // one square long, to its full height before the next: an arm hangs on its point by one hinge, and a longer or a
+      // lower one swings like a door (R14)
+      const arm: P[] = [t, [r9(t[0] + u[0]), r9(t[1] + u[1])]];
+      s.walls(`arm number ${k + 1}`, arm, 2, ["orange", "red"], { what: "straight out from a point", level: (y) => 2.5 + k * 0.1 + y * 0.01 });
+      s.fins(`arm number ${k + 1}`, [{ corner: arm[1], out: u }], "yellow", "a docking rocket", true);
     });
-  s.fins("the hub", st.corners.filter((_, i) => i % 2 === 0).map((p) => ({ corner: p, out: away(st.centre, p) })), "green", "antennas between the arms");
+  s.fins("the hub", st.corners.filter((_, i) => i % 2 === 0).map((p) => ({ corner: p, out: away(st.centre, p) })), "green", "antennas between the arms", true);
   [-3.6, 7.6].forEach((x, i) => s.pad(`landing pad ${i + 1}`, x, -2, "purple", "a big square"));
   [-3.6, 7.6].forEach((x, i) => s.pad(`spare pad ${i + 1}`, x, 0.4, "blue", "a big square"));
   return s.build({ id: "space-station-of-everything", title: "The Space Station of Absolutely Everything", theme: "space", age: "d", done: "You built the Space Station of Absolutely Everything! It has everything. Except a kettle. Somebody forgot the kettle." });

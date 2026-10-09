@@ -165,7 +165,7 @@ function cabbageGreenhouse(): Project {
 
 function pumpkinPalace(): Project {
   const s = new Site();
-  const p = s.block("the pumpkin palace", 0, 0, 4, 4, 2, ["orange", "orange"], { door: true, roof: "orange" });
+  const p = s.block("the pumpkin palace", 0, 0, 4, 4, 2, ["orange", "orange"], { door: true, roof: "orange", deepPorch: true });
   s.tower("the stalk", 1, 1, 2, ["green"], { base: p.top, size: 2, cap: "lid", capColour: "green" });
   terrace(s, 4, 4, p.top, "orange", "yellow", () => false);
   return s.build({ id: "pumpkin-palace", title: "The Pumpkin Palace", theme: "gardens", age: "d", done: "You built the Pumpkin Palace! At midnight it turns into a pumpkin. Wait, it already is one." });

@@ -136,7 +136,7 @@ function paddleSteamer(): Project {
   for (const x of [1, 3]) {
     s.tower("a funnel", x, 0, 2, ["red", "purple"], { base: 3, cap: "none" });
   }
-  s.fins("the bow", [{ corner: [5, 2], out: [1, 0] }, { corner: [5, 0], out: [1, 0] }], "purple", "a pointy bow");
+  s.fins("the bow", [{ corner: [5, 2], out: [1, 0] }, { corner: [5, 0], out: [1, 0] }], "purple", "a pointy bow", true);
   return s.build({ id: "polite-pirate-paddle-steamer", title: "The Paddle Steamer of Polite Pirates", theme: "vehicles", age: "d", done: "You built the paddle steamer! The pirates say: may we please have your treasure? Thank you ever so much." });
 }
 
@@ -152,7 +152,7 @@ function illegalRocketCar(): Project {
     s.tetra("a rocket engine", t, 2, "yellow");
   }
   s.tower("the cockpit", 3, 0, 1, ["blue"], { base: 1, cap: "lid", capColour: "blue" });
-  s.fins("the nose", [{ corner: [5, 2], out: [1, 0] }, { corner: [5, 0], out: [1, 0] }], "red", "a pointy nose");
+  s.fins("the nose", [{ corner: [5, 2], out: [1, 0] }, { corner: [5, 0], out: [1, 0] }], "red", "a pointy nose", true);
   for (const x of [0.6, 3.4]) {
     s.tetra("a wheel", triFront(x, 2.05), 0, "green");
     s.tetra("a wheel", tri(x, -0.05), 0, "green");
@@ -205,7 +205,7 @@ function politeAlienEmbassy(): Project {
   const all = [middle, ...ring].flatMap((h) => h.corners);
   all.forEach((p) => count.set(p.join(), (count.get(p.join()) ?? 0) + 1));
   const outer = all.filter((p) => count.get(p.join()) === 1).filter((_, i) => i % 2 === 0);
-  s.fins("the embassy", outer.map((p) => ({ corner: p, out: away(middle.centre, p) })), "red", "welcome flags");
+  s.fins("the embassy", outer.map((p) => ({ corner: p, out: away(middle.centre, p) })), "red", "welcome flags", true);
   return s.build({ id: "polite-alien-embassy", title: "The Embassy for Very Polite Aliens", theme: "space", age: "d", done: "You built the Alien Embassy! The aliens say: greetings, Earthlings, please wipe your feet." });
 }
 

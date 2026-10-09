@@ -53,10 +53,10 @@ export class Site {
   }
 
   /** A ring of walls at height y; `door` leaves the front-left square out (on the table) or starts the ring beside it. */
-  private ring(name: string, colour: Colour, x: number, z: number, w: number, d: number, y: number, door: boolean, base = 0) {
+  private ring(name: string, colour: Colour, x: number, z: number, w: number, d: number, y: number, door: boolean, base = 0, level?: number) {
     const n = 2 * (w + d) - (door && y === base ? 1 : 0);
     this.push(
-      2 * y,
+      level ?? 2 * y,
       (b) => {
         let walls = ringWalls(b, colour, x, z, w, d, y);
         if (door && y === base) walls = walls.slice(1);
@@ -147,10 +147,11 @@ export class Site {
   }
 
   /** A tower: rings stacked from `base` (on the table, or on a block's flat roof), topped with a pyramid or a lid. */
-  tower(name: string, x: number, z: number, storeys: number, colours: Colour[], o: { base?: number; size?: 1 | 2; cap?: "tall" | "low" | "lid" | "none"; capColour?: Colour } = {}): Box {
+  /** (`level` builds it out of the usual layer order: a leg to its full height before the next, R14) */
+  tower(name: string, x: number, z: number, storeys: number, colours: Colour[], o: { base?: number; size?: 1 | 2; cap?: "tall" | "low" | "lid" | "none"; capColour?: Colour; level?: (y: number) => number } = {}): Box {
     const base = o.base ?? 0;
     const s = o.size ?? 1;
-    for (let i = 0; i < storeys; i++) this.ring(name, colours[i % colours.length], x, z, s, s, base + i, false, base);
+    for (let i = 0; i < storeys; i++) this.ring(name, colours[i % colours.length], x, z, s, s, base + i, false, base, o.level?.(base + i));
     const top = base + storeys;
     const c = o.capColour ?? "red";
     const kind = o.cap ?? "tall";

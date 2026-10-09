@@ -188,7 +188,8 @@ function slowSpinStation(): Project {
     const c = h.corners[k];
     const u: P = [c[0] - h.centre[0], c[1] - h.centre[1]];
     const arm: P[] = [c, plus(c, u), plus(plus(c, u), u)];
-    s.walls(`arm number ${i + 1}`, arm, 2, ["green", "yellow"], { what: "straight out from a corner" });
+    // each arm to its full height before the next: an arm one square high swings on its corner like a door (R14)
+    s.walls(`arm number ${i + 1}`, arm, 2, ["green", "yellow"], { what: "straight out from a corner", level: (y) => 2.5 + i * 0.1 + y * 0.01 });
   });
   s.triLid("the hub", h.tris, 2, "purple", "a hexagon top");
   s.tetra("the hub", h.tris[0], 2, "red");
