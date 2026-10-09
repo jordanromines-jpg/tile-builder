@@ -37,6 +37,7 @@ Jordan owns it and decides scope.
 cd web
 npm test                      # unit tests (vitest)
 npm run check:projects        # every project passes the checker (R1–R11), under every brand's tall-triangle leg
+npm run check:physics         # R14: every build stands in the physics (simulates only changed builds; --cold for all)
 npm run size                  # 500-line limit
 npx tsc -b                    # types
 npm run build                 # build and precache
