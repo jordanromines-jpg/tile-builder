@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-08
 
+- `2026-10-08-design-polish.md`: 3.2–3.4 merged; 3.6 part one build log; the 3.0–3.4 rows moved back into the build log (they had landed under Results).
 - `2026-10-08-design-polish.md`: new plan, approved (G0, D1–D4, D6, D7); 3.0 build log.
 - `2026-10-08-sound-structures.md`: D7, the step dots stay two rows (Jordan).
 - `2026-10-07-tots-and-trucks.md`: 2.9 merged; Part C done.

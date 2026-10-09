@@ -198,10 +198,11 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
           {/* Pip sits on the panel's top edge, above Next, and points left at this step's tiles */}
           <Pip pose={pipPose} size={88} flip className="absolute -top-[76px] right-10" />
           <StepDots count={last + 1} current={step} onJump={older(age) ? go : undefined} />
-          <div className="flex items-center gap-5">
+          {/* narrow (Split View, 3.6): this step's tiles and words take the whole first row; Back and Next the second */}
+          <div className="flex items-center gap-5 max-[760px]:flex-wrap max-[760px]:gap-3">
             <KidButton label={S.kid.stepBack} showLabel={false} icon={<ArrowLeft size={36} weight="bold" />} onPress={() => go(step - 1)} disabled={step === 0} />
-            <div className="flex min-w-0 flex-1 flex-col gap-2">
-              <div className="flex min-w-0 items-center gap-5">
+            <div className="flex min-w-0 flex-1 flex-col gap-2 max-[760px]:order-first max-[760px]:basis-full">
+              <div className="flex min-w-0 items-center gap-5 max-[760px]:gap-3">
                 <ul className="ts-step-tiles flex shrink-0 flex-wrap items-center gap-3" aria-label={S.build.stepTiles}>
                   {tiles.map((t) => (
                     <li key={`${t.shape}-${t.colour}-${t.instead}`}>
@@ -217,7 +218,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
               {match?.note === "best-with-one-brand" && step === 0 && <p className="text-ink-2">{S.build.bestWithOneBrand}</p>}
               {age === "t" && step === 0 && <p className="text-ink-2">{S.build.forBaby}</p>}
             </div>
-            <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} sound="step" className="ts-next min-w-[148px]" />
+            <KidButton label={S.kid.next} primary tone="accent" icon={<Play size={44} weight="fill" />} onPress={next} sound="step" className="ts-next min-w-[148px] max-[760px]:ml-auto" />
           </div>
         </aside>
         {resting && (

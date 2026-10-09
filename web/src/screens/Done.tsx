@@ -57,8 +57,9 @@ export function Done() {
           />
           {celebrating && <TileConfetti onDone={() => setCelebrating(false)} />}
         </div>
-        {/* Pip cheers (3.1), in the corner, never over the model */}
-        <Pip pose="cheer" size={180} className="absolute bottom-[136px] left-6 z-[1]" />
+        {/* Pip cheers (3.1): in the corner while the tiles shower, then on the panel's top edge (3.6: standing over it in
+            portrait, Pip covered the panel's photo) */}
+        {celebrating && <Pip pose="cheer" size={180} className="absolute bottom-6 left-6 z-[1]" />}
         <div className="safe-top pointer-events-none absolute inset-x-0 top-0 flex items-start justify-center gap-4 px-4">
           <span className="pointer-events-auto">
             <SpeakButton text={`${project.done} ${S.done.putDown}`} />
@@ -70,15 +71,16 @@ export function Done() {
         </div>
         {!celebrating && (
           <section
-            className="ts-panel photo-in soft absolute inset-x-4 mx-auto flex max-w-4xl items-center gap-6 rounded-[32px] bg-surface-2 p-4 pr-6"
+            className="ts-panel photo-in soft absolute inset-x-4 mx-auto flex max-w-4xl items-center gap-6 rounded-[32px] bg-surface-2 p-4 pr-6 max-[760px]:flex-wrap max-[760px]:gap-3 max-[760px]:pr-4"
             style={{ bottom: "max(env(safe-area-inset-bottom), 16px)" }}
           >
+            <Pip pose="cheer" size={150} className="absolute -top-[132px] left-6" />
             <figure className="soft hidden w-[176px] shrink-0 -rotate-3 rounded-md bg-surface-2 p-2 pb-6 sm:block" aria-hidden="true">
               <span className="block h-[120px] w-[160px] overflow-hidden rounded-sm">
                 <ProjectPicture project={project} />
               </span>
             </figure>
-            <p className="min-w-0 flex-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1">{S.done.putDown}</p>
+            <p className="min-w-0 flex-1 font-kid text-[length:var(--fs-kid-label-c)] font-bold leading-snug text-ink-1 max-[760px]:basis-full">{S.done.putDown}</p>
             <KidButton label={S.done.back} icon={<ArrowLeft size={36} weight="bold" />} tone="accent" primary onPress={() => void navigate({ to: "/" })} speak />
           </section>
         )}

@@ -72,3 +72,8 @@ button { font: inherit; color: inherit; }
 .pip-bob { animation: pip-bob 1.2s var(--ease) 2; transform-origin: 50% 100%; }
 .pip-hop { animation: pip-hop 0.7s var(--ease) 4; transform-origin: 50% 100%; }
 @media (prefers-reduced-motion: reduce) { .pip-bob, .pip-hop { animation: none; } }
+/* Split View and Slide Over (3.6): under 760 px wide the kid type steps down a size in every look (html[data-look]
+   outranks a look's [data-look="…"] token block, which is where every look sets its sizes) */
+@media (max-width: 760px) {
+  html[data-look] { --fs-kid-display-a: 40px; --fs-kid-display-b: 34px; --fs-kid-display-c: 30px; --fs-kid-label-a: 30px; --fs-kid-label-b: 26px; --fs-kid-label-c: 21px; }
+}

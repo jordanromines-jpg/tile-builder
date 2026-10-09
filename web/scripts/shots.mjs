@@ -1,5 +1,6 @@
 // Screenshots of every screen in a look (3.0), to look at before and after a change, and a contact sheet of them.
-//   npm run shots -- <look> [port] [outdir] [screens]   e.g. npm run shots -- toy 5211 /tmp/toy library,finish
+//   npm run shots -- <look> [port] [outdir] [screens] [sizes]   e.g. npm run shots -- toy 5211 /tmp/toy library,finish half,slim
+// sizes: landscape (1180 × 820), portrait (820 × 1180), half (Split View, 590 × 820), slim (a third, 375 × 820)
 // Light and dark, iPad landscape (1180 × 820) and portrait (820 × 1180), at 2×, with the GPU (Metal on a Mac), motion
 // reduced so every screenshot is of a still screen. Serves the app with Vite, as `npm run pictures` does.
 import { chromium } from "@playwright/test";
@@ -9,7 +10,7 @@ import { mkdirSync, realpathSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const [look = "classic", portArg = "5210", outArg, only] = process.argv.slice(2);
+const [look = "classic", portArg = "5210", outArg, only, sizesArg] = process.argv.slice(2);
 const port = Number(portArg);
 const root = fileURLToPath(new URL("..", import.meta.url));
 const out = outArg ?? join(root, "test-results", `shots-${look}`);
@@ -36,7 +37,9 @@ await server.listen();
 const browser = await chromium.launch({ args: ["--use-angle=metal", "--enable-gpu", "--ignore-gpu-blocklist"] });
 const shots = [];
 try {
-  for (const [orient, viewport] of [["landscape", { width: 1180, height: 820 }], ["portrait", { width: 820, height: 1180 }]]) {
+  const SIZES = { landscape: { width: 1180, height: 820 }, portrait: { width: 820, height: 1180 }, half: { width: 590, height: 820 }, slim: { width: 375, height: 820 } };
+  const sizes = (sizesArg ?? "landscape,portrait").split(",");
+  for (const [orient, viewport] of Object.entries(SIZES).filter(([k]) => sizes.includes(k))) {
     for (const scheme of ["light", "dark"]) {
       const ctx = await browser.newContext({ viewport, deviceScaleFactor: 2, isMobile: true, hasTouch: true, colorScheme: scheme, reducedMotion: "reduce" });
       await ctx.addInitScript((l) => {
@@ -81,10 +84,13 @@ try {
 }
 
 // one contact sheet a orientation, four across
-for (const orient of ["landscape", "portrait"]) {
+for (const orient of ["landscape", "portrait", "half", "slim"]) {
   const files = shots.filter((f) => f.includes(`/${orient}-`));
-  const w = orient === "landscape" ? 590 : 410;
+  if (!files.length) continue;
+  // each screenshot shrunk whole, never cropped: a sheet that crops a narrow screen makes it look broken
+  const view = { landscape: [1180, 820], portrait: [820, 1180], half: [590, 820], slim: [375, 820] }[orient];
   const h = orient === "landscape" ? 410 : 590;
+  const w = Math.round((h * view[0]) / view[1]);
   const lab = 22;
   const cols = 4;
   const tiles = [];
