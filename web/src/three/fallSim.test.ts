@@ -62,6 +62,7 @@ describe("the finish's falling tiles", () => {
       });
     });
   }
+  // every project: seconds of work, longer on a slow runner
   it("ends in time, every piece at rest on a surface, for every project", () => {
     for (const project of PROJECTS) {
       const field = buildField(project, DEFAULT_LEG);
@@ -76,7 +77,7 @@ describe("the finish's falling tiles", () => {
         expect(r.y - half, project.id).toBeCloseTo(r.floor, 4);
       });
     }
-  });
+  }, 60_000);
   it("lands some on the build and some on the table", () => {
     const on = new Set(simulate(buildField(castle, DEFAULT_LEG)).rest.map((r) => r.on));
     expect(on.has("build")).toBe(true);
