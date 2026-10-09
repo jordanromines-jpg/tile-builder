@@ -10,7 +10,11 @@ changing anything people see.
     npm run dev             # http://localhost:5173/tile-builder/
     npm run check           # types
     npm test                # unit tests (Vitest, jsdom)
-    npm run check:projects  # every project against the checker
+    npm run check:projects  # every project against the checker (R1–R13)
+    npm run check:physics   # R14: every build stands in the physics (only changed builds; --cold for all)
+    npm run projects        # regenerate public/projects/*.json and the catalogue after changing a project
+    npm run pictures        # redraw public/pictures/ (minutes; restore unchanged pictures after)
+    npm run runs            # prove and record the truck runs to public/runs/ (--check, --verify)
     npm run size            # no source file over 500 lines
     npm run build           # types, then dist/ with the service worker
     npm run test:e2e        # the built app in Chromium as an iPad, both orientations (builds first: run npm run build)
@@ -30,13 +34,18 @@ build, so plates made in either place match. To update a plate: `npx playwright 
 | `src/ground.ts` | Light, dark or the iPad's setting |
 | `src/screens/` | One file a screen; `screens/grownups/` behind the door |
 | `src/ui/` | Components: `ui/kid/` for children, `ui/grownups/` for grown-ups |
-| `src/engine/` | Tile shapes, brands, sets, the checker, matching |
-| `src/projects/` | The hand-written projects, by age band |
-| `src/three/` | The 3D tiles and viewer |
+| `src/engine/` | Tile shapes, brands and their colours, sets, the checker (R1–R13), matching, recolouring |
+| `src/projects/` | The projects, written with kits (`kit.ts`, `studio.ts`, `tots-kit.ts`, `track-kit.ts`), by age and theme |
+| `src/physics/` | Rapier, on the build machine only: R14 (every build stands) and the truck runs |
+| `src/three/` | The 3D tiles and viewer; `three/truck/` the Pip truck, `three/run/` truck-run playback |
+| `src/friend/` | Pip, the tile friend, and how he guides a build |
+| `src/motion/` | Springs, falls and arcs by exact formulas, for everything that moves |
+| `src/looks/` | The four looks a family can choose |
+| `src/sound/` | Sounds, and the truck's engine |
 | `src/store/` | Dexie: settings, inventory, progress; backup |
 | `src/speech/` | Read-aloud |
 | `e2e/` | Playwright specs; `e2e/plates/` their screenshots |
-| `scripts/` | Icons, the 3D pictures (`npm run pictures`), the project checker, the size check |
+| `scripts/` | Icons, the 3D pictures, the project checker, the physics check, the truck runs, the size check |
 
 ## Rules
 
