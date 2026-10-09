@@ -41,6 +41,25 @@ for (const [age, min] of [["a", 88], ["b", 80], ["c", 64]] as const) {
   });
 }
 
+test.describe("with motion", () => {
+  // the turntable and the bounce move only with motion on
+  test.use({ contextOptions: { reducedMotion: "no-preference" } });
+
+  test("the Pip truck row draws, and its views and bounce work", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    await open(page, "light");
+    const row = page.getByRole("img", { name: "The Pip truck in 3D" });
+    await row.scrollIntoViewIfNeeded();
+    await expect.poll(() => page.evaluate(() => window.__truck?.frames() ?? 0)).toBeGreaterThan(3);
+    for (const v of ["Front", "Side", "Back", "Top", "Turn"]) await page.getByRole("group", { name: "Truck view" }).getByRole("button", { name: v }).click();
+    await page.evaluate(() => window.__truck?.bounce());
+    const before = await page.evaluate(() => window.__truck?.frames() ?? 0);
+    await expect.poll(() => page.evaluate(() => window.__truck?.frames() ?? 0)).toBeGreaterThan(before + 3);
+    expect(errors).toEqual([]);
+  });
+});
+
 for (const ground of ["light", "dark"] as const) {
   test(`the design page looks as it did in ${ground}`, async ({ page }) => {
     await open(page, ground);

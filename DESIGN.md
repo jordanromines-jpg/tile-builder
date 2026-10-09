@@ -208,6 +208,21 @@ backup date; two buttons, Save a backup and Restore from a backup.
 "Hold to open" for three seconds with a filling ring; letting go early starts again. Then a sum in words with a number
 pad ("forty-two plus seven?"); three wrong answers close it. No birth-year question.
 
+### The Pip truck (`three/truck/`, design page row "Pip truck")
+Pip as an original Monster Jam-style truck, copied from no real truck, brand or game. His square orange face is the front
+(yellow lens headlights with purple pupils and blue bezels, red cheeks, a dark-purple smile for the grille); two yellow
+triangle ears stand on the roof; a purple triangle fin is his tail; green squares on stalks are the mirrors (his arms);
+two purple squares are the bumper (his feet). The cab and bed are tile panels (coloured frame round a clear face, as
+`three/tile.ts`), windows tinted a deeper blue; the face is solid so he reads. Under it: a green open tube chassis,
+solid blue axles with a diff housing, two yellow coil-over springs round blue dampers a corner, four red link bars an
+axle, a striped driveshaft, and giant dark-purple tyres with chevron lugs on yellow dish rims. Colours are the six tile
+colours only (read from the tokens, so light and dark themes show); the tyres and window tint are darker shades of
+purple and blue. All numbers (length 1.00, body 0.62, track 0.78, wheelbase 0.60, tyre radius 0.22 and width 0.20, ride
+height 0.30, travel 0.10, 60 g, centre of mass 0.32) live in `three/truck/spec.ts`, pure data for the physics (4.0c).
+Cost: 10 draw calls, about 20k triangles (a unit test holds it to 14 and 30k). Pip's eyes blink every 4.6 s unless
+motion is reduced; the headlights glow at the `high` quality tier. `Truck` takes a `pose` (position, quaternion, and per
+wheel spin, steer and compress).
+
 ## Patterns
 
 - **The kid bar** is in the same place on every kid screen.

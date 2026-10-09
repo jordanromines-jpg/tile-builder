@@ -30,7 +30,7 @@ export function inset(pts: Pt[], w: number): Pt[] {
 }
 
 /** A polygon with its corners rounded: each corner cut back by up to `r` along both edges and joined by a curve. */
-function rounded<T extends THREE.Path>(pts: Pt[], r: number, into: T): T {
+export function rounded<T extends THREE.Path>(pts: Pt[], r: number, into: T): T {
   const n = pts.length;
   const cut = (i: number, toward: number): Pt => {
     const [x, y] = pts[i];
@@ -54,7 +54,7 @@ function rounded<T extends THREE.Path>(pts: Pt[], r: number, into: T): T {
 
 /** A bevelled frame between an outer outline and an inner opening, centred on z = 0; `light` with fewer curve and bevel
     segments. */
-function frameRing(outer: Pt[], inner: Pt[], light = false): THREE.BufferGeometry {
+export function frameRing(outer: Pt[], inner: Pt[], light = false): THREE.BufferGeometry {
   const s = rounded(inset(outer, BEVEL), CORNER, new THREE.Shape());
   s.holes.push(rounded([...inner].reverse(), INNER_CORNER, new THREE.Path()));
   const depth = TH - 2 * BEVEL;
