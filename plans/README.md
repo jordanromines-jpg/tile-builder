@@ -23,6 +23,7 @@ names, runs the checks, and starts the next key.
 
 | Plan | Status | Carries |
 |---|---|---|
+| `2026-10-09-truck-runs-autobuild.md` | approved 9 Oct 2026, in progress | 4.0 (truck runs: the truck drives each finished truck course and crashes it), 4.1 (Watch it build: plays the build by itself at three speeds) |
 | `2026-10-09-build-helpers.md` | approved 9 Oct 2026, in progress | 3.7 (Get your tiles: the materials list), 3.8 (All steps: a slider and a filmstrip, jumping for every age), 3.9 (Pip helps: shows where, hands over the tiles, reacts, tips; always a little alive) |
 | `2026-10-08-sound-structures.md` | approved 8 Oct 2026, in progress | 2.8 (all 50 trucks under R11 strict, braced crash walls and R12), 2.8.1 (the canvas copes with big builds), 2.8.2 (R12 for every project) |
 | `2026-10-07-tots-and-trucks.md` | approved 7 Oct 2026, in progress | 2.6 (32 more 0–3 builds, big squares used well), 2.7 and 2.8 (Monster trucks: about 50 builds, engine R11, track kit, Library shelf and filter), 2.9 (50 native wildflower builds: Kansas, Chicago, North Carolina) |
