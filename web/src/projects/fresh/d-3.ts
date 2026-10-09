@@ -15,6 +15,18 @@ const RAINBOW: Colour[] = ["red", "orange", "yellow", "green", "blue", "purple"]
 function wallSaysHi(): Project {
   const s = new Studio();
   pixelWall(s, "The sign", 0, 0, ["ppppppppp", "bybybyyyb", "byyybbybb", "bybybbybb", "bybybyyyb", "bbbbbbbbb"]);
+  // feet each way at both ends: six high and one square thick, the sign tipped over towards the child (R14)
+  s.part(
+    0,
+    (b) => {
+      for (const x of [0, 9]) {
+        b.wallZ("square", "blue", x, 0, -2);
+        b.wallZ("square", "blue", x, 0, 0);
+      }
+      return 4;
+    },
+    () => "The sign's feet: at each end of the bottom row, one more square going back and one coming forward, in line with the one there. A deep base doesn't tip either way.",
+  );
   s.rug("the path", Array.from({ length: 9 }, (_, i) => [i, 1] as [number, number]), "green", "a path in front");
   ([[0.2, 3.2], [2.7, 3.2], [5.2, 3.2], [7.7, 3.2]] as [number, number][]).forEach(([x, z], i) => s.tetra(`flower number ${i + 1}`, tri(x, z), 0, RAINBOW[i]));
   return s.build({ id: "wall-that-says-hi", title: "The Wall That Says HI (and Nothing Else)", theme: "patterns", age: "d", done: "You built the wall that says HI! Say hi back. It won't answer. It only knows the one word." });
@@ -29,9 +41,12 @@ function worriedSmiley(): Project {
     (b) => {
       b.wallZ("square", "green", 0, 0, -2);
       b.wallZ("square", "green", 7, 0, -2);
-      return 2;
+      // and one coming forward: with its weight at its front, the face tipped forward with feet only behind (R14)
+      b.wallZ("square", "green", 0, 0, 0);
+      b.wallZ("square", "green", 7, 0, 0);
+      return 4;
     },
-    () => "The face's feet: one more square going back at each end of the bottom row, in line with the ones there. A deep base doesn't tip: two squares deep holds the tall face steady.",
+    () => "The face's feet: at each end of the bottom row, one more square going back and one coming forward, in line with the one there. A deep base doesn't tip either way: the tall face stands steady.",
   );
   s.rug("the shadow", Array.from({ length: 7 }, (_, i) => [i, 1] as [number, number]), "green", "a strip in front");
   return s.build({ id: "slightly-worried-smiley", title: "The Smiley That Is Slightly Worried", theme: "patterns", age: "d", done: "You built the smiley! It is slightly worried. Did it leave the oven on? Probably not. Probably." });
@@ -41,9 +56,11 @@ function sierpinski(): Project {
   const s = new Studio();
   const ups: Tri[] = [];
   for (let j = 0; j < 8; j++) for (let i = 0; i + j < 8; i++) if ((i & j) === 0) ups.push(up(i, j));
-  s.triLid("the pattern", ups, 0, (k) => RAINBOW[k % 6], "triangles flat, leaving the holes empty");
+  // the frame first, then the pattern inside it and the corners on the pattern: flat tiles joined to a frame that is
+  // still going up get lifted as it rocks (R14)
   s.walls("the frame", bigTriPath(L, 0, 0, 8), 2, ["purple", "blue"], { closed: true, what: "round the outside" });
-  [up(0, 0), up(7, 0), up(0, 7)].forEach((t) => s.tetra("a corner", t, 0, "yellow"));
+  s.triLid("the pattern", ups, 0, (k) => RAINBOW[k % 6], "triangles flat, leaving the holes empty", undefined, true);
+  [up(0, 0), up(7, 0), up(0, 7)].forEach((t) => s.tetra("a corner", t, 0, "yellow", true));
   return s.build({ id: "sierpinski-say-it-five-times", title: "The Sierpinski Triangle (Say It Five Times Fast)", theme: "patterns", age: "d", done: "You built the Sierpinski triangle! Triangles in triangles in triangles. Now say Sierpinski five times fast." });
 }
 

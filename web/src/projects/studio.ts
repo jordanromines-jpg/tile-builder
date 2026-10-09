@@ -175,9 +175,9 @@ export class Studio extends Site {
   }
 
   /** Short triangles flat over unit triangles (a hexagon's six, a star's twelve), in order, each beside the last. */
-  triLid(name: string, tris: Tri[], y: number, colour: Colour | ((i: number) => Colour), what = "a lid", atoms?: number[]) {
+  triLid(name: string, tris: Tri[], y: number, colour: Colour | ((i: number) => Colour), what = "a lid", atoms?: number[], last = false) {
     const c = typeof colour === "function" ? colour : () => colour;
-    this.flats(name, tris.map((t, i) => ({ shape: "tri-equilateral" as ShapeId, colour: c(i), a: t[0], b: t[1], toward: t[2] })), y, what, atoms);
+    this.flats(name, tris.map((t, i) => ({ shape: "tri-equilateral" as ShapeId, colour: c(i), a: t[0], b: t[1], toward: t[2] })), y, what, atoms, last);
   }
 
   /** Three short triangles leaning together over the unit triangle `t` at height y, until their tips meet. */

@@ -87,8 +87,11 @@ function threeCorners(): Project {
 
 function batCave(): Project {
   const s = new Studio();
-  for (const z of [0, 1]) s.walls(z ? "the front rock" : "the back rock", Array.from({ length: 7 }, (_, i) => [i, z] as P), 3, ["purple", "blue", "purple"], { what: "in a long line" });
-  s.walls("the end rock", [[0, 0], [0, 1]], 3, ["blue"], { what: "across the end" });
+  // each layer starts halfway along the front, round the end and along the back, so its first squares make a U: a
+  // long straight line on its own falls over (R14); then the rest of the front
+  const round: P[] = [[3, 1], [2, 1], [1, 1], [0, 1], [0, 0], ...Array.from({ length: 6 }, (_, i) => [i + 1, 0] as P)];
+  s.walls("the rock", round, 3, ["purple", "blue", "purple"], { what: "from the middle of the front, round the end and along the back" });
+  s.walls("the front rock", [[3, 1], [4, 1], [5, 1], [6, 1]], 3, ["purple", "blue", "purple"], { what: "on along the front" });
   s.platform("the cave roof", 0, 0, 6, 1, 3, "purple");
   s.roofs("the bats", [[1, 0], [3, 0], [5, 0]], 3, "low", "orange");
   ([[2, 2.9], [4, 2.9]] as [number, number][]).forEach(([x, z]) => s.tetra("a rock", triFront(x, z), 0, "green"));
