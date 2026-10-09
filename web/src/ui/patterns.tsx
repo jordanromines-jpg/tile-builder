@@ -2,15 +2,17 @@
    colour alone. Patterns are drawn in tile units (one square edge = 1) in the rim colour. */
 import type { Colour } from "../engine/catalog";
 
-export type PatternName = "dots" | "diagonal" | "plain" | "waves" | "horizontal" | "stars";
+export type PatternName = "dots" | "diagonal" | "plain" | "waves" | "vertical" | "horizontal" | "stars" | "rings";
 
 export const PATTERN_OF: Record<Colour, PatternName> = {
   red: "dots",
   orange: "diagonal",
   yellow: "plain",
   green: "waves",
+  sky: "vertical",
   blue: "horizontal",
   purple: "stars",
+  pink: "rings",
 };
 
 const S = 0.25; // one pattern cell
@@ -46,6 +48,18 @@ export function TilePattern({ id, name, color }: { id: string; name: PatternName
       return (
         <pattern {...common}>
           <path d={`M0 ${S * 0.6} Q ${S / 4} ${S * 0.3} ${S / 2} ${S * 0.6} T ${S} ${S * 0.6}`} {...ink} />
+        </pattern>
+      );
+    case "vertical":
+      return (
+        <pattern {...common}>
+          <line x1={S / 2} y1={0} x2={S / 2} y2={S} {...ink} />
+        </pattern>
+      );
+    case "rings":
+      return (
+        <pattern {...common}>
+          <circle cx={S / 2} cy={S / 2} r={0.065} {...ink} />
         </pattern>
       );
     case "horizontal":

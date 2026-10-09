@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.3.0 · 9 Oct 2026
+
+Builds in the colours your tiles come in. Jordan: "The colors don't match what's available in the sets."
+
+- **Each set knows its colours.** Magna-Tiles and Connetix make six colours; PicassoTiles makes eight, with light blue
+  and pink. Choosing a set fills in its colours, an even mix of each shape, and a grown-up can change any count.
+- **Builds recolour to what you have.** Tiles keep their colour when you have enough. A colour you're short of moves
+  as a whole to the nearest colour you have room in (every orange tile becomes red), so the build still looks
+  designed; only when no colour has room does it change step by step. A roof never comes out striped.
+- **The words follow.** Each step names the colours its tiles now have ("a blue square"), and Get your tiles says the
+  picture shows the colours the build was made in.
+- **Light blue and pink** are new tile colours, each with its own pattern (vertical stripes, rings) for children who
+  can't tell colours apart.
+
 ## 4.2.1 · 9 Oct 2026
 
 Pip moves like a cartoon, not stop motion. Jordan: "this is stop motion not animation."

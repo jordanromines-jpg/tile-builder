@@ -115,8 +115,8 @@ The tiles are what a child matches on the table, so their pictures are the most 
 - **The face** is the tile colour at 45% over the surface, as light comes through real tiles.
 - **The rim** is the tile's frame: 3 px, solid, in the tile's rim token (darker than the face where the face alone
   would be under 3:1).
-- **The pattern** is the second cue: red dots, orange diagonal stripes, yellow plain, green waves, blue horizontal
-  stripes, purple stars. `design/cvd.py` shows why: under deutan vision blue and purple, and red and green, nearly
+- **The pattern** is the second cue: red dots, orange diagonal stripes, yellow plain, green waves, light blue vertical
+  stripes, blue horizontal stripes, purple stars, pink rings (light blue and pink since 4.3: PicassoTiles makes them). `design/cvd.py` shows why: under deutan vision blue and purple, and red and green, nearly
   merge; under protan vision orange and green do.
 - **The name** is the third: every chip that a child can tap says "4 red squares".
 - A project asks for shapes, not colours. Colour is a preference, never a requirement: "any colour" chips are drawn in

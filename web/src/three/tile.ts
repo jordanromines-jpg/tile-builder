@@ -153,6 +153,8 @@ export const FALLBACK: Record<Colour, string> = {
   green: "#39ad4a",
   blue: "#2a78dd",
   purple: "#8a4cc8",
+  sky: "#36b4e6",
+  pink: "#ec5c9e",
 };
 
 /** A colour token's live value: `--tile-red`, `--stage`, `--ground`. */

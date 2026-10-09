@@ -6,10 +6,11 @@ can build, and walks a child through each build in 3D, step by step. It works of
 Jordan owns it and decides scope.
 
 ## Start here
-1. Read `plans/README.md`, then the plan in progress, `plans/2026-10-09-truck-runs-autobuild.md` (4.0–4.2), and
-   `plans/2026-10-08-sound-structures.md` (the rules every build follows). **The last row of the build log says
+1. Read `plans/README.md` (it says which plan is in progress or waiting; the latest done are
+   `2026-10-09-truck-runs-autobuild.md`, 4.0–4.2, and `2026-10-09-set-colours.md`, 4.3), and
+   `plans/2026-10-08-sound-structures.md` (the rules every build follows). **The last row of a plan's build log says
    what is next.**
-2. Read `PRODUCT.md` (age bands, Monster trucks), `DESIGN.md`, `web/src/engine/README.md` (checker rules R1–R11) and
+2. Read `PRODUCT.md` (age bands, Monster trucks), `DESIGN.md`, `web/src/engine/README.md` (checker rules R1–R14) and
    `CHANGELOG.md`.
 3. Check out the branch the build log names, or start a new one from `main`. Run the checks below before changing
    anything.
@@ -87,8 +88,9 @@ restore with `git checkout -- web/public/pictures` and run it again. Only the ch
   - shelves by age, then a Monster trucks shelf and a Wildflowers shelf (`SECTIONS` in `engine/themes.ts`).
 
   Cards draw 12 at a time.
-- **Colours:** red, orange, yellow, green, blue and purple only (no white, pink or brown). Say so when a real thing's
-  colour isn't available.
+- **Colours:** design builds in red, orange, yellow, green, blue and purple only (no white, pink or brown). Say so when
+  a real thing's colour isn't available. The app also knows light blue (`sky`) and pink, because PicassoTiles makes
+  them: a family's builds are recoloured to its tiles' colours (`engine/recolour.ts`, 4.3), never designed in them.
 
 ## Gotchas learned
 - **Builds must stand like real tiles (2.8).** Every magnet join is a hinge. No ramp join in mid-air (R11); crash walls

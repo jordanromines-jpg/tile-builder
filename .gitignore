@@ -24,3 +24,4 @@ web/.look.mjs
 web/.look-done.mjs
 web/.prof.mjs
 .claude/worktrees/
+.claude/launch.json

@@ -13,7 +13,7 @@ describe("TileChip", () => {
         render(<TileChip shape={shape} colour={colour} />);
       }
     }
-    expect(screen.getAllByRole("img")).toHaveLength(SHAPE_IDS.length * 7);
+    expect(screen.getAllByRole("img")).toHaveLength(SHAPE_IDS.length * (COLOURS.length + 1));
     expect(screen.getAllByRole("img", { name: "red square" })).toHaveLength(1);
     expect(screen.getAllByRole("img", { name: "tall triangle" })).toHaveLength(1);
   });

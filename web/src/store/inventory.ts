@@ -1,6 +1,6 @@
 /* Changing the family's tiles (plan key 5e), as pure functions so the Tiles screen and its tests share them. */
 import { BRANDS, DEFAULT_LEG, type BrandId, type Colour, type ShapeId } from "../engine/catalog";
-import type { SetPreset } from "../engine/sets";
+import { presetColours, type SetPreset } from "../engine/sets";
 import type { Inventory, ShapeCount } from "../engine/types";
 
 function colourSum(c?: ShapeCount, except?: Colour): number {
@@ -34,16 +34,20 @@ export function setColourCount(inv: Inventory, shape: ShapeId, colour: Colour, n
 /** A preset replaces the counts and sets the brand; the tall triangle follows the brand when it is known. */
 export function applySet(inv: Inventory, preset: SetPreset): Inventory {
   const counts: Inventory["counts"] = {};
-  for (const [s, n] of Object.entries(preset.pieces)) counts[s as ShapeId] = { any: n ?? 0 };
+  const colours = presetColours(preset);
+  for (const [s, n] of Object.entries(preset.pieces)) counts[s as ShapeId] = { any: n ?? 0, byColour: colours[s as ShapeId] };
   return { brands: [preset.brand], tallLeg: BRANDS[preset.brand].tallLeg ?? inv.tallLeg, counts };
 }
 
 /** Add a second set to what is there (two 100-piece sets make 200): counts add up, brands join. */
 export function addSet(inv: Inventory, preset: SetPreset): Inventory {
   const counts: Inventory["counts"] = { ...inv.counts };
+  const colours = presetColours(preset);
   for (const [s, n] of Object.entries(preset.pieces)) {
     const prev = counts[s as ShapeId];
-    counts[s as ShapeId] = { ...prev, any: (prev?.any ?? 0) + (n ?? 0) };
+    const byColour: Partial<Record<Colour, number>> = { ...prev?.byColour };
+    for (const [c, k] of Object.entries(colours[s as ShapeId] ?? {}) as [Colour, number][]) byColour[c] = (byColour[c] ?? 0) + k;
+    counts[s as ShapeId] = { any: (prev?.any ?? 0) + (n ?? 0), byColour };
   }
   const brands = inv.brands.includes(preset.brand) ? inv.brands : [...inv.brands, preset.brand];
   return { ...inv, brands, tallLeg: inv.tallLeg ?? BRANDS[preset.brand].tallLeg, counts };

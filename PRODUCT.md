@@ -111,7 +111,12 @@ Carolina). Every flower was checked as native against a source (state wildflower
 Wildflowers), and every build ends with one true fact from those sources: the state flowers (sunflower, violet,
 dogwood), the pollinators, the Venus flytrap growing wild only near Wilmington.
 
-- **Colour honesty.** Tiles come in six colours. When a flower's real colour isn't one of them (white dogwood, pink
+- **Built in your colours (4.3).** A build is drawn and named in the colours the family's tiles come in: Magna-Tiles
+  and Connetix make six, PicassoTiles eight (light blue and pink too). Each set's shapes are taken as an even mix of
+  its colours unless a grown-up counts them. A colour the family has enough of stays; one it hasn't moves whole to the
+  nearest colour it has room in, then step by step; a shape the family is short of keeps the build's colours. The
+  step's words follow ("a blue square"), and the tiles list says the picture shows the colours it was made in.
+- **Colour honesty.** Builds are designed in six colours. When a flower's real colour isn't one of them (white dogwood, pink
   coneflower, a brown sunflower middle), the build uses the nearest and says so once: "Dogwood flowers are white; we
   use yellow."
 - **They stand like real tiles.** A magnet joint is a hinge, so an open flower can't stick out sideways off a thin

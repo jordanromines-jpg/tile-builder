@@ -29,6 +29,10 @@
     "tile-blue": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.1647, 0.4706, 0.8667], "hex": "#2a78dd"}, "$description": "the blue tile's colour (fills are drawn at 45% over the surface, with a pattern and a rim)", "$extensions": {"dev.tile-builder.design": {"pattern": "horizontal stripes", "name": "blue"}}},
     "tile-blue-rim": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.2902, 0.5529, 0.902], "hex": "#4a8de6"}, "$description": "the blue tile's rim: the edge that gives the tile 3:1 against the page"},
     "tile-purple": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.5412, 0.298, 0.7843], "hex": "#8a4cc8"}, "$description": "the purple tile's colour (fills are drawn at 45% over the surface, with a pattern and a rim)", "$extensions": {"dev.tile-builder.design": {"pattern": "stars", "name": "purple"}}},
-    "tile-purple-rim": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.6471, 0.4784, 0.8471], "hex": "#a57ad8"}, "$description": "the purple tile's rim: the edge that gives the tile 3:1 against the page"}
+    "tile-purple-rim": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.6471, 0.4784, 0.8471], "hex": "#a57ad8"}, "$description": "the purple tile's rim: the edge that gives the tile 3:1 against the page"},
+    "tile-sky": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.2118, 0.7059, 0.902], "hex": "#36b4e6"}, "$description": "the light blue tile's colour (fills are drawn at 45% over the surface, with a pattern and a rim)"},
+    "tile-sky-rim": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.298, 0.7529, 0.9333], "hex": "#4cc0ee"}, "$description": "the light blue tile's rim: the edge that gives the tile 3:1 against the page"},
+    "tile-pink": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.9255, 0.3608, 0.6196], "hex": "#ec5c9e"}, "$description": "the pink tile's colour (fills are drawn at 45% over the surface, with a pattern and a rim)"},
+    "tile-pink-rim": {"$type": "color", "$value": {"colorSpace": "srgb", "components": [0.949, 0.4824, 0.698], "hex": "#f27bb2"}, "$description": "the pink tile's rim: the edge that gives the tile 3:1 against the page"}
   }
 }

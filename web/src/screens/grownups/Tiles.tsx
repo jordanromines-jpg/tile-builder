@@ -43,6 +43,8 @@ export function Tiles() {
   const save = (next: Inventory) => void saveInventory(next);
   const showExtras = special || inv.brands.includes("connetix") || SHAPE_IDS.some((s) => !CORE.includes(s) && (inv.counts[s]?.any ?? 0) > 0);
   const shapes = showExtras ? SHAPE_IDS : CORE;
+  // 4.3: the colours the family's brands make (every colour when it isn't known)
+  const colours = COLOURS.filter((col) => !inv.brands.length || inv.brands.includes("generic") || inv.brands.some((b) => BRANDS[b].colours.includes(col)));
   const leg = effectiveLeg(inv);
   return (
     <Frame title="Your tiles">
@@ -81,6 +83,7 @@ export function Tiles() {
           {shapes.map((s) => {
             const c = inv.counts[s];
             const n = c?.any ?? 0;
+            const plain = n - COLOURS.reduce((k, col) => k + (c?.byColour?.[col] ?? 0), 0);
             return (
               <li key={s} className="flex flex-col gap-2 px-4 py-3">
                 <div className="flex items-center gap-3">
@@ -90,9 +93,14 @@ export function Tiles() {
                 </div>
                 {n > 0 && (
                   <details className="ml-[60px]">
-                    <summary className="min-h-11 cursor-pointer py-2 text-ink-2">Colours (if you like)</summary>
+                    <summary className="min-h-11 cursor-pointer py-2 text-ink-2">Colours</summary>
+                    {plain > 0 && (
+                      <p className="pb-2 text-ink-2">
+                        {plain} without a colour: builds take them as an even mix of {colours.length === COLOURS.length ? "every colour" : "your tiles' colours"}.
+                      </p>
+                    )}
                     <ul className="grid gap-2 sm:grid-cols-2">
-                      {COLOURS.map((col) => (
+                      {colours.map((col) => (
                         <li key={col} className="flex items-center gap-2">
                           <TilePicture shape="square" colour={col} px={28} />
                           <span className="flex-1">{cap(COLOUR_NAMES[col])}</span>

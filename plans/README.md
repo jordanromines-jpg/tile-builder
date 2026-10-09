@@ -8,7 +8,7 @@ approved is written into a plan first and waits for his go; adding detail to an 
 
 ## Start here
 
-`2026-10-09-truck-runs-autobuild.md` is the plan in progress (4.0–4.2: truck runs, Watch it build, real physics everywhere); `2026-10-09-build-helpers.md` (3.7–3.9) is done; `2026-10-08-design-polish.md` (3.0–3.6: three looks a family can choose, sound, a tile friend) waits on G2; `2026-10-07-tots-and-trucks.md` is done (2.9 merged); `2026-10-08-sound-structures.md` (2.8, 2.8.1, 2.8.2) is merged, waiting only on Jordan's tests T1 and T2; `2026-10-02-tile-builder.md` is the original plan. A session picking up work reads its build log (the last row says what is
+Nothing is in progress: `2026-10-09-set-colours.md` (4.3, builds in a family's colours) and `2026-10-09-truck-runs-autobuild.md` (4.0–4.2: truck runs, Watch it build, real physics everywhere, then 4.2.1 Pip's moves) are done; `2026-10-09-r14-flat-tiles.md` (the last seven builds R14 allows to fall) waits for Jordan's go; `2026-10-09-build-helpers.md` (3.7–3.9) is done; `2026-10-08-design-polish.md` (3.0–3.6: three looks a family can choose, sound, a tile friend) waits on G2; `2026-10-07-tots-and-trucks.md` is done (2.9 merged); `2026-10-08-sound-structures.md` (2.8, 2.8.1, 2.8.2) is merged, waiting only on Jordan's tests T1 and T2; `2026-10-02-tile-builder.md` is the original plan. A session picking up work reads its build log (the last row says what is
 next), then `PRODUCT.md`, `DESIGN.md`, `docs/research/README.md` and `web/README.md`, checks out the commit the log
 names, runs the checks, and starts the next key.
 
@@ -23,7 +23,8 @@ names, runs the checks, and starts the next key.
 
 | Plan | Status | Carries |
 |---|---|---|
-| `2026-10-09-truck-runs-autobuild.md` | approved 9 Oct 2026, in progress | 4.0 (truck runs: the Pip truck drives each finished truck course and crashes it, proved and recorded with Rapier), 4.1 (Watch it build), 4.2 (real physics everywhere: R14 proves every build stands; magnet snap; falling finish tiles; motion by physics formulas) |
+| `2026-10-09-truck-runs-autobuild.md` | done 9 Oct 2026 (#46–#55) | 4.0 (truck runs: the Pip truck drives each finished truck course and crashes it, proved and recorded with Rapier), 4.1 (Watch it build), 4.2 (real physics everywhere: R14 proves every build stands; magnet snap; falling finish tiles; motion by physics formulas) |
+| `2026-10-09-set-colours.md` | approved 9 Oct 2026, built as 4.3 | Builds in the colours a family's tiles come in: each brand's colours (light blue and pink added), sets as an even mix, recolouring that keeps a design whole, step lines that follow |
 | `2026-10-09-r14-flat-tiles.md` | proposed 9 Oct 2026, waiting for Jordan | R14's model of a pyramid on one flat tile (five builds), and redesigns of the triangle truss bridge and the spiral ramp (seven left on the allow-list) |
 | `2026-10-09-build-helpers.md` | done 9 Oct 2026 (#43–#45) | 3.7 (Get your tiles: the materials list), 3.8 (All steps: a slider and a filmstrip, jumping for every age), 3.9 (Pip helps: shows where, hands over the tiles, reacts, tips; always a little alive) |
 | `2026-10-08-sound-structures.md` | approved 8 Oct 2026, in progress | 2.8 (all 50 trucks under R11 strict, braced crash walls and R12), 2.8.1 (the canvas copes with big builds), 2.8.2 (R12 for every project) |

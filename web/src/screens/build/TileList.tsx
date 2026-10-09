@@ -19,6 +19,8 @@ export interface TileListProps {
   instead: Record<number, ShapeId>;
   leg: number;
   missing: Missing[];
+  /** some tiles are in the family's colours, not the picture's (4.3) */
+  recoloured?: boolean;
   /** "start": before step 1, with Start; "look": opened while building, with Back to building */
   mode: "start" | "look";
   /** px of the screen covered by the top bar and the step panel: the list fits between them */
@@ -33,6 +35,7 @@ export function TileList({
   instead,
   leg,
   missing,
+  recoloured = false,
   mode,
   inset,
   onStart,
@@ -94,6 +97,7 @@ export function TileList({
               <p className="font-kid text-[length:var(--fs-kid-label-c)] font-bold tabular-nums text-ink-2">
                 {S.build.total(total)}
               </p>
+              {recoloured && <p className="font-kid text-[length:var(--fs-kid-label-c)] text-ink-2">{S.build.yourColours}</p>}
             </div>
           </div>
           {short && (

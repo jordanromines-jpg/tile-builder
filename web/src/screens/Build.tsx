@@ -5,6 +5,7 @@ import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { layerOf, worldPolygon } from "../engine/geometry";
 import { matchProject, type Match } from "../engine/match";
+import { inColours, recolour } from "../engine/recolour";
 import type { Project } from "../engine/types";
 import { infoById, useProject } from "../projects/load";
 import { CantLoad } from "./build/CantLoad";
@@ -49,7 +50,7 @@ export function Build() {
   return <BuildProject key={pid} pid={pid} project={project} />;
 }
 
-function BuildProject({ pid, project }: { pid: string; project: Project }) {
+function BuildProject({ pid, project: designed }: { pid: string; project: Project }) {
   const navigate = useNavigate();
   const inv = useInventory();
   const [step, setStep] = useState<number | null>(null);
@@ -68,8 +69,11 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
   const stripRef = useRef<HTMLElement>(null);
   const [strip, setStrip] = useState(220);
 
-  const match: Match | null = useMemo(() => (inv && Object.keys(inv.counts).length ? matchProject(project, inv) : null), [inv, project]);
+  const match: Match | null = useMemo(() => (inv && Object.keys(inv.counts).length ? matchProject(designed, inv) : null), [inv, designed]);
   const instead = match?.instead ?? {};
+  // 4.3: drawn and named in the colours the family has
+  const recoloured = useMemo(() => (match ? recolour(designed, inv, match.instead) : {}), [designed, inv, match]);
+  const project = useMemo(() => inColours(designed, recoloured), [designed, recoloured]);
   const leg = effectiveLeg(inv);
   const swapAt = useMemo(() => swapsByStep(project, match?.swaps ?? []), [project, match]);
   const last = project.steps.length - 1;
@@ -250,6 +254,7 @@ function BuildProject({ pid, project }: { pid: string; project: Project }) {
               instead={instead}
               leg={leg}
               missing={match?.missing ?? []}
+              recoloured={Object.keys(recoloured).length > 0}
               mode={gate}
               inset={{ top: 112, bottom: strip }}
               onStart={() => {

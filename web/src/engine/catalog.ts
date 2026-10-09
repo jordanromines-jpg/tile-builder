@@ -26,8 +26,11 @@ export const SHAPE_IDS: ShapeId[] = [
   "fence",
 ];
 
-export type Colour = "red" | "orange" | "yellow" | "green" | "blue" | "purple";
-export const COLOURS: Colour[] = ["red", "orange", "yellow", "green", "blue", "purple"];
+/** Every tile colour a set comes in, round the rainbow (4.3): light blue ("sky") and pink are PicassoTiles' only.
+    Builds are designed in the six of `DESIGN_COLOURS`; a family's own colours can bring the other two (recolour.ts). */
+export type Colour = "red" | "orange" | "yellow" | "green" | "sky" | "blue" | "purple" | "pink";
+export const COLOURS: Colour[] = ["red", "orange", "yellow", "green", "sky", "blue", "purple", "pink"];
+export const DESIGN_COLOURS: Colour[] = ["red", "orange", "yellow", "green", "blue", "purple"];
 
 /** The tall triangle's leg when nobody has said which brand: PicassoTiles' listed 14 cm (Q1). */
 export const DEFAULT_LEG = 1.867;
@@ -73,8 +76,10 @@ export const COLOUR_NAMES: Record<Colour, string> = {
   orange: "orange",
   yellow: "yellow",
   green: "green",
+  sky: "light blue",
   blue: "blue",
   purple: "purple",
+  pink: "pink",
 };
 
 /** "red square", "4 red squares", "2 tall triangles". */
@@ -96,13 +101,15 @@ export interface BrandDef {
   tallLeg: number | null;
   /** shapes only this brand makes */
   extras: ShapeId[];
+  /** the colours its tiles come in (4.3, from the makers' own photos: no maker lists them) */
+  colours: Colour[];
 }
 
 export const BRANDS: Record<BrandId, BrandDef> = {
-  magna: { label: "Magna-Tiles", unitMm: 76.2, tallLeg: 1.877, extras: [] },
-  picasso: { label: "PicassoTiles", unitMm: 76.2, tallLeg: 1.867, extras: [] },
-  connetix: { label: "Connetix", unitMm: 75, tallLeg: null, extras: ["rect-2x1", "window", "door", "fence"] },
-  generic: { label: "Other 3-inch tiles", unitMm: 76.2, tallLeg: null, extras: [] },
+  magna: { label: "Magna-Tiles", unitMm: 76.2, tallLeg: 1.877, extras: [], colours: DESIGN_COLOURS },
+  picasso: { label: "PicassoTiles", unitMm: 76.2, tallLeg: 1.867, extras: [], colours: COLOURS },
+  connetix: { label: "Connetix", unitMm: 75, tallLeg: null, extras: ["rect-2x1", "window", "door", "fence"], colours: DESIGN_COLOURS },
+  generic: { label: "Other 3-inch tiles", unitMm: 76.2, tallLeg: null, extras: [], colours: COLOURS },
 };
 
 /** Twice the signed area: positive when the points run counter-clockwise. */
