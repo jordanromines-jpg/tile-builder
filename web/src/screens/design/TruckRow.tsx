@@ -100,6 +100,16 @@ export function TruckRow({ paint }: { paint: number }) {
   const look = useRef<(az: number, el: number) => void>(() => {});
   const frames = useRef(0);
   const clock = useRef(0);
+  // the turntable draws every frame only while the row is on screen: off screen it rests, so it costs the page nothing
+  const box = useRef<HTMLDivElement>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = box.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setSeen(e.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   const ramp = useMemo(() => new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 3), []);
   useEffect(() => {
     window.__truck = { frames: () => frames.current, look: (az, el) => look.current(az, el), rate: (r) => (rate.current = r), bounce: () => (until.current = clock.current + 2.4) };
@@ -137,8 +147,8 @@ export function TruckRow({ paint }: { paint: number }) {
             </button>
           )}
         </div>
-        <div className="h-[460px] w-full overflow-hidden rounded-lg" role="img" aria-label={S.truck.label}>
-          <Canvas dpr={[1, 2]} camera={{ fov: 34, near: 0.1, far: 200 }} gl={{ antialias: true }}>
+        <div ref={box} className="h-[460px] w-full overflow-hidden rounded-lg" role="img" aria-label={S.truck.label}>
+          <Canvas frameloop={seen && !still ? "always" : "demand"} dpr={[1, 2]} camera={{ fov: 34, near: 0.1, far: 200 }} gl={{ antialias: true }}>
             <Camera view={view} rate={rate} look={look} />
             <Stage paint={paint} radius={1.6} reach={5} />
             <Blob />
