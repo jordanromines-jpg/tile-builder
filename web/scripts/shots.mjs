@@ -59,7 +59,7 @@ try {
           await page.waitForTimeout(300);
         }
         if (age) {
-          await page.getByRole("group", { name: /age/i }).getByRole("button", { name: new RegExp(age.replace(/ to /, ".")) }).first().click();
+          await page.getByRole("group", { name: "How old is the builder?" }).getByRole("button", { name: new RegExp(age.replace(/ to /, ".*")) }).first().click();
           await page.waitForTimeout(1200);
         }
         const next = page.getByRole("button", { name: "Next", exact: true });

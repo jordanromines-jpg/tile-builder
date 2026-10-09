@@ -63,6 +63,7 @@ Atkinson Hyperlegible Next) unless the lead adds one; no images from the network
 | `ts-dots`, `ts-dot` + `ts-dot-done` / `ts-dot-now` / `ts-dot-todo` | the step dots |
 | `ts-turns` | the turn buttons |
 | `ts-finish-words` | the finish's headline |
+| `ts-pip` (3.1) | Pip, the tile friend: on the step panel's edge in build mode (88 px) and big on the finish (180 px); style its ground shadow or a glow, don't hide it |
 | `ts-door`, `ts-empty`, `ts-empty-banner`, `ts-rest` | the grown-ups door, empty states, the "keep building" rest screen |
 | `ts-looks-button`, `ts-looks-panel`, `ts-looks`, `ts-look`, `ts-preview` | the look picker |
 | `kid`, `soft`, `press`, `lift`, `plank` | older shared classes (shadow, press and lift motion, plank) |

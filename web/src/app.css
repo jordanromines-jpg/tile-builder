@@ -66,3 +66,9 @@ button { font: inherit; color: inherit; }
 .confetti { opacity: 0; animation: confetti-fall 2.6s cubic-bezier(.3, .1, .7, 1) both; }
 @keyframes photo-in { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
 .photo-in { animation: photo-in var(--t-ui) var(--ease) both; }
+/* Pip (3.1): a gentle bob when a pose begins, a few hops when cheering; never running on */
+@keyframes pip-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5%); } }
+@keyframes pip-hop { 0%, 100% { transform: translateY(0) rotate(0); } 30% { transform: translateY(-14%) rotate(-4deg); } 60% { transform: translateY(0) rotate(3deg); } }
+.pip-bob { animation: pip-bob 1.2s var(--ease) 2; transform-origin: 50% 100%; }
+.pip-hop { animation: pip-hop 0.7s var(--ease) 4; transform-origin: 50% 100%; }
+@media (prefers-reduced-motion: reduce) { .pip-bob, .pip-hop { animation: none; } }
