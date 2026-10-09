@@ -1,7 +1,7 @@
 /* Build mode and the end of a build (plan keys 7a to 7h). */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { savedStep, useSet } from "./helpers";
+import { savedStep, startBuild, useSet } from "./helpers";
 
 const next = (page: Page) => page.getByRole("button", { name: "Next", exact: true });
 
@@ -26,21 +26,48 @@ test("the castle steps to the end with Next; a reload mid-way returns to the sam
   await expect(page.getByRole("list", { name: "Step 1 of 21" })).toBeVisible();
 });
 
-test("short of tiles: the note comes first, with Start anyway and Pick another", async ({ page }) => {
+test("short of tiles: the list says how many more, with Start anyway and Pick another", async ({ page }) => {
   await useSet(page, "Magna-Tiles Clear Colors 32");
   await page.goto("#/build/castle");
-  await expect(page.getByRole("heading", { name: /You need \d+ more tiles for this one\./ })).toBeVisible();
-  await page.getByRole("button", { name: "Pick another" }).click();
+  const list = page.getByRole("dialog", { name: "Get your tiles" });
+  await expect(list.getByRole("list", { name: "squares" })).toBeVisible();
+  await expect(list.getByRole("heading", { name: /You need \d+ more tiles for this one\./ })).toBeVisible();
+  await list.getByRole("button", { name: "Pick another" }).click();
   await expect(page).toHaveURL(/#\/$/);
   await page.goto("#/build/castle");
   await page.getByRole("button", { name: "Start anyway" }).click();
-  await expect(page.getByRole("heading", { name: /You need/ })).toHaveCount(0);
+  await expect(list).toHaveCount(0);
+});
+
+test("a fresh build opens on its tiles; a resumed one doesn't; Tiles you need opens them again", async ({ page }) => {
+  await useSet(page, "PicassoTiles PT100 Classic Starter");
+  await page.goto("#/build/fish");
+  const list = page.getByRole("dialog", { name: "Get your tiles" });
+  await expect(list).toBeVisible();
+  // the chips ("4 red squares") add up to the total
+  const names = await list.getByRole("img").evaluateAll((els) => els.map((e) => e.getAttribute("aria-label") ?? ""));
+  const sum = names.map((n) => Number(/^(\d+) /.exec(n)?.[1] ?? 0)).reduce((a, b) => a + b, 0);
+  const total = Number(/(\d+) tiles? in all/.exec((await list.getByText(/tiles? in all/).textContent()) ?? "")?.[1]);
+  expect(sum).toBeGreaterThan(0);
+  expect(sum).toBe(total);
+  await list.getByRole("button", { name: "Start", exact: true }).click();
+  await expect(list).toHaveCount(0);
+  await expect(page.getByRole("list", { name: "Step 1 of 4" })).toBeVisible();
+  await page.getByRole("button", { name: "Next", exact: true }).click();
+  await savedStep(page, "fish", 1);
+  await page.reload();
+  await expect(page.getByRole("list", { name: "Step 2 of 4" })).toBeVisible();
+  await expect(list).toHaveCount(0);
+  await page.getByRole("button", { name: "Tiles you need" }).click();
+  await expect(list).toBeVisible();
+  await list.getByRole("button", { name: "Back to building" }).click();
+  await expect(list).toHaveCount(0);
 });
 
 test("with a Magna-Tiles 100 the castle's spires are equilateral, marked instead", async ({ page }) => {
   await useSet(page, "Magna-Tiles Clear Colors 100");
   await page.goto("#/build/castle");
-  await page.getByRole("button", { name: "Start anyway" }).click();
+  await startBuild(page);
   for (let i = 0; i < 19; i++) await next(page).click();
   await expect(page.getByRole("list", { name: "Step 20 of 21" })).toBeVisible();
   await expect(page.getByRole("list", { name: "This step's tiles" }).getByRole("img", { name: "4 red triangles" })).toBeVisible();
@@ -99,8 +126,8 @@ test.describe("with motion", () => {
   test("the castle keeps drawing while a step lands and glows (6c)", async ({ page }) => {
     await useSet(page, "PicassoTiles PT100 Classic Starter");
     await page.goto("#/build/castle");
-    // this set is 6 squares short: start anyway, so the model is shown
-    await page.getByRole("button", { name: "Start anyway" }).click();
+    // a fresh build opens on its tiles: start, so the model is shown
+    await startBuild(page);
     await page.getByRole("button", { name: "Step 21 of 21" }).click();
     // the first frames compile the shaders, a one-off cost (seconds in software): measure once drawing is under way
     const start = await page.evaluate(() => window.__viewer!.frames());
@@ -127,10 +154,8 @@ for (const [pid, ground] of [["fish", "light"], ["pitched-house", "light"], ["ca
     await page.addInitScript((g) => localStorage.setItem("tile-builder.theme", g), ground);
     await useSet(page, "PicassoTiles PT100 Classic Starter");
     await page.goto(`#/build/${pid}`);
-    await expect(next(page)).toBeVisible();
-    // a project this set is short for opens on its note: start, so the plate shows the model
-    const start = page.getByRole("button", { name: "Start anyway" });
-    if (await start.isVisible()) await start.click();
+    // a fresh build opens on its tiles: start, so the plate shows the model
+    await startBuild(page);
     await page.evaluate(() => document.fonts.ready);
     // the whole screen as a child sees it, 3D included: with motion reduced the model is still, and the runner's
     // software renderer draws it the same every time

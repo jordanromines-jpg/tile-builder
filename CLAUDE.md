@@ -6,8 +6,8 @@ can build, and walks a child through each build in 3D, step by step. It works of
 Jordan owns it and decides scope.
 
 ## Start here
-1. Read `plans/README.md`, then the plan in progress, `plans/2026-10-07-tots-and-trucks.md` (Part C, wildflowers),
-   and `plans/2026-10-08-sound-structures.md` (the rules every build follows). **The last row of the build log says
+1. Read `plans/README.md`, then the plan in progress, `plans/2026-10-09-build-helpers.md` (3.7–3.9), and
+   `plans/2026-10-08-sound-structures.md` (the rules every build follows). **The last row of the build log says
    what is next.**
 2. Read `PRODUCT.md` (age bands, Monster trucks), `DESIGN.md`, `web/src/engine/README.md` (checker rules R1–R11) and
    `CHANGELOG.md`.

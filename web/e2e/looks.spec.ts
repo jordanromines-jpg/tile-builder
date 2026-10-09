@@ -3,7 +3,7 @@
    Classic is covered by library.spec.ts and build.spec.ts. */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { useSet } from "./helpers";
+import { startBuild, useSet } from "./helpers";
 
 const LOOKS = ["toy", "book", "studio"] as const;
 const ALL = ["classic", ...LOOKS] as const;
@@ -37,15 +37,22 @@ for (const look of LOOKS) {
   test(`${look}: build mode looks as it did`, async ({ page }) => {
     await inLook(page, look, "light");
     await page.goto("#/build/castle");
-    const start = page.getByRole("button", { name: "Start anyway" });
-    await expect(page.getByRole("button", { name: "Next", exact: true }).or(start).first()).toBeVisible();
-    if (await start.isVisible()) await start.click();
+    await startBuild(page);
     await page.evaluate(() => document.fonts.ready);
     await expect(page).toHaveScreenshot(`look-${look}-build.png`);
   });
 }
 
 for (const look of ALL) {
+  test(`${look}: the tiles list passes axe`, async ({ page }) => {
+    await inLook(page, look, "light");
+    await page.goto("#/build/castle");
+    await expect(page.getByRole("dialog", { name: "Get your tiles" })).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const axe = await new AxeBuilder({ page }).analyze();
+    expect(axe.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);
+  });
+
   test(`${look}: a project that can't be had says so, and passes axe`, async ({ page }) => {
     await inLook(page, look, "light");
     await page.route("**/projects/castle.json", (r) => r.abort());

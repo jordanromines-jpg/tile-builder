@@ -20,6 +20,7 @@ const ALL = [
   ["library", "#/"],
   ["library-age", "#/", 0, "3 to 5"],
   ["build-first", "#/build/castle"],
+  ["build-tiles-big", "#/build/truck-ultimate-arena"],
   ["build-middle", "#/build/castle", 10],
   ["build-last", "#/build/castle", 30],
   ["build-big", "#/build/truck-ultimate-arena", 20],

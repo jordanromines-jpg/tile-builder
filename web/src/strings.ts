@@ -59,6 +59,11 @@ export const S = {
     bestWithOneBrand: "This one works best with tiles of one brand.",
     forBaby: "For a grown-up to build, for a baby to look at. Magnet tiles are made for ages 3 and up: stay close, and put away any cracked tile.",
     stepTiles: "This step's tiles",
+    getTiles: "Get your tiles",
+    start: "Start",
+    backToBuilding: "Back to building",
+    tilesButton: "Tiles you need",
+    total: (n: number) => `${n} ${n === 1 ? "tile" : "tiles"} in all.`,
   },
   oops: "That didn't work. Let's go back.",
   done: {

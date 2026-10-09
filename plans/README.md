@@ -8,7 +8,7 @@ approved is written into a plan first and waits for his go; adding detail to an 
 
 ## Start here
 
-`2026-10-08-design-polish.md` is the plan in progress (3.0–3.6: three looks a family can choose, sound, a tile friend); `2026-10-07-tots-and-trucks.md` is done (2.9 merged); `2026-10-08-sound-structures.md` (2.8, 2.8.1, 2.8.2) is merged, waiting only on Jordan's tests T1 and T2; `2026-10-02-tile-builder.md` is the original plan. A session picking up work reads its build log (the last row says what is
+`2026-10-09-build-helpers.md` is the plan in progress (3.7–3.9: a tiles list at the start, All steps, Pip helps); `2026-10-08-design-polish.md` (3.0–3.6: three looks a family can choose, sound, a tile friend) waits on G2; `2026-10-07-tots-and-trucks.md` is done (2.9 merged); `2026-10-08-sound-structures.md` (2.8, 2.8.1, 2.8.2) is merged, waiting only on Jordan's tests T1 and T2; `2026-10-02-tile-builder.md` is the original plan. A session picking up work reads its build log (the last row says what is
 next), then `PRODUCT.md`, `DESIGN.md`, `docs/research/README.md` and `web/README.md`, checks out the commit the log
 names, runs the checks, and starts the next key.
 
@@ -23,6 +23,7 @@ names, runs the checks, and starts the next key.
 
 | Plan | Status | Carries |
 |---|---|---|
+| `2026-10-09-build-helpers.md` | approved 9 Oct 2026, in progress | 3.7 (Get your tiles: the materials list), 3.8 (All steps: a slider and a filmstrip, jumping for every age), 3.9 (Pip helps: shows where, hands over the tiles, reacts, tips; always a little alive) |
 | `2026-10-08-sound-structures.md` | approved 8 Oct 2026, in progress | 2.8 (all 50 trucks under R11 strict, braced crash walls and R12), 2.8.1 (the canvas copes with big builds), 2.8.2 (R12 for every project) |
 | `2026-10-07-tots-and-trucks.md` | approved 7 Oct 2026, in progress | 2.6 (32 more 0–3 builds, big squares used well), 2.7 and 2.8 (Monster trucks: about 50 builds, engine R11, track kit, Library shelf and filter), 2.9 (50 native wildflower builds: Kansas, Chicago, North Carolina) |
 | `2026-10-02-tile-builder.md` | approved 2 Oct 2026, in progress | PR 0.1 to 8.1; gates G1 (the brief) and G2 (the mockups) |

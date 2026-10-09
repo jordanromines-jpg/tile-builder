@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.7.0 · 9 Oct 2026
+
+Get your tiles. Jordan: "There should also be a materials list when you start a project."
+
+- **A fresh build opens on its tiles:** every tile it takes, one row a shape and a chip a colour with its count, the
+  finished build beside them and the total ("78 tiles in all."). Swapped tiles show as what stands in for them.
+- **What's short is on the same card,** with Start anyway and Pick another; the separate short-of-tiles note is gone.
+- **"Tiles you need"** in the top bar opens the list again at any step. A build picked up half-way skips it.
+
+## 3.0–3.6 · 8–9 Oct 2026
+
+Design polish (plan `2026-10-08-design-polish.md`). Three looks a family can choose on the shelf and in Settings: Toy
+studio, Picture book and Clean studio, beside the classic one. Sound, with a mute. Quality that steps down on slower
+iPads. Pip, the tile friend, on the step panel and at the finish. Split View layouts, a screen for a build that isn't
+on the iPad yet, and screenshot tests for every look.
+
 ## 2.9.0 · 8 Oct 2026
 
 Wildflowers: 50 flowers native to Kansas, Chicago and North Carolina (445 builds in all). Jordan: "flowers native to
