@@ -147,6 +147,9 @@ function dragonWall(): Project {
 function trussBridge(): Project {
   const s = new Studio();
   const Q = Math.PI / 2;
+  // the floor ties the two sides together at the bottom, as the road does at the top: with only the road, the sides
+  // and the road leaned over together like a parallelogram (R14)
+  s.rug("the floor", [[0, 0], [1, 0], [2, 0], [3, 0]], "blue", "a row of four squares, the floor between the two sides");
   for (const z of [1, 0]) {
     const side = z ? "front" : "back";
     const up = (b: Builder, i: number) => b.wallX("tri-equilateral", z ? "red" : "orange", i, 0, z);

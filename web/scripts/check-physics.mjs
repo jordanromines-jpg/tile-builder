@@ -1,7 +1,7 @@
 // `npm run check:physics` (4.2, R14): every build stands, proved in the physics. Each build's result is kept in
 // src/projects/proofs/r14.json under a key (the build's tiles and steps, the physics code, the Rapier version), so a
 // run simulates only builds whose key changed, plus one kept build chosen at random that must come out the same.
-// A real fall fails the check unless the build is on src/engine/r14-allow.json (the list shrinks to nothing, 4.2a).
+// A real fall fails the check: every build must stand (the allow-list of 4.2a is gone, 9 Oct 2026).
 //   node scripts/check-physics.mjs [--cold] [--cores N] [--report]
 import { build } from "esbuild";
 import { createHash } from "node:crypto";
@@ -36,7 +36,6 @@ try {
 } catch {
   kept = {};
 }
-const allow = new Set(JSON.parse(read("src/engine/r14-allow.json")));
 
 const todo = builds.filter((p) => cold || kept[p.id]?.key !== keyOf(p)).map((p) => p.id);
 // one kept build, simulated again: the physics must give the same answer
@@ -94,18 +93,13 @@ const falling = Object.entries(sorted).filter(([, r]) => r.falls.length);
 for (const [id, r] of falling) {
   const f = r.falls[0];
   const line = `${id}: ${r.falls.length} state(s) fall; first at step ${f.step}, tile ${f.tile} moves ${f.mm} mm, tips ${f.deg}° (${f.phase})`;
-  if (allow.has(id)) {
-    if (report) console.log(`allowed ${line}`);
-  } else {
-    console.log(`FAIL ${line}`);
-    bad++;
-  }
+  console.log(`FAIL ${line}`);
+  bad++;
 }
-for (const id of allow) if (!falling.some(([f]) => f === id)) console.log(`note ${id} stands now: take it off src/engine/r14-allow.json`);
 const sags = Object.values(sorted).reduce((n, r) => n + r.sags, 0);
 console.log(
   `${builds.length} builds; simulated ${run.length} in ${((performance.now() - t0) / 1000).toFixed(0)} s on ${shards.length} cores; ` +
-    `${falling.length} with a fall (${falling.filter(([id]) => allow.has(id)).length} allowed for now); ${sags} states sag a little`,
+    `${falling.length} with a fall; ${sags} states sag a little`,
 );
 if (report) {
   mkdirSync(join(root, "test-results"), { recursive: true });

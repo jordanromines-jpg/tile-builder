@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-09
 
+- `2026-10-09-r14-flat-tiles.md`: approved ("go"), done as 4.4; what was found (the contact filter never ran), the builds changed, T3.
 - `2026-10-09-set-colours.md`: new; approved ("go"); changed after the go (no counts needed: brand colours from the makers' photos, light blue and pink added); 4.3 built.
 - `2026-10-09-truck-runs-autobuild.md`: 4.2.1, Pip moves (build-log row).
 - `2026-10-09-truck-runs-autobuild.md`: 4.2a batch B (27 of 34 stand; 7 left, see the new plan). `2026-10-09-r14-flat-tiles.md`: new, proposed.

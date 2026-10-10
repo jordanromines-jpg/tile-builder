@@ -25,22 +25,42 @@ function landing(b: Builder, colours: Colour[], x0: number, z0: number, h: numbe
 
 function spiral(): Project {
   const b = new Builder();
-  // the pinwheel: the 8-high tower at the south-west, three landings at 2, 4 and 6 high, a ramp of four squares between
+  // the pinwheel: two landings at 2 and 4 high, a ramp of four squares between, up onto a 6-high tower of big squares.
+  // (It was 8 high round 1-wide towers: in the physics (R14) a tower one square wide and over 4 high sways while it
+  // stands alone, before the ramps tie it in, and two wide it took more squares than four sets have.)
   landing(b, ["blue", "green"], 0, -L - 1, 2, "yellow", "The first landing, two squares up.");
   ramp(b, "red", at(-L, -L - 1), "E", 2, { support: "blue", say: "Lean four red squares up from the table, end to end, going right, to the first landing. The ramp starts here." });
   why(b, "Triangles don't fold: the brace locks the join.");
   landing(b, ["orange", "purple", "red", "yellow"], 1 + L, -L - 1, 4, "yellow", "The second landing, four squares up.");
   ramp(b, "orange", at(1, -L - 1, 2), "E", 2, { support: "purple", say: "From the first landing, lean four squares up, going right, to the second landing." });
-  landing(b, ["green", "red", "blue", "orange", "purple", "yellow"], 1 + L, 0, 6, "yellow", "The third landing, six squares up.");
-  ramp(b, "green", at(2 + L, -L, 4), "S", 2, { support: "red", say: "Lean four squares up, coming back towards you, to the third landing." });
-  tower(b, ["red", "orange", "yellow", "green", "blue", "purple", "red", "orange"], 0, 0, 1, 1, 8, "purple", (r) => (r === 0 ? "Stand a ring of four squares at the front left. The tall tower starts here." : `Another ring on top: ${r + 1} squares high.`), "E");
-  ramp(b, "blue", at(1 + L, 1, 6), "W", 2, { support: "green", say: "From the third landing, lean the last four squares up, going left, onto the tall tower." });
+  // the big tower: a ring of squares, two rings of big squares, a ring of squares (so the last ramp's brace has a top
+  // edge 5 high to lean from), and a big square on top
+  // centred on the last ramp, so the truck drives from the deck's middle straight onto it
+  const tx = R6(0.5 + L);
+  b.room("green", tx, 0, 2, 2, 0);
+  b.step("Stand eight squares in a ring, two by two, beside the second landing. The big tower starts here.");
+  for (const [r, c] of [[0, "blue"], [1, "purple"]] as [number, Colour][]) {
+    b.wallX("square-large", c, tx, 1 + 2 * r, 2);
+    b.wallZ("square-large", c, tx + 2, 1 + 2 * r, 0);
+    b.wallX("square-large", c, tx, 1 + 2 * r, 0);
+    b.wallZ("square-large", c, tx, 1 + 2 * r, 0);
+    b.step(`Four big squares in a ring on top: ${3 + 2 * r} squares high.`);
+  }
+  b.room("green", tx, 0, 2, 2, 5);
+  b.step("Eight squares in a ring on top: 6 high.");
+  const lid = b.add("square-large", "red", [tx, 6, 2], [-Q, 0]);
+  b.step("A big square flat on top: the deck, six squares up. The truck starts here.");
+  b.deck(null, [lid], "N");
+  ramp(b, "green", at(2 + L, -L, 4), "S", 2, { support: "red", say: "From the second landing, lean the last four squares up, coming back towards you, onto the big tower." });
   why(b, "The ramps tie the landings to the tower, so the whole spiral stands as one wide shape and doesn't tip.");
   lane(b, ["green", "yellow"], at(-L, 0.5 - L), "W", 1, 2, "At the bottom of the first ramp, in line with it, lay two squares flat: the landing zone.");
+  // the tunnel's floor first: its walls stand on its edges, so the tunnel can't lean over like a parallelogram (R14)
+  b.add("square-large", "green", [R6(-L - 3), 0, R6(0.5 - L)], [-Q, 0]);
+  b.step("At the end of the landing zone, lay a big square flat: the tunnel's floor.");
   tunnel(b, "red", "blue", at(-L - 1, 0.5 - L), "W", 1);
   // from the top deck, all the way down the spiral, turning on each landing, then along the lane and through the tunnel
-  b.route(["deck-4", { down: "ramp-4" }, { to: [4.9, 6, 0.3] }, { down: "ramp-3" }, { to: [4.9, 4, -3.9] }, { down: "ramp-2" }, { to: [0, 2, -3.96] }, { down: "ramp-1" }, "lane-1", "tunnel-1"]);
-  return truck(b, { id: "truck-spiral-ramp", title: "Spiral ramp round an 8-high tower", age: "d", done: "Round and round, up to eight! Now roll all the way down and through the tunnel." });
+  b.route(["deck-3", { down: "ramp-3" }, { to: [4.9, 4, -3.9] }, { down: "ramp-2" }, { to: [0, 2, -3.96] }, { down: "ramp-1" }, "lane-1", "tunnel-1"]);
+  return truck(b, { id: "truck-spiral-ramp", title: "Spiral ramp round a big 6-high tower", age: "d", done: "Round and round, up to six! Now roll all the way down and through the tunnel." });
 }
 
 /** A pylon: a 1 × 1 tower of `h` rings with a cone of four tall triangles on top. */

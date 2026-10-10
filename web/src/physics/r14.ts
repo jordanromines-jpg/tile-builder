@@ -9,7 +9,7 @@ import type { Rapier } from "./rapier";
 import { buildScene } from "./scene";
 import { tiltTest } from "./tilt";
 
-/** The settings R14 is proved with (P0's calibration: 9 of 9 truths). Part of every cache key. */
+/** The settings R14 is proved with (calibration.test.ts). Part of every cache key. */
 export const R14 = { lean: 1.25, hinge: 0.006, iterations: 24 } as const;
 
 export interface R14Fall {

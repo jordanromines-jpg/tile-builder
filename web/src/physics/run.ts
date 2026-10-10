@@ -85,6 +85,8 @@ export function simulateRun(R: Rapier, project: Project, nudge = 0, trace?: (at:
   const crash = new Set(project.placed.map((t, i) => (t.role === "crash" ? i : -1)).filter((i) => i >= 0));
   const fixed = new Set(project.placed.map((_, i) => i).filter((i) => !crash.has(i)));
   const scene = buildScene(R, project, { leg: DEFAULT_LEG, held: fixed, hinge: 0.006, iterations: 16, flush: true });
+  // the course's still pieces are fixed from the start, where they are drawn
+  scene.hold();
   const { world } = scene;
   const events = new R.EventQueue(true);
   const colliderTile = new Map<number, number>();
