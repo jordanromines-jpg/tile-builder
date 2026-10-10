@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.4.1 · 10 Oct 2026
+
+Faster truck runs, harder hits. Jordan: "too slow more crash and smash".
+
+- The truck goes about 75% faster on the flat and into the hits, slowing only for sharp turns and the run-up to a jump.
+- Runs play a third faster than real between the action, with only a short slow-motion dip at each hit.
+- The view shakes at every crash and hard landing.
+- Three crowded courses (Crash-zone city, the Monster stadium, Big-air gap) keep the steady speeds, where faster runs
+  came apart; they still play faster and shake.
+
 ## 4.4.0 · 9 Oct 2026
 
 Every build stands, with no exceptions.

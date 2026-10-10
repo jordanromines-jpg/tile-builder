@@ -71,6 +71,9 @@ export const CourseZ = z.object({
   route: z.array(RouteItemZ),
   /** the truck's colour for this course, when it is not the default (a tile colour) */
   truck: ColourZ.optional(),
+  /** the truck is pushed round this course at the steady speeds of 4.0, not the faster ones of 4.4.1 (a crowded
+      course, where faster runs come apart) */
+  steady: z.boolean().optional(),
 });
 
 export const ProjectZ = z

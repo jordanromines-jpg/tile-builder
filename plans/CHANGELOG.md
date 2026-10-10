@@ -3,6 +3,10 @@
 Every change to a plan in this folder, newest first: the date, the plan, what changed, and the pull request. Add a
 line in the same commit as the plan change.
 
+## 2026-10-10
+
+- `2026-10-09-truck-runs-autobuild.md`: 4.4.1, faster runs (build-log row).
+
 ## 2026-10-09
 
 - `2026-10-09-r14-flat-tiles.md`: approved ("go"), done as 4.4; what was found (the contact filter never ran), the builds changed, T3.

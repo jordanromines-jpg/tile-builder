@@ -5,7 +5,7 @@ import type { Colour } from "../engine/catalog";
 import type { Project } from "../engine/types";
 import { Builder } from "./helpers";
 import { crushCar, dominoes, OPPOSITE, ramp, RIGHT, tunnel, UP, type At, type Dir } from "./track-kit";
-import { truck } from "./trucks-1";
+import { truck, steady } from "./trucks-1";
 
 const Q = Math.PI / 2;
 const BR = 2 * Math.cos(Math.PI / 6); // one big ramp square runs this far
@@ -97,7 +97,7 @@ function bigAirGap(): Project {
   crushCar(b, "yellow", -4, top - 1.5, "a crush car on the left");
   crushCar(b, "purple", 4, top - 1.5, "a crush car on the right");
   b.route(["lane-2", "lane-1", "ramp-1", { jump: "ramp-2" }, { down: "ramp-2" }, "lane-3", "lane-4", { to: [-3.5, 0, -19] }, { through: "car-1" }, { to: [-1.5, 0, 1.5] }, { through: "dominoes-1" }, { to: [-1.5, 0, 1.5] }, { to: [3.5, 0, 1.5] }, { through: "dominoes-2" }, { to: [5.3, 0, -7.5] }, { through: "car-2" }]);
-  return truck(b, { id: "truck-big-air-gap", title: "Big-air gap", age: "c", done: "Up the kicker, four squares of nothing but air, and a soft landing. Big air!" });
+  return steady(truck(b, { id: "truck-big-air-gap", title: "Big-air gap", age: "c", done: "Up the kicker, four squares of nothing but air, and a soft landing. Big air!" }));
 }
 
 /** One side of the bowl: a 4-square-wide rim ring with lids, and two big ramps leaning up to it from the floor. */

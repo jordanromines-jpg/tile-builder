@@ -59,6 +59,9 @@ const BIG = 6;
 /** how quickly the view catches up (per second), and seconds to go back to where it began after the run */
 const CATCH = 4;
 const BACK_S = 1.2;
+/** the view shakes at a crash or a hard landing: squares at a full hit, and how fast it dies away (seconds) */
+const SHAKE = 0.12;
+const SHAKE_S = 0.28;
 
 export function RunStage({ play, paint, size, follow, aim, offset }: { play: RunPlay; paint: number; size: number; follow: Follow; aim: THREE.Vector3; offset: THREE.Vector3 }) {
   const invalidate = useThree((s) => s.invalidate);
@@ -76,8 +79,13 @@ export function RunStage({ play, paint, size, follow, aim, offset }: { play: Run
   // the sounds: the engine while the truck goes, and each moment as the run passes it
   const engine = useMemo(() => new Engine(), []);
   const heard = useRef({ t: 0, at: [0, 0, 0] as readonly number[] });
+  // the follow without the shake, and the shake: how big, and when it began
+  const base = useRef(new THREE.Vector3());
+  const shake = useRef({ amp: 0, from: 0 });
   useEffect(() => {
     endedAt.current = 0;
+    base.current.set(0, 0, 0);
+    shake.current = { amp: 0, from: 0 };
     return () => {
       follow.shift.set(0, 0, 0);
       follow.zoom = 1;
@@ -101,6 +109,12 @@ export function RunStage({ play, paint, size, follow, aim, offset }: { play: Run
         if (e.kind === "launch") truckSound.whoosh();
         else if (e.kind === "land") truckSound.thud(e.hit ?? 0.5);
         else if (e.kind === "break") truckSound.crunch();
+        const jolt = e.kind === "break" ? 1 : e.kind === "land" ? Math.min(1, e.hit ?? 0.5) : 0;
+        if (jolt) {
+          const now = performance.now();
+          const left = shake.current.amp * Math.exp(-(now - shake.current.from) / 1000 / SHAKE_S);
+          shake.current = { amp: Math.min(2 * SHAKE, left + SHAKE * jolt), from: now };
+        }
       }
       heard.current = { t, at };
     }
@@ -120,9 +134,13 @@ export function RunStage({ play, paint, size, follow, aim, offset }: { play: Run
       const wantZoom = 1 - (size > BIG ? 1 - CLOSER : 0) * (1 - back);
       // (a held moment, for the contact sheets, shows the view settled there)
       const k = endedAt.current || window.__runSeek !== undefined ? 1 : 1 - Math.exp(-CATCH / 60);
-      follow.shift.lerp(want, k);
+      base.current.lerp(want, k);
       follow.zoom += (wantZoom - follow.zoom) * k;
-      easing = back < 1;
+      // the shake on top: a quick jitter that dies away (never on a held moment)
+      const age = (now - shake.current.from) / 1000;
+      const a = window.__runSeek !== undefined ? 0 : shake.current.amp * Math.exp(-age / SHAKE_S);
+      follow.shift.set(base.current.x + a * Math.sin(age * 71), base.current.y + a * 0.6 * Math.sin(age * 53 + 1), base.current.z + a * Math.cos(age * 61));
+      easing = back < 1 || a > 0.002;
     }
     if (!done || easing || window.__runSeek !== undefined) invalidate();
   });

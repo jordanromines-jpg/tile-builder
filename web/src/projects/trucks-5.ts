@@ -4,7 +4,7 @@ import type { Colour } from "../engine/catalog";
 import type { Project } from "../engine/types";
 import { Builder } from "./helpers";
 import { OPPOSITE, RIGHT, UP, crushCar, dominoes, fence, kicker, ramp, tower, tunnel, type At, type Dir } from "./track-kit";
-import { truck } from "./trucks-1";
+import { truck, steady } from "./trucks-1";
 
 const at = (x: number, z: number, y = 0): At => ({ x, y, z });
 const R3 = Math.sqrt(3); // one big square of ramp runs this far, and rises one square
@@ -180,7 +180,8 @@ function crashZone(): Project {
   pylon(b, ["yellow", "orange"], 13, -12, 1, "red", "a street-corner post");
   why(b, "a bank", "Walls joined in a ring hold each other square, so a building stands until it's hit.");
   b.route(["lane-1", "ramp-1", { jump: "ramp-2" }, { down: "ramp-2" }, { to: [12.5, 0, -12.5] }, { through: "dominoes-1" }, { through: "wall-5" }, { to: [1, 0, -8.5] }, { through: "wall-1" }, { to: [-3, 0, -4.6] }, { to: [-3, 0, -3.2] }, { through: "wall-2" }, { to: [8, 0, -0.3] }, { to: [9.5, 0, -1.5] }, { to: [10.7, 0, -1.5] }, "kicker-1", { jump: "car-1" }, { through: "car-1" }, { to: [17.5, 0, -1.5] }, { to: [17.5, 0, -4.2] }, { to: [14, 0, -4.2] }, { through: "wall-3" }, { to: [10.6, 0, -7.5] }, { to: [12.5, 0, -7.5] }, { through: "wall-4" }]);
-  return truck(b, { id: "truck-crash-zone-city", title: "Crash-zone city", age: "d", done: "Welcome to the Crash Zone! Jump the cars, flatten the shops, and topple the dominoes." });
+  // the city is crowded with rubble once the shops come down: the truck goes round it at the old, steadier pace
+  return steady(truck(b, { id: "truck-crash-zone-city", title: "Crash-zone city", age: "d", done: "Welcome to the Crash Zone! Jump the cars, flatten the shops, and topple the dominoes." }));
 }
 
 function doubleDecker(): Project {

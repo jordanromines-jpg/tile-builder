@@ -4,11 +4,13 @@
 import type { Quat, Recording, RunEventKind, V3 } from "../../engine/run-format";
 import { TRUCK, type TruckPose, type Wheel } from "../truck/spec";
 
-/** a real 1:64 jump is over in a fifth of a second: around a jump, a landing or a crash a run plays at this share of
-    real speed (a toy camera's slow motion), easing in and out over SLOW_EASE seconds; the driving between is at speed */
-export const SLOW = 0.55;
-const SLOW_AROUND = 0.35;
-const SLOW_EASE = 0.25;
+/** a real 1:64 jump is over in a fifth of a second: right at a jump, a landing or a crash a run plays at this share of
+    real speed (a toy camera's slow motion), easing in and out over SLOW_EASE seconds; the driving between plays a
+    little faster than real (Jordan, 9 Oct: "too slow more crash and smash") */
+export const SLOW = 0.8;
+export const BETWEEN = 1.3;
+const SLOW_AROUND = 0.15;
+const SLOW_EASE = 0.2;
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 const lerp3 = (a: V3, b: V3, k: number): V3 => [lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)];
@@ -65,12 +67,12 @@ export interface Player {
   at(s: number): number;
 }
 
-/** How fast the run plays at its moment t: SLOW near a launch, landing or crash, 1 between, eased. */
+/** How fast the run plays at its moment t: SLOW near a launch, landing or crash, BETWEEN otherwise, eased. */
 export function rateAt(t: number, moments: number[]): number {
   let d = Infinity;
   for (const m of moments) d = Math.min(d, Math.abs(t - m));
   const k = Math.max(0, Math.min(1, (d - SLOW_AROUND) / SLOW_EASE));
-  return SLOW + (1 - SLOW) * k * k * (3 - 2 * k);
+  return SLOW + (BETWEEN - SLOW) * k * k * (3 - 2 * k);
 }
 
 export function player(rec: Recording): Player {
