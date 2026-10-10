@@ -4,7 +4,6 @@ import type * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import { drawFullLook } from "../gpu";
 import { stage } from "../looks/vinyl/stage";
-import { STAGES } from "../looks/stages";
 import { currentTier, faster, slower } from "./quality";
 import { roomFile } from "./Set";
 import { baseOpacity, makeTileMaterials } from "./TileMesh";
@@ -35,11 +34,9 @@ describe("the set (5.4.1)", () => {
     expect(roomFile(set, "low")).toMatch(/_512\.hdr$/);
   });
 
-  it("is every look's stage until the others go (5.4.3), with no effects at low", () => {
-    for (const s of Object.values(STAGES)) {
-      expect(s.set).toBe(set);
-      expect(s.effects("low", false)).toEqual({});
-    }
+  it("has no effects at low tier", () => {
+    expect(stage.effects("low", false)).toEqual({});
+    expect(stage.effects("low", true)).toEqual({});
   });
 });
 

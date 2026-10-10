@@ -16,7 +16,6 @@ export const S = {
     offlineReady: "Ready to use without Wi-Fi.",
   },
   kid: {
-    looks: "Change how it looks",
     back: "Back to the shelf",
     hearAgain: "Hear again",
     next: "Next",
@@ -141,7 +140,6 @@ export const S = {
     add: "Tap Add to Home Screen, then open Tile Steps from there.",
     buildTitle: "Stand the iPad up beside the tiles and build together.",
     buildBody: "Pick a project together and follow the steps on the screen; the building happens on the table. Tap the speaker to hear a step.",
-    pickLook: "Pick a style. You can change it any time with the paint palette on the shelf.",
     ok: "Got it",
   },
   /** Pip's tips (3.9), told once a build at the first step that needs one */
