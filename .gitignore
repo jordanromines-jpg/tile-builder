@@ -25,3 +25,6 @@ web/.look-done.mjs
 web/.prof.mjs
 .claude/worktrees/
 .claude/launch.json
+
+# design tools (5.3): the Python environment for design/pip
+design/pip/.venv/
