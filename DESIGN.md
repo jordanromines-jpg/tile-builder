@@ -236,6 +236,15 @@ backup date; two buttons, Save a backup and Restore from a backup.
 "Hold to open" for three seconds with a filling ring; letting go early starts again. Then a sum in words with a number
 pad ("forty-two plus seven?"); three wrong answers close it. No birth-year question.
 
+### Make your own (5.0)
+The one place the iPad simulates (D9′): Rapier runs in a worker (`physics/worker.ts`, `physics/live.ts`), loaded only
+by this page and kept for offline after its first use, stepping at 240 Hz and posting every tile's pose each frame.
+The stage (`screens/make/MakeStage.tsx`) draws each tile as its own group posed from its body, and the edges a picked
+tile can go on as glowing bars: the build's own level edges bright and thick, the table's grid faint; each bar has a
+larger, unseen tap area. A ghost shows the tile on the chosen edge, red when it would go through another. The tray along
+the bottom: five shapes (the Connetix four behind More), eight colours. Placing follows `Builder.add`: base edge on the
+edge, a tilt of standing, leaning, ramp, flat or hanging down (Turn), on either side (Flip).
+
 ### The Pip truck (`three/truck/`, design page row "Pip truck")
 Pip as an original Monster Jam-style truck, copied from no real truck, brand or game. His square orange face is the front
 (yellow lens headlights with purple pupils and blue bezels, red cheeks, a dark-purple smile for the grille); two yellow

@@ -111,6 +111,9 @@ Carolina). Every flower was checked as native against a source (state wildflower
 Wildflowers), and every build ends with one true fact from those sources: the state flowers (sunflower, violet,
 dogwood), the pollinators, the Venus flytrap growing wild only near Wilmington.
 
+- **Make your own (5.0).** A page for building anything: any tile, any colour, as many as you like, put on by tapping
+  a glowing edge (or dragging it there). Real physics, live: a tile stands if its magnets and the tiles round it hold
+  it, and falls if not, as real tiles do.
 - **Built in your colours (4.3).** A build is drawn and named in the colours the family's tiles come in: Magna-Tiles
   and Connetix make six, PicassoTiles eight (light blue and pink too). Each set's shapes are taken as an even mix of
   its colours unless a grown-up counts them. A colour the family has enough of stays; one it hasn't moves whole to the
