@@ -69,3 +69,24 @@ test("a design is kept: it is on My builds after a reload, opens again, and Make
   await expect(page).toHaveURL(/#\/build\/my-[a-z0-9]+$/);
   await expect.poll(() => page.evaluate(() => document.body.innerText.includes("Stand 2 blue squares on the table."))).toBe(true);
 });
+
+test("drive the Pip truck into a ring: Go moves it, the ring comes apart, Put it back stands it up again (5.0d)", async ({ page }) => {
+  await open(page);
+  await putOn(page, [0, 0, 1], [1, 0, 1]);
+  await putOn(page, [1, 0, 0], [1, 0, 1]);
+  await putOn(page, [0, 0, 0], [1, 0, 0]);
+  await putOn(page, [0, 0, 0], [0, 0, 1]);
+  await page.waitForTimeout(2000);
+  await page.getByRole("button", { name: "Drive the truck" }).dispatchEvent("click");
+  await expect.poll(async () => (await make(page))?.truck !== null).toBe(true);
+  const z0 = (await make(page))!.truck![2];
+  await page.getByRole("button", { name: "Go" }).dispatchEvent("click");
+  await expect.poll(async () => z0 - (await make(page))!.truck![2]).toBeGreaterThan(0.5);
+  await expect.poll(async () => (await make(page))!.moved, { timeout: 15_000 }).toBeGreaterThan(0);
+  await page.getByRole("button", { name: "Put it back" }).dispatchEvent("click");
+  await page.waitForTimeout(2500);
+  const m = (await make(page))!;
+  expect(m.tiles).toBe(4);
+  expect(m.moved).toBe(0);
+  expect(m.high).toBeGreaterThan(0.95);
+});

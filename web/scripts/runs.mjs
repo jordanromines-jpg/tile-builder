@@ -31,7 +31,9 @@ await build({ entryPoints: [join(root, "scripts/runs-worker.ts")], bundle: true,
   banner: { js: "import { createRequire } from 'module'; const require = createRequire(import.meta.url);" } });
 
 // a recording's key: its build, the physics and the format it was made with
-const physicsSrc = readdirSync(join(root, "src/physics")).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts")).sort().map((f) => read(`src/physics/${f}`)).join("\n");
+// (Make your own's live scene and its worker (5.0) are never part of a run: a change to them keeps the runs)
+const LIVE_ONLY = new Set(["live.ts", "worker.ts"]);
+const physicsSrc = readdirSync(join(root, "src/physics")).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts") && !LIVE_ONLY.has(f)).sort().map((f) => read(`src/physics/${f}`)).join("\n");
 const rapierVersion = JSON.parse(read("node_modules/@dimforge/rapier3d-deterministic-compat/package.json")).version;
 const engineKey = hash(physicsSrc + read("src/engine/run-format.ts") + read("src/engine/route.ts") + rapierVersion);
 const keyOf = (p) => hash(JSON.stringify({ placed: p.placed, course: p.course }) + engineKey);

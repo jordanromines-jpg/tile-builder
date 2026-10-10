@@ -78,4 +78,41 @@ describe("live physics", () => {
     expect(s.poses().length).toBe(2 * 8);
     s.free();
   });
+
+  it("the Pip truck goes on Go, rolls to a stop on Stop, and a ring it drives into comes apart (5.0d)", () => {
+    const s = new LiveScene(R, DEFAULT_LEG);
+    s.truckOn([0, 0, -3], [0, 1]);
+    s.step(seconds(0.5));
+    const z0 = s.truckPose()![2];
+    s.drive(1, 0);
+    s.step(seconds(1));
+    const z1 = s.truckPose()![2];
+    expect(z1 - z0).toBeGreaterThan(1);
+    s.drive(0, 0);
+    s.step(seconds(3));
+    const z2 = s.truckPose()![2];
+    s.step(seconds(0.5));
+    expect(Math.abs(s.truckPose()![2] - z2)).toBeLessThan(0.05);
+    // a ring ahead; drive into it
+    s.truckOff();
+    expect(s.truckPose()).toBeNull();
+    const ids = ring(-0.5, 0, 1).map((t) => s.add(t));
+    s.step(seconds(HOLD_S + 1));
+    s.truckOn([0, 0, -2], [0, 1]);
+    s.drive(1, 0);
+    s.step(seconds(2.5));
+    expect(s.broke).toBeGreaterThan(0);
+    expect(ids.some((id) => s.hinges(id) < 2)).toBe(true);
+    s.free();
+  });
+
+  it("left is left: steering turns the truck toward its own left (+x when it faces +z)", () => {
+    const s = new LiveScene(R, DEFAULT_LEG);
+    s.truckOn([0, 0, 0], [0, 1]);
+    s.step(seconds(0.3));
+    s.drive(1, 1);
+    s.step(seconds(1));
+    expect(s.truckPose()![0]).toBeGreaterThan(0.3);
+    s.free();
+  });
 });
