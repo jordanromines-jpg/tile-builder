@@ -12,7 +12,7 @@ import type { Project } from "../engine/types";
 import { play } from "../sound/sound";
 import { ARRIVE, ARRIVE_S, browseProgress, DROP_S, DROP_S_REDUCED, fade, flightAt, type Flight, GHOST_S, GLOW_S, LAND_K, LEAVE_LIFT, LEAVE_S, makeFlight, mulberry, snap, stepProgress } from "./anim";
 import { placeTile } from "./buildScene";
-import { BASE_OPACITY, makeTileMaterials, releaseTiles, rivetMaterial, type TileMaterials } from "./TileMesh";
+import { BASE_OPACITY, baseOpacity, makeTileMaterials, releaseTiles, rivetMaterial, type TileMaterials } from "./TileMesh";
 import { releaseTextures } from "./textures";
 import { buildGeometry, cssColour } from "./tile";
 
@@ -149,6 +149,9 @@ class Settled {
       b.geos.forEach((g) => g.dispose());
       if (!merged) return;
       const mesh = new THREE.Mesh(merged, b.material);
+      // 5.4.1: the set's key casts a soft shadow at high tier (nothing is drawn for it otherwise)
+      mesh.castShadow = true;
+      mesh.receiveShadow = b.part === "frame";
       if (b.part === "glass") mesh.renderOrder = 1;
       this.group.add(mesh);
       meshes.push(mesh);
@@ -287,7 +290,7 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
     let cut = 0;
     while (cut < shown && cut < tiles.length && (p[cut] ?? 0) >= 1 && !lit.current.has(cut)) cut++;
     if (cut !== settledMesh.count) settledMesh.rebuild(tiles, cut, root);
-    for (const g of settledMesh.glass) g.opacity = BASE_OPACITY.glass * (quiet ? 0.7 : 1);
+    for (const g of settledMesh.glass) g.opacity = baseOpacity(g) * (quiet ? 0.7 : 1);
     tiles.forEach((tile, i) => {
       if (i < cut) {
         tile.ghost.visible = false;
@@ -304,7 +307,7 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
           tile.group.quaternion.premultiply(dq);
         }
         tile.mats.frame.opacity = BASE_OPACITY.frame;
-        tile.mats.glass.opacity = BASE_OPACITY.glass;
+        tile.mats.glass.opacity = baseOpacity(tile.mats.glass);
         tile.mats.frame.emissiveIntensity = 0;
         return;
       }
@@ -334,7 +337,7 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
       }
       // frames stay transparent (at opacity 1 it looks the same): flipping the flag would need a new shader
       tile.mats.frame.opacity = BASE_OPACITY.frame * f;
-      tile.mats.glass.opacity = BASE_OPACITY.glass * f * (quiet && !mine ? 0.7 : 1);
+      tile.mats.glass.opacity = baseOpacity(tile.mats.glass) * f * (quiet && !mine ? 0.7 : 1);
       // the new tiles glow in their own colour (an orange glow would tint a blue tile purple)
       const glow = mine && k >= 1;
       tile.mats.frame.emissive.copy(glow ? tile.mats.frame.color : BLACK);

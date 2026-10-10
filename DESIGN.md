@@ -124,6 +124,22 @@ The tiles are what a child matches on the table, so their pictures are the most 
 - In 3D (`web/src/three/tile.ts`, sprint 2): a thick glossy frame with rounded, bevelled corners (clear-coated
   plastic), a clear tinted face at 0.62 with the moulded diamond texture as a bump map, and chrome rivets at the
   corners. Lit by a room environment made on the device, on a wooden table with soft contact shadows.
+- **The set (5.4.1).** The finish:
+  - **frames:** satin vinyl (roughness 0.42, clear coat 0.4, a little sheen in their own colour);
+  - **faces at high tier:** glass that light comes through (transmission, tinted by thickness in the tile's colour, a
+    faint glow of its own);
+  - **faces at mid:** tinted glass with a glow and sheen;
+  - **low:** the tile of before.
+
+  A tier change retunes every live tile (`TileMesh.tsx` `finish`, `onTier`). Model fades and dims glass from its
+  finish's own resting opacity (`baseOpacity`). The pictures are drawn at the mid finish (`pinFinish`).
+
+  The stage (`three/Set.tsx`, `looks/vinyl/stage.ts`):
+  - a CC0 HDRI of a playroom (`public/set/`, 1K at high, 512 below) as light, reflections and a blurred backdrop;
+  - a maple table with an edge (KTX2 maps; Poly Haven's wood lifted to maple by `design/set/convert.py`);
+  - a warm key from the side, with a soft shadow at high tier only, and two coloured rims.
+
+  Without a GPU, the plain room and floor of before. How it was found: `design/set/`.
 - **3D pictures** (`web/src/pictures.ts`): tile chips and project cards show the same 3D tiles as the stage. They are
   drawn ahead of time by the stage's own code (`npm run pictures`, `web/scripts/pictures.mjs`), saved as WebP in
   `web/public/pictures/` on a clear background (one picture for both themes) and cached offline with the app; the iPad
@@ -307,6 +323,10 @@ The iPad is the target, so the app does as little as it can while a child waits 
 - **Framing (2.8.1).** The camera fits the box round what is built so far by width and by height apart (`fitBox` in
   `three/camera.ts`), in the part of the view the panels leave clear; a view the child can turn is fitted for every way
   it can face. A picture moves back only when a tile would be cut off (17 tall builds).
+- **The set (5.4.1).** The room is loaded once per tier and kept. The key's shadow is drawn only at high tier. The glass's
+  transmission (one extra pass of the opaque scene) is only at high, and FrameWatch steps down to mid's glass when
+  frames drop. On the lead's Mac a frame costs 1.6 ms at high against 0.4 ms before (`design/set/README.md`). The fog
+  and its fading table below stay for the plain stage without a GPU.
 - **Fog and table (2.8.1).** The fog starts past the far side of the model at the furthest the child can zoom out, and
   the table runs on into full fog, so a big build is never fogged and the table's edge never shows.
 - **Big builds (over 120 tiles, 2.8.1).** A lighter tile (a third of the triangles, the same look up close), the

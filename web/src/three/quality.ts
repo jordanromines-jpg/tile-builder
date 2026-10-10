@@ -36,6 +36,12 @@ export function faster(): void {
   set(ORDER[Math.min(ORDER.indexOf(start()), ORDER.indexOf(currentTier()) + 1)]);
 }
 
+/** Called on every tier change (outside React: the tile materials retune themselves, 5.4.1). */
+export function onTier(fn: () => void): () => void {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
 export function useTier(): Tier {
   return useSyncExternalStore(
     (l) => {

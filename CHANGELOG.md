@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.4.1 · 10 Oct 2026
+
+The builds stand in a real room.
+
+- **A real set behind every build.** The tiles stand on a pale maple table in a sunny playroom, out of focus behind them, as
+  in a photograph. The room lights the tiles and shines in them; a warm light from the side casts a soft shadow, and
+  two coloured lights from behind draw the edges. In dark the same room is dimmed under a warm lamp.
+- **The tiles look like the real ones.** Their frames are soft satin plastic; on iPads that can, light comes through
+  the clear faces and they glow in their own colour.
+- Everything is part of the app and works offline (about 2.5 MB more). The room and the wood are Poly Haven's (CC0).
+  Older iPads get a lighter version, and without a GPU the set is left out.
+
 ## 5.2.0 · 10 Oct 2026
 
 Drive the Pip truck into what you built.
