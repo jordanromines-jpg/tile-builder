@@ -43,8 +43,10 @@ POSES = [
     ("rest", lambda: None),
     ("blink", lambda: setattr(keys["blink"], "value", 1.0)),
     ("squint", lambda: setattr(keys["squint"], "value", 1.0)),
-    ("wave", lambda: (turn("arm.R", y=-70, x=-20), turn("arm.L", y=10)) if KIND != "snail" else (turn("neck", x=-15), turn("head", x=-10))),
-    ("step", lambda: (turn("leg.L", x=-30), turn("leg.R", x=20)) if KIND != "snail" else (turn("body.0", x=10), turn("body.2", x=-10))),
+    # an arm bone points down its arm: rotating about its length only twists it; about its x it swings up
+    ("wave", lambda: (turn("arm.R", x=-75, z=-20), turn("arm.L", x=10)) if KIND != "snail" else (turn("neck", x=-15), turn("head", x=-10))),
+    ("wave2", lambda: (turn("arm.R", z=-75), turn("arm.L", x=10)) if KIND != "snail" else (turn("neck", x=-15), turn("head", x=-10))),
+    ("step", lambda: (turn("leg.L", x=-35), turn("leg.R", x=25)) if KIND != "snail" else (turn("body.0", x=10), turn("body.2", x=-10))),
     ("swing", lambda: each("tail", z=18) if KIND != "snail" else each("body", z=8)),
     ("look", lambda: turn("head", z=25, x=-8)),
     ("flex", lambda: (turn("gill.L", y=20), turn("gill.R", y=-20)) if KIND == "axolotl" else each("feeler", x=25) if KIND == "snail" else (turn("chest", x=10), turn("head", x=-10))),
