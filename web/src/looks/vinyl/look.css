@@ -182,7 +182,7 @@
 /* ---- rest, grown-ups ---- */
 [data-look="vinyl"] .ts-rest { background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 [data-look="vinyl"] .ts-grownups h1, [data-look="vinyl"] .ts-grownups h2 { font-family: var(--display); letter-spacing: -.005em; }
-[data-look="vinyl"] .ts-grownups a.active { background: var(--v-orange); color: #fff; border-radius: 14px; }
+[data-look="vinyl"] .ts-grownups a.active { background: var(--accent); color: var(--accent-ink); border-radius: 14px; }
 
 /* ---- fallbacks ---- */
 @media (prefers-reduced-transparency: reduce) {
