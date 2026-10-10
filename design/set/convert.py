@@ -39,6 +39,22 @@ for name, size, flags in (("diff", 1024, []), ("nor_gl", 1024, ["-uastc", "-norm
     n = os.path.getsize(ktx)
     print(f"wood_{name}.ktx2 {n / 1e3:.0f} KB")
     wood += n
+    if name == "diff":
+        # a pale honey maple from the same wood (the 2D boards' shelves are light): its lightness kept, so the grain
+        # stays, under one warm tint
+        px = list(im.pixels)
+        tint = (0.98, 0.84, 0.64)
+        for i in range(0, len(px), 4):
+            v = 0.5 + 1.1 * (0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2])
+            for c in range(3):
+                px[i + c] = min(1.0, tint[c] * v)
+        im.pixels[:] = px
+        im.filepath_raw = png
+        im.save()
+        light = os.path.join(OUT, "wood_diff_light.ktx2")
+        subprocess.run(["basisu", "-ktx2", "-mipmap", "-y_flip", png, "-output_file", light], check=True, capture_output=True)
+        os.remove(png)
+        print(f"wood_diff_light.ktx2 {os.path.getsize(light) / 1e3:.0f} KB (a choice, not added to the budget)")
 
 for path in ROOMS:
     room = os.path.basename(path).split("_1k")[0].split("_2k")[0]
