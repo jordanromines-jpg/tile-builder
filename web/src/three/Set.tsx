@@ -114,7 +114,7 @@ export function SetTable({ set, dark, size, onError }: { set: StageSet; dark: bo
   }, [maps, size, invalidate]);
   const geometry = useMemo(() => new RoundedBoxGeometry(size, 0.4, size * 0.75, 4, 0.06), [size]);
   useEffect(() => () => geometry.dispose(), [geometry]);
-  const material = useMemo(() => new THREE.MeshPhysicalMaterial({ roughness: 1, specularIntensity: 0.35 }), []);
+  const material = useMemo(() => new THREE.MeshPhysicalMaterial({ roughness: 1, specularIntensity: 0.2 }), []);
   useEffect(() => () => material.dispose(), [material]);
   useEffect(() => {
     material.map = maps?.[0] ?? null;

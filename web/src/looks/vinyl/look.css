@@ -184,6 +184,18 @@
   [data-look="vinyl"] .ts-card:hover { transform: translateY(-3px); }
 }
 
+/* ---- 5.4.5: the orange keys shaded with a deeper warm orange, not black (black made them a muddy brown) ---- */
+[data-look="vinyl"] .ts-button-accent, [data-look="vinyl"] .ts-button-primary, [data-look="vinyl"] .ts-resume, [data-look="vinyl"] .ts-make-card,
+[data-look="vinyl"] .ts-ages .ts-age[aria-pressed="true"], [data-look="vinyl"] .ts-chip-wrap[aria-pressed="true"] .ts-chip {
+  background:
+    radial-gradient(70% 45% at 32% 18%, rgba(255, 255, 255, .7), rgba(255, 255, 255, 0) 70%),
+    radial-gradient(120% 90% at 50% 120%, #c9540a 0, transparent 55%),
+    var(--kc);
+}
+/* the soft (yellow) key is quieter in the evening: "It fell down" glared */
+:root[data-theme="dark"] [data-look="vinyl"] .ts-button-soft { --kc: #b8902e; --kx: #1f1600; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) [data-look="vinyl"] .ts-button-soft { --kc: #b8902e; --kx: #1f1600; } }
+
 /* ---- the finish ---- */
 [data-look="vinyl"] .ts-finish-words {
   background: radial-gradient(70% 50% at 30% 15%, rgba(255, 255, 255, .7), transparent 70%), linear-gradient(180deg, #ffe07a, #f6b62b);

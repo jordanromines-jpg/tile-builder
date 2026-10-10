@@ -34,3 +34,6 @@ No console errors. Every request stays on the site (nothing leaves it). Each of 
 - The wave and cheer barely move the stub arms.
 - The far eye's lid shows as a pale bump on blink, and lids are a little paler than the skin.
 - The snail's head eyes don't blink (only its stalk eyes).
+
+## Fixed in 5.4.5 (#73)
+L2 zoom speed (older ages; the youngest have no zoom by design) · L3/L4 the tilt stops at about 68° from straight down, so it never reaches the table's level and its seam · L5 only landed tiles cast shadows · L7 the offline note sits below the header · L9 the falling tiles in the bright mid finish · L11 orange keys shaded with a deep orange, not black · L12 the table's shine lowered · L13 the yellow key quieter in the evening. Not done: L1 (table colour, needs an iPad), pan (a new control: Jordan's call), L6 (5.3.3), L8.
