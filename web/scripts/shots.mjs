@@ -77,6 +77,12 @@ try {
         if (steps) await page.waitForTimeout(1200);
         // a button to press first (All steps)
         if (press) {
+          // the "Get your tiles" card holds the page until Start (5.4.4: the build-tip screen waited on a dot behind it)
+          const start = page.getByText("Start", { exact: true });
+          if (await start.isVisible().catch(() => false)) {
+            await start.click();
+            await page.waitForTimeout(600);
+          }
           await page.getByRole("button", { name: press, exact: true }).first().click();
           await page.waitForTimeout(1200);
         }
