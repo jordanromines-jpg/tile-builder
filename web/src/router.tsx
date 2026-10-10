@@ -6,6 +6,7 @@ import { lazy, Suspense, type ComponentType } from "react";
 import { Library } from "./screens/Library";
 import { S } from "./strings";
 
+const Make = lazy(() => import("./screens/Make").then((m) => ({ default: m.Make })));
 const Design = lazy(() => import("./screens/Design").then((m) => ({ default: m.Design })));
 const Build = lazy(() => import("./screens/Build").then((m) => ({ default: m.Build })));
 const Done = lazy(() => import("./screens/Done").then((m) => ({ default: m.Done })));
@@ -53,8 +54,10 @@ const grownups = createRoute({ getParentRoute: () => root, path: "/grownups", co
 const tiles = createRoute({ getParentRoute: () => root, path: "/grownups/tiles", component: later(Tiles) });
 const settings = createRoute({ getParentRoute: () => root, path: "/grownups/settings", component: later(Settings) });
 const design = createRoute({ getParentRoute: () => root, path: "/design", component: later(Design) });
+// 5.0: Make your own, a real-physics builder
+const make = createRoute({ getParentRoute: () => root, path: "/make", component: later(Make) });
 
-const tree = root.addChildren([library, build, done, grownups, tiles, settings, design]);
+const tree = root.addChildren([library, build, done, grownups, tiles, settings, design, make]);
 
 export const router = createRouter({ routeTree: tree, history: createHashHistory() });
 

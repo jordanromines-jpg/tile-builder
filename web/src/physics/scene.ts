@@ -63,7 +63,7 @@ const len = (a: V3) => Math.sqrt(dot(a, a));
 const vec = (v: V3) => ({ x: v[0], y: v[1], z: v[2] });
 
 /** The shortest distance between two segments. */
-function segDist(p1: V3, q1: V3, p2: V3, q2: V3): number {
+export function segDist(p1: V3, q1: V3, p2: V3, q2: V3): number {
   const d1 = sub(q1, p1);
   const d2 = sub(q2, p2);
   const r = sub(p1, p2);
@@ -104,7 +104,7 @@ function touching(polys: V3[][]): Set<string> {
 
 /** The torque that lifts a tile lying flat on the table about one of its edges (the line through `p` along `u`): its
     weight times how far its middle is from the edge, in the world's units. */
-function liftOf(poly: V3[], p: V3, u: V3): number {
+export function liftOf(poly: V3[], p: V3, u: V3): number {
   let area2 = 0;
   for (let k = 0; k < poly.length; k++) {
     const [x1, , z1] = poly[k];
@@ -117,7 +117,7 @@ function liftOf(poly: V3[], p: V3, u: V3): number {
   return (Math.abs(area2) / 2) * AREAL_GRAMS * G * len(off);
 }
 
-function centroid(poly: V3[]): V3 {
+export function centroid(poly: V3[]): V3 {
   return scale(poly.reduce(addv, [0, 0, 0] as V3), 1 / poly.length);
 }
 

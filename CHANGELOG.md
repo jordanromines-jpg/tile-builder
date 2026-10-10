@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.0.0 · 10 Oct 2026
+
+Make your own. Jordan: "a real physics builder page … to select tiles and make your own design."
+
+- **A new page, Make your own**, from the top of the Library: pick any tile and colour (unlimited), tap a glowing edge
+  on the table or on what you've built (or drag the tile onto one), turn it up how you want (standing, leaning, a ramp,
+  flat, hanging down) and put it on.
+- **Real physics, live.** Each tile is held by its magnets like a real one. The hand holds a new tile for a second;
+  then, if nothing holds it up, it falls, and can bring other tiles down with it.
+- The physics engine runs on the iPad on this page only, downloaded the first time it opens and kept for offline.
+- Coming next: saving designs and turning them into steps, and driving the Pip truck into them.
+
 ## 4.4.1 · 10 Oct 2026
 
 Faster truck runs, harder hits. Jordan: "too slow more crash and smash".
