@@ -16,8 +16,10 @@ from mathutils import Vector
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import kit  # noqa: E402
+import stage  # noqa: E402
 
 importlib.reload(kit)
+importlib.reload(stage)
 
 
 def plates(body, arm, spec):
@@ -163,7 +165,7 @@ def make(concept, D):
 def for_app(body, path):
     """The app's copy: the skin's colour and soft shadowing baked into vertex colours, plain materials glTF can
     carry (the eye's gradient becomes its dark colour), then a GLB with the skeleton and the face shape keys."""
-    app = kit.bake_vertex_colours(body)
+    app = stage.bake_vertex_colours(body)
     body.data.materials.clear()
     body.data.materials.append(app)
     eye = bpy.data.materials.get("eye")
@@ -173,7 +175,7 @@ def for_app(body, path):
             eye.node_tree.links.remove(link)
         b.inputs["Base Color"].default_value = kit.hexc("#2A160C")
     keep = [o for o in bpy.data.objects if not o.name.startswith(("studio.", "cam"))]
-    kit.export_glb(path, keep)
+    stage.export_glb(path, keep)
 
 
 if __name__ == "__main__" and "--" in sys.argv:
@@ -186,8 +188,8 @@ if __name__ == "__main__" and "--" in sys.argv:
     if views == ["glb"]:
         for_app(body, os.path.join(OUT, f"{concept}.glb"))
         sys.exit(0)
-    kit.render_setup(samples)
-    kit.studio()
+    stage.render_setup(samples)
+    stage.studio()
     for v in views:
         glad = v.endswith("-happy")
         for o in bpy.data.objects:
@@ -196,5 +198,5 @@ if __name__ == "__main__" and "--" in sys.argv:
                 o.hide_render = glad
             if o.name.startswith("happy."):
                 o.hide_render = not glad
-        kit.camera(v.split("-")[0], target=(0, 0, 0.62), dist=1.05)
-        kit.render(os.path.join(OUT, f"{concept}-{v}.png"))
+        stage.camera(v.split("-")[0], target=(0, 0, 0.62), dist=1.05)
+        stage.render(os.path.join(OUT, f"{concept}-{v}.png"))
