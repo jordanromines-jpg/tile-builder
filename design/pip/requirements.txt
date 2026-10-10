@@ -1,0 +1,3 @@
+# The Python tools design/pip uses (5.3), installed into design/pip/.venv with uv:
+#   uv venv --python 3.12 design/pip/.venv && uv pip install --python design/pip/.venv/bin/python -r design/pip/requirements.txt
+sdf @ git+https://github.com/fogleman/sdf@d58a6fc63b75fc1cf1ebb71e0b42bf552319c8f1

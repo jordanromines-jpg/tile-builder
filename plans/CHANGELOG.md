@@ -5,6 +5,9 @@ line in the same commit as the plan change.
 
 ## 2026-10-10
 
+- `2026-10-10-pip-redesign.md`: the addendum keyed (37 keys under PRs 5.4.0–5.4.3 and 5.3.5, which replaces the name 5.3.1a; gates G-S0, G-S1; checkpoints CP1–CP3); drafts #63–#67. (#62)
+- `2026-10-10-pip-redesign.md`: addendum approved: 5.3.1a (the characters made app-ready) and phase 5.4 (one new look replacing the four; G-S1; PRs 5.4.0–5.4.3, about 42 h). `2026-10-08-design-polish.md`: G2/D5 (pick a default of three looks) superseded by 5.4. (#62)
+- `2026-10-10-pip-redesign.md`: new, approved (P1–P6, gates G-P1 to G-P3).
 - `2026-10-10-make-your-own.md`: 5.0d built (5.2.0); the plan is done.
 - `2026-10-10-make-your-own.md`: 5.0c built (5.1.0); no captured picture (designs drawn from their tiles).
 - `2026-10-10-make-your-own.md`: new (M1–M4), approved; 5.0a and 5.0b built as one PR.

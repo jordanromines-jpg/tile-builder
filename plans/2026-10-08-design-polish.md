@@ -1,6 +1,8 @@
 # Design polish: from 3/10 to 15/10, in three looks a family can choose
 
-Status: approved 8 Oct 2026 (G0: "Approve, agents sooner"), in progress
+Status: approved 8 Oct 2026 (G0: "Approve, agents sooner"), in progress. **10 Oct 2026: G2 and D5 superseded** by 5.4 in
+`2026-10-10-pip-redesign.md` (Jordan: "The looks all suck redo them and wow me. just 1 is needed"): one new look
+replaces all four
 
 What started it: Jordan, 8 Oct 2026: "I want you to think about how to take the design and polish on the UI and
 graphics from a 3/10 to a 15/10." Then, asked about directions: "use 3 agents and build all three and add them as
