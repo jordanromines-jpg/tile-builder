@@ -32,7 +32,7 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,woff2,webp,png,svg,json}"],
         // 2.4: the project pictures (most of the download) are not in the install; each is kept the first time it is
         // shown, and the rest are fetched quietly once the app is idle (src/pwa.ts), so they all work offline soon after
-        globIgnores: ["pictures/projects/**", "runs/**"],
+        globIgnores: ["pictures/projects/**", "runs/**", "assets/worker-*.js"],
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.pathname.includes("/pictures/projects/"),
@@ -45,12 +45,19 @@ export default defineConfig({
             handler: "CacheFirst",
             options: { cacheName: "project-runs" },
           },
+          // 5.0a: Make your own's physics (Rapier, in a worker): fetched the first time the page opens, then kept
+          {
+            urlPattern: ({ url }) => /\/assets\/worker-[^/]*\.js$/.test(url.pathname),
+            handler: "CacheFirst",
+            options: { cacheName: "make-physics" },
+          },
         ],
         maximumFileSizeToCacheInBytes: 6e6,
       },
     }),
   ],
   build: { outDir: "dist", chunkSizeWarningLimit: 1500 },
+  worker: { format: "es" },
   server: { port: 5173, strictPort: true },
   test: { environment: "jsdom", include: ["src/**/*.test.{ts,tsx}"], setupFiles: ["src/test-setup.ts"] },
 });

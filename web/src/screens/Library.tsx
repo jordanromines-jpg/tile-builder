@@ -8,7 +8,7 @@ import { SECTIONS, type Theme } from "../engine/themes";
 import { Decor } from "../looks/decor";
 import { LookPicker } from "../ui/LookPicker";
 import { play } from "../sound/sound";
-import { Palette } from "../ui/icons";
+import { Palette, Cube } from "../ui/icons";
 import type { Age } from "../engine/types";
 import { PROJECT_INFO, SKELETONS } from "../projects/load";
 import type { ProjectInfo } from "../projects/serialize";
@@ -167,6 +167,20 @@ export function Library() {
             onPress={() => void navigate({ to: "/build/$pid", params: { pid: heroItem.project.id } })}
           />
         )}
+        <button
+          type="button"
+          onClick={() => {
+            play("tap");
+            void navigate({ to: "/make" });
+          }}
+          className="ts-make-card ts-button ts-button-accent kid press soft flex min-h-[88px] items-center gap-4 rounded-lg bg-accent px-6 py-3 text-left text-accent-ink"
+        >
+          <Cube size={48} weight="duotone" aria-hidden="true" />
+          <span className="flex flex-col">
+            <span className="font-display text-[length:var(--fs-kid-label-c)] font-semibold">{S.make.card}</span>
+            <span className="font-kid font-bold">{S.make.cardLine}</span>
+          </span>
+        </button>
         {shown.length ? (
           shown.map((s) => (
             <Shelf key={`${s.title} ${theme ?? ""}`} title={s.title}>
