@@ -17,6 +17,15 @@ for o in list(bpy.data.objects):
         bpy.data.objects.remove(o, do_unlink=True)
 keys = mesh.data.shape_keys.key_blocks
 pb = rig.pose.bones
+# 5.3.6: the eyes and the mouth are their own meshes with their own keys
+KEYED = [o for o in bpy.data.objects if o.type == "MESH" and o.data.shape_keys]
+
+
+def setkey(name, v):
+    for o in KEYED:
+        k = o.data.shape_keys.key_blocks.get(name)
+        if k:
+            k.value = v
 
 
 def rest():
@@ -24,8 +33,9 @@ def rest():
         b.rotation_mode = "XYZ"
         b.rotation_euler = (0, 0, 0)
         b.location = (0, 0, 0)
-    for k in keys[1:]:
-        k.value = 0
+    for o in KEYED:
+        for k in o.data.shape_keys.key_blocks[1:]:
+            k.value = 0
 
 
 def turn(name, x=0.0, y=0.0, z=0.0):
@@ -41,11 +51,12 @@ def each(prefix, **kw):
 
 POSES = [
     ("rest", lambda: None),
-    ("blink", lambda: setattr(keys["blink"], "value", 1.0)),
-    ("squint", lambda: setattr(keys["squint"], "value", 1.0)),
+    ("blink", lambda: setkey("blink", 1.0)),
+    ("smile", lambda: setkey("smile", 1.0)),
+    ("open", lambda: setkey("open", 1.0)),
     # an arm bone points down its arm: rotating about its length only twists it; about its x it swings up
-    ("wave", lambda: (turn("arm.R", x=-75, z=-20), turn("arm.L", x=10)) if KIND != "snail" else (turn("neck", x=-15), turn("head", x=-10))),
-    ("wave2", lambda: (turn("arm.R", z=-75), turn("arm.L", x=10)) if KIND != "snail" else (turn("neck", x=-15), turn("head", x=-10))),
+    # 5.3.6b: a wave that reads: the arm swung right up and out, the body leaning into it a little
+    ("wave", lambda: (turn("arm.R", x=-150, z=-30), turn("chest", y=-6), turn("head", z=-8)) if KIND != "snail" else (turn("neck", x=-15), turn("head", x=-10))),
     ("step", lambda: (turn("leg.L", x=-35), turn("leg.R", x=25)) if KIND != "snail" else (turn("body.0", x=10), turn("body.2", x=-10))),
     ("swing", lambda: each("tail", z=18) if KIND != "snail" else each("body", z=8)),
     ("look", lambda: turn("head", z=25, x=-8)),
@@ -87,6 +98,8 @@ for name, fn in POSES:
 rest()
 bpy.ops.object.select_all(action="DESELECT")
 rig.select_set(True)
-mesh.select_set(True)
+for o in bpy.data.objects:
+    if o.type == "MESH":
+        o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=f"{OUT}.glb", export_format="GLB", use_selection=True, export_skins=True, export_morph=True, export_animations=False)
 print("POSE exported", f"{OUT}.glb")

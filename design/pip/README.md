@@ -61,3 +61,18 @@ From a finished image-to-3D model (Pixal3D, about 950k faces with a 4K atlas) to
    `toktx` (not installed); WebP is in three's loader.
 
 `models/{dino,axolotl,snail}.glb` are the results.
+
+## Faces as meshes (5.3.6)
+`eyes3.py` (run on the face .blend, before `pose3.py`):
+- **Eyes:** each painted eye gets a dark glossy dome with a catch-light, cast onto the face and parented to the head
+  bone.
+- **Lids:** a skin-coloured lid is folded to a point at rest (so there is no lid to see) and closes over the whole
+  painted eye on `blink`.
+- **Mouth:** a small arc, cast point by point onto the face, with `smile` and `open` keys.
+
+`pose3.py` sets a key on every mesh that has it.
+
+Still weak:
+- the lids read a little paler than the skin;
+- the snail's eyes painted on its head are not covered (only its stalk eyes);
+- the wave barely shows, because the arms are stubs.
