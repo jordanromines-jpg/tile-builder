@@ -127,7 +127,7 @@ for side, (c, r) in zip(("L", "R"), zip(centres, radii)):
         lk.data[i].co = c_
     lk.value = 0.0
     parent_to_head(lid)
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=6, radius=r * 0.28, location=p + n * (r * 0.42) + Vector((-r * 0.35, 0, r * 0.4)))
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=6, radius=r * 0.28, location=p + n * (r * 0.4) + Vector((-r * 0.2, 0, r * 0.3)))
     gl = bpy.context.object
     gl.name = f"glint.{side}"
     gl.data.materials.append(glint)
@@ -140,7 +140,13 @@ mid = (centres[0] + centres[1]) / 2
 span = (centres[1] - centres[0]).length
 # the snail's eyes found are on its stalk tips: its mouth goes on the head itself, lower down
 # the mouth sits on the face's middle line (x = 0 after rig3 turned it to face -y), not between the eyes as found
-mp, mn = on_surface(Vector((0.0 if KIND == "dino" else mid.x, mid.y, 0.36)) if KIND == "snail" else Vector((0.0 if KIND == "dino" else mid.x, mid.y, mid.z - max(radii) * 2.2)))
+if KIND == "dino":
+    # the dino's mouth goes on its snout's front: the front-most point at mouth height, a little under it
+    band = (co[:, 2] > 0.44) & (co[:, 2] < 0.58)
+    tip = co[band][np.argmin(co[band][:, 1])]
+    mp, mn = on_surface(Vector((tip[0], tip[1], tip[2] - 0.03)))
+else:
+    mp, mn = on_surface(Vector((mid.x, mid.y, 0.36)) if KIND == "snail" else mid - Vector((0, 0, max(radii) * 2.2)))
 curve = bpy.data.curves.new("mouth", "CURVE")
 curve.dimensions = "3D"
 curve.bevel_depth = span * 0.035
