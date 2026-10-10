@@ -25,12 +25,18 @@ export const BREAK_FORCE = 1.5 * NEWTON;
     truck in on purpose, and the build is meant to fall (its line says so) */
 export const HIT_FORCE = 0.3 * NEWTON;
 /** speeds on each kind of leg, squares a second */
-const SPEED: Record<Leg["kind"], number> = { drive: 1.6, climb: 1.4, descend: 1.2, fly: 0, crush: 1.4, smash: 1.8 };
+const FAST: Record<Leg["kind"], number> = { drive: 2.8, climb: 2.4, descend: 1.8, fly: 0, crush: 2.2, smash: 2.4 };
+/** a course marked steady: 4.0's speeds for its climbs, descents and hits, the fast ones only on the flat between */
+const OLD_SPEED: Record<Leg["kind"], number> = { drive: 1.6, climb: 1.4, descend: 1.2, fly: 0, crush: 1.4, smash: 1.8 };
 const LOOK_AHEAD = 0.6;
 /** seconds the hand carries the truck on through a crash at the end of its route */
 const CARRY_ON = 0.4;
 /** how hard the hand slows the truck at the end of its route, squares a second per second */
 const STOPPING = 4;
+/** the speed the hand slows to for a turn of more than 30°, squares a second (the runs' old pace) */
+const CORNER = 1.2;
+/** the speed up to a jump's lip, squares a second */
+const RUN_UP = 1.4;
 /** angular damping for half a second after a landing */
 const STEADY = 12;
 const TIMEOUT_S = 60;
@@ -82,6 +88,8 @@ const len2 = (x: number, z: number) => Math.hypot(x, z);
 export function simulateRun(R: Rapier, project: Project, nudge = 0, trace?: (at: Trace) => void): RunRecord {
   const legs = compileRoute(project, DEFAULT_LEG);
   const pace = 1 + 0.01 * nudge;
+  const steady = !!project.course?.steady;
+  const SPEED = steady ? OLD_SPEED : FAST;
   const crash = new Set(project.placed.map((t, i) => (t.role === "crash" ? i : -1)).filter((i) => i >= 0));
   const fixed = new Set(project.placed.map((_, i) => i).filter((i) => !crash.has(i)));
   const scene = buildScene(R, project, { leg: DEFAULT_LEG, held: fixed, hinge: 0.006, iterations: 16, flush: true });
@@ -315,7 +323,24 @@ export function simulateRun(R: Rapier, project: Project, nudge = 0, trace?: (at:
         const last = li === legs.length - 1;
         const crashing = L.kind === "smash" || L.kind === "crush";
         const stopAt = !last || crashing ? length : Math.max(0, length - Math.min(length / 2, TRUCK.length / 2));
-        const speed = last ? Math.min(SPEED[L.kind] * pace, Math.sqrt(2 * STOPPING * Math.max(0, stopAt - s))) : SPEED[L.kind] * pace;
+        // a turn ahead (more than 30°, onto the ground: not a jump): the hand slows into it, down to CORNER, as a child
+        // does on a landing, and is back up to speed along the next piece
+        const next = legs[li + 1];
+        let cap = SPEED[L.kind] * pace;
+        if (!steady && next && next.kind !== "fly" && !crashing) {
+          const a = [L.to[0] - L.from[0], L.to[2] - L.from[2]];
+          const nx = [next.to[0] - next.from[0], next.to[2] - next.from[2]];
+          const la = Math.hypot(a[0], a[1]);
+          const ln = Math.hypot(nx[0], nx[1]);
+          const cos = la > 1e-6 && ln > 1e-6 ? (a[0] * nx[0] + a[1] * nx[1]) / (la * ln) : 1;
+          if (cos < Math.cos(Math.PI / 6)) cap = Math.min(cap, Math.sqrt(CORNER * CORNER * pace * pace + 2 * STOPPING * Math.max(0, length - s)));
+        }
+        // the run-up to a jump at the old, steady pace: the jump's own speed is solved for it, and coming up the ramp
+        // fast it leaves the lip pitching and lands on its roof
+        if (!steady && next?.kind === "fly") cap = Math.min(cap, RUN_UP * pace);
+        // just down from a jump: the speed builds back up from CORNER along the piece it landed on
+        if (!steady && legs[li - 1]?.kind === "fly") cap = Math.min(cap, Math.sqrt(CORNER * CORNER * pace * pace + 2 * STOPPING * Math.max(0, s)));
+        const speed = last ? Math.min(SPEED[L.kind] * pace, Math.sqrt(2 * STOPPING * Math.max(0, stopAt - s))) : cap;
         drive(truck, Math.max(speed, last ? 0.05 : 0), steer, target);
         // a truck leaves a lip as its front wheels go over it (half a wheelbase before its middle gets there)
         const leaving = legs[li + 1]?.kind === "fly" ? TRUCK.wheelbase / 2 : 0;

@@ -17,6 +17,11 @@ interface Meta {
 }
 
 /** A finished truck build: theme trucks, stars by size within the trucks' rules for its age. */
+/** A course the truck goes round at 4.0's steady speeds (a crowded course, where the faster runs come apart). */
+export function steady(p: Project): Project {
+  return { ...p, course: { ...p.course!, steady: true } };
+}
+
 export function truck(b: Builder, m: Meta): Project {
   const r = TRUCK_RULES[m.age];
   const third = (r.maxTiles - r.minTiles) / 3;
@@ -212,7 +217,7 @@ function stadium(): Project {
   dominoes(b, ["red", "yellow", "green"], at(1, -11.5), "E", 3, "Along the back, stand three squares up, a square apart: dominoes.");
   dominoes(b, ["blue", "purple"], at(11, -11.5), "E", 2, "Two more at the back right.");
   b.route(["tunnel-1", { to: [8, 0, -3] }, "kicker-1", { jump: "ramp-1" }, { down: "ramp-1" }, { to: [5, 0, -9] }, { through: "car-1" }, { through: "car-2" }, { through: "car-3" }, { through: "wall-1" }, { to: [15, 0, -11] }, { through: "dominoes-2" }, { through: "dominoes-1" }]);
-  return truck(b, { id: "truck-monster-stadium", title: "The Monster stadium", age: "d", done: "Ladies and gentlemen, the Monster stadium! Through the tunnel, over the jump, crush the cars." });
+  return steady(truck(b, { id: "truck-monster-stadium", title: "The Monster stadium", age: "d", done: "Ladies and gentlemen, the Monster stadium! Through the tunnel, over the jump, crush the cars." }));
 }
 
 export const TRUCKS_1: Project[] = [

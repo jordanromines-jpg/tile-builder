@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Recording } from "../../engine/run-format";
 import { REST_COMPRESS, TRUCK } from "../truck/spec";
-import { distances, player, rateAt, SLOW, slerp } from "./playback";
+import { distances, player, rateAt, BETWEEN, SLOW, slerp } from "./playback";
 
 const straight = (): Recording => ({
   fps: 10,
@@ -40,12 +40,13 @@ describe("playing a run", () => {
     expect(Math.abs(h[1])).toBeCloseTo(Math.sin(Math.PI / 8), 3);
   });
 
-  it("plays at speed between the action, slower around it, and ends at the run's end", () => {
+  it("plays faster than real between the action, slower right at it, and ends at the run's end", () => {
     expect(rateAt(0.5, [0.5])).toBeCloseTo(SLOW);
-    expect(rateAt(3, [0.5])).toBe(1);
+    expect(rateAt(3, [0.5])).toBe(BETWEEN);
     const p = player(straight());
-    // one crash at 0.5 s: the second it lasts takes longer to play
-    expect(p.playLength).toBeGreaterThan(1.2);
+    // one crash at 0.5 s: the second plays longer than if it were all at BETWEEN, shorter than all at SLOW
+    expect(p.playLength).toBeGreaterThan(1 / BETWEEN);
+    expect(p.playLength).toBeLessThan(1 / SLOW);
     expect(p.at(0)).toBe(0);
     expect(p.at(p.playLength + 1)).toBe(p.length);
     let last = 0;
