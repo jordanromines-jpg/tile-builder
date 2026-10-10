@@ -194,6 +194,7 @@ Renamed: 5.3.1a is now PR 5.3.5. Drafts opened: #63–#67. G-S0 (downloads): Jor
 | L2 | In code | One folder, `looks/vinyl/`, keeping the folder contract (`look.css`, `stage.ts`, `sounds.ts`, `decor.tsx`). The registries become direct imports; `LookId` and the switching code go |
 | L3 | The room | A real room, strongly out of focus, from a CC0 Poly Haven HDRI. I pick the best at G-S1, send the sheet, and keep going (Jordan: "Send it, keep going"). **Picked (5.4.0g): `empty_play_room`, turned 90°, on a pale maple table** (Poly Haven's wood lifted to maple: the boards' playroom; walnut was richer but darker). Sheets sent 10 Oct |
 | L4 | Assets | CC0 only, bundled and precached; nothing is fetched at run time and nothing leaves the device. Downloads wait for Jordan's yes (G-S0) |
+| G-P1 | Which characters | **All three** (Jordan, 10 Oct: "all of then"): the snail, the dino and the axolotl |
 | P3′ | Characters | Image to 3D, then finished by hand (weld, retopology, bake, skeleton, face shapes → small GLB). Replaces P3 for the characters Jordan keeps |
 
 ### Phases, pull requests and keys
@@ -289,7 +290,27 @@ which saves one CI round; the keys stay separate)
 
 8 h.
 
-### Gates that need Jordan
+#### Phase 4 · The leftovers, keyed (Jordan, 10 Oct: "go on all these you have 1 more hour")
+
+**PR 5.4.4 · polish · branch `look-5-4-4`**
+
+| # | What | Files | Kind | Done when | Time | Stop |
+|---|------|-------|------|-----------|------|------|
+| 5.4.4a | The shots script's build-tip screen (the "Get your tiles" card held the page) | `web/scripts/shots.mjs` | code | build-tip renders light and dark | 0.1 h | 0.15 h |
+| 5.4.4b | Truck runs in the set (checked: runs play inside the Build viewer, which mounts the Stage, so they already stand in the room; nothing to change) | — | check | seen | 0.1 h | 0.15 h |
+| 5.4.4c | A calmer evening table (a cooler grey tint, a softer lamp) | `looks/vinyl/stage.ts` | code | Build in dark looked at | 0.1 h | 0.15 h |
+| 5.4.4d | The one look's colours in `design/tokens*.json` (base tokens now match the look) | `design/`, `web/src/tokens.css`, `tests/test_tokens.py` | code | the token tests pass in both themes | 0.3 h | 0.45 h |
+| 5.4.4e | Polish: the picked age and theme key glows from inside; cards lift under a pointer | `looks/vinyl/look.css` | code | Library looked at, light and dark | 0.2 h | 0.3 h |
+
+**PR 5.3.6 · the characters' faces and wave · branch `pip-5-3-6`**
+
+| # | What | Files | Kind | Done when | Time | Stop |
+|---|------|-------|------|-----------|------|------|
+| 5.3.6a | Eyes as their own small meshes on the face (dark glossy ellipses with a catch-light), so a blink can close them | `design/pip/concepts/eyes3.py` | code | a blink reads in a clip | 0.4 h | 0.6 h |
+| 5.3.6b | A wave that reads: the arm bone longer and the swing bigger | `rig3.py`, `pose3.py` | code | the wave reads in the pose sheet | 0.2 h | 0.3 h |
+| 5.3.6c | Mouth shapes: a small smile and a small open "o" as a mouth mesh with shape keys | `eyes3.py` | code | seen in a sheet | 0.3 h | 0.45 h |
+
+## Gates that need Jordan
 | Gate | When | What he does |
 |---|---|---|
 | G-S0 | now, before 5.4.0a | says yes or no to the three downloads |
@@ -400,3 +421,4 @@ About 21 hours of my work, plus Jordan's three looks; the addendum adds about 42
 | 2026-10-10 19:44 | 5.4.1a–i (#64) | (this commit) | 9 · 0.6 | **Under half the estimate: the Done-whens re-read.**<br>• a: `StageLook.set` (room, turn, light, backdrop, blur, wood, rims).<br>• b: `three/Set.tsx` (`useRoom`, `SetTable`, `SetRims`) wired into `Stage.tsx`. The room is loaded once per tier; until it loads, the room made on the device stands in; a failed load is logged, never silent. The key's soft shadow is at high only, with every shader refreshed when shadows switch.<br>• c: the finish by tier in `TileMesh.tsx`, retuned live (`onTier`). Model fades from each finish's own `baseOpacity`. Pictures use the mid finish (`pinFinish`).<br>• d: `looks/vinyl/stage.ts`. **Change from the plan: every look's stage points at it now** (they all go in 5.4.3).<br>• e: `public/set/` (2.5 MB) with CREDITS, precached (hdr, ktx2, wasm).<br>• f: five builds (small, tall, wide, mosaic, truck) seen light and dark in Build mode; the table made bigger (`max(14, 6r)`) so only its far edge shows; the evening table calmed.<br>• g: `three/set.test.ts` (files and credits, the 3 MB budget, room by tier, the finish retuned live and let go on dispose). The table maps' disposal is not unit-tested (no WebGL in jsdom); it is checked in code only.<br>• h: 533 pictures redrawn; chips and cards compared before and after (a little softer, the glass a little richer; chips read at 48 px).<br>• i: e2e offline (the set's files load with the network off). Here 10 plates differ, because this Mac draws the set with its GPU and CI's plates have none: CI decides, and any change is looked at before updating.<br>Left: truck runs (`RunStage`) still use the plain stage. | 5.4.2 |
 | 2026-10-10 20:10 | 5.4.2a–b, 5.4.3a–d (#65; #66 shipped inside it) | (this commit) | 15.5 · 0.4 | **Under half the estimate: the Done-whens re-read; 5.4.2c–h are not done.**<br>• 5.4.2a: the room plates. **Change from the plan:** they are drawn by the app's own renderer, because a Blender plate turned the room differently from three.js. They now also stand behind the 3D (the HDRI only lights), which fixed a dark band and black above tall or turning builds.<br>• 5.4.2b: `looks/vinyl/look.css` from the 5.4.0 draft (cream trays, glossy keycaps that squash, maple plank, glowing dots), light and dark.<br>• 5.4.3a–d: the four looks, their registries, `useLook` and the picker removed (shelf, first-run, Settings); a saved old look is cleared; one voice (the toy's, softer); `looks.test.ts`, `e2e/looks.spec.ts` (axe passes on every screen, light and dark); README, DESIGN, CHANGELOG 5.4.2.<br>• Seen: `npm run shots` of every screen, light and dark (the `build-tip` screen of the shots script asks for a step the castle no longer has: a script fault from before, left).<br>**Not done (5.4.2c–h):**<br>• per-part polish beyond the draft stylesheet: kid parts, cards, Build and Done, grown-ups;<br>• the new colours in `design/tokens*.json`;<br>• the evening maple is still brownish.<br>Plates come from CI after looking. | CP2 and CP3: report to Jordan |
 | 2026-10-10 20:10 | 5.3.5a–h (#67) | (this commit) | 8 · 0.6 | **Under half the estimate: the Done-whens re-read.**<br>• a: welded and cleaned sources. **Done-when changed:** the largest part holds 96% (dino, snail) and 90% (axolotl), not 99%, because the other big parts are real pieces (the held tile, the plates, the gills).<br>• b–c: about 8k faces with the colour baked across. QuadriFlow declined on all three (not manifold), so AssetFurnace decimated; side by side with the heroes the look holds.<br>• d: colour flecks filled on all three, and the snail's dark blotch (a bake miss); eyes and nostrils kept.<br>• e: skeletons placed from the mesh, voxel-proxy weights; the reach checks pass, after moving the snail's feelers onto their stalks.<br>• f: blink and squint keys. **Weak:** at 8k faces an eye is a few vertices, so the blink barely shows; real blinks want eye meshes (5.3.2).<br>• g: pose sheet; the dino's wave is small (stub arms); GLBs 190–300 KB with meshopt and WebP (KTX2 inside glTF needs `toktx`, not installed).<br>• h: a 4 s proof clip of each, sent to Jordan; the pipeline in `design/pip/README.md`. | G-P1: which characters Jordan keeps |
+| 2026-10-10 20:58 | 5.4.4a–e | (this commit) | 0.8 · 0.4 | a: the shots' build-tip fixed (Start first). b: no change needed: truck runs play in the Build viewer's Stage, so they already have the room (my earlier note was wrong). c: the evening table calmed. d: the base tokens are the one look's (`#352b28` for the evening raised surface: the red tile's rim was 2.97:1 on `#3a2f2c`); token tests pass. e: the picked key glows, cards lift under a pointer. | 5.3.6 |

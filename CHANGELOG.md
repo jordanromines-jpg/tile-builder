@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.4.4 · 10 Oct 2026
+
+Small polish on the one look.
+
+- The picked age and theme glow warmly from inside, like a tile with light behind it.
+- The evening table is a calm grey maple, not brown.
+- The design tokens are the new look's colours, checked for contrast in light and dark.
+
 ## 5.4.2 · 10 Oct 2026
 
 One look, everywhere.
