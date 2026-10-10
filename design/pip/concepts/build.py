@@ -116,7 +116,8 @@ def axolotl(D):
         "axolotl.skin", "#E9679C", "#FFB5D2", belly="#FFE4EE",
         belly_mask=((0, -0.2, 0.32), (0.17, 0.14, 0.2), 0.12),
         cheeks=[((0.3, -0.3, 0.68), (0.09, 0.12, 0.06)), ((-0.3, -0.3, 0.68), (0.09, 0.12, 0.06))],
-        blush="#FF5F7E", z_range=(0.0, 1.05)))
+        blush="#FF5F7E", z_range=(0.0, 1.05),
+        accents=[("#D8366F", (0.55, 0.08, 0.85), (0.2, 0.16, 0.3), 0.6), ("#D8366F", (-0.55, 0.08, 0.85), (0.2, 0.16, 0.3), 0.6)]))
     bpy.context.view_layer.update()
     eyes = kit.add_eyes(body, (0.2, 0.79), 0.085)
     eyes += kit.add_happy_eyes(body, (0.2, 0.79), 0.085)
@@ -132,28 +133,16 @@ def axolotl(D):
         ("tail.1", (0, 0.18, 0.3), (0, 0.42, 0.26), "body", True),
         ("tail.2", (0, 0.42, 0.26), (0, 0.66, 0.2), "tail.1", True),
     ]
-    # the gills: three tile triangles on each side of the head, fanned out; each on its own little bone
-    fans = (("#E5322E", 0.35), ("#F5841F", 0.85), ("#8A4CC8", 1.35))
-    gill_tiles = []
+    # the gills: soft fronds of the body itself, deeper pink, each on its own springy bone
+    from shapes import GILLS
     for sx, side in ((1, "L"), (-1, "R")):
-        p, n = kit.surface(body, (5 * sx, -0.02, 0.8), (-sx, 0, 0))
-        for k, (colour, ang) in enumerate(fans):
-            # soft frills: wide, a little swept back, fanning from up-and-out to out-and-down
-            base = p + Vector((-0.05 * sx, 0.03 + 0.02 * k, 0.06 - 0.06 * k))
-            # swept well back, so from the front they read as frills behind the cheeks, not spikes
-            d = Vector((math.sin(ang) * sx * 0.75, 0.6, math.cos(ang))).normalized()
-            side_v = Vector((0, -d.z, d.y)).normalized() * 0.075
-            tip = base + d * 0.25
-            name = f"gill.{side}.{k + 1}"
-            bones.append((name, tuple(base), tuple(tip), "head", False))
-            gill_tiles.append((kit.tile_poly([tuple(base - side_v), tuple(base + side_v), tuple(tip)], colour, name), name))
+        for k, (a, b) in enumerate(GILLS):
+            bones.append((f"gill.{side}.{k + 1}", (a[0] * sx, a[1], a[2]), (b[0] * sx, b[1], b[2]), "head", True))
     arm = kit.armature("rig", bones)
     kit.skin_to(body, arm)
     for e in eyes:
         kit.attach(e, arm, "head")
     kit.attach(mouth, arm, "head")
-    for t, bone in gill_tiles:
-        kit.attach(t, arm, bone)
     return body, arm
 
 

@@ -144,6 +144,64 @@ def upgrade_eyes():
         shell.matrix_world = mw
 
 
+def add_lids(cut=0.72):
+    """Soft upper eyelids of the body's own skin over the top of each open eye: they set the eye into the face, and
+    they blink (turn the lid about the eye's x axis, ~1.15 rad, and it closes over the front)."""
+    lids = []
+    for o in list(bpy.data.objects):
+        if not o.name.startswith("eye.") or o.type != "MESH":
+            continue
+        top = o
+        while top.parent:
+            top = top.parent
+        body = bpy.data.objects.get(top.name.replace(".rig", ".body"))
+        lid = o.copy()
+        lid.data = o.data.copy()
+        lid.name = o.name.replace("eye.", "lid.")
+        bpy.context.scene.collection.objects.link(lid)
+        lid.shape_key_clear()
+        import bmesh
+        bm = bmesh.new()
+        bm.from_mesh(lid.data)
+        r = max(v.co.z for v in bm.verts)
+        for v in bm.verts:
+            v.co.x *= 1.1; v.co.z *= 1.1; v.co.y *= 1.45
+        bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.z < cut * r * 1.1], context="VERTS")
+        bm.to_mesh(lid.data)
+        bm.free()
+        lid.modifiers.new("solid", "SOLIDIFY").thickness = 0.006
+        skin = body.data.materials[0].copy()
+        for n in skin.node_tree.nodes:
+            if n.type == "TEX_COORD":
+                n.object = body
+        lid.data.materials.clear()
+        lid.data.materials.append(skin)
+        lid.parent = o
+        lid.parent_type = "OBJECT"
+        lid.matrix_parent_inverse.identity()
+        lid.location, lid.rotation_euler, lid.scale = (0, 0, 0), (0, 0, 0), (1, 1, 1)
+        lids.append(lid)
+    return lids
+
+
+def hold_tile(rig, colour="#F4C51B", size=0.34):
+    """A tile held up between the hands (the axolotl's 'look what I made!')."""
+    mw = rig.matrix_world
+    a = mw @ rig.pose.bones["arm.L"].tail
+    b = mw @ rig.pose.bones["arm.R"].tail
+    mid = (a + b) / 2
+    # held out in front of the chest, between the hands: "look what I made!"
+    mid.z -= size * 0.35
+    t = kit.tile("triangle", colour, size, "held")
+    t.rotation_euler = (math.radians(-12), 0, rig.rotation_euler.z)
+    t.location = mid + (rig.matrix_world.to_3x3() @ Vector((-size / 2, -0.06, 0.0)))
+    bpy.context.view_layer.update()
+    mwt = t.matrix_world.copy()
+    t.parent = rig
+    t.matrix_world = mwt
+    return t
+
+
 # ---------- the set ----------
 def wood_material():
     m, nt, b = kit.node_mat("wood")
@@ -220,6 +278,7 @@ def build_all(D):
         fuzz(body, body.data.materials[0], seed=len(rigs))
         rigs[name] = rig
     upgrade_eyes()
+    add_lids()
     tile_house((-0.95, 0.85, 0), 0.5)
     set_dressing()
     return rigs
@@ -251,15 +310,16 @@ def pose(rigs):
     aim(rigs["dino"], "arm.R", (-0.55, -0.25, 0.8))
     tilt(rigs["dino"], "head", 0.16)
     tilt(rigs["snail"], "head", -0.2)
-    aim(rigs["axolotl"], "arm.L", (0.6, -0.2, 0.78))
-    aim(rigs["axolotl"], "arm.R", (-0.6, -0.2, 0.78))
+    aim(rigs["axolotl"], "arm.L", (-0.35, -0.75, 0.55))
+    aim(rigs["axolotl"], "arm.R", (0.35, -0.75, 0.55))
+    hold_tile(rigs["axolotl"])
     for o in bpy.data.objects:
         top = o
         while top.parent:
             top = top.parent
         if not top.name.startswith("axolotl"):
             continue
-        if o.name.startswith(("eye.", "glint", "cornea.")):
+        if o.name.startswith(("eye.", "glint", "cornea.", "lid.")):
             o.hide_render = True
         if o.name.startswith("happy."):
             o.hide_render = False
@@ -283,6 +343,17 @@ def camera(kind="group"):
         "axolotl": ((2.25, -2.75, 1.05), (1.35, 0.05, 0.72), 85, 2.0),
     }
     pos, target, lens, fstop = shots[kind]
+    rig = bpy.data.objects.get(f"{kind}.rig")
+    if rig:
+        # a portrait: in front of the face, between where it looks and the room's front, a little above
+        pb = rig.pose.bones["head"]
+        head = rig.matrix_world @ ((pb.head + pb.tail) / 2)
+        target = Vector((head.x, head.y, head.z * 0.82))
+        face = rig.matrix_world.to_3x3() @ Vector((0, -1, 0))
+        d = face * 0.6 + Vector((0, -1, 0)) * 0.4
+        d.z = 0
+        d.normalize()
+        pos = target + d * 2.55 + Vector((0, 0, 0.32))
     cam.lens = lens
     o.location = pos
     o.rotation_euler = (Vector(target) - Vector(pos)).to_track_quat("-Z", "Y").to_euler()
@@ -311,6 +382,11 @@ if __name__ == "__main__" and "--" in sys.argv:
     args = sys.argv[sys.argv.index("--") + 1:]
     OUT, shots, samples = args[0], args[1].split(","), int(args[2]) if len(args) > 2 else 256
     render_setup(samples)
+    cam = bpy.context.scene.camera
+    if cam and cam.animation_data:
+        # (the short animates the camera; a still sets its own)
+        cam.animation_data_clear()
+        cam.data.animation_data_clear()
     for s in shots:
         camera(s)
         if s == "group":

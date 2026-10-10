@@ -10,6 +10,9 @@ from pathlib import Path
 
 from sdf import capsule, ellipsoid, sphere
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from shapes import GILLS  # noqa: E402
+
 OUT = Path(sys.argv[1] if len(sys.argv) > 1 else ".")
 STEP = 0.006
 
@@ -54,7 +57,8 @@ def dino():
 
 def axolotl():
     """C: an axolotl, standing up as a little helper: a wide, flat, smiling head on a small soft body, stubby
-    arms and feet, and a fin of a tail behind. Its frilly gills are tile triangles."""
+    arms and feet, a fin of a tail behind, and three soft gill fronds on each side of the head (the fuzz makes
+    them feathery)."""
     head = at(ellipsoid((0.43, 0.33, 0.29)), 0, -0.06, 0.74)
     body = at(ellipsoid((0.25, 0.23, 0.27)), 0, 0.03, 0.33)
     form = head.union(body, k=0.15)
@@ -64,6 +68,13 @@ def axolotl():
         foot = at(ellipsoid((0.09, 0.12, 0.06)), 0.13 * sx, -0.06, 0.06)
         leg = capsule((0.13 * sx, 0.0, 0.08), (0.13 * sx, 0.02, 0.22), 0.07)
         form = form.union(arm.union(hand, k=0.04), k=0.06).union(leg.union(foot, k=0.05), k=0.06)
+    for sx in (-1, 1):
+        for a, b in GILLS:
+            # tapered: thick where it leaves the head, fine at the tip (two capsules, smoothly joined)
+            m = tuple(a[i] + (b[i] - a[i]) * 0.5 for i in range(3))
+            near = capsule((a[0] * sx, a[1], a[2]), (m[0] * sx, m[1], m[2]), 0.042)
+            far = capsule((m[0] * sx, m[1], m[2]), (b[0] * sx, b[1], b[2]), 0.024)
+            form = form.union(near.union(far, k=0.03), k=0.05)
     # a short, flat fin of a tail, curving up a little at its tip
     tail = capsule((0, 0.16, 0.2), (0, 0.4, 0.25), 0.11).scale((0.45, 1, 1.0))
     return form.union(tail, k=0.12)

@@ -63,7 +63,7 @@ def ellipse_mask(nt, tc, centre, radii, soft):
     return mr.outputs["Result"]
 
 
-def skin(name, low, high, belly=None, belly_mask=None, cheeks=(), blush="#FF8A96", z_range=(0.05, 1.1), sss=0.18):
+def skin(name, low, high, belly=None, belly_mask=None, cheeks=(), blush="#FF8A96", z_range=(0.05, 1.1), sss=0.18, accents=()):
     """Soft felt skin: a warm gradient from `low` (bottom) to `high` (top), an optional lighter belly, painted
     blush, a little light through it, a fine grain. belly_mask: (centre, radii, soft); cheeks: [(centre, radii)]."""
     m, nt, b = node_mat(name)
@@ -82,6 +82,11 @@ def skin(name, low, high, belly=None, belly_mask=None, cheeks=(), blush="#FF8A96
         mx = N.new("ShaderNodeMix"); mx.data_type = "RGBA"
         L.new(ellipse_mask(nt, tc, *belly_mask), mx.inputs["Factor"])
         L.new(colour, mx.inputs["A"]); mx.inputs["B"].default_value = hexc(belly)
+        colour = mx.outputs["Result"]
+    for acc_colour, centre, radii, soft in accents:
+        mx = N.new("ShaderNodeMix"); mx.data_type = "RGBA"
+        L.new(ellipse_mask(nt, tc, centre, radii, soft), mx.inputs["Factor"])
+        L.new(colour, mx.inputs["A"]); mx.inputs["B"].default_value = hexc(acc_colour)
         colour = mx.outputs["Result"]
     if cheeks:
         masks = [ellipse_mask(nt, tc, c, r, 0.9) for c, r in cheeks]
