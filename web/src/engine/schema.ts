@@ -130,6 +130,14 @@ export const SettingsZ = z.object({
 
 export const ProgressZ = z.object({ projectId: z.string(), step: z.number().int().nonnegative(), updatedAt: z.string() });
 
+/** A child's own design from Make your own (5.0c). */
+export const DesignZ = z.object({
+  id: z.string().regex(/^my-[a-z0-9]+$/),
+  name: z.string().min(1),
+  placed: z.array(PlacedZ),
+  updated: z.string(),
+});
+
 export const BackupZ = z.object({
   app: z.literal("tile-steps"),
   version: z.literal(1),
@@ -137,4 +145,6 @@ export const BackupZ = z.object({
   settings: SettingsZ,
   inventory: InventoryZ,
   progress: z.array(ProgressZ),
+  /** 5.0c; a backup from before has none */
+  designs: z.array(DesignZ).optional(),
 });

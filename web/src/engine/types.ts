@@ -2,6 +2,7 @@
 import type { z } from "zod";
 import type { BackupZ, CourseZ, FeatureZ, InventoryZ, PlacedZ, ProgressZ, ProjectZ, RouteItemZ, SettingsZ, StepZ, SurfaceZ, SwapRuleZ } from "./schema";
 import type { BrandId, Colour, ShapeId } from "./catalog";
+import type { Design } from "./design";
 import type { Theme } from "./themes";
 
 type Fix<T> = Omit<T, "shape" | "colour"> & { shape: ShapeId; colour?: Colour };
@@ -26,5 +27,5 @@ export interface ShapeCount {
 export type Inventory = Omit<z.infer<typeof InventoryZ>, "brands" | "counts"> & { brands: BrandId[]; counts: Partial<Record<ShapeId, ShapeCount>> };
 export type Settings = z.infer<typeof SettingsZ>;
 export type Progress = z.infer<typeof ProgressZ>;
-export type Backup = Omit<z.infer<typeof BackupZ>, "inventory"> & { inventory: Inventory };
+export type Backup = Omit<z.infer<typeof BackupZ>, "inventory" | "designs"> & { inventory: Inventory; designs?: Design[] };
 export type { Age } from "./schema";

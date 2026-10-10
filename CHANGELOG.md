@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.1.0 · 10 Oct 2026
+
+Make your own keeps what you build.
+
+- **Your builds are saved on the iPad** as you go, and a **My builds** shelf on the Library holds them; tap one to carry
+  on building it. A tile that fell is left out. Nothing leaves the iPad; a backup file carries them.
+- **Make the steps** (the numbered-list button) turns a build into steps for Build mode, in the order the tiles went
+  on: one tile a step for 3–5, alike tiles together for older children ("Stand 3 blue squares on the table."). A step
+  after which it may not stand yet says "Hold it until the next tile is on."
+
 ## 5.0.0 · 10 Oct 2026
 
 Make your own. Jordan: "a real physics builder page … to select tiles and make your own design."

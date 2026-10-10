@@ -3,6 +3,7 @@
    little to the right and above, far tiles first so near ones sit on top. */
 import { useMemo, useState } from "react";
 import { DEFAULT_LEG, type ShapeId } from "../engine/catalog";
+import { isDesignId } from "../engine/design";
 import { asBuilt, worldPolygon, type V3 } from "../engine/geometry";
 import type { Project } from "../engine/types";
 import { pictureUrl, projectFile } from "../pictures";
@@ -47,7 +48,8 @@ export function drawProject(project: Project, shown = project.placed.length, leg
     Library has only the id, and shows the empty stage instead). */
 export function ProjectPicture({ id, project, shown, label }: { id?: string; project?: Project; shown?: number; label?: string }) {
   const file = projectFile(id ?? project!.id);
-  const [failed, setFailed] = useState(false);
+  // a child's own design (5.0c) has no picture drawn ahead of time: it is drawn from its tiles
+  const [failed, setFailed] = useState(isDesignId(id ?? project!.id));
   if (shown === undefined && !failed)
     return (
       <img

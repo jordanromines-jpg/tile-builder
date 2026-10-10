@@ -2,7 +2,7 @@
    tile and a colour from the tray, then tap a glowing edge (or drag the tile onto one), turn it up how you want, and
    put it on. The live physics (physics.ts, a worker) holds it in the hand for a second, then lets go: it stands if
    its magnets and the tiles round it hold it, and falls if not. Tiles are unlimited (M3). */
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLOURS, DEFAULT_LEG, SHAPE_IDS, type Colour, type ShapeId } from "../engine/catalog";
 import { worldPolygon, type V3 } from "../engine/geometry";
@@ -10,11 +10,12 @@ import { say } from "../speech/say";
 import { S } from "../strings";
 import { AgeProvider } from "../ui/kid/AgeContext";
 import { KidButton } from "../ui/kid/KidButton";
-import { ArrowClockwise, ArrowLeft, ArrowUUpLeft, Check, FlipHorizontal, HandGrabbing, HandTap, Trash, X } from "../ui/icons";
+import { ArrowClockwise, ArrowLeft, ArrowUUpLeft, Check, FlipHorizontal, HandGrabbing, HandTap, ListNumbers, Trash, X } from "../ui/icons";
 import { TileChip } from "../ui/TileChip";
 import { MakeStage, type MadeTile } from "./make/MakeStage";
 import { Physics } from "./make/physics";
 import { blocked, placeOn, spotsFor, TILTS, type Spot } from "./make/place";
+import { useDesign } from "./make/useDesign";
 
 const leg = DEFAULT_LEG;
 
@@ -31,6 +32,8 @@ const centroid = (poly: V3[]): V3 => poly.reduce<V3>((s, v) => [s[0] + v[0] / po
 
 export function Make() {
   const navigate = useNavigate();
+  // 5.0c: a saved design to carry on with
+  const opened = (useSearch({ strict: false }) as { d?: string }).d;
   // the worker is made and stopped by one effect (made in render, a remount stopped it before it was ready)
   const [physics, setPhysics] = useState<Physics | null>(null);
   const [ready, setReady] = useState(false);
@@ -50,6 +53,7 @@ export function Make() {
   const tilesRef = useRef(tiles);
   tilesRef.current = tiles;
   const fallen = useRef(new Set<number>());
+  const [falls, setFalls] = useState(0);
   const cheered = useRef(false);
 
   useEffect(() => {
@@ -89,6 +93,7 @@ export function Make() {
         const moved = Math.hypot(at.p[0] - c[0], at.p[1] - c[1], at.p[2] - c[2]);
         if (m.id !== null && moved > 0.35 && !physics.held.has(m.id) && !fallen.current.has(m.id)) {
           fallen.current.add(m.id);
+          setFalls((n) => n + 1);
           setLine(S.make.fell);
           say(S.make.fell);
         }
@@ -102,6 +107,8 @@ export function Make() {
     }, 300);
     return () => clearInterval(t);
   }, [physics]);
+
+  const design = useDesign(opened, physics, ready, tiles, setTiles, fallen.current, falls);
 
   const spots = useMemo(() => (shape && ready ? spotsFor(shape, leg, polys) : []), [shape, ready, polys]);
   const ghost = useMemo(() => (chosen && shape ? placeOn(chosen, shape, colour, tilt, flip) : null), [chosen, shape, colour, tilt, flip]);
@@ -177,6 +184,17 @@ export function Make() {
           <span className="flex-1" />
           <KidButton label={S.make.tapMode} showLabel={false} pressed={mode === "tap"} icon={<HandTap size={36} weight="bold" />} onPress={() => (setMode("tap"), setLine(S.make.tapEdge))} />
           <KidButton label={S.make.dragMode} showLabel={false} pressed={mode === "drag"} icon={<HandGrabbing size={36} weight="bold" />} onPress={() => (setMode("drag"), setChosen(null), setLine(S.make.dragIt))} />
+          <KidButton
+            label={S.make.steps}
+            showLabel={false}
+            disabled={!tiles.length || !design.loaded}
+            icon={<ListNumbers size={36} weight="bold" />}
+            onPress={() =>
+              void design.save().then((pid) => {
+                if (pid) void navigate({ to: "/build/$pid", params: { pid } });
+              })
+            }
+          />
           <KidButton label={S.make.undo} showLabel={false} disabled={!tiles.length} icon={<ArrowUUpLeft size={36} weight="bold" />} onPress={() => takeOff(tiles.length - 1)} />
           <KidButton
             label={S.make.startAgain}
@@ -187,6 +205,7 @@ export function Make() {
               for (const m of tiles) if (m.id !== null) physics?.remove(m.id);
               setTiles([]);
               fallen.current.clear();
+              setFalls(0);
               cheered.current = false;
             }}
           />
