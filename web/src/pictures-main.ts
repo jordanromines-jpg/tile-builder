@@ -6,8 +6,11 @@ import { PICTURE_LEGS, PROJECT_H, PROJECT_W, projectFile, projectHash, TILE_PX, 
 import { PROJECTS } from "./projects";
 import { DEFAULT_LEG } from "./engine/catalog";
 import { drawProject, drawTile, makeRenderer } from "./three/pictures";
+import { pinFinish } from "./three/TileMesh";
 
 drawFullLook();
+// one finish for every picture: on a clear background no light comes through the glass (5.4.1)
+pinFinish("mid");
 const r = makeRenderer();
 
 interface Job {

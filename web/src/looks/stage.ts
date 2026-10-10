@@ -39,4 +39,25 @@ export interface StageLook {
   contact: { opacity: (dark: boolean) => number; color: string; blur: number };
   /** effects by quality tier; `low` should be none */
   effects: (tier: Tier, dark: boolean) => StageEffects;
+  /** 5.4: a real set in place of the room made on the device, the flat background and the floor that fades into fog
+      (without a GPU the Stage keeps those) */
+  set?: StageSet;
+}
+
+/** The set (5.4.1): a real room, photographed (a CC0 HDRI in public/set/), lights the tiles, shines in them and stands
+    out of focus behind; the model stands on a wooden table with an edge. */
+export interface StageSet {
+  /** the room's file stem in public/set/: `<room>_1k.hdr` at high tier, `<room>_512.hdr` below */
+  room: string;
+  /** the room's turn about the vertical, radians: what stands behind the build */
+  turn: number;
+  /** how strongly the room lights the tiles, and how bright it is behind them */
+  light: (dark: boolean) => number;
+  backdrop: (dark: boolean) => number;
+  /** how far out of focus the room is (0 sharp, 1 a blur) */
+  blur: number;
+  /** the table's maps in public/set/ (KTX2) and a tint over the colour map */
+  wood: { color: string; normal: string; rough: string; tint: (dark: boolean) => number };
+  /** coloured lights from behind, for the rims (the key and fill are the look's own) */
+  rims: (dark: boolean) => StageLight[];
 }

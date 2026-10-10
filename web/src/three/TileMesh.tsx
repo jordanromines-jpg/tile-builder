@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import * as THREE from "three";
 import type { Colour, ShapeId } from "../engine/catalog";
 import { softwareGL } from "../gpu";
+import type { Tier } from "../looks/stage";
+import { currentTier, onTier } from "./quality";
 import { faceBump } from "./textures";
 import { buildGeometry, releaseGeometry, tileColour } from "./tile";
 
@@ -34,7 +36,7 @@ export function makeTileMaterials(colour: Colour): TileMaterials {
     };
   }
   const bump = faceBump();
-  return {
+  const m: TileMaterials = {
     frame: new THREE.MeshPhysicalMaterial({ color: col, roughness: 0.35, clearcoat: 0.6, clearcoatRoughness: 0.18, transparent: true, opacity: 1 }),
     glass: new THREE.MeshPhysicalMaterial({
       color: col,
@@ -51,7 +53,62 @@ export function makeTileMaterials(colour: Colour): TileMaterials {
     }),
     rivet: rivetMaterial(),
   };
+  m.glass.userData.colour = col.clone();
+  finish(m, pinned ?? currentTier());
+  live.add(m);
+  m.glass.addEventListener("dispose", () => live.delete(m));
+  return m;
 }
+
+/** The glass's resting opacity for its finish: Model fades a tile in up to it, and dims settled glass from it. */
+export function baseOpacity(glass: THREE.Material): number {
+  return (glass.userData.base as number | undefined) ?? BASE_OPACITY.glass;
+}
+
+let pinned: Tier | null = null;
+/** The picture maker draws every picture at one finish: `mid` (on a clear background no light comes through glass). */
+export function pinFinish(t: Tier) {
+  pinned = t;
+}
+
+const live = new Set<TileMaterials>();
+const WHITE = new THREE.Color(1, 1, 1);
+
+/** The tile's finish by tier (5.4.1, the one look): a satin vinyl frame, and glass that light comes through at high,
+    a warm tinted glass at mid; low keeps the glossy tile of before. A tier change retunes every live tile. */
+function finish(m: TileMaterials, tier: Tier) {
+  const f = m.frame as THREE.MeshPhysicalMaterial;
+  const g = m.glass as THREE.MeshPhysicalMaterial;
+  const col = g.userData.colour as THREE.Color;
+  const soft = tier !== "low";
+  f.roughness = soft ? 0.42 : 0.35;
+  f.clearcoat = soft ? 0.4 : 0.6;
+  f.clearcoatRoughness = soft ? 0.15 : 0.18;
+  f.sheen = soft ? 0.12 : 0;
+  f.sheenRoughness = 0.5;
+  f.sheenColor.copy(col);
+  const through = tier === "high";
+  if (g.transmission > 0 !== through) g.needsUpdate = true;
+  g.transmission = through ? 1 : 0;
+  g.thickness = 0.1;
+  g.ior = 1.45;
+  g.attenuationColor.copy(col);
+  g.attenuationDistance = 0.45;
+  g.color.copy(col);
+  if (through) g.color.lerp(WHITE, 0.2);
+  g.roughness = through ? 0.22 : 0.18;
+  g.emissive.copy(col).multiplyScalar(through ? 0.1 : soft ? 0.12 : 0);
+  g.sheen = tier === "mid" ? 0.3 : 0;
+  g.sheenColor.copy(col);
+  g.userData.base = through ? 0.92 : soft ? 0.7 : BASE_OPACITY.glass;
+  g.opacity = g.userData.base as number;
+}
+
+onTier(() => {
+  if (pinned) return;
+  const t = currentTier();
+  for (const m of live) finish(m, t);
+});
 
 /** The light version of the 3D, for devices without a GPU. */
 export function lite(): boolean {

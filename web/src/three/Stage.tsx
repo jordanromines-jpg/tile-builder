@@ -3,13 +3,14 @@
    model. Since 3.0 every one of those comes from the look (looks/<look>/stage.ts), with its effects by quality tier. */
 import { ContactShadows } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { lazy, Suspense, useEffect, useMemo } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { isDark } from "../ground";
 import { STAGES } from "../looks/stages";
 import { useLook } from "../looks/useLook";
 import { useTier } from "./quality";
+import { SetRims, SetTable, useRoom } from "./Set";
 import { lite } from "./TileMesh";
 
 // the effects library is big: it loads only when a look asks for an effect at this tier (3.0)
@@ -62,35 +63,77 @@ export function Stage({ paint, radius, reach, shade = 0, contact = true }: { pai
   const fog = useMemo(() => fogFor(Math.ceil(reach * 2) / 2, radius), [reach, radius]);
   const fx = useMemo(() => (lite() ? {} : look.effects(tier, dark)), [look, tier, dark]);
   const effectsOn = !!(fx.ao || fx.bloom || fx.vignette);
+  // 5.4.1: the real set, when the look has one and there is a GPU for it
+  const set = lite() ? undefined : look.set;
+  const shadows = !!set && tier === "high";
+  const setFailed = useCallback((e: unknown) => console.error("The set's room or table did not load; the room made on the device stands in", e), []);
+  useRoom(set, tier, dark, setFailed);
   useEffect(() => {
     // with effects on, the effects apply the Neutral curve themselves, last (Effects.tsx): never twice
     gl.toneMapping = effectsOn ? THREE.NoToneMapping : THREE.NeutralToneMapping;
     gl.toneMappingExposure = look.exposure(dark);
-    lightScene(scene, gl, look.background(dark), fog, look.environment);
+    gl.shadowMap.enabled = shadows;
+    gl.shadowMap.type = THREE.PCFSoftShadowMap;
+    if (!set) lightScene(scene, gl, look.background(dark), fog, look.environment);
+    else if (!(scene.background instanceof THREE.Texture)) {
+      // until the room has loaded (useRoom): the room made on the device, and the look's colour behind
+      lightScene(scene, gl, null, fog, look.environment);
+      scene.background = new THREE.Color(look.background(dark));
+      scene.fog = null;
+    }
     // the far plane past the whole table: nothing is clipped zoomed out
     camera.far = Math.max(200, fog.far + fog.table / 2);
     camera.updateProjectionMatrix();
     invalidate();
-  }, [scene, gl, camera, dark, paint, fog, look, effectsOn, invalidate]);
+  }, [scene, gl, camera, dark, paint, fog, look, effectsOn, set, shadows, invalidate]);
   useEffect(() => {
     // the floor keeps its pattern's size on a bigger table
     if (floor) floor.repeat.set((look.floor.repeat * fog.table) / 80, (look.floor.repeat * fog.table) / 80);
     invalidate();
   }, [floor, look, fog.table, invalidate]);
   useEffect(() => invalidate(), [shade, invalidate]);
+  // turning shadows on or off (a tier change) needs every material's shader made again
+  useEffect(() => {
+    scene.traverse((o) => {
+      if (o instanceof THREE.Mesh) for (const m of [o.material].flat()) m.needsUpdate = true;
+    });
+    invalidate();
+  }, [shadows, scene, invalidate]);
   const s = Math.max(6, radius * 1.3);
+  // big enough that only its far edge shows, the room beyond it
+  const table = Math.max(14, radius * 6);
   const hemi = look.hemisphere(dark);
   const key = look.key(dark);
   const fill = look.fill(dark);
   return (
     <>
       <hemisphereLight args={[hemi.sky, hemi.ground, hemi.intensity + (lite() ? 0.9 : 0)]} />
-      <directionalLight position={key.position} intensity={key.intensity} color={key.color} />
+      <directionalLight
+        position={key.position}
+        intensity={key.intensity}
+        color={key.color}
+        castShadow={shadows}
+        shadow-mapSize={[2048, 2048]}
+        shadow-radius={6}
+        shadow-bias={-0.0004}
+        shadow-camera-left={-s * 1.6}
+        shadow-camera-right={s * 1.6}
+        shadow-camera-top={s * 1.6}
+        shadow-camera-bottom={-s * 1.6}
+        shadow-camera-far={s * 10}
+      />
       <directionalLight position={fill.position} intensity={fill.intensity} color={fill.color} />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.002, 0]}>
-        <planeGeometry args={[fog.table, fog.table]} />
-        <meshStandardMaterial map={floor ?? undefined} color={floor ? 0xffffff : look.floor.color(dark)} roughness={look.floor.roughness} metalness={0} />
-      </mesh>
+      {set ? (
+        <>
+          <SetTable set={set} dark={dark} size={table} onError={setFailed} />
+          <SetRims set={set} dark={dark} radius={radius} />
+        </>
+      ) : (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.002, 0]}>
+          <planeGeometry args={[fog.table, fog.table]} />
+          <meshStandardMaterial map={floor ?? undefined} color={floor ? 0xffffff : look.floor.color(dark)} roughness={look.floor.roughness} metalness={0} />
+        </mesh>
+      )}
       {/* frames={1}: drei counts its frames afresh each time it renders, so a new `shade` draws the shadow once more */}
       {contact && !lite() && <ContactShadows key="shadow" name={`shade-${shade}`} frames={1} position={[0, 0.003, 0]} scale={s * 2.2} blur={look.contact.blur} far={Math.max(3, radius)} opacity={look.contact.opacity(dark)} resolution={512} color={look.contact.color} />}
       {effectsOn && (

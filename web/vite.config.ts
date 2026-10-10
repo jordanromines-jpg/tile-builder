@@ -29,7 +29,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,woff2,webp,png,svg,json}"],
+        // 5.4.1: the set (the room, the table's maps and their transcoder) is part of the install, so it works offline
+        globPatterns: ["**/*.{js,css,html,woff2,webp,png,svg,json,hdr,ktx2,wasm}"],
         // 2.4: the project pictures (most of the download) are not in the install; each is kept the first time it is
         // shown, and the rest are fetched quietly once the app is idle (src/pwa.ts), so they all work offline soon after
         globIgnores: ["pictures/projects/**", "runs/**", "assets/worker-*.js"],
