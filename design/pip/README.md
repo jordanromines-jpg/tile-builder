@@ -40,3 +40,24 @@ Render the chick concept: `blender -b -P design/pip/chick.py -- <out_dir> hero,f
 
 Gotchas: Blender 5 starts a new shape key at full value (set `value = 0`); the glTF exporter writes the *render*
 colour attribute (set `render_color_index`).
+
+## The characters made app-ready (5.3.5)
+From a finished image-to-3D model (Pixal3D, about 950k faces with a 4K atlas) to a light rigged GLB of 190–300 KB.
+1. `cleantex.py`: the atlas gutters' noise is filled from the nearest island texel.
+2. `ready.py`: welded by position, loose bits under 1% of the faces dropped, the cleaned colour swapped in.
+3. AssetFurnace's `blender_retopo_bake.py IN OUT 8000 2048 89 0.004 0 0.42 1.45`: QuadriFlow declined on all three
+   (the generated meshes are not manifold), so it decimated to about 8k faces and baked the colour across by ray
+   casting. Side by side with the hero renders, the look holds.
+4. `specks.py`: the baked atlas's colour flecks on the body colour are filled from around them. With `dark=3000` (the
+   snail only), dark marks too: its blotch on the foot was a bake miss. The dino's nostrils and every eye are kept.
+5. `rig3.py`: each model is turned to face −y and stood 1 tall. Its bones are placed from the mesh itself (feet, hands at
+   arm height, tail tip, gill tips, the snail's foot line and feeler stalks), bound through a watertight voxel proxy
+   (AssetFurnace's `transfer_weights`), and checked by reach: an arm or gill must not reach the feet, a foot must not
+   reach the head, a feeler must stay on its stalk.
+6. `face3.py`: `blink` and `squint` keys, made by squashing the painted eye's patch (found from the colour map). They are
+   weak at 8k faces: an eye is only a few vertices wide. Real blinks want eyes as their own small meshes (5.3.2).
+7. `pose3.py`: an 8-pose sheet, then glTF with skin and keys. `clip3.py`: a 4 s proof clip. Then
+   `npx gltf-transform optimize … --compress meshopt --texture-compress webp --texture-size 1024`. KTX2 inside glTF needs
+   `toktx` (not installed); WebP is in three's loader.
+
+`models/{dino,axolotl,snail}.glb` are the results.
