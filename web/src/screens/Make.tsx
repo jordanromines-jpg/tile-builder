@@ -6,22 +6,24 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLOURS, DEFAULT_LEG, SHAPE_IDS, type Colour, type ShapeId } from "../engine/catalog";
 import { worldPolygon, type V3 } from "../engine/geometry";
+import type { Placed } from "../engine/types";
 import { say } from "../speech/say";
 import { S } from "../strings";
 import { AgeProvider } from "../ui/kid/AgeContext";
 import { KidButton } from "../ui/kid/KidButton";
-import { ArrowClockwise, ArrowLeft, ArrowUUpLeft, Check, FlipHorizontal, HandGrabbing, HandTap, ListNumbers, Trash, X } from "../ui/icons";
+import { ArrowClockwise, ArrowLeft, ArrowUUpLeft, Check, FlipHorizontal, HandGrabbing, HandTap, Jeep, ListNumbers, Trash, X } from "../ui/icons";
 import { TileChip } from "../ui/TileChip";
 import { MakeStage, type MadeTile } from "./make/MakeStage";
 import { Physics } from "./make/physics";
 import { blocked, placeOn, spotsFor, TILTS, type Spot } from "./make/place";
+import { DriveBar } from "./make/Drive";
 import { useDesign } from "./make/useDesign";
 
 const leg = DEFAULT_LEG;
 
 declare global {
   interface Window {
-    __make?: { tiles: number; placed: number; spots: number; high: number; fallen: number; ready: boolean };
+    __make?: { tiles: number; placed: number; spots: number; high: number; fallen: number; ready: boolean; moved: number; truck: number[] | null };
     /** the browser tests' finger on a glowing edge: the spot from a to b (as a tap on its bar does) */
     __makePick?: (a: number[], b: number[]) => boolean;
   }
@@ -54,7 +56,13 @@ export function Make() {
   tilesRef.current = tiles;
   const fallen = useRef(new Set<number>());
   const [falls, setFalls] = useState(0);
+  // (for the browser tests: how many tiles are away from where they were put, and where the truck is)
+  const [moved, setMoved] = useState(0);
   const cheered = useRef(false);
+  // 5.0d: driving the truck (what it knocks down isn't "It fell!", and the build is put back after)
+  const [driving, setDriving] = useState<Placed[] | null>(null);
+  const drivingRef = useRef(false);
+  drivingRef.current = !!driving;
 
   useEffect(() => {
     const p = new Physics();
@@ -72,6 +80,7 @@ export function Make() {
     const t = setInterval(() => {
       const now: V3[][] = [];
       let top = 0;
+      let away = 0;
       for (const m of tilesRef.current) {
         const built = worldPolygon(m.placed, leg);
         const at = m.id === null ? undefined : physics.poses.get(m.id);
@@ -91,19 +100,21 @@ export function Make() {
         now.push(poly);
         top = Math.max(top, ...poly.map((v) => v[1]));
         const moved = Math.hypot(at.p[0] - c[0], at.p[1] - c[1], at.p[2] - c[2]);
-        if (m.id !== null && moved > 0.35 && !physics.held.has(m.id) && !fallen.current.has(m.id)) {
+        if (moved > 0.1) away++;
+        if (!drivingRef.current && m.id !== null && moved > 0.35 && !physics.held.has(m.id) && !fallen.current.has(m.id)) {
           fallen.current.add(m.id);
           setFalls((n) => n + 1);
           setLine(S.make.fell);
           say(S.make.fell);
         }
       }
-      if (top >= 3.99 && !cheered.current) {
+      if (top >= 3.99 && !cheered.current && !drivingRef.current) {
         cheered.current = true;
         setLine(S.make.tall);
         say(S.make.tall);
       }
       setPolys(now);
+      setMoved(away);
     }, 300);
     return () => clearInterval(t);
   }, [physics]);
@@ -163,8 +174,8 @@ export function Make() {
 
   // for the browser tests (as window.__run): what is on the table, how high, what fell
   useEffect(() => {
-    window.__make = { tiles: tiles.length, placed: tiles.filter((m) => m.id !== null).length, spots: spots.length, high: Math.max(0, ...polys.flat().map((v) => v[1])), fallen: fallen.current.size, ready };
-  }, [tiles, spots, polys, ready]);
+    window.__make = { tiles: tiles.length, placed: tiles.filter((m) => m.id !== null).length, spots: spots.length, high: Math.max(0, ...polys.flat().map((v) => v[1])), fallen: fallen.current.size, ready, moved, truck: physics?.truck ? [...physics.truck.slice(0, 3)] : null };
+  }, [tiles, spots, polys, ready, moved, physics]);
 
   useEffect(() => {
     window.__makePick = (a, b) => {
@@ -185,9 +196,27 @@ export function Make() {
           <KidButton label={S.make.tapMode} showLabel={false} pressed={mode === "tap"} icon={<HandTap size={36} weight="bold" />} onPress={() => (setMode("tap"), setLine(S.make.tapEdge))} />
           <KidButton label={S.make.dragMode} showLabel={false} pressed={mode === "drag"} icon={<HandGrabbing size={36} weight="bold" />} onPress={() => (setMode("drag"), setChosen(null), setLine(S.make.dragIt))} />
           <KidButton
+            label={S.make.drive}
+            showLabel={false}
+            pressed={!!driving}
+            disabled={!tiles.length || !ready}
+            icon={<Jeep size={36} weight="bold" />}
+            onPress={() => {
+              if (driving) return;
+              // what fell is taken off first: the truck drives what stands, and Put it back puts that back
+              for (const m of tiles) if (m.id !== null && fallen.current.has(m.id)) physics?.remove(m.id);
+              const standing = tiles.filter((m) => m.id === null || !fallen.current.has(m.id));
+              fallen.current.clear();
+              setTiles(standing);
+              setChosen(null);
+              setSelected(null);
+              setDriving(standing.map((m) => m.placed));
+            }}
+          />
+          <KidButton
             label={S.make.steps}
             showLabel={false}
-            disabled={!tiles.length || !design.loaded}
+            disabled={!tiles.length || !design.loaded || !!driving}
             icon={<ListNumbers size={36} weight="bold" />}
             onPress={() =>
               void design.save().then((pid) => {
@@ -195,11 +224,11 @@ export function Make() {
               })
             }
           />
-          <KidButton label={S.make.undo} showLabel={false} disabled={!tiles.length} icon={<ArrowUUpLeft size={36} weight="bold" />} onPress={() => takeOff(tiles.length - 1)} />
+          <KidButton label={S.make.undo} showLabel={false} disabled={!tiles.length || !!driving} icon={<ArrowUUpLeft size={36} weight="bold" />} onPress={() => takeOff(tiles.length - 1)} />
           <KidButton
             label={S.make.startAgain}
             showLabel={false}
-            disabled={!tiles.length}
+            disabled={!tiles.length || !!driving}
             icon={<Trash size={36} weight="bold" />}
             onPress={() => {
               for (const m of tiles) if (m.id !== null) physics?.remove(m.id);
@@ -214,7 +243,7 @@ export function Make() {
           {physics && <MakeStage
             tiles={tiles}
             physics={physics}
-            spots={mode === "tap" || drag ? spots : []}
+            spots={driving ? [] : mode === "tap" || drag ? spots : []}
             chosen={chosen}
             ghost={ghost}
             ghostBad={bad}
@@ -224,14 +253,26 @@ export function Make() {
             onTile={(i) => (setSelected(i === selected ? null : i), setChosen(null))}
             onDragSpot={setDragSpot}
             label={`${S.make.title}: ${S.make.tiles(tiles.length)}`}
+            driving={!!driving}
           />}
           {!ready && <p className="absolute inset-x-0 top-6 text-center font-kid text-ink-2">{S.make.loading}</p>}
         </div>
         <section className="ts-tray soft m-3 flex flex-col gap-3 rounded-lg bg-surface-2 p-3 shadow-xl" aria-label={S.make.pickShape}>
           <p className="font-kid font-bold text-ink-1" aria-live="polite">
-            {ghost ? `${bad ? S.make.blocked : S.make.tilt(TILTS[tilt].say)}` : line}
+            {driving ? S.make.driveLine : ghost ? `${bad ? S.make.blocked : S.make.tilt(TILTS[tilt].say)}` : line}
           </p>
-          {chosen && mode === "tap" ? (
+          {driving && physics ? (
+            <DriveBar
+              physics={physics}
+              placed={driving}
+              polys={polys}
+              onBack={(ids) => {
+                fallen.current.clear();
+                setTiles((ts) => ts.map((m, i) => ({ ...m, id: ids[i] ?? null })));
+              }}
+              onDone={() => setDriving(null)}
+            />
+          ) : chosen && mode === "tap" ? (
             <div className="flex flex-wrap items-center gap-3">
               <KidButton label={S.make.turn} icon={<ArrowClockwise size={32} weight="bold" />} onPress={() => setTilt((t) => (t + 1) % TILTS.length)} />
               <KidButton label={S.make.flip} icon={<FlipHorizontal size={32} weight="bold" />} onPress={() => setFlip((f) => !f)} />

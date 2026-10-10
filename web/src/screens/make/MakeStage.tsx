@@ -11,6 +11,8 @@ import type { Placed } from "../../engine/types";
 import { placeTile, type PlacedTile } from "../../three/buildScene";
 import { cssColour } from "../../three/tile";
 import { Stage } from "../../three/Stage";
+import { Truck } from "../../three/truck/Truck";
+import { restPose } from "../../three/truck/spec";
 import type { Physics } from "./physics";
 import type { Spot } from "./place";
 
@@ -34,6 +36,8 @@ export interface MakeStageProps {
   onTile: (index: number) => void;
   onDragSpot: (s: Spot | null) => void;
   label: string;
+  /** 5.0d: the Pip truck is on the table */
+  driving: boolean;
 }
 
 const centroid = (poly: V3[]): V3 => poly.reduce<V3>((s, v) => [s[0] + v[0] / poly.length, s[1] + v[1] / poly.length, s[2] + v[2] / poly.length], [0, 0, 0]);
@@ -159,6 +163,36 @@ function DragPick({ spots, drag, onDragSpot }: Pick<MakeStageProps, "spots" | "d
   return null;
 }
 
+/** The Pip truck where the physics has it (5.0d); the view's middle follows it. Hidden until it is on the table. */
+function DrivenTruck({ physics }: { physics: Physics }) {
+  const group = useRef<THREE.Group>(null);
+  const controls = useThree((s) => s.controls) as unknown as { target: THREE.Vector3; update: () => void } | null;
+  const pose = useMemo(() => restPose(), []);
+  const aim = useMemo(() => new THREE.Vector3(), []);
+  const drive = () => {
+    const p = physics.truck;
+    if (group.current) group.current.visible = !!p;
+    if (!p) return null;
+    pose.pos = [p[0], p[1], p[2]];
+    pose.quat = [p[3], p[4], p[5], p[6]];
+    pose.wheels.forEach((w, k) => {
+      w.spin = p[7 + k * 3];
+      w.steer = p[8 + k * 3];
+      w.compress = p[9 + k * 3];
+    });
+    if (controls) {
+      controls.target.lerp(aim.set(p[0], 0.5, p[2]), 0.04);
+      controls.update();
+    }
+    return pose;
+  };
+  return (
+    <group ref={group} visible={false}>
+      <Truck drive={drive} />
+    </group>
+  );
+}
+
 export function MakeStage(p: MakeStageProps) {
   return (
     <div className="h-full w-full" role="img" aria-label={p.label} style={{ touchAction: "none" }}>
@@ -170,6 +204,7 @@ export function MakeStage(p: MakeStageProps) {
         ))}
         {p.ghost && <Ghost tile={p.ghost} bad={p.ghostBad} />}
         <DragPick spots={p.spots} drag={p.drag} onDragSpot={p.onDragSpot} />
+        {p.driving && <DrivenTruck physics={p.physics} />}
         <OrbitControls enablePan={false} minDistance={3} maxDistance={24} maxPolarAngle={Math.PI * 0.47} target={[0, 0.5, 0]} makeDefault />
       </Canvas>
     </div>

@@ -114,7 +114,8 @@ dogwood), the pollinators, the Venus flytrap growing wild only near Wilmington.
 - **Make your own (5.0).** A page for building anything: any tile, any colour, as many as you like, put on by tapping
   a glowing edge (or dragging it there). Real physics, live: a tile stands if its magnets and the tiles round it hold
   it, and falls if not, as real tiles do. What stands is saved on the iPad (5.1, a My builds shelf on the Library) and
-  can be turned into steps for Build mode.
+  can be turned into steps for Build mode, and the Pip truck can be driven into it (5.2: Go, Left, Right, Stop, Put
+  it back).
 - **Built in your colours (4.3).** A build is drawn and named in the colours the family's tiles come in: Magna-Tiles
   and Connetix make six, PicassoTiles eight (light blue and pink too). Each set's shapes are taken as an even mix of
   its colours unless a grown-up counts them. A colour the family has enough of stays; one it hasn't moves whole to the

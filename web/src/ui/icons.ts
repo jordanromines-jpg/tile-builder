@@ -1,5 +1,7 @@
 // The Phosphor icons the app uses (plan key 2k), in one place so the set stays small and consistent.
 export {
+  ArrowArcLeft,
+  ArrowArcRight,
   ArrowClockwise,
   ArrowCounterClockwise,
   ArrowUUpLeft,

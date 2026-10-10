@@ -12,13 +12,17 @@ export type ToPhysics =
   | { kind: "remove"; id: number }
   | { kind: "reset"; tiles: Placed[] }
   | { kind: "pause" }
-  | { kind: "resume" };
+  | { kind: "resume" }
+  // 5.0d: the Pip truck on the table, and the child's hand on it
+  | { kind: "truckOn"; at: [number, number, number]; heading: [number, number] }
+  | { kind: "truckOff" }
+  | { kind: "drive"; go: number; steer: number };
 
 export type FromPhysics =
   | { kind: "ready" }
   | { kind: "added"; ref: number; id: number }
   | { kind: "reset"; ids: number[] }
-  | { kind: "poses"; poses: Float32Array; held: number[] };
+  | { kind: "poses"; poses: Float32Array; held: number[]; truck: Float32Array | null; broke: number };
 
 const STEPS_A_FRAME = 4;
 const post = (m: FromPhysics, transfer: Transferable[] = []) => (self as unknown as Worker).postMessage(m, transfer);
@@ -38,13 +42,19 @@ function handle(m: ToPhysics) {
     scene.remove(m.id);
     ids = ids.filter((i) => i !== m.id);
   } else if (m.kind === "reset") {
+    // (no scene while the new one is made: the stepper waits, and messages meanwhile queue for it)
     scene.free();
+    scene = null;
     void rapier().then((R) => {
       scene = new LiveScene(R, DEFAULT_LEG);
       ids = m.tiles.map((t) => scene!.add(t));
       post({ kind: "reset", ids });
+      for (const q of queue.splice(0)) handle(q);
     });
-  } else if (m.kind === "pause") running = false;
+  } else if (m.kind === "truckOn") scene.truckOn(m.at, m.heading);
+  else if (m.kind === "truckOff") scene.truckOff();
+  else if (m.kind === "drive") scene.drive(m.go, m.steer);
+  else if (m.kind === "pause") running = false;
   else if (m.kind === "resume") running = true;
 }
 
@@ -61,6 +71,9 @@ void rapier().then((R) => {
     if (!scene || !running) return;
     scene.step(STEPS_A_FRAME);
     const poses = scene.poses();
-    post({ kind: "poses", poses, held: ids.filter((i) => scene!.isHeld(i)) }, [poses.buffer]);
+    const truck = scene.truckPose();
+    const broke = scene.broke;
+    scene.broke = 0;
+    post({ kind: "poses", poses, held: ids.filter((i) => scene!.isHeld(i)), truck, broke }, truck ? [poses.buffer, truck.buffer] : [poses.buffer]);
   }, 1000 / 60);
 });

@@ -6,8 +6,10 @@
    tile's magnets go. Runs in a worker (worker.ts); pure, so it is tested in Node. */
 import { edgesMeet, edgesOf, normalOf, worldPolygon, type V3 } from "../engine/geometry";
 import type { Placed } from "../engine/types";
+import { brake, capChange, compressOf, drive, forwardOf, MAX_STEER } from "./hand";
 import type { Rapier } from "./rapier";
 import { at, centroid, liftOf, SEAT_DAMPING, segDist, type Pose } from "./scene";
+import { CHASSIS_Y, makeTruck, type Truck } from "./vehicle";
 import { AREAL_GRAMS, DT, FRICTION_TABLE, FRICTION_TILE, G, NEWTON, NEWTON_METRE, RESTITUTION, THICK } from "./units";
 
 type World = InstanceType<Rapier["World"]>;
@@ -20,6 +22,11 @@ export const HOLD_S = 1;
 export const LIVE_BREAK = 1.5 * NEWTON;
 /** solver passes a step */
 export const LIVE_ITERATIONS = 10;
+/** the truck hitting a tile this hard lets that tile's magnets go (the runs' HIT_FORCE: the child crashes it in on
+    purpose) */
+export const LIVE_HIT = 0.3 * NEWTON;
+/** how fast the child pushes the truck on Go, squares a second (4.4.1's drive) */
+export const LIVE_DRIVE = 2.4;
 /** R14's hinge friction, N·m a square of edge */
 const HINGE = 0.006;
 
@@ -46,6 +53,11 @@ export class LiveScene {
   private queue: InstanceType<Rapier["EventQueue"]>;
   private hooks: { filterContactPair: (c1: number, c2: number, b1: number, b2: number) => number | null; filterIntersectionPair: () => boolean };
   private next = 0;
+  private truck: Truck | null = null;
+  /** the child's hand on the truck: Go (0 or 1) and the turn (−1 right … 1 left) */
+  private push = { go: 0, steer: 0 };
+  /** magnets that let go since the last poses (for the crunch) */
+  broke = 0;
 
   constructor(
     private R: Rapier,
@@ -181,12 +193,31 @@ export class LiveScene {
           t.body.wakeUp();
         }
       }
+      if (this.truck) {
+        const tr = this.truck;
+        if (this.push.go) {
+          // the hand pushes it along and turns it toward a point two squares ahead, turned by the steer
+          const f = forwardOf(tr);
+          const a = this.push.steer * MAX_STEER;
+          const p = tr.body.translation();
+          const dir: [number, number] = [f[0] * Math.cos(a) + f[2] * Math.sin(a), -f[0] * Math.sin(a) + f[2] * Math.cos(a)];
+          drive(tr, LIVE_DRIVE * this.push.go, a, [p.x + dir[0] * 2, p.z + dir[1] * 2]);
+        } else brake(tr);
+        tr.vehicle.update(DT);
+      }
+      // (a loose tile squeezed under the chassis mustn't pop the truck away faster than a real knock: as in the runs)
+      const before = this.truck ? { v: this.truck.body.linvel(), w: this.truck.body.angvel() } : null;
       this.world.step(this.queue, this.hooks);
+      if (before && this.truck) capChange(this.truck, before);
       this.queue.drainContactForceEvents((e) => {
-        if (e.totalForceMagnitude() < LIVE_BREAK) return;
+        const byTruck = this.isTruck(e.collider1()) || this.isTruck(e.collider2());
+        if (e.totalForceMagnitude() < (byTruck ? LIVE_HIT : LIVE_BREAK)) return;
         for (const h of [e.collider1(), e.collider2()]) {
           const id = this.byHandle.get(h);
-          if (id !== undefined) this.letGo(id);
+          if (id !== undefined && this.tiles.get(id)?.joints.length) {
+            this.letGo(id);
+            this.broke++;
+          }
         }
       });
     }
@@ -201,6 +232,44 @@ export class LiveScene {
       out.set([t.id, ...p.t, ...p.q], k);
       k += 8;
     }
+    return out;
+  }
+
+  /** The Pip truck on the table at `at` (where its wheels touch), facing `heading` (x, z); one at a time. */
+  truckOn(where: V3, heading: [number, number]) {
+    this.truckOff();
+    this.truck = makeTruck(this.R, this.world, where, heading);
+    this.push = { go: 0, steer: 0 };
+  }
+
+  private isTruck(collider: number): boolean {
+    const b = this.truck?.body;
+    if (!b) return false;
+    for (let k = 0; k < b.numColliders(); k++) if (b.collider(k).handle === collider) return true;
+    return false;
+  }
+
+  truckOff() {
+    if (this.truck) this.world.removeRigidBody(this.truck.body);
+    this.truck = null;
+  }
+
+  /** The child's hand on the truck: Go (0 or 1) and the turn (−1 right … 1 left). */
+  drive(go: number, steer: number) {
+    this.push = { go, steer };
+  }
+
+  /** The truck's pose: where its wheels touch (x, y, z), its turn (x, y, z, w), then each wheel's spin, steer and
+      squash (19 numbers); null with no truck. */
+  truckPose(): Float32Array | null {
+    const tr = this.truck;
+    if (!tr) return null;
+    const p = tr.body.translation();
+    const q = tr.body.rotation();
+    const pose: Pose = { t: [p.x, p.y, p.z], q: [q.x, q.y, q.z, q.w] };
+    const out = new Float32Array(19);
+    out.set([...at(pose, [0, -CHASSIS_Y, 0]), ...pose.q]);
+    for (let w = 0; w < 4; w++) out.set([tr.vehicle.wheelRotation(w) ?? 0, tr.vehicle.wheelSteering(w) ?? 0, compressOf(tr, w)], 7 + w * 3);
     return out;
   }
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.2.0 · 10 Oct 2026
+
+Drive the Pip truck into what you built.
+
+- **Drive the truck** (the truck button on Make your own): the Pip truck drops onto the table in front of your build.
+  **Go** pushes it along, **Left** and **Right** turn it, **Stop** lets it roll to a stop. It crashes into what you
+  built, and the magnets let go as real ones do, with the engine's hum and a crunch at every break; the view follows it.
+- **Put it back** stands every tile up again as it was built; **Done driving** does too, and goes back to building.
+  What fell before the drive is taken off first.
+
 ## 5.1.0 · 10 Oct 2026
 
 Make your own keeps what you build.

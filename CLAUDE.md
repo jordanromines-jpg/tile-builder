@@ -7,7 +7,7 @@ Jordan owns it and decides scope.
 
 ## Start here
 1. Read `plans/README.md` (it says which plan is in progress or waiting; the latest done are
-   `2026-10-09-truck-runs-autobuild.md`, 4.0–4.2, and `2026-10-09-set-colours.md`, 4.3), and
+   `2026-10-10-make-your-own.md`, 5.0–5.2, `2026-10-09-truck-runs-autobuild.md`, 4.0–4.2, and `2026-10-09-set-colours.md`, 4.3), and
    `plans/2026-10-08-sound-structures.md` (the rules every build follows). **The last row of a plan's build log says
    what is next.**
 2. Read `PRODUCT.md` (age bands, Monster trucks), `DESIGN.md`, `web/src/engine/README.md` (checker rules R1–R14) and
