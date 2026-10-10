@@ -16,8 +16,10 @@ async function open(page: Page) {
 async function putOn(page: Page, a: number[], b: number[], turns = 0) {
   const before = (await make(page))!.placed;
   await expect.poll(() => page.evaluate(([x, y]) => window.__makePick?.(x, y) ?? false, [a, b])).toBe(true);
-  for (let k = 0; k < turns; k++) await page.getByRole("button", { name: "Turn" }).click();
-  await page.getByRole("button", { name: "Put it on" }).click();
+  // (a click sent to the button: under load the live 3D stage keeps the tray from ever reading as "stable" to a
+  // pointer click, as with the Finish tap)
+  for (let k = 0; k < turns; k++) await page.getByRole("button", { name: "Turn" }).dispatchEvent("click");
+  await page.getByRole("button", { name: "Put it on" }).dispatchEvent("click");
   await expect.poll(async () => (await make(page))!.placed).toBe(before + 1);
 }
 
