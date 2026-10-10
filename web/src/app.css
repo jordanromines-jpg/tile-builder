@@ -1,9 +1,6 @@
 @import "tailwindcss";
 @import "./tokens.css";
-@import "./looks/classic/look.css";
-@import "./looks/toy/look.css";
-@import "./looks/book/look.css";
-@import "./looks/studio/look.css";
+@import "./looks/vinyl/look.css";
 @import "@fontsource-variable/fredoka/wght.css";
 @import "@fontsource/andika/latin-400.css";
 @import "@fontsource/andika/latin-700.css";

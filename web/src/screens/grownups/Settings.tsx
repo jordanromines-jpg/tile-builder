@@ -8,7 +8,6 @@ import { requestPersist } from "../../store/storage";
 import { Button } from "../../ui/grownups/Button";
 import { ConfirmDialog } from "../../ui/grownups/Dialog";
 import { Radios, Switch } from "../../ui/grownups/Field";
-import { LookPicker } from "../../ui/LookPicker";
 import { SettingsList } from "../../ui/grownups/SettingsList";
 import { StorageStatus } from "../../ui/grownups/StorageStatus";
 import { useToast } from "../../ui/grownups/Toast";
@@ -67,11 +66,6 @@ export function Settings() {
       </SettingsList>
 
       <SettingsList title="Look">
-        <div className="flex flex-col gap-2">
-          <span className="font-bold">Style</span>
-          <span className="text-ink-2">Children can change it on the shelf too.</span>
-          <LookPicker />
-        </div>
         <div className="flex flex-col gap-2">
           <span className="font-bold">Light or dark</span>
           <Radios<Theme>

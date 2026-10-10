@@ -3,8 +3,7 @@
    the places it wants and nothing for the rest. Decorations are pictures only: aria-hidden, no taps, no layout (each
    sits absolutely inside its place, which is `position: relative`). */
 import type { ComponentType } from "react";
-import { useLook } from "./useLook";
-import { DECOR } from "./decorations";
+import { decor } from "./vinyl/decor";
 
 export type DecorAt =
   /** behind everything on a page (Library, grown-ups) */
@@ -23,7 +22,7 @@ export type DecorAt =
 export type Decorations = Partial<Record<DecorAt, ComponentType>>;
 
 export function Decor({ at }: { at: DecorAt }) {
-  const C = DECOR[useLook()][at];
+  const C = decor[at];
   return C ? (
     <span aria-hidden="true" className="ts-decor pointer-events-none absolute inset-0" data-decor={at}>
       <C />

@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.4.2 · 10 Oct 2026
+
+One look, everywhere.
+
+- **Tile Steps has one look now**: the same room as the builds. Every screen sits in the sunny playroom, out of focus;
+  shelves are pale maple; cards are cream trays with a soft lip; buttons are glossy and squash a little when pressed;
+  the step dots glow like tiles. In dark it is the same room in the evening.
+- **The four looks and the paint-palette picker are gone** (Toy studio, Picture book, Clean studio, Classic), from the
+  shelf, the first-run card and Settings. A family that had picked one simply gets the new look.
+- The sounds are the toy's, softer: rounder taps, a duller magnet click.
+
 ## 5.4.1 · 10 Oct 2026
 
 The builds stand in a real room.

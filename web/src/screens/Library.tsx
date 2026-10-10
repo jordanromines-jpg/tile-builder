@@ -7,9 +7,8 @@ import { designBase } from "../engine/design";
 import { matchProject, inventoryTotal, type Match } from "../engine/match";
 import { SECTIONS, type Theme } from "../engine/themes";
 import { Decor } from "../looks/decor";
-import { LookPicker } from "../ui/LookPicker";
 import { play } from "../sound/sound";
-import { Palette, Cube } from "../ui/icons";
+import { Cube } from "../ui/icons";
 import type { Age } from "../engine/types";
 import { PROJECT_INFO, SKELETONS } from "../projects/load";
 import type { ProjectInfo } from "../projects/serialize";
@@ -67,7 +66,6 @@ function LazyCards<T>({ items, card }: { items: T[]; card: (item: T) => ReactNod
 }
 
 export function Library() {
-  const [looksOpen, setLooksOpen] = useState(false);
   const navigate = useNavigate();
   const settings = useSettings();
   const inv = useInventory();
@@ -140,24 +138,7 @@ export function Library() {
           <div className="min-w-0 flex-1">
             <ThemeFilter value={theme} onChange={setTheme} themes={themes} />
           </div>
-          <button
-            type="button"
-            aria-label={S.kid.looks}
-            aria-pressed={looksOpen}
-            onClick={() => {
-              play("tap");
-              setLooksOpen((o) => !o);
-            }}
-            className="ts-looks-button ts-button ts-button-plain kid press soft grid h-16 w-16 place-items-center rounded-full border-2 border-line bg-surface-2 text-ink-1 aria-pressed:ring-4 aria-pressed:ring-focus"
-          >
-            <Palette size={34} weight="duotone" aria-hidden="true" />
-          </button>
         </div>
-        {looksOpen && (
-          <section aria-label={S.kid.looks} className="ts-looks-panel soft rounded-lg bg-surface-2 p-4">
-            <LookPicker size="small" />
-          </section>
-        )}
         {!hasTiles && inv && <EmptyState text={S.kid.emptyTiles} banner />}
         {heroItem && (
           <HeroCard

@@ -44,7 +44,23 @@ function ktxLoader(gl: THREE.WebGLRenderer): KTX2Loader {
   return ktx.loader;
 }
 
-/** The room as light, reflections and the blurred backdrop. Until it has loaded the scene keeps what it had. */
+const plates = new Map<string, Promise<THREE.Texture>>();
+function loadPlate(url: string): Promise<THREE.Texture> {
+  let p = plates.get(url);
+  if (!p) {
+    p = new THREE.TextureLoader().loadAsync(url).then((t) => {
+      t.colorSpace = THREE.SRGBColorSpace;
+      return t;
+    });
+    p.catch(() => plates.delete(url));
+    plates.set(url, p);
+  }
+  return p;
+}
+
+/** The room as light and reflections, and behind the model the 2D screens' own room plate (5.4.2: the same room, out
+    of focus, its calm wall whatever way the camera looks; the photographed room's dark side and ceiling never show).
+    Until they have loaded the scene keeps what it had. */
 export function useRoom(set: StageSet | undefined, tier: Tier, dark: boolean, onError: (e: unknown) => void) {
   const scene = useThree((s) => s.scene);
   const gl = useThree((s) => s.gl);
@@ -52,16 +68,14 @@ export function useRoom(set: StageSet | undefined, tier: Tier, dark: boolean, on
   useEffect(() => {
     if (!set) return;
     let gone = false;
-    loadRoom(gl, roomFile(set, tier)).then((env) => {
+    Promise.all([loadRoom(gl, roomFile(set, tier)), loadPlate(`${BASE}${dark ? set.plate.dark : set.plate.light}`)]).then(([env, plate]) => {
       if (gone) return;
       scene.environment = env;
-      scene.background = env;
+      scene.background = plate;
       scene.fog = null;
       scene.environmentIntensity = set.light(dark);
-      scene.backgroundIntensity = set.backdrop(dark);
-      scene.backgroundBlurriness = set.blur;
+      scene.backgroundIntensity = 1;
       scene.environmentRotation.set(0, set.turn, 0);
-      scene.backgroundRotation.set(0, set.turn, 0);
       invalidate();
     }, onError);
     return () => {

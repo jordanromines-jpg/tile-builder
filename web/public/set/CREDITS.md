@@ -9,3 +9,4 @@ fetched from anywhere else.
 | `wood_maple.ktx2` | texture "Wood Table 001", colour | 1K, lifted to a pale maple, KTX2 (ETC1S) |
 | `wood_nor_gl.ktx2`, `wood_rough.ktx2` | texture "Wood Table 001", normal (GL) and roughness | 1K and 512, KTX2 |
 | `basis/basis_transcoder.js`, `basis/basis_transcoder.wasm` | three.js 0.186.1 (MIT), `examples/jsm/libs/basis/` | copied, to read KTX2 |
+| `plate-light.webp`, `plate-dark.webp` | the room and the maple table above, drawn by the app's own renderer (5.4.2) | blurred, behind the 2D screens and the 3D |

@@ -12,6 +12,15 @@ in every state is the design page, `#/design` in the app. Shaped after `web-agen
 - Every word a child sees or hears lives in `web/src/strings.ts`, in the voice under Copy.
 - A rule here that names a source is research-backed. Changing it is a decision with Jordan's word (the plan's rule 16).
 
+**One look (5.4).** Tile Steps has one look: the finish of the set. Soft satin vinyl, tile glass that glows, a pale
+maple table, a real playroom out of focus behind every screen, warm light from the top left with coloured rims.
+- **Two materials:** cream satin vinyl holds things (trays with a raised lip); glossy coloured vinyl is pressed
+  (keycaps that squash).
+- **Tile glass** appears only where tiles are.
+
+The four looks of 3.0 and their picker are gone. The rules are in `design/set/boards.md`, the code in `web/src/looks/`
+(`looks/README.md`).
+
 ## Principles
 
 1. **Two taps to building.** Open, tap a project, step 1. No sign-in, no setup for the child, no project page (D18).

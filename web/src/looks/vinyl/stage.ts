@@ -22,8 +22,7 @@ export const stage: StageLook = {
     room: "empty_play_room",
     turn: 1.57,
     light: (dark) => (dark ? 0.28 : 1.1),
-    backdrop: (dark) => (dark ? 0.1 : 0.95),
-    blur: 0.5,
+    plate: { light: "plate-light.webp", dark: "plate-dark.webp" },
     // the evening maple is greyed a little: under the warm lamp it would turn orange
     wood: { color: "wood_maple.ktx2", normal: "wood_nor_gl.ktx2", rough: "wood_rough.ktx2", tint: (dark) => (dark ? 0x9c9890 : 0xffffff) },
     rims: (dark) => [

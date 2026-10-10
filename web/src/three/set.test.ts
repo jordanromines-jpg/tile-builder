@@ -4,7 +4,6 @@ import type * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import { drawFullLook } from "../gpu";
 import { stage } from "../looks/vinyl/stage";
-import { STAGES } from "../looks/stages";
 import { currentTier, faster, slower } from "./quality";
 import { roomFile } from "./Set";
 import { baseOpacity, makeTileMaterials } from "./TileMesh";
@@ -16,15 +15,15 @@ describe("the set (5.4.1)", () => {
 
   it("has every file it names, credited", () => {
     const credits = readFileSync(join(SET, "CREDITS.md"), "utf8");
-    for (const f of [`${set.room}_1k.hdr`, `${set.room}_512.hdr`, set.wood.color, set.wood.normal, set.wood.rough, "basis/basis_transcoder.js", "basis/basis_transcoder.wasm"]) {
+    for (const f of [`${set.room}_1k.hdr`, `${set.room}_512.hdr`, set.wood.color, set.wood.normal, set.wood.rough, set.plate.light, set.plate.dark, "basis/basis_transcoder.js", "basis/basis_transcoder.wasm"]) {
       expect(existsSync(join(SET, f)), f).toBe(true);
       expect(credits, f).toContain(f.split("/").pop()!.replace(/_(1k|512)\.hdr$/, ""));
     }
   });
 
-  it("stays within its 3 MB budget (the room and the table; the transcoder is code, like the app's own)", () => {
+  it("stays within its 3 MB budget (the room, the table and the plates; the transcoder is code, like the app's own)", () => {
     const bytes = readdirSync(SET)
-      .filter((f) => /\.(hdr|ktx2)$/.test(f))
+      .filter((f) => /\.(hdr|ktx2|webp)$/.test(f))
       .reduce((n, f) => n + statSync(join(SET, f)).size, 0);
     expect(bytes).toBeLessThanOrEqual(3_000_000);
   });
@@ -35,11 +34,9 @@ describe("the set (5.4.1)", () => {
     expect(roomFile(set, "low")).toMatch(/_512\.hdr$/);
   });
 
-  it("is every look's stage until the others go (5.4.3), with no effects at low", () => {
-    for (const s of Object.values(STAGES)) {
-      expect(s.set).toBe(set);
-      expect(s.effects("low", false)).toEqual({});
-    }
+  it("has no effects at low tier", () => {
+    expect(stage.effects("low", false)).toEqual({});
+    expect(stage.effects("low", true)).toEqual({});
   });
 });
 

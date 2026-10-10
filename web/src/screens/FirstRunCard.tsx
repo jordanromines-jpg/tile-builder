@@ -1,7 +1,6 @@
 /* The first-run cards (plan key 5b, D10), each shown once, for grown-ups:
    in a Safari tab on an iPad, "Add this to your Home Screen first, so it keeps your tiles", with the two taps drawn;
    in the app, "Stand the iPad up beside the tiles and build together." */
-import { LookPicker } from "../ui/LookPicker";
 import { useState } from "react";
 import type { Settings } from "../engine/types";
 import { saveSettings } from "../store/db";
@@ -39,10 +38,6 @@ export function FirstRunCard({ settings }: { settings: Settings }) {
       ) : (
         <>
           <p className="mb-4 text-ink-2">{S.firstRun.buildBody}</p>
-          <p className="mb-2 font-bold text-ink-1">{S.firstRun.pickLook}</p>
-          <div className="mb-4">
-            <LookPicker size="small" />
-          </div>
         </>
       )}
       <div className="flex justify-end">

@@ -7,8 +7,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { isDark } from "../ground";
-import { STAGES } from "../looks/stages";
-import { useLook } from "../looks/useLook";
+import { stage as look } from "../looks/vinyl/stage";
 import { useTier } from "./quality";
 import { SetRims, SetTable, useRoom } from "./Set";
 import { lite } from "./TileMesh";
@@ -56,7 +55,6 @@ export function Stage({ paint, radius, reach, shade = 0, contact = true }: { pai
   const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
   const invalidate = useThree((s) => s.invalidate);
   const dark = useMemo(() => isDark(), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
-  const look = STAGES[useLook()];
   const tier = useTier();
   const floor = useMemo(() => look.floor.texture(dark), [look, dark]);
   // a step in reach (half a square) is enough: the fog doesn't move with every eased frame of the camera
