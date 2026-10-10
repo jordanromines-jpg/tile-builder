@@ -6,7 +6,7 @@ import math
 import bpy
 from mathutils import Matrix, Quaternion, Vector
 
-FPS, FRAMES = 24, 144
+FPS, FRAMES = 24, 240
 
 
 def _turn(rig, bone, q):
@@ -45,19 +45,35 @@ def animate(rigs):
     sc.render.fps = FPS
     sc.frame_start, sc.frame_end = 1, FRAMES
     dino, axo, snail = rigs["dino"], rigs["axolotl"], rigs["snail"]
-    # the dino waves: up-and-out, side to side, from his shoulder; his head tips with it
+    # the dino waves (1-5 s), turns and points at the tile house (5.5-8 s), then waves again
     up_a, up_b = (-0.7, -0.25, 0.68), (-0.3, -0.3, 0.9)
+    point = (-0.85, 0.35, 0.35)
     for i, f in enumerate(range(1, FRAMES + 1, 9)):
-        key_bone(dino, "arm.R", f, _aim_q(dino, "arm.R", up_a if i % 2 else up_b))
-        key_bone(dino, "head", f, Quaternion((0, 1, 0), 0.16 + (0.06 if i % 2 else -0.04)))
-    # the axolotl: three hops, each a crouch, a stretch, a squash
-    base_z, base_s = axo.location.z, axo.scale.copy()
-    for start in (14, 62, 110):
-        for df, z, sq in ((0, 0, 1.0), (4, 0, 0.86), (8, 0.2, 1.1), (12, 0.24, 1.04), (16, 0, 0.84), (20, 0, 1.04), (24, 0, 1.0)):
+        if 130 <= f <= 190:
+            key_bone(dino, "arm.R", f, _aim_q(dino, "arm.R", point))
+            key_bone(dino, "head", f, Quaternion((0, 0, 1), 0.45) @ Quaternion((0, 1, 0), 0.1))
+        else:
+            key_bone(dino, "arm.R", f, _aim_q(dino, "arm.R", up_a if i % 2 else up_b))
+            key_bone(dino, "head", f, Quaternion((0, 1, 0), 0.16 + (0.06 if i % 2 else -0.04)))
+    # the axolotl: two hops, then a big spinning one
+    base_z, base_s, base_r = axo.location.z, axo.scale.copy(), axo.rotation_euler.z
+    for start, big in ((30, False), (92, False), (176, True)):
+        hop = (((0, 0, 1.0), (4, 0, 0.84), (9, 0.36, 1.12), (14, 0.4, 1.04), (20, 0, 0.82), (24, 0, 1.05), (28, 0, 1.0))
+               if big else ((0, 0, 1.0), (4, 0, 0.86), (8, 0.2, 1.1), (12, 0.24, 1.04), (16, 0, 0.84), (20, 0, 1.04), (24, 0, 1.0)))
+        for df, z, sq in hop:
             axo.location.z = base_z + z
             axo.scale = (base_s.x / math.sqrt(sq), base_s.y / math.sqrt(sq), base_s.z * sq)
             axo.keyframe_insert("location", index=2, frame=start + df)
             axo.keyframe_insert("scale", frame=start + df)
+        if big:
+            for df, turn in ((4, 0.0), (20, 2 * math.pi)):
+                axo.rotation_euler.z = base_r + turn
+                axo.keyframe_insert("rotation_euler", index=2, frame=start + df)
+    # the snail glides a little way forward over the whole shot
+    p0 = snail.location.copy()
+    for f, k in ((1, 0.0), (FRAMES, 1.0)):
+        snail.location = p0 + Vector((0.12, -0.16, 0)) * k
+        snail.keyframe_insert("location", frame=f)
     # its gills flutter, each a little after the last
     for b in [pb.name for pb in axo.pose.bones if pb.name.startswith("gill")]:
         k = int(b[-1])
@@ -75,13 +91,14 @@ def animate(rigs):
         while top.parent:
             top = top.parent
         if top.name.startswith("snail"):
-            blink([n], 76)
+            blink([n], 26)
+            blink([n], 150)
         if top.name.startswith("dino"):
-            blink([n], 40)
-            blink([n], 118)
+            blink([n], 70)
+            blink([n], 200)
     # the camera eases in
     cam = sc.camera
-    a, b = Vector((0.35, -6.6, 1.5)), Vector((0.3, -5.3, 1.28))
+    a, b = Vector((0.35, -6.8, 1.55)), Vector((0.3, -5.9, 1.34))
     target = Vector((0.05, 0.1, 0.62))
     for f, k in ((1, 0.0), (FRAMES, 1.0)):
         cam.location = a.lerp(b, k)
@@ -92,7 +109,7 @@ def animate(rigs):
         cam.data.dof.keyframe_insert("focus_distance", frame=f)
 
 
-def eevee(path, w=1280, h=720):
+def eevee(path, w=1920, h=1080):
     sc = bpy.context.scene
     for engine in ("BLENDER_EEVEE", "BLENDER_EEVEE_NEXT"):
         try:

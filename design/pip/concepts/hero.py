@@ -144,6 +144,9 @@ def upgrade_eyes():
         shell.matrix_world = mw
 
 
+LID_CUT = {"snail": 0.86, "dino": 0.7, "axolotl": 0.72}
+
+
 def add_lids(cut=0.72):
     """Soft upper eyelids of the body's own skin over the top of each open eye: they set the eye into the face, and
     they blink (turn the lid about the eye's x axis, ~1.15 rad, and it closes over the front)."""
@@ -155,6 +158,7 @@ def add_lids(cut=0.72):
         while top.parent:
             top = top.parent
         body = bpy.data.objects.get(top.name.replace(".rig", ".body"))
+        cut = LID_CUT.get(top.name.split(".")[0], cut)
         lid = o.copy()
         lid.data = o.data.copy()
         lid.name = o.name.replace("eye.", "lid.")

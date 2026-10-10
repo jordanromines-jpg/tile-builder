@@ -33,6 +33,9 @@ def snail():
         stalk = capsule((0.09 * sx, -0.3, 0.9), (0.17 * sx, -0.36, 1.1), 0.024)
         tip = sphere(0.055, (0.17 * sx, -0.36, 1.12))
         body = body.union(stalk.union(tip, k=0.03), k=0.04)
+    # sculpted cheeks: soft swells under the eyes
+    for sx in (-1, 1):
+        body = body.union(at(ellipsoid((0.07, 0.05, 0.05)), 0.17 * sx, -0.55, 0.58), k=0.06)
     return body
 
 
@@ -52,6 +55,10 @@ def dino():
     radii = [0.15, 0.11, 0.075, 0.05]
     for (a, b), r in zip(zip(pts, pts[1:]), radii):
         form = form.union(capsule(a, b, r), k=0.08)
+    # sculpted cheeks on the snout's sides, and two little nostrils pressed into its front
+    for sx in (-1, 1):
+        form = form.union(at(ellipsoid((0.08, 0.06, 0.06)), 0.2 * sx, -0.3, 0.88), k=0.07)
+        form = form.difference(sphere(0.02, (0.05 * sx, -0.425, 0.95)), k=0.012)
     return form
 
 
@@ -77,7 +84,11 @@ def axolotl():
             form = form.union(near.union(far, k=0.03), k=0.05)
     # a short, flat fin of a tail, curving up a little at its tip
     tail = capsule((0, 0.16, 0.2), (0, 0.4, 0.25), 0.11).scale((0.45, 1, 1.0))
-    return form.union(tail, k=0.12)
+    form = form.union(tail, k=0.12)
+    # sculpted cheeks, wide and low, either side of the smile
+    for sx in (-1, 1):
+        form = form.union(at(ellipsoid((0.09, 0.06, 0.06)), 0.27 * sx, -0.32, 0.66), k=0.07)
+    return form
 
 
 if __name__ == "__main__":
