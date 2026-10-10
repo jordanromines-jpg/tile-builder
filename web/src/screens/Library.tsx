@@ -3,6 +3,7 @@
    yet: one shelf an age, smallest first. One tap on a card goes straight into build mode (D18). */
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { designBase } from "../engine/design";
 import { matchProject, inventoryTotal, type Match } from "../engine/match";
 import { SECTIONS, type Theme } from "../engine/themes";
 import { Decor } from "../looks/decor";
@@ -13,7 +14,7 @@ import type { Age } from "../engine/types";
 import { PROJECT_INFO, SKELETONS } from "../projects/load";
 import type { ProjectInfo } from "../projects/serialize";
 import { saveSettings } from "../store/db";
-import { useInventory, useLatestProgress, useProgress, useSettings } from "../store/hooks";
+import { useDesigns, useInventory, useLatestProgress, useProgress, useSettings } from "../store/hooks";
 import { S } from "../strings";
 import { AgeProvider, SHELF_ORDER } from "../ui/kid/AgeContext";
 import { AgePicker } from "../ui/kid/AgePicker";
@@ -24,7 +25,7 @@ import { ProjectCard } from "../ui/kid/ProjectCard";
 import { Shelf } from "../ui/kid/Shelf";
 import { ThemeFilter } from "../ui/kid/ThemeFilter";
 import { Wordmark } from "../ui/kid/Wordmark";
-import { ProjectPicture } from "../ui/ProjectPicture";
+import { ProjectDrawing, ProjectPicture } from "../ui/ProjectPicture";
 import { FirstRunCard } from "./FirstRunCard";
 
 const RANK = { can: 0, swap: 1, need: 2 } as const;
@@ -72,6 +73,7 @@ export function Library() {
   const inv = useInventory();
   const progress = useProgress() ?? {};
   const latest = useLatestProgress();
+  const designs = useDesigns() ?? [];
   const [theme, setTheme] = useState<Theme | null>(null);
   const age = settings?.age ?? null;
   const hasTiles = !!inv && inventoryTotal(inv) > 0;
@@ -181,6 +183,20 @@ export function Library() {
             <span className="font-kid font-bold">{S.make.cardLine}</span>
           </span>
         </button>
+        {designs.length > 0 && (
+          <Shelf title={S.make.mine}>
+            {designs.map((d) => (
+              <ProjectCard
+                key={d.id}
+                title={d.name}
+                picture={<ProjectDrawing project={designBase(d, age ?? "b")} />}
+                stars={1}
+                resume={progress[d.id] ? progress[d.id] + 1 : undefined}
+                onPress={() => void navigate({ to: "/make", search: { d: d.id } })}
+              />
+            ))}
+          </Shelf>
+        )}
         {shown.length ? (
           shown.map((s) => (
             <Shelf key={`${s.title} ${theme ?? ""}`} title={s.title}>

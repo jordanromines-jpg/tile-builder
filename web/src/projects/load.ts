@@ -2,7 +2,9 @@
    and each project's tiles and steps fetched when it is opened (public/projects/<id>.json, kept offline by the service
    worker). The plans that make them (kit.ts, studio.ts and the files they feed) stay out of the app. */
 import { useEffect, useState } from "react";
+import { isDesignId } from "../engine/design";
 import { ProjectZ } from "../engine/schema";
+import { getDesign, getSettings } from "../store/db";
 import type { Project } from "../engine/types";
 import catalog from "./catalog.json";
 import { skeleton, type ProjectInfo } from "./serialize";
@@ -35,12 +37,32 @@ export function loadProject(id: string): Promise<Project> {
   return p;
 }
 
+/** A child's own design (5.0c) as a project, with steps for the family's age; null when it is gone or empty. */
+async function loadDesign(id: string): Promise<Project | null> {
+  const d = await getDesign(id);
+  if (!d || !d.placed.length) return null;
+  const { designProject } = await import("../engine/design-steps");
+  return designProject(d, (await getSettings()).age ?? "b");
+}
+
 /** The project with this id: undefined while it loads, null when there is no such project, "unreachable" when it
-    exists but its tiles could not be fetched (offline before it was ever kept, 3.6). */
+    exists but its tiles could not be fetched (offline before it was ever kept, 3.6). A "my-…" id is a design. */
 export function useProject(id: string): Project | null | "unreachable" | undefined {
   const [state, setState] = useState<{ id: string; project: Project | null | "unreachable" } | null>(null);
   useEffect(() => {
     let live = true;
+    if (isDesignId(id)) {
+      loadDesign(id).then(
+        (project) => live && setState({ id, project }),
+        (err: unknown) => {
+          console.error(`could not load design ${id}`, err);
+          if (live) setState({ id, project: null });
+        },
+      );
+      return () => {
+        live = false;
+      };
+    }
     if (!byId.has(id)) {
       setState({ id, project: null });
       return;

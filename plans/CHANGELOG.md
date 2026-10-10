@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-10
 
+- `2026-10-10-make-your-own.md`: 5.0c built (5.1.0); no captured picture (designs drawn from their tiles).
 - `2026-10-10-make-your-own.md`: new (M1–M4), approved; 5.0a and 5.0b built as one PR.
 - `2026-10-09-truck-runs-autobuild.md`: 4.4.1, faster runs (build-log row).
 

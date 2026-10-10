@@ -64,7 +64,7 @@ export function TileList({
           <div className="flex gap-6">
             {/* narrow (Split View): no room for the picture, the tiles come first */}
             <div className="h-[150px] w-[200px] shrink-0 overflow-hidden rounded-md max-[760px]:hidden">
-              <ProjectPicture id={project.id} />
+              <ProjectPicture id={project.id} project={project} />
             </div>
             <div className="flex min-w-0 flex-1 flex-col gap-3">
               <h2

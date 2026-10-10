@@ -20,6 +20,7 @@ export {
   HandTap,
   House,
   Jeep,
+  ListNumbers,
   Lock,
   Minus,
   Palette,

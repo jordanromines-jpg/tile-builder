@@ -54,3 +54,18 @@ test("the Make screen passes axe, and the Library opens it", async ({ page }) =>
   const axe = await new AxeBuilder({ page }).analyze();
   expect(axe.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);
 });
+
+test("a design is kept: it is on My builds after a reload, opens again, and Make the steps builds it (5.0c)", async ({ page }) => {
+  await open(page);
+  await putOn(page, [0, 0, 1], [1, 0, 1]);
+  await putOn(page, [1, 0, 0], [1, 0, 1]);
+  await page.waitForTimeout(1500);
+  await page.goto("#/");
+  await dismissFirstRun(page);
+  await expect(page.getByRole("heading", { name: "My builds" })).toBeVisible();
+  await page.getByRole("button", { name: /My build 1/ }).click();
+  await expect.poll(async () => (await make(page))?.placed, { timeout: 30_000 }).toBe(2);
+  await page.getByRole("button", { name: "Make the steps" }).dispatchEvent("click");
+  await expect(page).toHaveURL(/#\/build\/my-[a-z0-9]+$/);
+  await expect.poll(() => page.evaluate(() => document.body.innerText.includes("Stand 2 blue squares on the table."))).toBe(true);
+});

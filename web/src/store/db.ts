@@ -2,6 +2,7 @@
    the inventory, one row a project for progress (D20). A Home Screen app has its own store, kept apart from Safari's
    and exempt from Safari's seven-day clearing (kids-and-ipad.md). */
 import Dexie, { type Table } from "dexie";
+import type { Design } from "../engine/design";
 import type { Inventory, Progress, Settings } from "../engine/types";
 
 export interface SettingsRow extends Settings {
@@ -30,6 +31,7 @@ class TileDB extends Dexie {
   settings!: Table<SettingsRow, number>;
   inventory!: Table<InventoryRow, number>;
   progress!: Table<Progress, string>;
+  designs!: Table<Design, string>;
 
   constructor() {
     super("tile-steps");
@@ -48,6 +50,8 @@ class TileDB extends Dexie {
     this.version(4)
       .stores({ settings: "id", inventory: "id", progress: "projectId" })
       .upgrade((tx) => tx.table("settings").toCollection().modify((r: SettingsRow) => void (r.watchSpeed ??= "medium")));
+    // 5.0c: a child's own designs from Make your own, newest first by `updated`
+    this.version(5).stores({ settings: "id", inventory: "id", progress: "projectId", designs: "id, updated" });
   }
 }
 
@@ -91,8 +95,23 @@ export async function clearStep(projectId: string): Promise<void> {
   await db.progress.delete(projectId);
 }
 
+export async function getDesign(id: string): Promise<Design | undefined> {
+  return db.designs.get(id);
+}
+
+export async function saveDesign(d: Design): Promise<void> {
+  await db.designs.put(d);
+}
+
+/** A design with no tiles left is no design: it goes, with its saved step. */
+export async function deleteDesign(id: string): Promise<void> {
+  await db.transaction("rw", db.designs, db.progress, async () => {
+    await Promise.all([db.designs.delete(id), db.progress.delete(id)]);
+  });
+}
+
 export async function eraseEverything(): Promise<void> {
-  await db.transaction("rw", db.settings, db.inventory, db.progress, async () => {
-    await Promise.all([db.settings.clear(), db.inventory.clear(), db.progress.clear()]);
+  await db.transaction("rw", [db.settings, db.inventory, db.progress, db.designs], async () => {
+    await Promise.all([db.settings.clear(), db.inventory.clear(), db.progress.clear(), db.designs.clear()]);
   });
 }

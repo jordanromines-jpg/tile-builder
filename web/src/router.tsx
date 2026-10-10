@@ -54,8 +54,13 @@ const grownups = createRoute({ getParentRoute: () => root, path: "/grownups", co
 const tiles = createRoute({ getParentRoute: () => root, path: "/grownups/tiles", component: later(Tiles) });
 const settings = createRoute({ getParentRoute: () => root, path: "/grownups/settings", component: later(Settings) });
 const design = createRoute({ getParentRoute: () => root, path: "/design", component: later(Design) });
-// 5.0: Make your own, a real-physics builder
-const make = createRoute({ getParentRoute: () => root, path: "/make", component: later(Make) });
+// 5.0: Make your own, a real-physics builder; ?d=my-…: a saved design to carry on with (5.0c)
+const make = createRoute({
+  getParentRoute: () => root,
+  path: "/make",
+  component: later(Make),
+  validateSearch: (s: Record<string, unknown>): { d?: string } => (typeof s.d === "string" && /^my-[a-z0-9]+$/.test(s.d) ? { d: s.d } : {}),
+});
 
 const tree = root.addChildren([library, build, done, grownups, tiles, settings, design, make]);
 

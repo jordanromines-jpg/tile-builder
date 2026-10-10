@@ -1,4 +1,4 @@
-/* Backup and restore (plan key 5h): one JSON file with the settings, the tiles and the builds in progress, checked by
+/* Backup and restore (plan key 5h): one JSON file with the settings, the tiles, the builds in progress and the child's own designs (5.0c), checked by
    the zod schema both ways. It is the only way data leaves the iPad, and only when a grown-up saves it. */
 import { BackupZ } from "../engine/schema";
 import type { Backup } from "../engine/types";
@@ -12,6 +12,7 @@ export async function makeBackup(now = new Date()): Promise<Backup> {
     settings: await getSettings(),
     inventory: await getInventory(),
     progress: await db.progress.toArray(),
+    designs: await db.designs.toArray(),
   };
   BackupZ.parse(backup);
   return backup;
@@ -74,15 +75,18 @@ export function readBackup(text: string): ReadResult {
   if (!parsed.success) return { ok: false, message: "This file isn't a Tile Steps backup, or it is damaged." };
   const backup = parsed.data as Backup;
   const n = backup.progress.length;
-  return { ok: true, backup, summary: `${tileCount(backup)} tiles, ${n} ${n === 1 ? "build" : "builds"} in progress.` };
+  const d = backup.designs?.length ?? 0;
+  const own = d ? `, ${d} ${d === 1 ? "design" : "designs"} of their own` : "";
+  return { ok: true, backup, summary: `${tileCount(backup)} tiles, ${n} ${n === 1 ? "build" : "builds"} in progress${own}.` };
 }
 
 /** Replace everything on this iPad with the backup. */
 export async function restoreBackup(b: Backup): Promise<void> {
-  await db.transaction("rw", db.settings, db.inventory, db.progress, async () => {
-    await Promise.all([db.settings.clear(), db.inventory.clear(), db.progress.clear()]);
+  await db.transaction("rw", [db.settings, db.inventory, db.progress, db.designs], async () => {
+    await Promise.all([db.settings.clear(), db.inventory.clear(), db.progress.clear(), db.designs.clear()]);
     await db.settings.put({ id: 1, ...b.settings });
     await db.inventory.put({ id: 1, ...b.inventory });
     await db.progress.bulkPut(b.progress);
+    await db.designs.bulkPut(b.designs ?? []);
   });
 }
