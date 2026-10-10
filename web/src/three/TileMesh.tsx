@@ -24,7 +24,8 @@ export interface TileMaterials {
   rivet: THREE.MeshStandardMaterial;
 }
 
-export function makeTileMaterials(colour: Colour): TileMaterials {
+/** `tier`: a fixed finish (the finish's falling tiles), not retuned with the device's tier. */
+export function makeTileMaterials(colour: Colour, tier?: Tier): TileMaterials {
   const col = new THREE.Color(tileColour(colour));
   // without a GPU: plain lit plastic (the standard shader, no clear coat or moulded texture) and the clear face drawn
   // in one pass, so the stage keeps a usable frame rate
@@ -54,8 +55,8 @@ export function makeTileMaterials(colour: Colour): TileMaterials {
     rivet: rivetMaterial(),
   };
   m.glass.userData.colour = col.clone();
-  finish(m, pinned ?? currentTier());
-  live.add(m);
+  finish(m, tier ?? pinned ?? currentTier());
+  if (!tier) live.add(m);
   m.glass.addEventListener("dispose", () => live.delete(m));
   return m;
 }
@@ -120,12 +121,10 @@ export function tileGroup(shape: ShapeId, leg: number, m: TileMaterials, light =
   const geo = buildGeometry(shape, leg, light);
   const g = new THREE.Group();
   const frame = new THREE.Mesh(geo.frame, m.frame);
-  frame.castShadow = true;
   frame.receiveShadow = true;
   g.add(frame);
   if (geo.glass) {
     const glass = new THREE.Mesh(geo.glass, m.glass);
-    glass.castShadow = true;
     glass.renderOrder = 1;
     g.add(glass);
   }

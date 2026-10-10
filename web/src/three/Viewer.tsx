@@ -417,7 +417,9 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
             enablePan={false}
             minDistance={older(age) ? distance * 0.45 : undefined}
             maxDistance={older(age) ? distance * 1.8 : undefined}
-            maxPolarAngle={Math.PI * 0.47}
+            // 5.4.5: never down at the table's level (where the room's backdrop meets the table)
+            maxPolarAngle={Math.PI * 0.38}
+            zoomSpeed={2.2}
             autoRotate={autoRotate}
             autoRotateSpeed={60 / 25}
             onStart={() => setTouched(true)}

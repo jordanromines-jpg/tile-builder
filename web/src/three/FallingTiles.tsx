@@ -42,9 +42,15 @@ export function FallingTiles({ project, leg = DEFAULT_LEG, paint = 0, onRest }: 
   const { root, groups, mats } = useMemo(() => {
     const root = new THREE.Group();
     // white plastic: each instance's colour multiplies it
-    const base = makeTileMaterials("red");
+    // 5.4.5: the bright mid finish (light through the glass muddied a heap of falling tiles)
+    const base = makeTileMaterials("red", "mid");
     base.frame.color.set(0xffffff);
     base.glass.color.set(0xffffff);
+    // the finish's glow and sheen come from the colour it was made in: white, so each tile's own colour shows
+    const g = base.glass as THREE.MeshPhysicalMaterial;
+    g.emissive?.set(0x000000);
+    g.sheenColor?.set(0xffffff);
+    (base.frame as THREE.MeshPhysicalMaterial).sheenColor?.set(0xffffff);
     const groups: Batch[] = [];
     for (const shape of new Set(fall.pieces.map((p) => p.shape))) {
       const pieces = fall.pieces.flatMap((p, i) => (p.shape === shape ? [i] : []));
