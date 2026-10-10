@@ -39,7 +39,7 @@ def dino(D):
     body = kit.import_body(D + "dino.stl", "body")
     body.data.materials.append(kit.skin(
         "dino.skin", "#2E78D8", "#7CC3FF", belly="#FFF1D6",
-        belly_mask=((0, -0.25, 0.42), (0.21, 0.16, 0.27), 0.35),
+        belly_mask=((0, -0.25, 0.42), (0.21, 0.16, 0.27), 0.12),
         cheeks=[((0.19, -0.36, 0.9), (0.08, 0.12, 0.06)), ((-0.19, -0.36, 0.9), (0.08, 0.12, 0.06))],
         z_range=(0.05, 1.3)))
     bpy.context.view_layer.update()
@@ -114,7 +114,7 @@ def axolotl(D):
     body = kit.import_body(D + "axolotl.stl", "body")
     body.data.materials.append(kit.skin(
         "axolotl.skin", "#E9679C", "#FFB5D2", belly="#FFE4EE",
-        belly_mask=((0, -0.2, 0.32), (0.17, 0.14, 0.2), 0.35),
+        belly_mask=((0, -0.2, 0.32), (0.17, 0.14, 0.2), 0.12),
         cheeks=[((0.3, -0.3, 0.68), (0.09, 0.12, 0.06)), ((-0.3, -0.3, 0.68), (0.09, 0.12, 0.06))],
         blush="#FF5F7E", z_range=(0.0, 1.05)))
     bpy.context.view_layer.update()
