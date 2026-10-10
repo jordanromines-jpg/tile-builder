@@ -198,7 +198,7 @@ sound, no points.
 
 ### Truck runs (`three/run/`, 4.0c)
 A Monster-truck build's finish has no falling tiles: after the party circles the course, the Pip truck runs it. The run
-is a recording (`public/runs/<id>.bin.gz`, about 16 KB each, 786 KB for all 50), simulated and proved on the build
+is a recording (`public/runs/<id>.bin.gz`, about 16 KB each, 796 KB for all 50), simulated and proved on the build
 machine (`npm run runs`, Rapier) and only played on the iPad, so what plays is exactly what was proved. It plays at
 full speed between the action and at 0.55 for a third of a second either side of each take-off, landing and crash,
 easing between, like a toy camera's slow motion. The view slides 85% of the way toward the truck as it goes (and 40%

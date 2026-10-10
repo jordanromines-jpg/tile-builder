@@ -69,6 +69,7 @@ export function tiltTest(scene: Scene, k: number, only: (i: number) => boolean =
     return { ...AUTHORED, t: [t.x, t.y, t.z] as V3 };
   });
   scene.step(steps(SETTLE_S));
+  scene.hold();
   const settled = scene.poses();
   const settle = moved(scene, built, settled, only);
   if (failFast && (settle.mm > FALL_MM || settle.deg > FALL_DEG))

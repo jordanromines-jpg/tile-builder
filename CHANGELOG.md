@@ -1,5 +1,20 @@
 # Changelog
 
+## 4.4.0 · 9 Oct 2026
+
+Every build stands, with no exceptions.
+
+- **The physics check was fixed.** Tiles that touch at an edge were pushing each other apart at their corners: a rule
+  meant to stop that had never run. With it working, a little pyramid on one flat square stands, as it does for real.
+  Light flat tiles (leaves, rugs) are no longer lifted by what leans from them, and tiles in the child's hand settle
+  with the build before they're held.
+- **The last seven builds stand.** The triangle truss bridge has a floor, so it can't lean over like a parallelogram.
+  The spiral ramp is lower, round a big tower of big squares, with a floor under its tunnel. The space station's
+  docking rockets go on last, and its six wobbly antennas are gone. The camp, the crystal cave, the Mars rover and
+  the Sierpinski triangle stand as they were.
+- **Nothing is allowed to fall any more.** The check now fails any build that would fall while being built.
+- All 50 truck runs were recorded again on the corrected physics; all 50 work.
+
 ## 4.3.0 · 9 Oct 2026
 
 Builds in the colours your tiles come in. Jordan: "The colors don't match what's available in the sets."

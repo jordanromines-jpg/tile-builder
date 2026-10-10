@@ -14,6 +14,8 @@ type Body = ReturnType<World["createRigidBody"]>;
 /** Magnet friction at a hinge, N·m for each square of edge: below the 0.0037 N·m that would hold a small square
     straight out by one edge (a flag hangs, R10b), above what keeps an open ring of four square (calibrated, P0). */
 export const HINGE_NM = 0.0015;
+/** how a held tile follows its magnets while the build settles, per second (see `hold`) */
+export const SEAT_DAMPING = 50;
 
 export interface SceneOpts {
   leg: number;
@@ -48,6 +50,8 @@ export interface Scene {
   setGravity(g: V3): void;
   /** a tile whose magnets have let go: it collides with its old neighbours again */
   release(i: number): void;
+  /** the held tiles, seated, are held still from now on (the child's hand) */
+  hold(): void;
   free(): void;
 }
 
@@ -98,6 +102,21 @@ function touching(polys: V3[][]): Set<string> {
   return out;
 }
 
+/** The torque that lifts a tile lying flat on the table about one of its edges (the line through `p` along `u`): its
+    weight times how far its middle is from the edge, in the world's units. */
+function liftOf(poly: V3[], p: V3, u: V3): number {
+  let area2 = 0;
+  for (let k = 0; k < poly.length; k++) {
+    const [x1, , z1] = poly[k];
+    const [x2, , z2] = poly[(k + 1) % poly.length];
+    area2 += x1 * z2 - x2 * z1;
+  }
+  const c = centroid(poly);
+  const r = sub(c, p);
+  const off = sub(r, scale(u, dot(r, u)));
+  return (Math.abs(area2) / 2) * AREAL_GRAMS * G * len(off);
+}
+
 function centroid(poly: V3[]): V3 {
   return scale(poly.reduce(addv, [0, 0, 0] as V3), 1 / poly.length);
 }
@@ -126,7 +145,10 @@ export function buildScene(R: Rapier, project: Project, opts: SceneOpts): Scene 
     const [lo, hi] = opts.flush && facesUp ? [-THICK, 0] : onTable ? [0, THICK] : [-THICK / 2, THICK / 2];
     const pts: number[] = [];
     for (const v of poly) for (const k of [lo, hi]) pts.push(...addv(sub(v, c), scale(up, k)));
-    const desc = (opts.held?.has(i) ? R.RigidBodyDesc.fixed() : R.RigidBodyDesc.dynamic().setCanSleep(false)).setTranslation(...c);
+    // a held tile is in the child's hand: while the build settles it is weightless and damped, so its magnets seat it
+    // where the build really is; then `hold()` fixes it there (fixed from the start, at its drawn place, it would drag
+    // a build that had settled a millimetre through its joints for as long as the test ran)
+    const desc = (opts.held?.has(i) ? R.RigidBodyDesc.dynamic().setGravityScale(0).setLinearDamping(SEAT_DAMPING).setAngularDamping(SEAT_DAMPING) : R.RigidBodyDesc.dynamic()).setCanSleep(false).setTranslation(...c);
     const body = world.createRigidBody(desc);
     const col = R.ColliderDesc.convexHull(new Float32Array(pts));
     if (!col) throw new Error(`${project.id}: tile ${i} has no solid shape`);
@@ -184,12 +206,20 @@ export function buildScene(R: Rapier, project: Project, opts: SceneOpts): Scene 
           joints.push({ i, j, length: to - from, joint });
           continue;
         }
+        // where one tile lies flat on the table, the hinge can't hold harder than that tile's own weight about the
+        // edge: past that, the flat tile lifts instead of the hinge turning (a leaf mustn't rise with its stem)
+        let grip = hinge * (to - from);
+        for (const k of [i, j]) if (flatOnTable(k)) grip = Math.min(grip, liftOf(a.polys[k], p0, u));
         joint.configureMotorVelocity(0, 1e6);
-        world.impulseJoints.raw.jointSetMotorMaxForce(joint.handle, R.JointAxis.AngX as unknown as Parameters<typeof world.impulseJoints.raw.jointSetMotorMaxForce>[1], hinge * (to - from));
+        world.impulseJoints.raw.jointSetMotorMaxForce(joint.handle, R.JointAxis.AngX as unknown as Parameters<typeof world.impulseJoints.raw.jointSetMotorMaxForce>[1], grip);
         joints.push({ i, j, length: to - from, joint });
       }
     }
   }
+
+  // Rapier (0.21) runs the hooks only in a step that has an event queue: without one, the contact filter above is
+  // skipped and touching tiles push each other apart at their shared corners. So every step gets one.
+  const queue = new R.EventQueue(false);
 
   return {
     R,
@@ -198,7 +228,7 @@ export function buildScene(R: Rapier, project: Project, opts: SceneOpts): Scene 
     local,
     joints,
     step(n = 1, events) {
-      for (let k = 0; k < n; k++) world.step(events, hooks);
+      for (let k = 0; k < n; k++) world.step(events ?? queue, hooks);
     },
     poses() {
       return bodies.map((b) => {
@@ -210,6 +240,9 @@ export function buildScene(R: Rapier, project: Project, opts: SceneOpts): Scene 
     setGravity(g) {
       world.gravity = vec(g);
     },
+    hold() {
+      for (const i of opts.held ?? []) if (i < bodies.length) bodies[i].setBodyType(R.RigidBodyType.Fixed, true);
+    },
     release(i) {
       for (const k of [...touch]) {
         const [a1, b1] = k.split(":").map(Number);
@@ -217,6 +250,7 @@ export function buildScene(R: Rapier, project: Project, opts: SceneOpts): Scene 
       }
     },
     free() {
+      queue.free();
       world.free();
     },
   };
