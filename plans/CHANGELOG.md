@@ -5,6 +5,7 @@ line in the same commit as the plan change.
 
 ## 2026-10-10
 
+- `2026-10-10-pip-redesign.md`: new, approved (P1–P6, gates G-P1 to G-P3).
 - `2026-10-10-make-your-own.md`: 5.0d built (5.2.0); the plan is done.
 - `2026-10-10-make-your-own.md`: 5.0c built (5.1.0); no captured picture (designs drawn from their tiles).
 - `2026-10-10-make-your-own.md`: new (M1–M4), approved; 5.0a and 5.0b built as one PR.
