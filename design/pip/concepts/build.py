@@ -45,7 +45,7 @@ def dino(D):
     bpy.context.view_layer.update()
     eyes = kit.add_eyes(body, (0.15, 1.03), 0.105)
     eyes += kit.add_happy_eyes(body, (0.15, 1.03), 0.105)
-    mouth = kit.add_mouth(body, 0.875, 0.15, out=0.02, tilt=-0.25)
+    mouth = kit.add_mouth(body, 0.88, 0.1, out=0.02, tilt=-0.25)
     arm = kit.armature("rig", [
         ("root", (0, 0, 0), (0, 0, 0.12), None, False),
         ("hips", (0, 0.05, 0.22), (0, 0.04, 0.55), "root", True),
@@ -81,7 +81,7 @@ def snail(D):
     bpy.context.view_layer.update()
     eyes = kit.add_eyes(body, (0.12, 0.71), 0.1)
     eyes += kit.add_happy_eyes(body, (0.12, 0.71), 0.1)
-    mouth = kit.add_mouth(body, 0.55, 0.12, out=0.015)
+    mouth = kit.add_mouth(body, 0.56, 0.085, out=0.015)
     arm = kit.armature("rig", [
         ("root", (0, 0, 0), (0, 0, 0.12), None, False),
         ("foot", (0, 0.42, 0.12), (0, -0.1, 0.14), "root", True),
@@ -121,7 +121,7 @@ def axolotl(D):
     bpy.context.view_layer.update()
     eyes = kit.add_eyes(body, (0.2, 0.79), 0.085)
     eyes += kit.add_happy_eyes(body, (0.2, 0.79), 0.085)
-    mouth = kit.add_mouth(body, 0.66, 0.2, out=0.015)
+    mouth = kit.add_mouth(body, 0.67, 0.12, out=0.015)
     bones = [
         ("root", (0, 0, 0), (0, 0, 0.12), None, False),
         ("body", (0, 0.03, 0.12), (0, 0.02, 0.5), "root", True),

@@ -281,8 +281,7 @@ def build_all(D):
         rig.rotation_euler = (0, 0, turn)
         fuzz(body, body.data.materials[0], seed=len(rigs))
         rigs[name] = rig
-    upgrade_eyes()
-    add_lids()
+    # (character-appeal: no lids, no detailed irises: simple dark glossy eyes read best)
     tile_house((-0.95, 0.85, 0), 0.5)
     set_dressing()
     return rigs
@@ -314,9 +313,9 @@ def pose(rigs):
     aim(rigs["dino"], "arm.R", (-0.55, -0.25, 0.8))
     tilt(rigs["dino"], "head", 0.16)
     tilt(rigs["snail"], "head", -0.2)
-    aim(rigs["axolotl"], "arm.L", (-0.35, -0.75, 0.55))
-    aim(rigs["axolotl"], "arm.R", (0.35, -0.75, 0.55))
-    hold_tile(rigs["axolotl"])
+    aim(rigs["axolotl"], "arm.L", (0.5, -0.3, 0.8))
+    aim(rigs["axolotl"], "arm.R", (-0.5, -0.3, 0.8))
+
     for o in bpy.data.objects:
         top = o
         while top.parent:
