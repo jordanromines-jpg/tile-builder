@@ -108,7 +108,7 @@ for side, (c, r) in zip(("L", "R"), zip(centres, radii)):
     u_, v_ = uv[li].uv
     skin = px[min(h - 1, int(v_ * h)), min(w - 1, int(u_ * w))]
     # the colour map is brighter than the shaded skin around it: the lid a little darker, to sit in it
-    lid_mat = material(f"lid.{side}", (float(skin[0]) * 0.78, float(skin[1]) * 0.78, float(skin[2]) * 0.78, 1), 0.42)
+    lid_mat = material(f"lid.{side}", (float(skin[0]) * 0.62, float(skin[1]) * 0.62, float(skin[2]) * 0.62, 1), 0.42)
     bpy.ops.mesh.primitive_uv_sphere_add(segments=24, ring_count=12, radius=1, location=p + n * (r * 0.12))
     lid = bpy.context.object
     lid.name = f"lid.{side}"
@@ -139,7 +139,8 @@ for side, (c, r) in zip(("L", "R"), zip(centres, radii)):
 mid = (centres[0] + centres[1]) / 2
 span = (centres[1] - centres[0]).length
 # the snail's eyes found are on its stalk tips: its mouth goes on the head itself, lower down
-mp, mn = on_surface(Vector((mid.x, mid.y, 0.36)) if KIND == "snail" else mid - Vector((0, 0, max(radii) * 2.2)))
+# the mouth sits on the face's middle line (x = 0 after rig3 turned it to face -y), not between the eyes as found
+mp, mn = on_surface(Vector((0.0 if KIND == "dino" else mid.x, mid.y, 0.36)) if KIND == "snail" else Vector((0.0 if KIND == "dino" else mid.x, mid.y, mid.z - max(radii) * 2.2)))
 curve = bpy.data.curves.new("mouth", "CURVE")
 curve.dimensions = "3D"
 curve.bevel_depth = span * 0.035
