@@ -200,3 +200,4 @@ About 21 hours of my work, plus Jordan's three looks.
 | When (UTC) | PR · keys | Commit | Hours (est · used) | Result / re-evaluation | Next |
 |---|---|---|---|---|---|
 | 2026-10-10 | spec | — | — · 1.5 | Approved. Written after the skeptic pass, mocks A/B, the animated test (Jordan picked it), and "cuter … original and well designed". Concept file started. | 5.3.0 concepts |
+| 2026-10-10 | 5.3.0 | — (mocks, not committed) | 2 · 1 | Four concepts rendered in the stage (`src/mock-pip-concepts.tsx`): A fox kit (tile-glass ears), B glow sprite (tile plastic, tile-triangle ears), C builder chick (tile-triangle crest), D magnet bun (horseshoe-magnet antenna). Looked at twice: the first round's eyes were far too small, the fox's muzzle hid its face, the sprite read as an egg in a hoop; fixed. Board sent. | G-P1: Jordan picks |
