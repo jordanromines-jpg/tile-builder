@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.4.11 · 11 Oct 2026
+
+- **Make your own never loses the last tile:** a build is saved at once when you leave the screen or the iPad hides the app (it used to wait a moment, and leaving quickly lost the last change).
+
 ## 5.4.10 · 11 Oct 2026
 
 - Pip walks round the outside of the build, never through it; going back a step, it just goes home; on the finish it stands beside what you built; quick taps on Next no longer send tiles flying from across the table.

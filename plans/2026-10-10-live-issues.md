@@ -47,3 +47,6 @@ Pan (Jordan: "obviously this is needed"): two fingers on an iPad, or a right-dra
 3. On the finish Pip stood against the build (cut off in portrait): it stands on the ring, front-left, further round (in portrait on a very small build it steps out of the close view).
 4. Fast taps: a tile leaves from Pip's hands only while Pip stands at the build; otherwise it keeps its own short arc. A new step starts Pip's walk from where it is (no jump home).
 Also seen, not fixed: the plain stage without a GPU has a dull olive table; Make your own's Pip stands on the open table; portrait finish crops tall builds' tops.
+
+## CI flakes fixed properly (5.4.11, #82)
+`make.spec` failed in CI three times ("a design is kept": 1 tile saved of 2; the truck drive: tiles not yet back). Causes: (1) a real bug: leaving Make your own cancelled the pending save (debounced 0.8 s), losing the last change; now a pending change is saved at once on unmount, on pagehide and when the page is hidden; the test no longer waits for the save. (2) The truck test waited a fixed 2.5 s for the worker to put the tiles back; it now waits for the state itself. Stress run here: 20/20 at 8 workers, plus 30/30.

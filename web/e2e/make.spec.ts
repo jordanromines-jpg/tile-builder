@@ -59,7 +59,7 @@ test("a design is kept: it is on My builds after a reload, opens again, and Make
   await open(page);
   await putOn(page, [0, 0, 1], [1, 0, 1]);
   await putOn(page, [1, 0, 0], [1, 0, 1]);
-  await page.waitForTimeout(1500);
+  // no wait for the save: leaving the screen saves at once (5.4.11; a slow CI machine used to leave before it ran)
   await page.goto("#/");
   await dismissFirstRun(page);
   await expect(page.getByRole("heading", { name: "My builds" })).toBeVisible();
@@ -84,9 +84,8 @@ test("drive the Pip truck into a ring: Go moves it, the ring comes apart, Put it
   await expect.poll(async () => z0 - (await make(page))!.truck![2]).toBeGreaterThan(0.5);
   await expect.poll(async () => (await make(page))!.moved, { timeout: 15_000 }).toBeGreaterThan(0);
   await page.getByRole("button", { name: "Put it back" }).dispatchEvent("click");
-  await page.waitForTimeout(2500);
-  const m = (await make(page))!;
-  expect(m.tiles).toBe(4);
-  expect(m.moved).toBe(0);
-  expect(m.high).toBeGreaterThan(0.95);
+  // the tiles are put back by the physics worker: wait for it, however slow the machine (a fixed 2.5 s flaked in CI)
+  await expect.poll(async () => (await make(page))!.moved, { timeout: 20_000 }).toBe(0);
+  await expect.poll(async () => (await make(page))!.high, { timeout: 20_000 }).toBeGreaterThan(0.95);
+  expect((await make(page))!.tiles).toBe(4);
 });
