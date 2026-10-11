@@ -6,7 +6,8 @@
    build). Performance: pixel ratio at most 2 (1.5 on smaller devices and for builds over BIG_BUILD tiles, 1 without a
    GPU), frames drawn only when something moves; a big build turns once by itself and then rests (2.8.1). */
 import { OrbitControls } from "@react-three/drei";
-import { Pip3D } from "./pip/Pip3D";
+import { Pip3D, pipHome, pipTall, WALK_S } from "./pip/Pip3D";
+import { GHOST_S } from "./anim";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
@@ -17,7 +18,7 @@ import { softwareGL } from "../gpu";
 import { atRest, springAt, springFor, springStep } from "../motion/spring";
 import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
-import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
+import { ANY_YAW, AZIMUTH, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
 import { BIG_BUILD, frameOf, Model, releaseShared } from "./Model";
 import { FallingTiles } from "./FallingTiles";
 import { type Follow, type RunPlay, RunStage, tileDrive } from "./run/RunStage";
@@ -344,6 +345,26 @@ export function Viewer({ resting = false, cheering = false, project, shown, leg,
   const marker = useRef<THREE.Object3D>(null);
   const point = useMemo(() => (current?.length ? frameOf(project, leg, current) : whole).middle, [project, leg, current, whole]);
   const pipWatch = useMemo(() => point.clone().sub(whole.center), [point, whole]);
+  // 5.4.8: Pip helps: it stands just short of the step's tiles, on the way from its home, and they leave its hands there
+  const pip3d = !softwareGL() && !run && !browse && !still && !!current?.length && shown < project.placed.length + 1;
+  const pipGoto = useMemo(() => {
+    if (!current?.length) return undefined;
+    const home = pipHome(whole.size);
+    const here = new THREE.Vector3(pipWatch.x, 0, pipWatch.z);
+    const span = frameOf(project, leg, current).size;
+    // beside the step's tiles as the camera sees them, never in front of them: to the side nearer its home, and a
+    // little back, so the child always sees where the tiles go
+    const right = new THREE.Vector3(Math.cos(AZIMUTH), 0, -Math.sin(AZIMUTH));
+    const back = new THREE.Vector3(-Math.sin(AZIMUTH), 0, -Math.cos(AZIMUTH));
+    const side = home.clone().sub(here).dot(right) >= 0 ? 1 : -1;
+    return here.addScaledVector(right, side * (span / 2 + 0.7)).addScaledVector(back, 0.25);
+  }, [current, pipWatch, whole, project, leg]);
+  const pipFrom = useMemo(() => {
+    if (!pipGoto) return undefined;
+    // its hands, up over its head, a little towards the tiles: in the model's own space (not centred)
+    const toward = pipWatch.clone().sub(pipGoto).setY(0).normalize().multiplyScalar(0.25);
+    return pipGoto.clone().add(toward).add(new THREE.Vector3(0, pipTall(whole.size) * 1.05, 0)).add(whole.center);
+  }, [pipGoto, pipWatch, whole]);
   const autoRotate = older(age) && spin && !still && !touched && !sweep;
   // the iPad's light or dark can change while a build is open: read the colours again
   const ground = useGround();
@@ -402,14 +423,14 @@ export function Viewer({ resting = false, cheering = false, project, shown, leg,
         )}
         <Stage paint={tint} radius={whole.size} reach={older(age) ? distance * 1.8 : distance} shade={shade} />
         <Turntable yaw={(turns * Math.PI) / 2} still={still} onRest={rest}>
-          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} browse={browse} paint={tint} hold={hold} onRest={rest} drive={drive} />
+          <Model project={project} shown={shown} leg={leg} instead={instead} current={current} settled={settled} still={still} browse={browse} paint={tint} hold={pip3d && pipFrom ? Math.max(hold ?? GHOST_S, WALK_S) : hold} onRest={rest} drive={drive} from={pip3d ? pipFrom : undefined} />
           <group position={[-whole.center.x, 0, -whole.center.z]}>
             <object3D ref={marker} position={point} />
           </group>
           {/* 5.3.3: Pip on the table beside the build (the flat overlay Pip stays without a GPU) */}
           {!softwareGL() && (
             <Suspense fallback={null}>
-              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={run ? undefined : pipWatch} resting={resting} cheering={cheering || (!!run && shown >= project.placed.length)} carry={current?.length ? project.placed[current[0]]?.colour : undefined} />
+              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={run ? undefined : pipWatch} resting={resting} cheering={cheering || (!!run && shown >= project.placed.length)} carry={current?.length ? project.placed[current[0]]?.colour : undefined} goto={pip3d ? pipGoto : undefined} />
             </Suspense>
           )}
           {run && (

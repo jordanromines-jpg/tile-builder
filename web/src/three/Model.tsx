@@ -199,6 +199,8 @@ export interface ModelProps {
   /** a truck run (4.0c): these tiles are drawn one by one, each posed every frame by `pose` (its body's middle `p` and
       its turn `q` since it was built, its middle as built `c`); null leaves a tile as built */
   drive?: TileDrive;
+  /** 5.4.8: where Pip holds the step's tiles up (the model's space): they are tossed from its hands into place */
+  from?: THREE.Vector3;
 }
 
 export interface TileDrive {
@@ -214,7 +216,7 @@ const dv = new THREE.Vector3();
     the model came to rest (the rest bumps the shadow, which renders again), so the finish never stopped drawing (4.2c). */
 const NO_TILES: number[] = [];
 
-export function Model({ project, shown, leg, instead = {}, settled = 0, current = NO_TILES, still = false, browse = false, paint = 0, hold = GHOST_S, onRest, drive }: ModelProps) {
+export function Model({ project, shown, leg, instead = {}, settled = 0, current = NO_TILES, still = false, browse = false, paint = 0, hold = GHOST_S, onRest, drive, from }: ModelProps) {
   const invalidate = useThree((s) => s.invalidate);
   const key = JSON.stringify(instead);
   const accent = useMemo(() => new THREE.Color(cssColour("accent", "#BF5409")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -262,12 +264,23 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
 
   useEffect(() => {
     lit.current = new Set(current.filter((t) => t < shown));
+    // Pip carried them over: each is tossed the short way from its hands (a little apart, so they don't stack)
+    if (from && !still) {
+      let j = 0;
+      for (const i of lit.current) {
+        const t = tiles[i];
+        if (!t || (progress.current[i] ?? 0) > 0) continue;
+        t.pS.copy(from).add(new THREE.Vector3((j % 3) * 0.12 - 0.12, 0.05 * j, 0));
+        t.flight = makeFlight(t.pS.toArray(), t.pT.toArray());
+        j++;
+      }
+    }
     since.current = performance.now();
     // a new step: the next frame that finds nothing moving is a rest, even when the tiles appear at once
     wasMoving.current = true;
     if (still) progress.current = progress.current.map((_, i) => (i < shown ? 1 : 0));
     invalidate();
-  }, [shown, current, still, invalidate]);
+  }, [shown, current, still, invalidate, from, tiles]);
   const calm = still || browse;
 
   useFrame((state, dt) => {
