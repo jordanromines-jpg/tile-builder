@@ -103,6 +103,7 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
   const tapAt = useRef(-10);
   const clip = useRef("idle");
   const look = useRef(0);
+  const tmp = useMemo(() => new THREE.Vector3(), []);
   useEffect(() => {
     if (stepKey === 0) return;
     hopAt.current = performance.now() / 1000;
@@ -121,7 +122,7 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     }
     // to the build's left as the camera sees it (not between the camera and the build), just clear of it
     const a = AZIMUTH - 1.35;
-    const d = radius / 2 + 0.6;
+    const d = radius / 2 + Math.min(0.6, radius * 0.15);
     return new THREE.Vector3(Math.sin(a) * d, 0, Math.cos(a) * d);
   }, [radius, spot, cheering]);
   const face = AZIMUTH - 0.25;
@@ -209,8 +210,11 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     smile = Math.max(smile, giggle, lean ? 0.4 : 0);
     g.position.set(at.x, y, at.z);
     // two tiles tall, a little less beside a small build (the camera frames a small build closely)
-    const tall = Math.max(1.2, Math.min(HEIGHT, radius * 0.35));
+    const tall = Math.max(0.7, Math.min(HEIGHT, radius * 0.32));
     g.scale.set(tall / Math.sqrt(sq), tall * sq, tall / Math.sqrt(sq));
+    // when the view is close in (a small build's first steps), Pip would loom over the screen's corner: it steps out
+    const wp = g.getWorldPosition(tmp);
+    g.visible = camera.position.distanceTo(wp) > tall * 5;
     set("smile", smile);
     set("open", (cheer.current && h >= 0 && h < 1.4) || giggle ? 0.7 : 0);
     // a blink every four seconds or so

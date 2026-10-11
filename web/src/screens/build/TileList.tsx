@@ -73,14 +73,15 @@ export function TileList({
               >
                 {S.build.getTiles}
               </h2>
-              {rows.map((r) => (
+              {/* a few kinds of tile sit in one row, so the card doesn't scroll for three or four (5.4.6, L8) */}
+              {(rows.reduce((n, r) => n + r.tiles.length, 0) <= 4 ? [{ shape: rows[0]?.shape, tiles: rows.flatMap((r) => r.tiles), all: true }] : rows.map((r) => ({ ...r, all: false }))).map((r) => (
                 <ul
-                  key={r.shape}
-                  aria-label={SHAPES[r.shape].plural}
+                  key={r.all ? "all" : r.shape}
+                  aria-label={r.all ? S.build.getTiles : SHAPES[r.shape!].plural}
                   className="flex flex-wrap items-center gap-x-4 gap-y-2"
                 >
                   {r.tiles.map((t) => (
-                    <li key={`${t.colour}-${t.instead}`}>
+                    <li key={`${t.shape}-${t.colour}-${t.instead}`}>
                       <TileChip
                         shape={t.shape}
                         colour={t.colour}
