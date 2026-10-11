@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.3.4 · 11 Oct 2026
+
+Pip everywhere.
+
+- **Pip watches** each step's tiles land, then looks back at you; it **falls asleep** on the rest screen and wakes when you come back.
+- **The finish:** Pip cheers in 3D in front of what you built.
+- **Make your own:** Pip stands on the table and watches.
+- A soft "hup" when Pip hops (only with sound on).
+
 ## 5.3.3 · 11 Oct 2026
 
 Pip in 3D.

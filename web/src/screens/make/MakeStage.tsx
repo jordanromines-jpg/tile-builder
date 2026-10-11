@@ -1,9 +1,11 @@
 /* Make your own's 3D stage (5.0b): the table, every tile where the live physics has it now, the glowing edges a
    picked tile can go on, and the ghost of the tile about to go on. Drawn every frame while the page is open (the
    physics streams poses); each tile is its own group, posed from its body (as a truck run's tiles are). */
+import { softwareGL } from "../../gpu";
+import { Pip3D } from "../../three/pip/Pip3D";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { DEFAULT_LEG } from "../../engine/catalog";
 import { worldPolygon, type V3 } from "../../engine/geometry";
@@ -198,6 +200,12 @@ export function MakeStage(p: MakeStageProps) {
     <div className="h-full w-full" role="img" aria-label={p.label} style={{ touchAction: "none" }}>
       <Canvas dpr={[1, 2]} camera={{ position: [3.2, 3.6, 5.2], fov: 40, near: 0.1, far: 200 }} gl={{ antialias: true }}>
         <Stage paint={0} radius={6} reach={14} />
+        {/* 5.3.4: Pip watches from the table's front-left as the child builds */}
+        {!softwareGL() && (
+          <Suspense fallback={null}>
+            <Pip3D radius={4} stepKey={0} last={false} still={false} spot={[-2.2, 0, -1.2]} />
+          </Suspense>
+        )}
         <Tiles tiles={p.tiles} physics={p.physics} selected={p.selected} onTile={p.onTile} />
         {p.spots.map((s, i) => (
           <SpotBar key={i} spot={s} on={s === p.chosen} onPick={() => p.onSpot(s)} />
