@@ -18,7 +18,7 @@ import { softwareGL } from "../gpu";
 import { atRest, springAt, springFor, springStep } from "../motion/spring";
 import { older } from "../ui/kid/AgeContext";
 import { useStill } from "../ui/motion";
-import { ANY_YAW, AZIMUTH, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
+import { ANY_YAW, cornersOf, easeInOut, fitBox, FOV, lookOf, viewFrom, type Look } from "./camera";
 import { BIG_BUILD, frameOf, Model, releaseShared } from "./Model";
 import { FallingTiles } from "./FallingTiles";
 import { type Follow, type RunPlay, RunStage, tileDrive } from "./run/RunStage";
@@ -345,20 +345,23 @@ export function Viewer({ resting = false, cheering = false, project, shown, leg,
   const marker = useRef<THREE.Object3D>(null);
   const point = useMemo(() => (current?.length ? frameOf(project, leg, current) : whole).middle, [project, leg, current, whole]);
   const pipWatch = useMemo(() => point.clone().sub(whole.center), [point, whole]);
-  // 5.4.8: Pip helps: it stands just short of the step's tiles, on the way from its home, and they leave its hands there
+  // 5.4.8: Pip helps. 5.4.10: it walks on a ring round the build's footprint (its far corners and a margin), never
+  // across it: home, each step's spot and the finish's are all on it
   const pip3d = !softwareGL() && !run && !browse && !still && !!current?.length && shown < project.placed.length + 1;
+  const pipRing = useMemo(() => Math.hypot((whole.max.x - whole.min.x) / 2, (whole.max.z - whole.min.z) / 2) + 0.75, [whole]);
   const pipGoto = useMemo(() => {
     if (!current?.length) return undefined;
-    const home = pipHome(whole.size);
-    const here = new THREE.Vector3(pipWatch.x, 0, pipWatch.z);
+    const home = pipHome(pipRing);
     const span = frameOf(project, leg, current).size;
-    // beside the step's tiles as the camera sees them, never in front of them: to the side nearer its home, and a
-    // little back, so the child always sees where the tiles go
-    const right = new THREE.Vector3(Math.cos(AZIMUTH), 0, -Math.sin(AZIMUTH));
-    const back = new THREE.Vector3(-Math.sin(AZIMUTH), 0, -Math.cos(AZIMUTH));
-    const side = home.clone().sub(here).dot(right) >= 0 ? 1 : -1;
-    return here.addScaledVector(right, side * (span / 2 + 0.7)).addScaledVector(back, 0.25);
-  }, [current, pipWatch, whole, project, leg]);
+    // the ring beside the step's tiles: at their angle, turned toward home by about half their width, so it stands
+    // beside them as the camera sees them, not straight in front; tiles in the middle get it at home's angle
+    const homeA = Math.atan2(home.x, home.z);
+    const r = Math.hypot(pipWatch.x, pipWatch.z);
+    let a = r < 0.3 ? homeA : Math.atan2(pipWatch.x, pipWatch.z);
+    const toHome = Math.atan2(Math.sin(homeA - a), Math.cos(homeA - a));
+    a += Math.sign(toHome || 1) * Math.min(Math.abs(toHome), Math.atan((span / 2 + 0.6) / pipRing));
+    return new THREE.Vector3(Math.sin(a) * pipRing, 0, Math.cos(a) * pipRing);
+  }, [current, pipWatch, pipRing, project, leg]);
   // where Pip's hands are, written by Pip every frame (the turntable's space): the step's tiles leave from there (5.4.9)
   const pipHands = useMemo(() => new THREE.Vector3(), []);
   const pipFrom = pipGoto ? pipHands : undefined;
@@ -427,7 +430,7 @@ export function Viewer({ resting = false, cheering = false, project, shown, leg,
           {/* 5.3.3: Pip on the table beside the build (the flat overlay Pip stays without a GPU) */}
           {!softwareGL() && (
             <Suspense fallback={null}>
-              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={run ? undefined : pipWatch} resting={resting} cheering={cheering || (!!run && shown >= project.placed.length)} carry={current?.length ? project.placed[current[0]]?.colour : undefined} goto={pip3d ? pipGoto : undefined} hands={pipHands} />
+              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={run ? undefined : pipWatch} resting={resting} cheering={cheering || (!!run && shown >= project.placed.length)} carry={current?.length ? project.placed[current[0]]?.colour : undefined} goto={pip3d ? pipGoto : undefined} hands={pipHands} ring={pipRing} />
             </Suspense>
           )}
           {run && (

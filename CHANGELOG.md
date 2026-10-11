@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.4.10 · 11 Oct 2026
+
+- Pip walks round the outside of the build, never through it; going back a step, it just goes home; on the finish it stands beside what you built; quick taps on Next no longer send tiles flying from across the table.
+
 ## 5.4.8 · 11 Oct 2026
 
 - **Pip builds with you:** at each step Pip walks over carrying the tile, the step's tiles leave its hands and snap into place, and it walks back. It always stands beside the tiles, never in front of them, and walks round the build, not through it.
