@@ -23,6 +23,9 @@ const HOP_S = 0.75;
 export const WALK_S = 0.85;
 const STAY_S = 0.75;
 const BACK_S = 0.9;
+/** the arms' turn about their own x (radians): up over the head holding the tile, then pushed out as it goes */
+const ARM_UP = -2.3;
+const ARM_PUSH = -1.3;
 const ease = (k: number) => (k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
 
 /** Where Pip stands beside a build of this size (the turntable's space), and how tall it is there. */
@@ -74,9 +77,12 @@ export interface Pip3DProps {
   carry?: Colour;
   /** 5.4.8: where it stands to place this step's tiles (the turntable's space): it walks there with them and back */
   goto?: THREE.Vector3;
+  /** 5.4.9: written every frame: where its hands hold the tile (the turntable's space), so the real tiles leave from
+      exactly there */
+  hands?: THREE.Vector3;
 }
 
-export function Pip3D({ radius, stepKey, last, still, falling = false, watch, resting = false, cheering = false, spot, carry, goto }: Pip3DProps) {
+export function Pip3D({ radius, stepKey, last, still, falling = false, watch, resting = false, cheering = false, spot, carry, goto, hands }: Pip3DProps) {
   const gltf = useLoader(GLTFLoader, URL_, (l) => l.setMeshoptDecoder(MeshoptDecoder));
   const scene = useMemo(() => {
     // a skinned clone must be bound to its own bones (a plain clone keeps the original's skeleton)
@@ -93,8 +99,26 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     return s;
   }, [gltf]);
   const keys = useMemo(() => morphs(scene), [scene]);
+  // 5.4.9: the arms hold the tile up and let it go; the legs take real steps (three drops the dots from bone names)
+  const bones = useMemo(() => {
+    const get = (n: string) => scene.getObjectByName(n) ?? scene.getObjectByName(n.replace(".", ""));
+    const out: Record<string, { b: THREE.Object3D; rest: THREE.Quaternion }> = {};
+    for (const n of ["arm.L", "arm.R", "leg.L", "leg.R", "chest"]) {
+      const b = get(n);
+      if (b) out[n] = { b, rest: b.quaternion.clone() };
+    }
+    return out;
+  }, [scene]);
+  const qx = useMemo(() => new THREE.Quaternion(), []);
+  const X = useMemo(() => new THREE.Vector3(1, 0, 0), []);
+  const pose = (n: string, ax: number) => {
+    const j = bones[n];
+    if (!j) return;
+    j.b.quaternion.copy(j.rest);
+    if (ax) j.b.quaternion.multiply(qx.setFromAxisAngle(X, ax));
+  };
   const held = useMemo(() => {
-    const m = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.42, 0.05), new THREE.MeshPhysicalMaterial({ roughness: 0.35, clearcoat: 0.5, transparent: true, opacity: 0.9 }));
+    const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.1), new THREE.MeshPhysicalMaterial({ roughness: 0.35, clearcoat: 0.5, transparent: true, opacity: 0.9 }));
     m.castShadow = true;
     m.visible = false;
     return m;
@@ -254,12 +278,38 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
       smile = Math.max(smile, stay ? 1 : 0.5);
       invalidate();
     }
-    g.rotation.set(sleep * 0.18, turn, lean * -0.12);
+    // arms and legs: up with the tile on the way, a push forward as it goes, down after; steps while walking
+    let arm = 0;
+    let legs = 0;
+    let sway = 0;
+    if (helping) {
+      if (e < WALK_S) arm = ARM_UP;
+      else if (e < WALK_S + 0.25) arm = ARM_UP + (ARM_PUSH - ARM_UP) * ((e - WALK_S) / 0.25);
+      else if (e < WALK_S + STAY_S) arm = ARM_PUSH * (1 - (e - WALK_S - 0.25) / (STAY_S - 0.25));
+      const walking = e < WALK_S || e >= WALK_S + STAY_S;
+      if (walking) {
+        const ph = e < WALK_S ? (e / WALK_S) * 3 : ((e - WALK_S - STAY_S) / BACK_S) * 3;
+        legs = 0.55 * Math.sin(Math.PI * ph);
+        sway = 0.07 * Math.sin(Math.PI * ph);
+      }
+    }
+    pose("arm.L", arm);
+    pose("arm.R", arm);
+    pose("leg.L", legs);
+    pose("leg.R", -legs);
+    g.rotation.set(sleep * 0.18, turn, lean * -0.12 + sway);
     // carrying: the step's tile held up over its head until the hop's top, when the real ones fly in
     held.visible = walk ? helping && e < WALK_S && !!carry : !!carry && !still && h >= 0 && h < 0.8 && !cheer.current;
     // along the head bone, past its tip: over the head
     held.position.set(0, 0.42 + (h < 0.2 ? h * 0.5 : 0.1), 0.08);
+    if (hands) {
+      held.updateWorldMatrix(true, false);
+      held.getWorldPosition(hands);
+      if (g.parent) g.parent.worldToLocal(hands);
+    }
     held.rotation.set(0.3, 0, 0);
+    // a real small square's size, whatever Pip's height (the head bone carries Pip's scale)
+    held.scale.setScalar(1 / Math.max(0.01, g.scale.x));
     clip.current = helping ? (e < WALK_S ? "carry" : e < WALK_S + STAY_S ? "place" : "return") : resting ? "sleep" : cheering ? "cheer" : falling ? "comfort" : tp >= 0 && tp < 1 ? "tapped" : h >= 0 && h < 1 ? (cheer.current ? "cheer" : "hop") : "idle";
     smile = Math.max(smile, giggle, lean ? 0.4 : 0);
     g.position.set(px, y, pz);

@@ -6,7 +6,7 @@
    build). Performance: pixel ratio at most 2 (1.5 on smaller devices and for builds over BIG_BUILD tiles, 1 without a
    GPU), frames drawn only when something moves; a big build turns once by itself and then rests (2.8.1). */
 import { OrbitControls } from "@react-three/drei";
-import { Pip3D, pipHome, pipTall, WALK_S } from "./pip/Pip3D";
+import { Pip3D, pipHome, WALK_S } from "./pip/Pip3D";
 import { GHOST_S } from "./anim";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -359,12 +359,9 @@ export function Viewer({ resting = false, cheering = false, project, shown, leg,
     const side = home.clone().sub(here).dot(right) >= 0 ? 1 : -1;
     return here.addScaledVector(right, side * (span / 2 + 0.7)).addScaledVector(back, 0.25);
   }, [current, pipWatch, whole, project, leg]);
-  const pipFrom = useMemo(() => {
-    if (!pipGoto) return undefined;
-    // its hands, up over its head, a little towards the tiles: in the model's own space (not centred)
-    const toward = pipWatch.clone().sub(pipGoto).setY(0).normalize().multiplyScalar(0.25);
-    return pipGoto.clone().add(toward).add(new THREE.Vector3(0, pipTall(whole.size) * 1.05, 0)).add(whole.center);
-  }, [pipGoto, pipWatch, whole]);
+  // where Pip's hands are, written by Pip every frame (the turntable's space): the step's tiles leave from there (5.4.9)
+  const pipHands = useMemo(() => new THREE.Vector3(), []);
+  const pipFrom = pipGoto ? pipHands : undefined;
   const autoRotate = older(age) && spin && !still && !touched && !sweep;
   // the iPad's light or dark can change while a build is open: read the colours again
   const ground = useGround();
@@ -430,7 +427,7 @@ export function Viewer({ resting = false, cheering = false, project, shown, leg,
           {/* 5.3.3: Pip on the table beside the build (the flat overlay Pip stays without a GPU) */}
           {!softwareGL() && (
             <Suspense fallback={null}>
-              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={run ? undefined : pipWatch} resting={resting} cheering={cheering || (!!run && shown >= project.placed.length)} carry={current?.length ? project.placed[current[0]]?.colour : undefined} goto={pip3d ? pipGoto : undefined} />
+              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={run ? undefined : pipWatch} resting={resting} cheering={cheering || (!!run && shown >= project.placed.length)} carry={current?.length ? project.placed[current[0]]?.colour : undefined} goto={pip3d ? pipGoto : undefined} hands={pipHands} />
             </Suspense>
           )}
           {run && (
