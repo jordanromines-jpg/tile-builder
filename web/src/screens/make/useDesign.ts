@@ -55,11 +55,34 @@ export function useDesign(opened: string | undefined, physics: Physics | null, r
     if (!was) setId(at);
     return at;
   }, [fallen]);
+  // (a change not yet saved is saved at once when the screen closes or the iPad hides the page: leaving within the
+  // moment used to lose the last tile)
+  const dirty = useRef(false);
+  const saveNow = useRef(() => {});
+  saveNow.current = () => {
+    if (!dirty.current) return;
+    dirty.current = false;
+    void save().catch((err: unknown) => console.error("could not save the design", err));
+  };
   useEffect(() => {
     if (!loaded) return;
-    const t = setTimeout(() => void save().catch((err: unknown) => console.error("could not save the design", err)), SAVE_MS);
+    dirty.current = true;
+    const t = setTimeout(() => saveNow.current(), SAVE_MS);
     return () => clearTimeout(t);
   }, [tiles, falls, loaded, save]);
+  useEffect(() => {
+    const hide = () => {
+      if (document.visibilityState === "hidden") saveNow.current();
+    };
+    const leave = () => saveNow.current();
+    document.addEventListener("visibilitychange", hide);
+    window.addEventListener("pagehide", leave);
+    return () => {
+      document.removeEventListener("visibilitychange", hide);
+      window.removeEventListener("pagehide", leave);
+      saveNow.current();
+    };
+  }, []);
 
   return { id, loaded, save };
 }
