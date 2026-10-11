@@ -6,8 +6,9 @@
    build). Performance: pixel ratio at most 2 (1.5 on smaller devices and for builds over BIG_BUILD tiles, 1 without a
    GPU), frames drawn only when something moves; a big build turns once by itself and then rests (2.8.1). */
 import { OrbitControls } from "@react-three/drei";
+import { Pip3D } from "./pip/Pip3D";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { ShapeId } from "../engine/catalog";
@@ -400,6 +401,12 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
           <group position={[-whole.center.x, 0, -whole.center.z]}>
             <object3D ref={marker} position={point} />
           </group>
+          {/* 5.3.3: Pip on the table beside the build (the flat overlay Pip stays without a GPU) */}
+          {!softwareGL() && !run && (
+            <Suspense fallback={null}>
+              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} />
+            </Suspense>
+          )}
           {run && (
             <group position={[-whole.center.x, 0, -whole.center.z]}>
               <RunStage play={run} paint={tint} size={whole.size} follow={follow} aim={aim} offset={whole.center} />
