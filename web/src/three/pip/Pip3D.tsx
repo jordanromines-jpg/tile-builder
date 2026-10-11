@@ -29,11 +29,23 @@ const ARM_PUSH = -1.3;
 const ease = (k: number) => (k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
 
 /** Where Pip stands beside a build of this size (the turntable's space), and how tall it is there. */
-export function pipHome(radius: number): THREE.Vector3 {
-  // to the build's left as the camera sees it (not between the camera and the build), clear of a square build's corner
-  const a = AZIMUTH - 1.35;
-  const d = radius * 0.8 + Math.min(0.7, radius * 0.15);
-  return new THREE.Vector3(Math.sin(a) * d, 0, Math.cos(a) * d);
+export function pipHome(ring: number, cheering = false): THREE.Vector3 {
+  // to the build's left as the camera sees it, on the ring round its footprint (5.4.10); on the finish, front-left
+  const a = AZIMUTH - (cheering ? 1.0 : 1.35);
+  return new THREE.Vector3(Math.sin(a) * ring, 0, Math.cos(a) * ring);
+}
+
+/** Along the ring: from a to b, the radius and the angle eased together the short way round, so a walk keeps outside
+    the build (both ends are on or outside its ring). */
+export function onRing(a: THREE.Vector3, b: THREE.Vector3, f: number, out = new THREE.Vector3()): THREE.Vector3 {
+  const ra = Math.hypot(a.x, a.z);
+  const rb = Math.hypot(b.x, b.z);
+  const aa = Math.atan2(a.x, a.z);
+  let da = Math.atan2(b.x, b.z) - aa;
+  da = Math.atan2(Math.sin(da), Math.cos(da));
+  const r = ra + (rb - ra) * f;
+  const g = aa + da * f;
+  return out.set(Math.sin(g) * r, 0, Math.cos(g) * r);
 }
 export function pipTall(radius: number): number {
   return Math.max(0.7, Math.min(HEIGHT, radius * 0.32));
@@ -78,11 +90,13 @@ export interface Pip3DProps {
   /** 5.4.8: where it stands to place this step's tiles (the turntable's space): it walks there with them and back */
   goto?: THREE.Vector3;
   /** 5.4.9: written every frame: where its hands hold the tile (the turntable's space), so the real tiles leave from
-      exactly there */
+      exactly there; NaN unless it is standing at the build (5.4.10: a fast tap's tiles keep their own arc) */
   hands?: THREE.Vector3;
+  /** 5.4.10: the ring round the build's footprint it walks on, never across the build */
+  ring?: number;
 }
 
-export function Pip3D({ radius, stepKey, last, still, falling = false, watch, resting = false, cheering = false, spot, carry, goto, hands }: Pip3DProps) {
+export function Pip3D({ radius, stepKey, last, still, falling = false, watch, resting = false, cheering = false, spot, carry, goto, hands, ring }: Pip3DProps) {
   const gltf = useLoader(GLTFLoader, URL_, (l) => l.setMeshoptDecoder(MeshoptDecoder));
   const scene = useMemo(() => {
     // a skinned clone must be bound to its own bones (a plain clone keeps the original's skeleton)
@@ -147,24 +161,28 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
   const clip = useRef("idle");
   const look = useRef(0);
   const tmp = useMemo(() => new THREE.Vector3(), []);
+  const prevKey = useRef(stepKey);
+  const walkFrom = useRef<THREE.Vector3 | null>(null);
+  const homeOnly = useRef(false);
+  const pos = useRef<THREE.Vector3 | null>(null);
   useEffect(() => {
-    if (stepKey === 0) return;
+    const back = stepKey < prevKey.current;
+    prevKey.current = stepKey;
+    if (stepKey === 0 && !back) return;
+    // from wherever it is now (a fast tap never jumps it home); going back, it only walks home (5.4.10)
+    walkFrom.current = pos.current ? pos.current.clone() : null;
+    homeOnly.current = back;
     hopAt.current = performance.now() / 1000;
-    cheer.current = last;
-    if (!still) playTones(HUP, 0.6);
+    cheer.current = last && !back;
+    if (!still && !back) playTones(HUP, 0.6);
     invalidate();
-  }, [stepKey, last, invalidate]);
+  }, [stepKey, last, invalidate, still]);
   // beside the build: front-left of it as the camera sees it, clear of its footprint
   const at = useMemo(() => {
     if (spot) return new THREE.Vector3(...spot);
     // the finish: in front of the build, facing the child, so it is never behind the tower it cheers for
-    if (cheering) {
-      const c = AZIMUTH - 0.45;
-      const e = radius / 2 + 1.2;
-      return new THREE.Vector3(Math.sin(c) * e, 0, Math.cos(c) * e);
-    }
-    return pipHome(radius);
-  }, [radius, spot, cheering]);
+    return pipHome(ring ?? radius * 0.8 + 0.6, cheering);
+  }, [radius, spot, cheering, ring]);
   const face = AZIMUTH - 0.25;
   useEffect(() => {
     window.__pip = { clip: () => clip.current, at: () => [at.x, at.y, at.z], holding: () => held.visible };
@@ -187,9 +205,9 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
       if (!still) playTones(HUP, 0.5);
     }
     // helping (5.4.8): out with the tile, the tiles leave its hands, back home; the last step's cheer comes once home
-    const walk = !!goto && !still && !cheering;
+    const walk = (!!goto || homeOnly.current) && !still && !cheering;
     const e = now - hopAt.current;
-    const total = WALK_S + STAY_S + BACK_S;
+    const total = homeOnly.current ? BACK_S : WALK_S + STAY_S + BACK_S;
     const helping = walk && e >= 0 && e < total;
     const h = walk ? (cheer.current ? (e - total) / HOP_S : -1) : e / HOP_S;
     let y = 0;
@@ -247,34 +265,29 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     }
     let px = at.x;
     let pz = at.z;
-    if (helping && goto) {
-      const out = e < WALK_S;
-      const stay = !out && e < WALK_S + STAY_S;
-      const f = out ? ease(e / WALK_S) : stay ? 1 : 1 - ease((e - WALK_S - STAY_S) / BACK_S);
-      // round the outside of the build, not through it: a curve whose middle is pushed out from the build's centre
-      const mx = (at.x + goto.x) / 2;
-      const mz = (at.z + goto.z) / 2;
-      const ml = Math.hypot(mx, mz) || 1;
-      const push = Math.max(0, radius * 0.75 - ml);
-      const cx = mx + (mx / ml) * push;
-      const cz = mz + (mz / ml) * push;
-      const u = 1 - f;
-      px = u * u * at.x + 2 * u * f * cx + f * f * goto.x;
-      pz = u * u * at.z + 2 * u * f * cz + f * f * goto.z;
+    if (helping) {
+      const start = walkFrom.current ?? at;
+      // going back a step: straight home along the ring; forward: out to the step, stay, home
+      const out = !homeOnly.current && e < WALK_S;
+      const stay = !homeOnly.current && !out && e < WALK_S + STAY_S;
+      const backK = homeOnly.current ? e / BACK_S : (e - WALK_S - STAY_S) / BACK_S;
+      const there = goto ?? at;
+      const legFrom = out ? start : homeOnly.current ? start : there;
+      const legTo = out ? there : at;
+      const k = out ? ease(e / WALK_S) : stay ? 1 : ease(Math.min(1, backK));
+      const p = stay ? there : onRing(legFrom, legTo, k, tmp);
+      px = p.x;
+      pz = p.z;
       if (!stay) {
-        // little bouncy steps, a squash at each footfall
-        const steps = out ? (e / WALK_S) * 3 : ((e - WALK_S - STAY_S) / BACK_S) * 3;
-        const b = Math.abs(Math.sin(Math.PI * steps));
-        y = Math.max(y, 0.12 * b);
-        sq = 0.94 + 0.08 * b;
+        // little steps, a squash at each footfall
+        const steps = (out ? e / WALK_S : backK) * 3;
+        const bb = Math.abs(Math.sin(Math.PI * steps));
+        y = Math.max(y, 0.12 * bb);
+        sq = 0.94 + 0.08 * bb;
       }
-      // facing where it goes; at the build, the tiles; going back, home
-      const ahead = (k: number) => {
-        const v = 1 - k;
-        return [v * v * at.x + 2 * v * k * cx + k * k * goto.x, v * v * at.z + 2 * v * k * cz + k * k * goto.z];
-      };
-      const [ax, az] = stay && watch ? [watch.x, watch.z] : ahead(Math.max(0, Math.min(1, f + (out ? 0.05 : -0.05))));
-      if (Math.hypot(ax - px, az - pz) > 1e-3) turn = Math.atan2(ax - px, az - pz);
+      // facing where it goes; at the build, the tiles
+      const ahead = stay && watch ? watch : onRing(legFrom, legTo, Math.min(1, k + 0.05), new THREE.Vector3());
+      if (Math.hypot(ahead.x - px, ahead.z - pz) > 1e-3) turn = Math.atan2(ahead.x - px, ahead.z - pz);
       smile = Math.max(smile, stay ? 1 : 0.5);
       invalidate();
     }
@@ -282,13 +295,15 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     let arm = 0;
     let legs = 0;
     let sway = 0;
-    if (helping) {
+    if (helping && !homeOnly.current) {
       if (e < WALK_S) arm = ARM_UP;
       else if (e < WALK_S + 0.25) arm = ARM_UP + (ARM_PUSH - ARM_UP) * ((e - WALK_S) / 0.25);
       else if (e < WALK_S + STAY_S) arm = ARM_PUSH * (1 - (e - WALK_S - 0.25) / (STAY_S - 0.25));
-      const walking = e < WALK_S || e >= WALK_S + STAY_S;
+    }
+    if (helping) {
+      const walking = homeOnly.current || e < WALK_S || e >= WALK_S + STAY_S;
       if (walking) {
-        const ph = e < WALK_S ? (e / WALK_S) * 3 : ((e - WALK_S - STAY_S) / BACK_S) * 3;
+        const ph = homeOnly.current ? (e / BACK_S) * 3 : e < WALK_S ? (e / WALK_S) * 3 : ((e - WALK_S - STAY_S) / BACK_S) * 3;
         legs = 0.55 * Math.sin(Math.PI * ph);
         sway = 0.07 * Math.sin(Math.PI * ph);
       }
@@ -299,20 +314,23 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     pose("leg.R", -legs);
     g.rotation.set(sleep * 0.18, turn, lean * -0.12 + sway);
     // carrying: the step's tile held up over its head until the hop's top, when the real ones fly in
-    held.visible = walk ? helping && e < WALK_S && !!carry : !!carry && !still && h >= 0 && h < 0.8 && !cheer.current;
+    held.visible = walk ? helping && !homeOnly.current && e < WALK_S + 0.05 && !!carry : !!carry && !still && h >= 0 && h < 0.8 && !cheer.current;
     // along the head bone, past its tip: over the head
     held.position.set(0, 0.42 + (h < 0.2 ? h * 0.5 : 0.1), 0.08);
     if (hands) {
       held.updateWorldMatrix(true, false);
       held.getWorldPosition(hands);
       if (g.parent) g.parent.worldToLocal(hands);
+      const standing = helping && !homeOnly.current && e >= WALK_S - 0.08 && e < WALK_S + STAY_S;
+      if (!standing) hands.set(NaN, NaN, NaN);
     }
     held.rotation.set(0.3, 0, 0);
     // a real small square's size, whatever Pip's height (the head bone carries Pip's scale)
     held.scale.setScalar(1 / Math.max(0.01, g.scale.x));
-    clip.current = helping ? (e < WALK_S ? "carry" : e < WALK_S + STAY_S ? "place" : "return") : resting ? "sleep" : cheering ? "cheer" : falling ? "comfort" : tp >= 0 && tp < 1 ? "tapped" : h >= 0 && h < 1 ? (cheer.current ? "cheer" : "hop") : "idle";
+    clip.current = helping ? (homeOnly.current ? "return" : e < WALK_S ? "carry" : e < WALK_S + STAY_S ? "place" : "return") : resting ? "sleep" : cheering ? "cheer" : falling ? "comfort" : tp >= 0 && tp < 1 ? "tapped" : h >= 0 && h < 1 ? (cheer.current ? "cheer" : "hop") : "idle";
     smile = Math.max(smile, giggle, lean ? 0.4 : 0);
     g.position.set(px, y, pz);
+    (pos.current ??= new THREE.Vector3()).set(px, 0, pz);
     // two tiles tall, a little less beside a small build (the camera frames a small build closely)
     const tall = pipTall(radius);
     g.scale.set(tall / Math.sqrt(sq), tall * sq, tall / Math.sqrt(sq));

@@ -287,7 +287,8 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
     const step = Math.min(dt, 0.05);
     const moving = browse && !still ? browseProgress(p, shown, step, ARRIVE_S, LEAVE_S) : stepProgress(p, shown, step, still ? DROP_S_REDUCED : DROP_S, startable);
     // 5.4.9: the moment each of the step's tiles leaves, it leaves from Pip's hands (the model's own space)
-    if (from && !still && !browse) {
+    // (only while Pip stands at the build: otherwise, a fast tap's tiles keep their own short arc, 5.4.10)
+    if (from && Number.isFinite(from.x) && !still && !browse) {
       let j = launched.current.size;
       for (const i of lit.current) {
         if ((p[i] ?? 0) <= 0 || launched.current.has(i)) continue;

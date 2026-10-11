@@ -40,3 +40,10 @@ L2 zoom speed (older ages; the youngest have no zoom by design) · L3/L4 the til
 
 ## Fixed in 5.4.7 (#79)
 Pan (Jordan: "obviously this is needed"): two fingers on an iPad, or a right-drag, slide the view across the table, kept near the build. For 0–3 and 6–16; 3–5 stay tap-only by design (DESIGN.md principle 3). A step's own view still eases to its tiles. Also: Pip stood inside a square build's front corner; it now stands clear of corners.
+
+## Live check after 5.4.8–5.4.9, and fixes in 5.4.10 (#81)
+1. Pip walked through towers already built: it now walks on a ring round the build's footprint (far corners plus a margin); home, each step's spot and the finish's spot are on it. Tiles in the middle are tossed in from the ring.
+2. Back sent Pip into the build: going back it only walks home.
+3. On the finish Pip stood against the build (cut off in portrait): it stands on the ring, front-left, further round (in portrait on a very small build it steps out of the close view).
+4. Fast taps: a tile leaves from Pip's hands only while Pip stands at the build; otherwise it keeps its own short arc. A new step starts Pip's walk from where it is (no jump home).
+Also seen, not fixed: the plain stage without a GPU has a dull olive table; Make your own's Pip stands on the open table; portrait finish crops tall builds' tops.
