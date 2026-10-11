@@ -9,6 +9,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { clone as cloneSkinned } from "three/addons/utils/SkeletonUtils.js";
+import { playTones } from "../../sound/sound";
 import { AZIMUTH } from "../camera";
 
 const URL_ = `${import.meta.env.BASE_URL}pip/axolotl.glb`;
@@ -33,7 +34,26 @@ declare global {
   }
 }
 
-export function Pip3D({ radius, stepKey, last, still, falling = false }: { radius: number; stepKey: number; last: boolean; still: boolean; falling?: boolean }) {
+/** a soft "hup" as it springs up (synthesised; silent when sound is off) */
+const HUP = [{ wave: "sine" as const, freq: 420, to: 640, dur: 0.12, gain: 0.18, attack: 0.01 }];
+
+export interface Pip3DProps {
+  radius: number;
+  stepKey: number;
+  last: boolean;
+  still: boolean;
+  falling?: boolean;
+  /** where this step's tiles land (the turntable's space): it turns to watch them as they come */
+  watch?: THREE.Vector3;
+  /** the rest screen is up: it sleeps (eyes shut, head down, slow breaths), and wakes when it goes */
+  resting?: boolean;
+  /** the finish: it cheers again and again */
+  cheering?: boolean;
+  /** where it stands, the turntable's space, if not beside the build (Make your own: at the table's front-left) */
+  spot?: [number, number, number];
+}
+
+export function Pip3D({ radius, stepKey, last, still, falling = false, watch, resting = false, cheering = false, spot }: Pip3DProps) {
   const gltf = useLoader(GLTFLoader, URL_, (l) => l.setMeshoptDecoder(MeshoptDecoder));
   const scene = useMemo(() => {
     // a skinned clone must be bound to its own bones (a plain clone keeps the original's skeleton)
@@ -60,14 +80,23 @@ export function Pip3D({ radius, stepKey, last, still, falling = false }: { radiu
     if (stepKey === 0) return;
     hopAt.current = performance.now() / 1000;
     cheer.current = last;
+    if (!still) playTones(HUP, 0.6);
     invalidate();
   }, [stepKey, last, invalidate]);
   // beside the build: front-left of it as the camera sees it, clear of its footprint
   const at = useMemo(() => {
-    const a = AZIMUTH - 0.9;
-    const d = radius / 2 + 1.3;
+    if (spot) return new THREE.Vector3(...spot);
+    // the finish: in front of the build, facing the child, so it is never behind the tower it cheers for
+    if (cheering) {
+      const c = AZIMUTH - 0.45;
+      const e = radius / 2 + 1.2;
+      return new THREE.Vector3(Math.sin(c) * e, 0, Math.cos(c) * e);
+    }
+    // to the build's left as the camera sees it (not between the camera and the build), just clear of it
+    const a = AZIMUTH - 1.35;
+    const d = radius / 2 + 0.6;
     return new THREE.Vector3(Math.sin(a) * d, 0, Math.cos(a) * d);
-  }, [radius]);
+  }, [radius, spot, cheering]);
   const face = AZIMUTH - 0.25;
   useEffect(() => {
     window.__pip = { clip: () => clip.current, at: () => [at.x, at.y, at.z] };
@@ -83,6 +112,12 @@ export function Pip3D({ radius, stepKey, last, still, falling = false }: { radiu
     if (!g) return;
     const t = clock.elapsedTime;
     const now = performance.now() / 1000;
+    // the finish: a cheer hop every two seconds or so
+    if (cheering && now - hopAt.current > 2.2) {
+      hopAt.current = now;
+      cheer.current = true;
+      if (!still) playTones(HUP, 0.5);
+    }
     const h = (now - hopAt.current) / HOP_S;
     let y = 0;
     let sq = 1 + 0.015 * Math.sin(t * 2.2);
@@ -114,16 +149,30 @@ export function Pip3D({ radius, stepKey, last, still, falling = false }: { radiu
       invalidate();
     }
     // it fell: it turns to the build and leans in, kindly
-    const lean = falling ? 1 : 0;
-    g.rotation.set(0, face + lean * 0.7, lean * -0.12);
-    clip.current = falling ? "comfort" : tp >= 0 && tp < 1 ? "tapped" : h >= 0 && h < 1 ? (cheer.current ? "cheer" : "hop") : "idle";
-    smile = Math.max(smile, giggle, falling ? 0.4 : 0);
+    // (on the finish "falling" is the celebration's tiles, not a build down: it cheers)
+    const lean = falling && !cheering ? 1 : 0;
+    // while a step's tiles fly in it turns to watch them land, then back to the child
+    let turn = face + lean * 0.7;
+    if (watch && h >= -0.1 && h < 2.2 && !falling) {
+      const w = Math.atan2(watch.x - at.x, watch.z - at.z);
+      const k = h < 0.2 ? h / 0.2 : h > 1.8 ? (2.2 - h) / 0.4 : 1;
+      turn = face + (w - face) * 0.6 * Math.max(0, Math.min(1, k));
+      invalidate();
+    }
+    // asleep: head down, slow deep breaths
+    const sleep = resting ? 1 : 0;
+    if (resting) sq = 1 + 0.035 * Math.sin(t * 1.1);
+    g.rotation.set(sleep * 0.18, turn, lean * -0.12);
+    clip.current = resting ? "sleep" : cheering ? "cheer" : falling ? "comfort" : tp >= 0 && tp < 1 ? "tapped" : h >= 0 && h < 1 ? (cheer.current ? "cheer" : "hop") : "idle";
+    smile = Math.max(smile, giggle, lean ? 0.4 : 0);
     g.position.set(at.x, y, at.z);
-    g.scale.set(HEIGHT / Math.sqrt(sq), HEIGHT * sq, HEIGHT / Math.sqrt(sq));
+    // two tiles tall, a little less beside a small build (the camera frames a small build closely)
+    const tall = Math.max(1.2, Math.min(HEIGHT, radius * 0.35));
+    g.scale.set(tall / Math.sqrt(sq), tall * sq, tall / Math.sqrt(sq));
     set("smile", smile);
     set("open", (cheer.current && h >= 0 && h < 1.4) || giggle ? 0.7 : 0);
     // a blink every four seconds or so
-    set("blink", t % 4.2 < 0.14 ? 1 : 0);
+    set("blink", resting || t % 4.2 < 0.14 ? 1 : 0);
   });
   // the breathing and blinks need a frame now and then; the scene otherwise draws on demand
   useEffect(() => {

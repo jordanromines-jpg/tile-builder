@@ -246,6 +246,7 @@ function BuildProject({ pid, project: designed }: { pid: string; project: Projec
             hush={hush}
             inset={{ top: 112, bottom: strip }}
             spin={!resting}
+            resting={resting}
             label={S.build.model(project.title)}
           />
           {gate && (

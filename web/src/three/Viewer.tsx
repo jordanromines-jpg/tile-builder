@@ -285,6 +285,10 @@ export interface ViewerProps {
   sweep?: boolean;
   /** let little tiles fall on the finished model and lie where they land (4.2c) */
   falling?: boolean;
+  /** 5.3.3: the rest screen is up (Pip sleeps) */
+  resting?: boolean;
+  /** 5.3.4: the finish (Pip cheers) */
+  cheering?: boolean;
   /** a truck run plays on the finished course (4.0c) */
   run?: RunPlay;
   /** px of the view covered by panels at the top and bottom: the model is framed in what is left */
@@ -303,7 +307,7 @@ export interface ViewerProps {
   label: string;
 }
 
-export function Viewer({ project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, falling = false, run, inset, spin = true, paint = 0, browse = false, hold, onTarget, onRest, label }: ViewerProps) {
+export function Viewer({ resting = false, cheering = false, project, shown, leg, instead, current, settled, turns = 0, stepKey = 0, hush = 0, sweep = false, falling = false, run, inset, spin = true, paint = 0, browse = false, hold, onTarget, onRest, label }: ViewerProps) {
   const age = project.age;
   const still = useStill();
   const wrap = useRef<HTMLDivElement>(null);
@@ -339,6 +343,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
   // the middle of this step's tiles, where Pip points (3.9)
   const marker = useRef<THREE.Object3D>(null);
   const point = useMemo(() => (current?.length ? frameOf(project, leg, current) : whole).middle, [project, leg, current, whole]);
+  const pipWatch = useMemo(() => point.clone().sub(whole.center), [point, whole]);
   const autoRotate = older(age) && spin && !still && !touched && !sweep;
   // the iPad's light or dark can change while a build is open: read the colours again
   const ground = useGround();
@@ -404,7 +409,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
           {/* 5.3.3: Pip on the table beside the build (the flat overlay Pip stays without a GPU) */}
           {!softwareGL() && !run && (
             <Suspense fallback={null}>
-              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} />
+              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={pipWatch} resting={resting} cheering={cheering} />
             </Suspense>
           )}
           {run && (
