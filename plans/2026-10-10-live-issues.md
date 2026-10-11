@@ -37,3 +37,6 @@ No console errors. Every request stays on the site (nothing leaves it). Each of 
 
 ## Fixed in 5.4.5 (#73)
 L2 zoom speed (older ages; the youngest have no zoom by design) · L3/L4 the tilt stops at about 68° from straight down, so it never reaches the table's level and its seam · L5 only landed tiles cast shadows · L7 the offline note sits below the header · L9 the falling tiles in the bright mid finish · L11 orange keys shaded with a deep orange, not black · L12 the table's shine lowered · L13 the yellow key quieter in the evening. Not done: L1 (table colour, needs an iPad), pan (a new control: Jordan's call), L6 (5.3.3), L8.
+
+## Fixed in 5.4.7 (#79)
+Pan (Jordan: "obviously this is needed"): two fingers on an iPad, or a right-drag, slide the view across the table, kept near the build. For 0–3 and 6–16; 3–5 stay tap-only by design (DESIGN.md principle 3). A step's own view still eases to its tiles. Also: Pip stood inside a square build's front corner; it now stands clear of corners.

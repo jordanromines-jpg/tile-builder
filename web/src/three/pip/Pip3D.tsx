@@ -122,7 +122,8 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     }
     // to the build's left as the camera sees it (not between the camera and the build), just clear of it
     const a = AZIMUTH - 1.35;
-    const d = radius / 2 + Math.min(0.6, radius * 0.15);
+    // clear of a square build's corner too (a corner reaches out half the diagonal, about 0.71 of the width)
+    const d = radius * 0.72 + Math.min(0.5, radius * 0.12);
     return new THREE.Vector3(Math.sin(a) * d, 0, Math.cos(a) * d);
   }, [radius, spot, cheering]);
   const face = AZIMUTH - 0.25;

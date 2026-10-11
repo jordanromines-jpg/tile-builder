@@ -426,7 +426,19 @@ export function Viewer({ resting = false, cheering = false, project, shown, leg,
         {age !== "a" && (
           <OrbitControls
             enableZoom={older(age)}
-            enablePan={false}
+            // 5.4.7: pan (two fingers, or a right-drag), across the table and kept near the build
+            enablePan
+            screenSpacePanning={false}
+            panSpeed={1.1}
+            onChange={(e) => {
+              const c = e?.target as { target: THREE.Vector3 } | undefined;
+              if (!c) return;
+              const r = whole.size * 0.6 + 1;
+              const t = c.target;
+              t.x = Math.max(-r, Math.min(r, t.x));
+              t.z = Math.max(-r, Math.min(r, t.z));
+              t.y = Math.max(0, Math.min(whole.size, t.y));
+            }}
             minDistance={older(age) ? distance * 0.45 : undefined}
             maxDistance={older(age) ? distance * 1.8 : undefined}
             // 5.4.5: never down at the table's level (where the room's backdrop meets the table)
