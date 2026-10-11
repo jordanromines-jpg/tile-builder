@@ -199,6 +199,9 @@ export interface ModelProps {
   /** a truck run (4.0c): these tiles are drawn one by one, each posed every frame by `pose` (its body's middle `p` and
       its turn `q` since it was built, its middle as built `c`); null leaves a tile as built */
   drive?: TileDrive;
+  /** 5.4.8: where Pip holds the step's tiles up (the turntable's space, written by Pip each frame): each is tossed from
+      its hands into place, from where they are at the moment it leaves (5.4.9) */
+  from?: THREE.Vector3;
 }
 
 export interface TileDrive {
@@ -214,7 +217,7 @@ const dv = new THREE.Vector3();
     the model came to rest (the rest bumps the shadow, which renders again), so the finish never stopped drawing (4.2c). */
 const NO_TILES: number[] = [];
 
-export function Model({ project, shown, leg, instead = {}, settled = 0, current = NO_TILES, still = false, browse = false, paint = 0, hold = GHOST_S, onRest, drive }: ModelProps) {
+export function Model({ project, shown, leg, instead = {}, settled = 0, current = NO_TILES, still = false, browse = false, paint = 0, hold = GHOST_S, onRest, drive, from }: ModelProps) {
   const invalidate = useThree((s) => s.invalidate);
   const key = JSON.stringify(instead);
   const accent = useMemo(() => new THREE.Color(cssColour("accent", "#BF5409")), [paint]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -222,6 +225,8 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
   const tiles = useMemo(() => buildTiles(project, leg, instead, accent), [project, leg, key, paint]);
   const frame = useMemo(() => frameOf(project, leg), [project, leg]);
   const progress = useRef<number[]>([]);
+  /** the step's tiles already tossed from Pip's hands (5.4.9) */
+  const launched = useRef(new Set<number>());
   const root = useMemo(() => new THREE.Group(), []);
   const settledMesh = useMemo(() => new Settled(), []);
   const lit = useRef(new Set<number>());
@@ -262,6 +267,7 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
 
   useEffect(() => {
     lit.current = new Set(current.filter((t) => t < shown));
+    launched.current = new Set();
     since.current = performance.now();
     // a new step: the next frame that finds nothing moving is a rest, even when the tiles appear at once
     wasMoving.current = true;
@@ -280,6 +286,19 @@ export function Model({ project, shown, leg, instead = {}, settled = 0, current 
     const before = p.filter((k) => k >= LAND_K).length;
     const step = Math.min(dt, 0.05);
     const moving = browse && !still ? browseProgress(p, shown, step, ARRIVE_S, LEAVE_S) : stepProgress(p, shown, step, still ? DROP_S_REDUCED : DROP_S, startable);
+    // 5.4.9: the moment each of the step's tiles leaves, it leaves from Pip's hands (the model's own space)
+    if (from && !still && !browse) {
+      let j = launched.current.size;
+      for (const i of lit.current) {
+        if ((p[i] ?? 0) <= 0 || launched.current.has(i)) continue;
+        const t = tiles[i];
+        if (!t) continue;
+        t.pS.set(from.x + frame.center.x + (j % 3) * 0.1 - 0.1, from.y, from.z + frame.center.z);
+        t.flight = makeFlight(t.pS.toArray(), t.pT.toArray());
+        launched.current.add(i);
+        j++;
+      }
+    }
     // a tile has touched down: the magnets' click (3.0), once a frame however many land together (not while scrubbing)
     if (!browse && p.filter((k) => k >= LAND_K).length > before && lit.current.size) play("snap");
     const t = state.clock.elapsedTime;

@@ -11,7 +11,7 @@ async function pip(page: Page) {
   test.skip(!has, "no GPU here: the flat Pip stands in, and the other specs cover it");
 }
 
-test("Pip stands clear of the build, and hops carrying the step's tile on Next", async ({ page }) => {
+test("Pip stands clear of the build, and on Next carries the step's tile over, places it and walks back", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("#/build/pitched-house");
   await startBuild(page);
@@ -21,7 +21,10 @@ test("Pip stands clear of the build, and hops carrying the step's tile on Next",
   expect(Math.hypot(x, z)).toBeGreaterThan(1.5);
   await page.getByRole("button", { name: "Next", exact: true }).click();
   await expect.poll(() => page.evaluate(() => window.__pip!.holding()), { timeout: 1000, intervals: [30] }).toBe(true);
-  await expect.poll(() => page.evaluate(() => window.__pip!.clip()), { timeout: 2000 }).toBe("hop");
+  // 5.4.8: it carries them over, the tiles leave its hands at the build, and it walks back
+  await expect.poll(() => page.evaluate(() => window.__pip!.clip()), { timeout: 1500, intervals: [40] }).toBe("place");
+  await expect.poll(() => page.evaluate(() => window.__pip!.clip()), { timeout: 2000, intervals: [40] }).toBe("return");
+  await expect.poll(() => page.evaluate(() => window.__pip!.clip()), { timeout: 3000 }).toBe("idle");
 });
 
 test("Pip cheers on the finish", async ({ page }) => {

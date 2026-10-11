@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.4.8 · 11 Oct 2026
+
+- **Pip builds with you:** at each step Pip walks over carrying the tile, the step's tiles leave its hands and snap into place, and it walks back. It always stands beside the tiles, never in front of them, and walks round the build, not through it.
+
 ## 5.4.7 · 11 Oct 2026
 
 - **Pan:** slide the view across the table with two fingers (or a right-drag with a mouse) to look at any part of a big build. It stays near the build. (3–5 keep tap-only.)
