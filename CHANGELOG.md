@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.3.8 · 11 Oct 2026
+
+- **Pip carries the tiles:** on each step it lifts a tile in the step's colour over its head as the step's tiles come.
+- **Pip looks at you** when it is resting.
+- **Truck runs:** Pip watches from the table and cheers when the run is done.
+
 ## 5.3.4 · 11 Oct 2026
 
 Pip everywhere.

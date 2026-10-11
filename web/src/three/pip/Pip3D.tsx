@@ -11,6 +11,8 @@ import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { clone as cloneSkinned } from "three/addons/utils/SkeletonUtils.js";
 import { playTones } from "../../sound/sound";
 import { AZIMUTH } from "../camera";
+import { tileColour } from "../tile";
+import type { Colour } from "../../engine/catalog";
 
 const URL_ = `${import.meta.env.BASE_URL}pip/axolotl.glb`;
 /** the character is 1 tall in its file; a small square tile is 1 here: two tiles tall */
@@ -30,7 +32,7 @@ function morphs(root: THREE.Object3D) {
 declare global {
   interface Window {
     /** for the browser tests: what Pip is doing and where it stands (5.3.3) */
-    __pip?: { clip: () => string; at: () => [number, number, number] };
+    __pip?: { clip: () => string; at: () => [number, number, number]; holding: () => boolean };
   }
 }
 
@@ -51,9 +53,11 @@ export interface Pip3DProps {
   cheering?: boolean;
   /** where it stands, the turntable's space, if not beside the build (Make your own: at the table's front-left) */
   spot?: [number, number, number];
+  /** this step's tile colour: it lifts a little tile of it over its head as the step's tiles come (5.3.8) */
+  carry?: Colour;
 }
 
-export function Pip3D({ radius, stepKey, last, still, falling = false, watch, resting = false, cheering = false, spot }: Pip3DProps) {
+export function Pip3D({ radius, stepKey, last, still, falling = false, watch, resting = false, cheering = false, spot, carry }: Pip3DProps) {
   const gltf = useLoader(GLTFLoader, URL_, (l) => l.setMeshoptDecoder(MeshoptDecoder));
   const scene = useMemo(() => {
     // a skinned clone must be bound to its own bones (a plain clone keeps the original's skeleton)
@@ -70,12 +74,35 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     return s;
   }, [gltf]);
   const keys = useMemo(() => morphs(scene), [scene]);
+  const held = useMemo(() => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.42, 0.05), new THREE.MeshPhysicalMaterial({ roughness: 0.35, clearcoat: 0.5, transparent: true, opacity: 0.9 }));
+    m.castShadow = true;
+    m.visible = false;
+    return m;
+  }, []);
+  useEffect(() => () => {
+    held.geometry.dispose();
+    (held.material as THREE.Material).dispose();
+  }, [held]);
+  useEffect(() => {
+    if (carry) (held.material as THREE.MeshPhysicalMaterial).color.set(tileColour(carry));
+  }, [carry, held]);
+  const camera = useThree((s) => s.camera);
+  // the held tile rides on the head bone (a skinned body is drawn where its bones are, not where its file says)
+  useEffect(() => {
+    const head = scene.getObjectByName("head");
+    (head ?? scene).add(held);
+    return () => {
+      held.removeFromParent();
+    };
+  }, [scene, held]);
   const invalidate = useThree((s) => s.invalidate);
   const root = useRef<THREE.Group>(null);
   const hopAt = useRef(-10);
   const cheer = useRef(false);
   const tapAt = useRef(-10);
   const clip = useRef("idle");
+  const look = useRef(0);
   useEffect(() => {
     if (stepKey === 0) return;
     hopAt.current = performance.now() / 1000;
@@ -99,11 +126,11 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
   }, [radius, spot, cheering]);
   const face = AZIMUTH - 0.25;
   useEffect(() => {
-    window.__pip = { clip: () => clip.current, at: () => [at.x, at.y, at.z] };
+    window.__pip = { clip: () => clip.current, at: () => [at.x, at.y, at.z], holding: () => held.visible };
     return () => {
       delete window.__pip;
     };
-  }, [at]);
+  }, [at, held]);
   const set = (name: string, v: number) => {
     for (const k of keys) if (k.name === name && k.mesh.morphTargetInfluences) k.mesh.morphTargetInfluences[k.i] = v;
   };
@@ -153,7 +180,8 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     const lean = falling && !cheering ? 1 : 0;
     // while a step's tiles fly in it turns to watch them land, then back to the child
     let turn = face + lean * 0.7;
-    if (watch && h >= -0.1 && h < 2.2 && !falling) {
+    const watching = !!watch && h >= -0.1 && h < 2.2 && !falling;
+    if (watching && watch) {
       const w = Math.atan2(watch.x - at.x, watch.z - at.z);
       const k = h < 0.2 ? h / 0.2 : h > 1.8 ? (2.2 - h) / 0.4 : 1;
       turn = face + (w - face) * 0.6 * Math.max(0, Math.min(1, k));
@@ -162,7 +190,21 @@ export function Pip3D({ radius, stepKey, last, still, falling = false, watch, re
     // asleep: head down, slow deep breaths
     const sleep = resting ? 1 : 0;
     if (resting) sq = 1 + 0.035 * Math.sin(t * 1.1);
+    // at rest it looks at the child (the camera), easing round, never past a quarter turn
+    if (!watching && !lean && !resting) {
+      const p = g.parent ? g.parent.worldToLocal(camera.position.clone()) : camera.position;
+      const want = Math.atan2(p.x - at.x, p.z - at.z);
+      const d = Math.max(-0.8, Math.min(0.8, Math.atan2(Math.sin(want - face), Math.cos(want - face))));
+      look.current += (d - look.current) * 0.08;
+      if (Math.abs(d - look.current) > 0.01) invalidate();
+      turn = face + look.current;
+    }
     g.rotation.set(sleep * 0.18, turn, lean * -0.12);
+    // carrying: the step's tile held up over its head until the hop's top, when the real ones fly in
+    held.visible = !!carry && !still && h >= 0 && h < 0.8 && !cheer.current;
+    // along the head bone, past its tip: over the head
+    held.position.set(0, 0.42 + (h < 0.2 ? h * 0.5 : 0.1), 0.08);
+    held.rotation.set(0.3, 0, 0);
     clip.current = resting ? "sleep" : cheering ? "cheer" : falling ? "comfort" : tp >= 0 && tp < 1 ? "tapped" : h >= 0 && h < 1 ? (cheer.current ? "cheer" : "hop") : "idle";
     smile = Math.max(smile, giggle, lean ? 0.4 : 0);
     g.position.set(at.x, y, at.z);
