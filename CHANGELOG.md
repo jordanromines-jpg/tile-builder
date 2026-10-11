@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.4.7 · 11 Oct 2026
+
+- **Pan:** slide the view across the table with two fingers (or a right-drag with a mouse) to look at any part of a big build. It stays near the build. (3–5 keep tap-only.)
+- Pip no longer stands inside a build's corner.
+
 ## 5.3.8 · 11 Oct 2026
 
 - **Pip carries the tiles:** on each step it lifts a tile in the step's colour over its head as the step's tiles come.
