@@ -407,9 +407,9 @@ export function Viewer({ resting = false, cheering = false, project, shown, leg,
             <object3D ref={marker} position={point} />
           </group>
           {/* 5.3.3: Pip on the table beside the build (the flat overlay Pip stays without a GPU) */}
-          {!softwareGL() && !run && (
+          {!softwareGL() && (
             <Suspense fallback={null}>
-              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={pipWatch} resting={resting} cheering={cheering} />
+              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} watch={run ? undefined : pipWatch} resting={resting} cheering={cheering || (!!run && shown >= project.placed.length)} carry={current?.length ? project.placed[current[0]]?.colour : undefined} />
             </Suspense>
           )}
           {run && (
