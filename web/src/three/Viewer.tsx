@@ -404,7 +404,7 @@ export function Viewer({ project, shown, leg, instead, current, settled, turns =
           {/* 5.3.3: Pip on the table beside the build (the flat overlay Pip stays without a GPU) */}
           {!softwareGL() && !run && (
             <Suspense fallback={null}>
-              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} />
+              <Pip3D radius={whole.size} stepKey={stepKey} last={shown >= project.placed.length} still={still} falling={falling} />
             </Suspense>
           )}
           {run && (

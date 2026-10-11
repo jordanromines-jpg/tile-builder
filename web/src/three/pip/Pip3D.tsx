@@ -26,7 +26,14 @@ function morphs(root: THREE.Object3D) {
   return out;
 }
 
-export function Pip3D({ radius, stepKey, last, still }: { radius: number; stepKey: number; last: boolean; still: boolean }) {
+declare global {
+  interface Window {
+    /** for the browser tests: what Pip is doing and where it stands (5.3.3) */
+    __pip?: { clip: () => string; at: () => [number, number, number] };
+  }
+}
+
+export function Pip3D({ radius, stepKey, last, still, falling = false }: { radius: number; stepKey: number; last: boolean; still: boolean; falling?: boolean }) {
   const gltf = useLoader(GLTFLoader, URL_, (l) => l.setMeshoptDecoder(MeshoptDecoder));
   const scene = useMemo(() => {
     // a skinned clone must be bound to its own bones (a plain clone keeps the original's skeleton)
@@ -47,6 +54,8 @@ export function Pip3D({ radius, stepKey, last, still }: { radius: number; stepKe
   const root = useRef<THREE.Group>(null);
   const hopAt = useRef(-10);
   const cheer = useRef(false);
+  const tapAt = useRef(-10);
+  const clip = useRef("idle");
   useEffect(() => {
     if (stepKey === 0) return;
     hopAt.current = performance.now() / 1000;
@@ -60,6 +69,12 @@ export function Pip3D({ radius, stepKey, last, still }: { radius: number; stepKe
     return new THREE.Vector3(Math.sin(a) * d, 0, Math.cos(a) * d);
   }, [radius]);
   const face = AZIMUTH - 0.25;
+  useEffect(() => {
+    window.__pip = { clip: () => clip.current, at: () => [at.x, at.y, at.z] };
+    return () => {
+      delete window.__pip;
+    };
+  }, [at]);
   const set = (name: string, v: number) => {
     for (const k of keys) if (k.name === name && k.mesh.morphTargetInfluences) k.mesh.morphTargetInfluences[k.i] = v;
   };
@@ -87,10 +102,26 @@ export function Pip3D({ radius, stepKey, last, still }: { radius: number; stepKe
       smile = 1 - (h - 1) / 2;
       invalidate();
     }
+    // a tap: a little jump and a giggle
+    const tp = (now - tapAt.current) / 0.6;
+    let giggle = 0;
+    if (tp >= 0 && tp < 1) {
+      giggle = 1;
+      if (!still) {
+        y = Math.max(y, 0.35 * Math.sin(Math.PI * tp));
+        sq *= 1 + 0.08 * Math.sin(Math.PI * 2 * tp);
+      }
+      invalidate();
+    }
+    // it fell: it turns to the build and leans in, kindly
+    const lean = falling ? 1 : 0;
+    g.rotation.set(0, face + lean * 0.7, lean * -0.12);
+    clip.current = falling ? "comfort" : tp >= 0 && tp < 1 ? "tapped" : h >= 0 && h < 1 ? (cheer.current ? "cheer" : "hop") : "idle";
+    smile = Math.max(smile, giggle, falling ? 0.4 : 0);
     g.position.set(at.x, y, at.z);
     g.scale.set(HEIGHT / Math.sqrt(sq), HEIGHT * sq, HEIGHT / Math.sqrt(sq));
     set("smile", smile);
-    set("open", cheer.current && h >= 0 && h < 1.4 ? 0.7 : 0);
+    set("open", (cheer.current && h >= 0 && h < 1.4) || giggle ? 0.7 : 0);
     // a blink every four seconds or so
     set("blink", t % 4.2 < 0.14 ? 1 : 0);
   });
@@ -100,7 +131,15 @@ export function Pip3D({ radius, stepKey, last, still }: { radius: number; stepKe
     return () => window.clearInterval(id);
   }, [invalidate]);
   return (
-    <group ref={root} rotation={[0, face, 0]}>
+    <group
+      ref={root}
+      rotation={[0, face, 0]}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+        tapAt.current = performance.now() / 1000;
+        invalidate();
+      }}
+    >
       <primitive object={scene} />
     </group>
   );
