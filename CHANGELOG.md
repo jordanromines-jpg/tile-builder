@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.3.3 · 11 Oct 2026
+
+Pip in 3D.
+
+- **Pip stands on the table beside the build**, in the same room and light, about two tiles tall: it breathes and blinks, hops and smiles at each new step, and cheers when the build is done. With motion reduced it only smiles.
+- Older iPads without a GPU keep the flat Pip.
+
 ## 5.4.4 · 10 Oct 2026
 
 Small polish on the one look.

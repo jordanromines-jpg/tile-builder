@@ -4,6 +4,7 @@
    (Back, a dot, All steps) sends him over to point; while All steps is open he looks along; when it falls down he
    comforts; on the rest screen he sleeps, and waves when the child comes back. A step's tip shows in a bubble by him.
    With motion reduced he stays in his place and points. Decoration: the screen says everything in words. */
+import { softwareGL } from "../gpu";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import type { StepTile } from "../screens/build/stepTiles";
 import { useStill } from "../ui/motion";
@@ -344,7 +345,8 @@ export function Guide({ arrival, tiles, leg, tip, bus, panel, top, landed, finis
   const extra = held && held.length > 3 ? held.slice(3).reduce((n, t) => n + t.count, 0) : 0;
   return (
     <div ref={layer} className="ts-guide pointer-events-none absolute inset-0 z-40 overflow-hidden">
-      <div ref={outer} className="absolute left-0 top-0" style={{ width: SIZE, height: SIZE }}>
+      {/* 5.3.3: with a GPU, Pip stands in the 3D scene (three/pip/Pip3D.tsx); this flat one only keeps the tips placed */}
+      <div ref={outer} className="absolute left-0 top-0" style={{ width: SIZE, height: SIZE, visibility: softwareGL() ? undefined : "hidden" }}>
         <div ref={inner} className="relative h-full w-full" style={{ transformOrigin: "50% 100%" }}>
           {held && (
             <div ref={heldEl} className="absolute -top-7 left-1/2 flex -translate-x-1/2 items-end gap-0.5">
