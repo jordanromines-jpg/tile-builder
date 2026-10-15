@@ -1,5 +1,8 @@
 # Tile Steps: notes for every session
 
+- **Read the README first.** Read the entire `README.md` before you work in this repo for the first time, and again
+  whenever you are unfamiliar with it: it holds rules and context this file does not repeat.
+
 Tile Steps (repo `jordanromines-jpg/tile-builder`, live at https://jordanromines-jpg.github.io/tile-builder/) is an
 iPad web app. A family enters its magnet tiles (Magna-Tiles, PicassoTiles, Connetix). The app shows which projects they
 can build, and walks a child through each build in 3D, step by step. It works offline, and nothing leaves the device.
