@@ -1,5 +1,8 @@
 # Tile Steps
 
+> **For Claude and other AI agents:** read this entire README before you work in this repo for the first time, and
+> whenever you are unfamiliar with it. Then read `CLAUDE.md`.
+
 (The repo and the research use the working name Tile Builder.)
 
 **Live: https://jordanromines-jpg.github.io/tile-builder/** (open on an iPad, then Share → Add to Home Screen).
